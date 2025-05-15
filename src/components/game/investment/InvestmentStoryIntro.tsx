@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -169,6 +170,7 @@ const InvestmentStoryIntro = ({
                 step={1}
                 className="mb-6"
                 onValueChange={handleSliderChange}
+                value={[(goalAmount - 500000) / 9500000 * 100]}
               />
               <div className="flex justify-between text-xs text-gray-500">
                 <span>50万円</span>
