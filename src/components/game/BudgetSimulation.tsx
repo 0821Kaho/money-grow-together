@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
-import { BadgeCheck, Info, DollarSign, PiggyBank, Star } from "lucide-react";
+import { BadgeCheck, Info, PiggyBank, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import BudgetQuiz from "./budget/BudgetQuiz";
 import LoanOffer from "./budget/LoanOffer";
@@ -50,7 +51,7 @@ const BudgetSimulation = () => {
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
   const { toast } = useToast();
-  // 星の数を追跡するための状態を追加
+  // 星の数を追跡するための状態変数
   const [starCount, setStarCount] = useState(0);
   
   // 日付が変わった時のイベント処理
@@ -103,7 +104,7 @@ const BudgetSimulation = () => {
         
         toast({
           title: "利息の支払い不能",
-          description: `支払いができません！イノシシのローン屋が怒ってい���す。金利が上がりました！`,
+          description: `支払いができません！イノシシのローン屋が怒っています。金利が上がりました！`,
           variant: "destructive"
         });
         
@@ -177,7 +178,7 @@ const BudgetSimulation = () => {
       
       toast({
         title: "新しいバッジを獲得しました！",
-        description: `「${option.badge}」の���ッジを獲得しました！`,
+        description: `「${option.badge}」のバッジを獲得しました！`,
       });
     }
     
@@ -286,40 +287,40 @@ const BudgetSimulation = () => {
   // 最終結果表示
   const showFinalResults = () => {
     let result = "";
-    let stars = 0;
+    let newStarCount = 0;
     
     // イノシシローンの有無で結果を調整
     if (state.hasWildBoarLoan) {
       if (state.money >= 30000) {
         result = "イノシシのローンを利用しましたが、なんとか資金を管理できました！";
-        stars = 2;
+        newStarCount = 2;
       } else if (state.money >= 0) {
         result = "イノシシのローンの高金利に苦しみましたが、どうにか破産は免れました。";
-        stars = 1;
+        newStarCount = 1;
       } else {
         result = "イノシシのローンの取立てに追われる生活...次回はもっと注意しましょう。";
-        stars = 0;
+        newStarCount = 0;
       }
     } else {
       // 通常の結果判定
       if (state.money >= 50000) {
         result = "素晴らしい！賢明な家計管理ができました！";
-        stars = 3;
+        newStarCount = 3;
       } else if (state.money >= 10000) {
         result = "良くできました！月末まで上手に予算管理ができました。";
-        stars = 2;
+        newStarCount = 2;
       } else if (state.money >= 0) {
         result = "なんとか借金せずに月末を迎えることができました。";
-        stars = 1;
+        newStarCount = 1;
       } else {
         result = "残念ながら赤字になってしまいました。次回はより計画的に！";
-        stars = 0;
+        newStarCount = 0;
       }
     }
     
     setResultMessage(result);
     setShowResult(true);
-    setStarCount(stars);
+    setStarCount(newStarCount);
     
     // 達成バッジの付与
     if (state.money >= 0 && !state.achievedBadges.includes("家計サバイバー")) {
@@ -397,7 +398,7 @@ const BudgetSimulation = () => {
             </div>
             <div className="text-right">
               <div className="flex items-center justify-end gap-1">
-                <DollarSign className="h-5 w-5 text-game-primary" />
+                <PiggyBank className="h-5 w-5 text-game-primary" />
                 <p className="font-medium text-game-primary">
                   {state.money.toLocaleString()}円
                 </p>
@@ -456,9 +457,9 @@ const BudgetSimulation = () => {
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F7F7] text-game-primary">
                   <span className="text-lg font-bold">{state.day}</span>
                 </div>
-                <h3 className="text-lg font-bold">{currentEvent.title}</h3>
+                <h3 className="text-lg font-bold break-words whitespace-normal">{currentEvent.title}</h3>
               </div>
-              <p className="mb-5 text-gray-700">{currentEvent.description}</p>
+              <p className="mb-5 text-gray-700 break-words whitespace-normal">{currentEvent.description}</p>
               <div className="flex flex-col gap-3">
                 {currentEvent.options.map((option: any, index: number) => (
                   <button
@@ -466,16 +467,16 @@ const BudgetSimulation = () => {
                     onClick={() => handleOption(option)}
                     className="flex flex-col rounded-lg border border-gray-200 p-4 text-left hover:bg-gray-50"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{option.text}</span>
-                      <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-between flex-wrap">
+                      <span className="font-medium break-words whitespace-normal">{option.text}</span>
+                      <div className="flex items-center gap-1 ml-2 mt-1">
                         {option.cost > 0 && (
-                          <span className="text-game-danger">
+                          <span className="text-game-danger whitespace-nowrap">
                             -{option.cost.toLocaleString()}円
                           </span>
                         )}
                         {option.reward > 0 && (
-                          <span className="text-[#25B589]">
+                          <span className="text-[#25B589] whitespace-nowrap">
                             +{option.reward.toLocaleString()}円
                           </span>
                         )}
@@ -522,7 +523,7 @@ const BudgetSimulation = () => {
           {/* ヒント表示 */}
           <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F7F7F7] p-3 text-sm">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-500" />
-            <p className="text-gray-600">
+            <p className="text-gray-600 break-words whitespace-normal">
               {state.hasWildBoarLoan 
                 ? "イノシシのローン屋からの高金利ローンは毎週金曜日に返済が必要です。返済を怠ると厳しいペナルティが発生します！" 
                 : "計画的な支出を心がけ、余裕を持って月末を迎えましょう。所持金が少なくなるとローンの誘惑があるかもしれませんが、高金利に注意！"}

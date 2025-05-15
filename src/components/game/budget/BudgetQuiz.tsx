@@ -1,7 +1,8 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HelpCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface BudgetQuizProps {
   onComplete: (isCorrect: boolean) => void;
@@ -10,6 +11,7 @@ interface BudgetQuizProps {
 // クイズのデータ
 const quizzes = [
   {
+    id: 1,
     question: "節約を続けるための最も効果的な方法は？",
     options: [
       "すべての出費を記録する",
@@ -21,6 +23,7 @@ const quizzes = [
     explanation: "支出を記録することで、あなたのお金がどこに使われているかを把握でき、節約できる箇所を特定しやすくなります。"
   },
   {
+    id: 2,
     question: "緊急資金はいくら準備すべき？",
     options: [
       "月収の1倍",
@@ -32,6 +35,7 @@ const quizzes = [
     explanation: "専門家は一般的に、緊急時に備えて3〜6ヶ月分の生活費を貯めておくことを推奨しています。"
   },
   {
+    id: 3,
     question: "家計における「固定費」とは？",
     options: [
       "毎月変動する費用",
@@ -43,6 +47,7 @@ const quizzes = [
     explanation: "固定費は家賃、サブスクリプション、ローンなど、毎月ほぼ同じ金額が発生する費用のことです。"
   },
   {
+    id: 4,
     question: "消費者ローンの金利が年15%の場合、10万円借りると1年後の返済総額は約いくら？",
     options: [
       "10万円",
@@ -52,13 +57,72 @@ const quizzes = [
     ],
     correctIndex: 3,
     explanation: "年利15%の場合、1年後には元金10万円に加えて1万5千円の利息が発生します。"
+  },
+  {
+    id: 5,
+    question: "住宅ローンを選ぶ際に最も重要な要素は？",
+    options: [
+      "金利の種類（変動/固定）",
+      "借入可能額",
+      "返済期間",
+      "頭金の額"
+    ],
+    correctIndex: 0,
+    explanation: "金利の種類は返済総額に大きく影響します。変動金利は当初は低いですが将来上昇するリスクがあります。"
+  },
+  {
+    id: 6,
+    question: "家計簿をつける主な目的は？",
+    options: [
+      "税金対策のため",
+      "出費を把握し計画を立てるため",
+      "家族に使いすぎを証明するため",
+      "銀行融資の審査に必要だから"
+    ],
+    correctIndex: 1,
+    explanation: "家計簿の主な目的は支出パターンを把握し、より効果的な予算計画を立てることです。"
   }
 ];
 
 const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
-  const [selectedQuiz] = useState(quizzes[Math.floor(Math.random() * quizzes.length)]);
+  const [usedQuizIds, setUsedQuizIds] = useState<number[]>(() => {
+    // ローカルストレージから使用済みクイズIDを取得
+    const savedIds = localStorage.getItem('usedQuizIds');
+    return savedIds ? JSON.parse(savedIds) : [];
+  });
+  
+  const [selectedQuiz, setSelectedQuiz] = useState(() => {
+    // 使用されていないクイズをフィルタリング
+    const availableQuizzes = quizzes.filter(quiz => !usedQuizIds.includes(quiz.id));
+    
+    // すべてのクイズが使用済みの場合はリセット
+    if (availableQuizzes.length === 0) {
+      return quizzes[Math.floor(Math.random() * quizzes.length)];
+    }
+    
+    // 未使用のクイズからランダムに選択
+    return availableQuizzes[Math.floor(Math.random() * availableQuizzes.length)];
+  });
+  
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const { toast } = useToast();
+  
+  // 使用済みクイズIDを保存
+  useEffect(() => {
+    if (showResult && selectedQuiz) {
+      const newUsedQuizIds = [...usedQuizIds, selectedQuiz.id];
+      
+      // すべてのクイズが使用済みになった場合はリセット
+      if (newUsedQuizIds.length >= quizzes.length) {
+        setUsedQuizIds([selectedQuiz.id]);
+        localStorage.setItem('usedQuizIds', JSON.stringify([selectedQuiz.id]));
+      } else {
+        setUsedQuizIds(newUsedQuizIds);
+        localStorage.setItem('usedQuizIds', JSON.stringify(newUsedQuizIds));
+      }
+    }
+  }, [showResult, selectedQuiz, usedQuizIds]);
   
   const handleOptionSelect = (index: number) => {
     setSelectedOption(index);
@@ -87,7 +151,7 @@ const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
         <h3 className="text-lg font-bold">週間クイズ</h3>
       </div>
       
-      <p className="mb-5 text-gray-700">
+      <p className="mb-5 text-gray-700 break-words whitespace-normal">
         {selectedQuiz.question}
       </p>
       
@@ -111,10 +175,10 @@ const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
                 : ''
             } p-4 text-left hover:bg-gray-50`}
           >
-            <div className="flex h-6 w-6 items-center justify-center rounded-full border border-current mr-3">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full border border-current mr-3 shrink-0">
               {String.fromCharCode(65 + index)}
             </div>
-            <span>{option}</span>
+            <span className="break-words whitespace-normal">{option}</span>
           </button>
         ))}
       </div>
@@ -130,7 +194,7 @@ const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
               ? '正解です！' 
               : '残念、不正解です。'}
           </p>
-          <p className="mt-1 text-sm">
+          <p className="mt-1 text-sm break-words whitespace-normal">
             {selectedQuiz.explanation}
           </p>
         </div>
