@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import ProfileButton from "../ui/ProfileButton";
 import ModuleProgress from "../ui/ModuleProgress";
@@ -12,6 +12,8 @@ interface GameLayoutProps {
 }
 
 const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps) => {
+  // Use conditional navigation to avoid the error
+  const location = useLocation();
   const navigate = useNavigate();
   const [coins, setCoins] = useState(100);
 
