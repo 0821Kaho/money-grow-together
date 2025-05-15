@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -6,6 +5,7 @@ import { BadgeCheck, Info, DollarSign, PiggyBank, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import BudgetQuiz from "./budget/BudgetQuiz";
 import LoanOffer from "./budget/LoanOffer";
+import WildBoarLoanOffer from "./budget/WildBoarLoanOffer";
 import { getEventForDay, getBudgetEvents } from "@/lib/budget-events";
 import { Badge } from "@/components/ui/badge";
 
@@ -16,6 +16,10 @@ interface BudgetState {
   hasLoan: boolean;
   loanAmount: number;
   interestRate: number;
+  hasWildBoarLoan: boolean;
+  wildBoarLoanAmount: number;
+  wildBoarInterestRate: number;
+  missedPayments: number;
   completedEvents: number[];
   achievedBadges: string[];
   weeklyQuizCompleted: boolean;
@@ -28,6 +32,10 @@ const initialState: BudgetState = {
   hasLoan: false,
   loanAmount: 0,
   interestRate: 0.15, // 15%の高金利
+  hasWildBoarLoan: false,
+  wildBoarLoanAmount: 0,
+  wildBoarInterestRate: 0.30, // 30%の超高金利
+  missedPayments: 0,
   completedEvents: [],
   achievedBadges: [],
   weeklyQuizCompleted: false,
@@ -37,6 +45,7 @@ const BudgetSimulation = () => {
   const [state, setState] = useState<BudgetState>(initialState);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [showLoanOffer, setShowLoanOffer] = useState(false);
+  const [showWildBoarLoanOffer, setShowWildBoarLoanOffer] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
@@ -68,9 +77,61 @@ const BudgetSimulation = () => {
       });
     }
     
-    // 所持金チェック - 5000円未満でローンの誘惑
+    // イノシシローン返済日チェック (金曜日: 5, 10, 15, 20, 25, 30日)
+    if ([5, 10, 15, 20, 25, 30].includes(state.day) && state.hasWildBoarLoan) {
+      const interest = Math.ceil(state.wildBoarLoanAmount * state.wildBoarInterestRate / 6); // 5日分の金利
+      
+      if (state.money >= interest) {
+        setState((prev) => ({
+          ...prev,
+          money: prev.money - interest,
+          missedPayments: 0, // 支払いを行ったのでリセット
+        }));
+        
+        toast({
+          title: "イノシシローン利息の支払い",
+          description: `${interest.toLocaleString()}円の高額利息を支払いました。`,
+        });
+      } else {
+        // 支払い不能の場合はペナルティ
+        setState((prev) => ({
+          ...prev,
+          happiness: Math.max(0, prev.happiness - 5), // 幸福度が下がる
+          missedPayments: prev.missedPayments + 1, // 未払いカウント増加
+          wildBoarInterestRate: prev.wildBoarInterestRate + 0.05 // 金利5%増加
+        }));
+        
+        toast({
+          title: "利息の支払い不能",
+          description: `支払いができません！イノシシのローン屋が怒ってい���す。金利が上がりました！`,
+          variant: "destructive"
+        });
+        
+        // 3回以上未払いの場合は追加ペナルティ
+        if (state.missedPayments >= 3) {
+          setState((prev) => ({
+            ...prev,
+            happiness: Math.max(0, prev.happiness - 10),
+          }));
+          
+          toast({
+            title: "取立てが厳しくなりました",
+            description: `イノシシのローン屋からの取立てが厳しくなり、ストレスで満足度が大幅に下がりました。`,
+            variant: "destructive"
+          });
+        }
+      }
+    }
+    
+    // 所持金チェック - 通常ローン (5000円未満)
     if (state.money < 5000 && !state.hasLoan && state.day < 28) {
       setShowLoanOffer(true);
+      return;
+    }
+    
+    // 所持金チェック - イノシシのローン (2000円未満でさらに追い詰められている)
+    if (state.money < 2000 && !state.hasWildBoarLoan && !state.hasLoan && state.day < 28) {
+      setShowWildBoarLoanOffer(true);
       return;
     }
     
@@ -79,7 +140,7 @@ const BudgetSimulation = () => {
     if (todaysEvent) {
       setCurrentEvent(todaysEvent);
     }
-  }, [state.day, state.hasLoan]);
+  }, [state.day, state.hasLoan, state.hasWildBoarLoan]);
   
   // 次の日へ進む
   const handleNextDay = () => {
@@ -116,7 +177,7 @@ const BudgetSimulation = () => {
       
       toast({
         title: "新しいバッジを獲得しました！",
-        description: `「${option.badge}」のバッジを獲得しました！`,
+        description: `「${option.badge}」の���ッジを獲得しました！`,
       });
     }
     
@@ -189,23 +250,71 @@ const BudgetSimulation = () => {
     }
   };
   
+  // イノシシローン申し込み処理
+  const handleWildBoarLoanDecision = (accepted: boolean) => {
+    setShowWildBoarLoanOffer(false);
+    
+    if (accepted) {
+      const loanAmount = 20000; // 2万円の少額ローン
+      
+      setState((prev) => ({
+        ...prev,
+        money: prev.money + loanAmount,
+        hasWildBoarLoan: true,
+        wildBoarLoanAmount: loanAmount,
+      }));
+      
+      toast({
+        title: "イノシシのローン契約完了",
+        description: `${loanAmount.toLocaleString()}円を借り入れました。毎週金曜日に高額利息の支払いがあります。注意してください！`,
+        variant: "destructive"
+      });
+    } else {
+      // ローンを断った場合はバッジ獲得
+      setState((prev) => ({
+        ...prev,
+        achievedBadges: [...prev.achievedBadges, "危険回避の達人"],
+      }));
+      
+      toast({
+        title: "賢明な判断です！",
+        description: "危険なローンを断り、「危険回避の達人」バッジを獲得しました！",
+      });
+    }
+  };
+  
   // 最終結果表示
   const showFinalResults = () => {
     let result = "";
     let stars = 0;
     
-    if (state.money >= 50000) {
-      result = "素晴らしい！賢明な家計管理ができました！";
-      stars = 3;
-    } else if (state.money >= 10000) {
-      result = "良くできました！月末まで上手に予算管理ができました。";
-      stars = 2;
-    } else if (state.money >= 0) {
-      result = "なんとか借金せずに月末を迎えることができました。";
-      stars = 1;
+    // イノシシローンの有無で結果を調整
+    if (state.hasWildBoarLoan) {
+      if (state.money >= 30000) {
+        result = "イノシシのローンを利用しましたが、なんとか資金を管理できました！";
+        stars = 2;
+      } else if (state.money >= 0) {
+        result = "イノシシのローンの高金利に苦しみましたが、どうにか破産は免れました。";
+        stars = 1;
+      } else {
+        result = "イノシシのローンの取立てに追われる生活...次回はもっと注意しましょう。";
+        stars = 0;
+      }
     } else {
-      result = "残念ながら赤字になってしまいました。次回はより計画的に！";
-      stars = 0;
+      // 通常の結果判定
+      if (state.money >= 50000) {
+        result = "素晴らしい！賢明な家計管理ができました！";
+        stars = 3;
+      } else if (state.money >= 10000) {
+        result = "良くできました！月末まで上手に予算管理ができました。";
+        stars = 2;
+      } else if (state.money >= 0) {
+        result = "なんとか借金せずに月末を迎えることができました。";
+        stars = 1;
+      } else {
+        result = "残念ながら赤字になってしまいました。次回はより計画的に！";
+        stars = 0;
+      }
     }
     
     setResultMessage(result);
@@ -217,6 +326,14 @@ const BudgetSimulation = () => {
       setState((prev) => ({
         ...prev,
         achievedBadges: [...prev.achievedBadges, "家計サバイバー"],
+      }));
+    }
+    
+    // イノシシローンを完済できた場合の特別バッジ
+    if (state.hasWildBoarLoan && state.money >= 0 && state.missedPayments === 0) {
+      setState((prev) => ({
+        ...prev,
+        achievedBadges: [...prev.achievedBadges, "危険な橋を渡り切った猛者"],
       }));
     }
   };
@@ -300,10 +417,24 @@ const BudgetSimulation = () => {
                   ローン: {state.loanAmount.toLocaleString()}円
                 </div>
               )}
+              
+              {state.hasWildBoarLoan && (
+                <div className="mt-1 text-xs text-game-danger font-semibold">
+                  イノシシローン: {state.wildBoarLoanAmount.toLocaleString()}円 ({Math.round(state.wildBoarInterestRate * 100)}% 金利)
+                </div>
+              )}
             </div>
           </div>
           
-          {showLoanOffer && (
+          {showWildBoarLoanOffer && (
+            <WildBoarLoanOffer 
+              onDecision={handleWildBoarLoanDecision} 
+              amount={20000} 
+              interestRate={Math.round(state.wildBoarInterestRate * 100)}
+            />
+          )}
+          
+          {showLoanOffer && !showWildBoarLoanOffer && (
             <LoanOffer 
               onDecision={handleLoanDecision} 
               amount={30000} 
@@ -311,11 +442,11 @@ const BudgetSimulation = () => {
             />
           )}
           
-          {showQuiz && (
+          {showQuiz && !showLoanOffer && !showWildBoarLoanOffer && (
             <BudgetQuiz onComplete={handleQuizComplete} />
           )}
           
-          {currentEvent && !showLoanOffer && !showQuiz && (
+          {currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -364,7 +495,7 @@ const BudgetSimulation = () => {
             </motion.div>
           )}
           
-          {!currentEvent && !showLoanOffer && !showQuiz && (
+          {!currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
             <div className="flex flex-col items-center p-8">
               <div className="mb-4 text-5xl">{state.day % 5 === 0 ? "💼" : "📆"}</div>
               <p className="mb-6 text-center">
@@ -392,7 +523,9 @@ const BudgetSimulation = () => {
           <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F7F7F7] p-3 text-sm">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-500" />
             <p className="text-gray-600">
-              計画的な支出を心がけ、余裕を持って月末を迎えましょう。所持金が少なくなるとローンの誘惑があるかもしれませんが、高金利に注意！
+              {state.hasWildBoarLoan 
+                ? "イノシシのローン屋からの高金利ローンは毎週金曜日に返済が必要です。返済を怠ると厳しいペナルティが発生します！" 
+                : "計画的な支出を心がけ、余裕を持って月末を迎えましょう。所持金が少なくなるとローンの誘惑があるかもしれませんが、高金利に注意！"}
             </p>
           </div>
         </>
