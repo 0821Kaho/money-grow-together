@@ -36,10 +36,15 @@ const InvestmentStoryIntro = ({
   };
   
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
+    const value = parseInt(e.target.value.replace(/,/g, ''));
     if (!isNaN(value) && value > 0) {
       setGoalAmount(value);
     }
+  };
+  
+  // Format number with commas for display
+  const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
   
   return (
@@ -134,8 +139,8 @@ const InvestmentStoryIntro = ({
             <div className="flex items-center">
               <Input
                 id="goalAmount"
-                type="number"
-                value={goalAmount}
+                type="text"
+                value={formatNumber(goalAmount)}
                 onChange={handleAmountChange}
                 className="mb-4"
               />

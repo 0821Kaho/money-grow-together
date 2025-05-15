@@ -26,7 +26,7 @@ const plants: Plant[] = [
     name: "預金の種",
     growthRate: 0.001, // 0.1% per month
     risk: 0,
-    initialCost: 1000,
+    initialCost: 10000,
     description: "安全だけど成長はゆっくり。元本割れの心配はありません。",
     icon: <TreePalm className="h-6 w-6" />,
     color: "#4DAA57",
@@ -36,7 +36,7 @@ const plants: Plant[] = [
     name: "債券の苗",
     growthRate: 0.003, // 0.3% per month
     risk: 0.1,
-    initialCost: 5000,
+    initialCost: 30000,
     description: "ほどほどの成長率で比較的安全。少しのリスクがあります。",
     icon: <TreeDeciduous className="h-6 w-6" />,
     color: "#60B8D4",
@@ -46,7 +46,7 @@ const plants: Plant[] = [
     name: "株式の木",
     growthRate: 0.008, // 0.8% per month
     risk: 0.3,
-    initialCost: 10000,
+    initialCost: 50000,
     description: "高い成長率が期待できますが、リスクも高めです。",
     icon: <Flower className="h-6 w-6" />,
     color: "#FFD166",
@@ -121,7 +121,7 @@ const InvestmentPlantGarden = () => {
   const [dreamItem, setDreamItem] = useState("");
   
   // Core simulation state
-  const [money, setMoney] = useState(50000);
+  const [money, setMoney] = useState(500000); // Increased starting money
   const [investments, setInvestments] = useState<{
     [key: string]: { amount: number; growth: number };
   }>({});
@@ -133,7 +133,7 @@ const InvestmentPlantGarden = () => {
   const [currentEvent, setCurrentEvent] = useState<MarketEvent | null>(null);
   const [showEventModal, setShowEventModal] = useState(false);
   const [initialTotalValue, setInitialTotalValue] = useState(0);
-  const [goal, setGoal] = useState(100000); // Default goal
+  const [goal, setGoal] = useState(1000000); // Default higher goal
   const [resultMessage, setResultMessage] = useState("");
   const [badges, setBadges] = useState<Array<{name: string, icon: string}>>([]);
   const { toast } = useToast();
@@ -159,11 +159,15 @@ const InvestmentPlantGarden = () => {
   
   // Handle setting the goal
   const handleGoalSet = (newGoal: number) => {
-    setGoal(newGoal);
+    // Ensure the goal is at least 100,000 yen
+    setGoal(Math.max(100000, newGoal));
   };
 
   const buyPlant = (plant: Plant) => {
-    if (money < plant.initialCost) {
+    // Calculate maximum amount that can be invested based on available money
+    const maxInvestment = Math.floor(money / plant.initialCost) * plant.initialCost;
+    
+    if (maxInvestment < plant.initialCost) {
       toast({
         title: "購入できません",
         description: "資金が足りません",
@@ -172,13 +176,26 @@ const InvestmentPlantGarden = () => {
       return;
     }
 
-    setMoney((prev) => prev - plant.initialCost);
+    // Allow for larger investments - up to 5x the initial cost
+    let investmentAmount = plant.initialCost;
+    
+    // For larger available funds, offer more investment options
+    if (money >= plant.initialCost * 5) {
+      investmentAmount = plant.initialCost * 5;
+    } else if (money >= plant.initialCost * 3) {
+      investmentAmount = plant.initialCost * 3;
+    }
+    
+    // Ensure we don't invest more than available
+    investmentAmount = Math.min(investmentAmount, maxInvestment);
+
+    setMoney((prev) => prev - investmentAmount);
     setInvestments((prev) => {
       const current = prev[plant.id] ? prev[plant.id].amount : 0;
       return {
         ...prev,
         [plant.id]: {
-          amount: current + plant.initialCost,
+          amount: current + investmentAmount,
           growth: 1,
         },
       };
@@ -186,7 +203,7 @@ const InvestmentPlantGarden = () => {
 
     toast({
       title: `${plant.name}を購入しました`,
-      description: `${plant.initialCost.toLocaleString()}円を投資しました`,
+      description: `${investmentAmount.toLocaleString()}円を投資しました`,
     });
   };
 
@@ -334,7 +351,7 @@ const InvestmentPlantGarden = () => {
   };
 
   const resetSimulation = () => {
-    setMoney(50000);
+    setMoney(500000); // Increased starting money
     setInvestments({});
     setMonthsPassed(0);
     setYearsPassed(0);
@@ -510,7 +527,7 @@ const InvestmentPlantGarden = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
-                    {plant.initialCost.toLocaleString()}円
+                    {plant.initialCost.toLocaleString()}円〜
                   </span>
                   <button
                     onClick={() => buyPlant(plant)}

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import InvestmentPlantGarden from "./InvestmentPlantGarden";
 import InvestmentStoryIntro from "./investment/InvestmentStoryIntro";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/use-toast";
 
 const InvestmentSimulation = () => {
   const [showIntro, setShowIntro] = useState(true);
