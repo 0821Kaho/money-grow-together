@@ -1,7 +1,14 @@
 
 import { motion } from "framer-motion";
+import MascotTooltip from "../mascot/MascotTooltip";
 
 const WelcomeSection = () => {
+  const welcomeMessages = [
+    "ようこそ、マネゴローへ！お金について楽しく学びましょう！",
+    "今日は何を学びたいですか？家計管理からはじめるのがおすすめです！",
+    "毎日少しずつ学習して、お金の知識を身につけましょう！"
+  ];
+  
   return (
     <motion.div 
       className="mb-8 rounded-2xl bg-gradient-to-br from-game-primary to-game-secondary p-6 text-white"
@@ -21,9 +28,7 @@ const WelcomeSection = () => {
           animate={{ y: [0, -10, 0] }}
           transition={{ repeat: Infinity, duration: 3 }}
         >
-          <div className="relative h-16 w-16">
-            <div className="absolute coin animate-coin-spin">¥</div>
-          </div>
+          <MascotTooltip messages={welcomeMessages} characterSize="small" />
         </motion.div>
       </div>
       <div className="mt-4 flex flex-wrap gap-2">

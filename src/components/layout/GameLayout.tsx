@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import ProfileButton from "../ui/ProfileButton";
 import ModuleProgress from "../ui/ModuleProgress";
+import MascotCharacter from "../mascot/MascotCharacter";
 
 interface GameLayoutProps {
   children: React.ReactNode;
@@ -12,10 +13,10 @@ interface GameLayoutProps {
 }
 
 const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps) => {
-  // Use conditional navigation to avoid the error
   const location = useLocation();
   const navigate = useNavigate();
   const [coins, setCoins] = useState(100);
+  const [showMascot, setShowMascot] = useState(true);
 
   return (
     <motion.div
@@ -107,6 +108,13 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
             </button>
           </div>
         </nav>
+      )}
+      
+      {/* Floating Mascot */}
+      {showMascot && (
+        <div className="fixed bottom-20 right-4 z-40 cursor-pointer" onClick={() => setShowMascot(false)}>
+          <MascotCharacter size="medium" />
+        </div>
       )}
     </motion.div>
   );
