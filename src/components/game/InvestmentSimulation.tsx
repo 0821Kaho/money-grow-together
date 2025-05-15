@@ -6,6 +6,7 @@ import { toast } from "@/components/ui/use-toast";
 
 const InvestmentSimulation = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [goal, setGoal] = useState(1000000); // Default to 1,000,000 yen (1 million)
   
   const handleIntroComplete = () => {
     setShowIntro(false);
@@ -15,12 +16,21 @@ const InvestmentSimulation = () => {
     });
   };
 
+  const handleGoalSet = (newGoal: number) => {
+    // Ensure minimum goal of 100,000 yen
+    setGoal(Math.max(100000, newGoal));
+  };
+
   return (
     <>
       {showIntro ? (
-        <InvestmentStoryIntro onComplete={handleIntroComplete} />
+        <InvestmentStoryIntro 
+          onComplete={handleIntroComplete} 
+          initialGoal={goal}
+          onGoalSet={handleGoalSet}
+        />
       ) : (
-        <InvestmentPlantGarden />
+        <InvestmentPlantGarden initialGoal={goal} />
       )}
     </>
   );

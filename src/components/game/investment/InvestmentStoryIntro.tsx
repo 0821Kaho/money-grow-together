@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
 import { ArrowRight } from "lucide-react";
 
@@ -15,7 +15,7 @@ interface InvestmentStoryIntroProps {
 
 const InvestmentStoryIntro = ({ 
   onComplete, 
-  initialGoal = 100000,
+  initialGoal = 1000000,
   onGoalSet
 }: InvestmentStoryIntroProps) => {
   const [step, setStep] = useState(1);
@@ -36,10 +36,24 @@ const InvestmentStoryIntro = ({
   };
   
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value.replace(/,/g, ''));
-    if (!isNaN(value) && value > 0) {
-      setGoalAmount(value);
+    // Remove commas and convert to number
+    const rawValue = e.target.value.replace(/,/g, '');
+    
+    // Check if it's a valid number
+    if (/^\d*$/.test(rawValue)) {
+      const value = rawValue === '' ? 0 : parseInt(rawValue);
+      // Set a reasonable maximum (e.g., 100 million yen)
+      if (value <= 100000000) {
+        setGoalAmount(value);
+      }
     }
+  };
+  
+  const handleSliderChange = (value: number[]) => {
+    // Slider value is between 0-100, convert to a reasonable range
+    // e.g., 500,000 to 10,000,000 yen
+    const newValue = Math.round(500000 + (value[0] / 100) * 9500000);
+    setGoalAmount(newValue);
   };
   
   // Format number with commas for display
@@ -136,7 +150,7 @@ const InvestmentStoryIntro = ({
             <label htmlFor="goalAmount" className="mb-2 block text-sm font-medium">
               目標金額
             </label>
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <Input
                 id="goalAmount"
                 type="text"
@@ -145,6 +159,21 @@ const InvestmentStoryIntro = ({
                 className="mb-4"
               />
               <span className="ml-2">円</span>
+            </div>
+            
+            <div className="mb-6">
+              <p className="mb-2 text-sm text-gray-500">金額を調整する：</p>
+              <Slider
+                defaultValue={[5]}
+                max={100}
+                step={1}
+                className="mb-6"
+                onValueChange={handleSliderChange}
+              />
+              <div className="flex justify-between text-xs text-gray-500">
+                <span>50万円</span>
+                <span>1,000万円</span>
+              </div>
             </div>
           </div>
           

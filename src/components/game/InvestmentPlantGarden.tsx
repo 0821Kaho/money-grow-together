@@ -115,7 +115,11 @@ const marketEvents: MarketEvent[] = [
   },
 ];
 
-const InvestmentPlantGarden = () => {
+interface InvestmentPlantGardenProps {
+  initialGoal?: number;
+}
+
+const InvestmentPlantGarden = ({ initialGoal = 1000000 }: InvestmentPlantGardenProps) => {
   // Story and introduction state
   const [showIntro, setShowIntro] = useState(true);
   const [dreamItem, setDreamItem] = useState("");
@@ -133,7 +137,7 @@ const InvestmentPlantGarden = () => {
   const [currentEvent, setCurrentEvent] = useState<MarketEvent | null>(null);
   const [showEventModal, setShowEventModal] = useState(false);
   const [initialTotalValue, setInitialTotalValue] = useState(0);
-  const [goal, setGoal] = useState(1000000); // Default higher goal
+  const [goal, setGoal] = useState(initialGoal); // Use initialGoal
   const [resultMessage, setResultMessage] = useState("");
   const [badges, setBadges] = useState<Array<{name: string, icon: string}>>([]);
   const { toast } = useToast();
@@ -521,7 +525,7 @@ const InvestmentPlantGarden = () => {
                     <span className="font-medium">{(plant.growthRate * 100).toFixed(1)}%/月</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>リスク</span>
+                    <span>リス���</span>
                     <span className="font-medium">{(plant.risk * 100).toFixed(0)}%</span>
                   </div>
                 </div>
