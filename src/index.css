@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,25 +8,25 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 20%; /* #333333 for body text */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 20%;
 
-    --primary: 151 44% 48%; /* Green theme for money growth */
+    --primary: 354 87% 72%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 199 50% 60%; /* Blue for trust and stability */
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 151 59% 40%;
+    --secondary-foreground: 210 40% 98%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 35 100% 63%; /* Warm orange for engagement */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 43 100% 72%;
+    --accent-foreground: 0 0% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -33,7 +35,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.75rem; /* Slightly more rounded for a friendlier feel */
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -55,16 +57,16 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 152 44% 48%;
+    --primary: 354 87% 72%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 199 50% 40%;
+    --secondary: 151 59% 40%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 35 60% 55%;
+    --accent: 43 100% 72%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -90,8 +92,16 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1 {
+    @apply font-bold text-2xl; /* Weight 700 */
+  }
+  
+  h2 {
+    @apply font-semibold text-xl; /* Weight 600 */
   }
 }
 
@@ -101,23 +111,23 @@
   }
   
   .game-button {
-    @apply rounded-full bg-game-primary px-6 py-3 font-medium text-white shadow-md transition-all hover:brightness-110 active:scale-95;
+    @apply rounded-xl bg-gradient-to-r from-game-primary to-[#FF9BA4] px-6 py-3 font-medium text-white transition-all hover:brightness-105 active:scale-95;
   }
   
   .game-button-secondary {
-    @apply rounded-full bg-game-secondary px-6 py-3 font-medium text-white shadow-md transition-all hover:brightness-110 active:scale-95;
+    @apply rounded-xl bg-game-secondary px-6 py-3 font-medium text-white transition-all hover:brightness-105 active:scale-95;
   }
   
   .game-button-accent {
-    @apply rounded-full bg-game-accent px-6 py-3 font-medium text-white shadow-md transition-all hover:brightness-110 active:scale-95;
+    @apply rounded-xl bg-game-accent px-6 py-3 font-medium text-game-dark transition-all hover:brightness-105 active:scale-95;
   }
 
   .coin {
-    @apply flex h-16 w-16 items-center justify-center rounded-full bg-game-accent text-white text-xl font-bold shadow-md;
+    @apply flex h-16 w-16 items-center justify-center rounded-full bg-game-accent text-white text-xl font-bold;
   }
 
   .achievement-badge {
-    @apply relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-game-accent to-game-warning p-1 shadow-md;
+    @apply relative flex h-20 w-20 items-center justify-center rounded-full bg-game-primary p-1;
   }
   
   .achievement-badge-inner {
@@ -125,7 +135,7 @@
   }
   
   .module-card {
-    @apply relative overflow-hidden rounded-2xl border-2 border-transparent bg-white p-5 shadow-md transition-all duration-300 hover:border-game-primary hover:shadow-lg;
+    @apply relative overflow-hidden rounded-2xl border-2 border-transparent bg-white p-4 shadow-sm transition-all duration-300 hover:border-game-secondary;
   }
   
   .module-card.locked {
@@ -133,10 +143,10 @@
   }
   
   .progress-bar {
-    @apply h-2.5 overflow-hidden rounded-full bg-gray-200;
+    @apply h-2.5 overflow-hidden rounded-full bg-[#D3DDE1];
   }
   
   .progress-bar-fill {
-    @apply h-full rounded-full bg-gradient-to-r from-game-primary to-game-secondary transition-all duration-300 ease-out;
+    @apply h-full rounded-full bg-gradient-to-r from-game-primary to-game-accent transition-all duration-300 ease-out;
   }
 }

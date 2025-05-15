@@ -10,6 +10,7 @@ import ModulePage from "./pages/ModulePage";
 import ModulesListPage from "./pages/ModulesListPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import ProfilePage from "./pages/ProfilePage";
+import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/onboarding" element={<OnboardingCarousel />} />
           <Route path="/module/:id" element={<ModulePage />} />
           <Route path="/modules" element={<ModulesListPage />} />
           <Route path="/achievements" element={<AchievementsPage />} />

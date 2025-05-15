@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'sans': ['Noto Sans JP', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -26,12 +28,17 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#F37B83', // トントンピンク
+					light: '#FF9BA4',
+					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#2BA26B', // 安心グリーン
+					foreground: '#FFFFFF'
+				},
+				accent: {
+					DEFAULT: '#FFD66E', // コインゴールド
+					foreground: '#333333'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -41,9 +48,17 @@ export default {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+				game: {
+					'primary': '#F37B83',    // トントンピンク
+					'secondary': '#2BA26B',  // 安心グリーン
+					'accent': '#FFD66E',     // コインゴールド
+					'danger': '#FF6B6B',
+					'neutral': '#F5F5F5',    // 背景ニュートラル
+					'success': '#6BCB77',
+					'info': '#4D96FF',
+					'warning': '#FFD166',
+					'dark': '#333333',       // 本文テキスト
+					'light': '#F5F5F5'       // 背景ニュートラル
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -62,25 +77,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				// Game specific colors
-				game: {
-					'primary': '#4DAA57',
-					'secondary': '#60B8D4',
-					'accent': '#FFB344',
-					'danger': '#FF6B6B',
-					'neutral': '#F7F7F7',
-					'success': '#6BCB77',
-					'info': '#4D96FF',
-					'warning': '#FFD166',
-					'dark': '#2D3142',
-					'light': '#F5F5F5'
 				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				xl: '24px', // 仕様のCTAボタン用
 			},
 			keyframes: {
 				'accordion-down': {
@@ -112,7 +115,7 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'coin-spin': 'coin-spin 1s ease-in-out',
+				'coin-spin': 'coin-spin 0.5s ease-in-out',
 				'pop': 'pop 0.3s ease-out',
 				'bounce-in': 'bounce-in 0.5s ease-out',
 				'float': 'float 3s ease-in-out infinite'

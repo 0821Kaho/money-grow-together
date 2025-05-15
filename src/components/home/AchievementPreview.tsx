@@ -28,13 +28,13 @@ const AchievementPreview = () => {
   
   return (
     <motion.div 
-      className="mb-8 rounded-2xl bg-white p-5 shadow-sm"
+      className="mb-8 rounded-xl bg-white p-5 shadow-sm"
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.5 }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-bold">あなたの実績</h2>
+        <h2 className="text-lg font-semibold">あなたの実績</h2>
         <button 
           onClick={() => navigate('/achievements')}
           className="text-sm font-medium text-game-primary"
@@ -44,7 +44,7 @@ const AchievementPreview = () => {
       </div>
       
       <div className="flex gap-4 overflow-x-auto pb-2">
-        {achievements.map((achievement, index) => (
+        {achievements.map((achievement) => (
           <div 
             key={achievement.id} 
             className="flex min-w-[110px] flex-col items-center"

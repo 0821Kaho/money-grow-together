@@ -2,9 +2,11 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Flame } from "lucide-react";
 import ProfileButton from "../ui/ProfileButton";
 import ModuleProgress from "../ui/ModuleProgress";
 import MascotCharacter from "../mascot/MascotCharacter";
+import { useToast } from "@/hooks/use-toast";
 
 interface GameLayoutProps {
   children: React.ReactNode;
@@ -16,7 +18,16 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
   const location = useLocation();
   const navigate = useNavigate();
   const [coins, setCoins] = useState(100);
-  const [showMascot, setShowMascot] = useState(true);
+  const { toast } = useToast();
+  
+  // For mascot interaction
+  const handleMascotClick = () => {
+    setCoins(prev => prev + 1);
+    toast({
+      title: "コインゲット！",
+      description: "頑張り続けると、もっとコインが貯まるよ！",
+    });
+  };
 
   return (
     <motion.div
@@ -26,7 +37,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
       transition={{ duration: 0.5 }}
     >
       {/* Header */}
-      <header className="sticky top-0 z-30 bg-white shadow-sm">
+      <header className="sticky top-0 z-30 bg-white">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div 
             className="flex items-center gap-2 cursor-pointer"
@@ -35,10 +46,17 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-game-primary text-white">
               <span className="text-lg font-bold">¥</span>
             </div>
-            <h1 className="text-lg font-bold">マネゴロー</h1>
+            <h1 className="text-xl font-bold">マネゴロー</h1>
           </div>
           
           <div className="flex items-center gap-4">
+            {/* Streak counter */}
+            <div className="flex items-center gap-1">
+              <Flame className="h-5 w-5 text-game-primary" />
+              <span className="font-medium text-game-dark">3日</span>
+            </div>
+            
+            {/* Coins display */}
             <div className="flex items-center gap-1 rounded-full bg-game-light px-4 py-1">
               <span className="text-sm font-medium text-game-dark">コイン:</span>
               <span className="font-bold text-game-primary">{coins}</span>
@@ -63,7 +81,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
         <nav className="fixed bottom-0 left-0 z-30 w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
           <div className="container mx-auto grid grid-cols-4 gap-1">
             <button
-              onClick={() => navigate('/modules')}
+              onClick={() => navigate('/')}
               className="flex flex-col items-center justify-center p-3 hover:text-game-primary"
             >
               <div className="h-6 w-6 rounded-md bg-game-primary text-white flex items-center justify-center">
@@ -77,7 +95,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
               onClick={() => navigate('/achievements')}
               className="flex flex-col items-center justify-center p-3 hover:text-game-primary"
             >
-              <div className="h-6 w-6 rounded-md bg-game-accent text-white flex items-center justify-center">
+              <div className="h-6 w-6 rounded-md bg-game-accent text-game-dark flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                 </svg>
@@ -99,7 +117,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
               onClick={() => navigate('/profile')}
               className="flex flex-col items-center justify-center p-3 hover:text-game-primary"
             >
-              <div className="h-6 w-6 rounded-md bg-game-info text-white flex items-center justify-center">
+              <div className="h-6 w-6 rounded-md bg-game-primary text-white flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                 </svg>
@@ -110,12 +128,14 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
         </nav>
       )}
       
-      {/* Floating Mascot */}
-      {showMascot && (
-        <div className="fixed bottom-20 right-4 z-40 cursor-pointer" onClick={() => setShowMascot(false)}>
-          <MascotCharacter size="medium" />
-        </div>
-      )}
+      {/* Floating Mascot FAB (56px) at bottom right */}
+      <div className="fixed bottom-20 right-4 z-40">
+        <MascotCharacter 
+          size="medium" 
+          onClick={handleMascotClick}
+          className="h-14 w-14 shadow-md" 
+        />
+      </div>
     </motion.div>
   );
 };
