@@ -1,10 +1,10 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GameLayout from "@/components/layout/GameLayout";
 import BudgetSimulation from "@/components/game/BudgetSimulation";
 import InvestmentSimulation from "@/components/game/InvestmentSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
+import MascotCharacter from "@/components/mascot/MascotCharacter";
 
 const modules = [
   {
