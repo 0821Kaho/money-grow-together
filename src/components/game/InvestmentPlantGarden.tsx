@@ -3,6 +3,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ChartLine, Flower, TreeDeciduous, TreePalm } from "lucide-react";
+import InvestmentStoryIntro from "./investment/InvestmentStoryIntro";
+import PlantGrowthVisual from "./investment/PlantGrowthVisual";
+import InvestmentTips from "./investment/InvestmentTips";
+import MarketEventDisplay from "./investment/MarketEventDisplay";
+import { motion } from "framer-motion";
 
 interface Plant {
   id: string;
@@ -111,6 +116,11 @@ const marketEvents: MarketEvent[] = [
 ];
 
 const InvestmentPlantGarden = () => {
+  // Story and introduction state
+  const [showIntro, setShowIntro] = useState(true);
+  const [dreamItem, setDreamItem] = useState("");
+  
+  // Core simulation state
   const [money, setMoney] = useState(50000);
   const [investments, setInvestments] = useState<{
     [key: string]: { amount: number; growth: number };
@@ -121,11 +131,19 @@ const InvestmentPlantGarden = () => {
   const [simulationSpeed, setSimulationSpeed] = useState(1000); // ms per month
   const [marketEventHistory, setMarketEventHistory] = useState<Array<{event: MarketEvent, month: number}>>([]);
   const [currentEvent, setCurrentEvent] = useState<MarketEvent | null>(null);
+  const [showEventModal, setShowEventModal] = useState(false);
   const [initialTotalValue, setInitialTotalValue] = useState(0);
-  const [goal, setGoal] = useState(100000); // Example goal: double initial money
+  const [goal, setGoal] = useState(100000); // Default goal
   const [resultMessage, setResultMessage] = useState("");
   const [badges, setBadges] = useState<Array<{name: string, icon: string}>>([]);
   const { toast } = useToast();
+  
+  // Plant health/growth visual states
+  const [plantHealth, setPlantHealth] = useState<{[key: string]: number}>({
+    savings: 1,
+    bonds: 1,
+    stocks: 1
+  });
 
   useEffect(() => {
     // Set initial value when investments change
@@ -133,6 +151,16 @@ const InvestmentPlantGarden = () => {
       setInitialTotalValue(money + calculateTotalValue());
     }
   }, [investments]);
+  
+  // Handle finishing the intro
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+  };
+  
+  // Handle setting the goal
+  const handleGoalSet = (newGoal: number) => {
+    setGoal(newGoal);
+  };
 
   const buyPlant = (plant: Plant) => {
     if (money < plant.initialCost) {
@@ -166,13 +194,29 @@ const InvestmentPlantGarden = () => {
     if (Math.random() > 0.7) { // 30% chance of an event
       const event = marketEvents[Math.floor(Math.random() * marketEvents.length)];
       setCurrentEvent(event);
+      setShowEventModal(true);
       setMarketEventHistory(prev => [...prev, {event, month: monthsPassed}]);
       
       toast({
         title: `市場イベント: ${event.name}`,
         description: event.description,
       });
-
+      
+      // Update plant health based on event effects
+      setPlantHealth(prevHealth => {
+        const newHealth = { ...prevHealth };
+        Object.entries(event.effects).forEach(([plantId, effect]) => {
+          // Health changes based on effect (negative = lower health)
+          const healthChange = effect < 0.7 ? -0.2 : effect > 1.2 ? 0.1 : 0;
+          newHealth[plantId] = Math.max(0.3, Math.min(1, (newHealth[plantId] || 1) + healthChange));
+        });
+        return newHealth;
+      });
+      
+      setTimeout(() => {
+        setShowEventModal(false);
+      }, 4000); // Hide event after 4 seconds
+      
       return event;
     }
     return null;
@@ -298,6 +342,12 @@ const InvestmentPlantGarden = () => {
     setCurrentEvent(null);
     setInitialTotalValue(0);
     setResultMessage("");
+    // Reset plant health
+    setPlantHealth({
+      savings: 1,
+      bonds: 1,
+      stocks: 1
+    });
     // Keep badges achieved
   };
 
@@ -308,10 +358,24 @@ const InvestmentPlantGarden = () => {
 
   // Calculate progress toward goal
   const goalProgress = Math.min(100, Math.round((totalValue / goal) * 100));
+  
+  // If showing intro, return the intro component
+  if (showIntro) {
+    return <InvestmentStoryIntro 
+      onComplete={handleIntroComplete} 
+      initialGoal={goal}
+      onGoalSet={handleGoalSet}
+    />;
+  }
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-2xl bg-white p-5 shadow-sm">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="rounded-2xl bg-white p-5 shadow-sm"
+      >
         <h2 className="mb-4 text-xl font-bold">お金の植物園</h2>
         
         {/* Overview */}
@@ -382,6 +446,40 @@ const InvestmentPlantGarden = () => {
             )}
           </div>
         </div>
+        
+        {/* Plants Visuals */}
+        {Object.keys(investments).length > 0 && (
+          <div className="mb-6">
+            <h3 className="mb-3 font-medium">あなたの植物</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {Object.keys(investments).map((plantId) => {
+                const plant = plants.find((p) => p.id === plantId);
+                if (!plant) return null;
+                
+                const currentGrowth = investments[plantId].growth;
+                const growthPercentage = ((currentGrowth - 1) * 100);
+                
+                return (
+                  <div key={plantId} className="rounded-lg border border-gray-200 p-4 flex flex-col items-center">
+                    <PlantGrowthVisual 
+                      plantType={plantId}
+                      growthPercentage={growthPercentage}
+                      health={plantHealth[plantId]}
+                      color={plant.color}
+                      name={plant.name}
+                    />
+                    <p className="mt-2 text-sm">
+                      投資額: {investments[plantId].amount.toLocaleString()}円
+                    </p>
+                    <p className="text-sm font-medium">
+                      現在: {Math.round(investments[plantId].amount * currentGrowth).toLocaleString()}円
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
         
         {/* Plants Shop */}
         <div className="mb-6">
@@ -507,6 +605,30 @@ const InvestmentPlantGarden = () => {
         )}
         
         {/* Simulation Controls */}
+        <div className="mb-4">
+          <h3 className="mb-3 font-medium">シミュレーション速度</h3>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => setSimulationSpeed(2000)}
+              className={`px-3 py-1 rounded ${simulationSpeed === 2000 ? 'bg-game-primary text-white' : 'bg-gray-100'}`}
+            >
+              遅い
+            </button>
+            <button 
+              onClick={() => setSimulationSpeed(1000)}
+              className={`px-3 py-1 rounded ${simulationSpeed === 1000 ? 'bg-game-primary text-white' : 'bg-gray-100'}`}
+            >
+              普通
+            </button>
+            <button 
+              onClick={() => setSimulationSpeed(400)}
+              className={`px-3 py-1 rounded ${simulationSpeed === 400 ? 'bg-game-primary text-white' : 'bg-gray-100'}`}
+            >
+              速い
+            </button>
+          </div>
+        </div>
+        
         <div className="flex flex-wrap gap-3">
           <button
             onClick={simulateGrowth}
@@ -533,34 +655,13 @@ const InvestmentPlantGarden = () => {
             <p className="font-medium">{resultMessage}</p>
           </div>
         )}
-      </div>
+      </motion.div>
       
-      <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <ChartLine className="h-6 w-6 text-game-primary" />
-          <h2 className="text-xl font-bold">投資の知識</h2>
-        </div>
-        
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-lg border border-gray-200 p-4">
-            <h3 className="mb-2 font-medium">複利の力</h3>
-            <p className="text-sm text-gray-600">
-              複利とは、元本だけでなく過去の利益に対しても利息がつく仕組みです。
-              長期間にわたって複利を活用すると、わずかな違いが大きな差になります。
-              例えば、年利5%の場合、約14.4年で投資額が2倍になります（72の法則）。
-            </p>
-          </div>
-          
-          <div className="rounded-lg border border-gray-200 p-4">
-            <h3 className="mb-2 font-medium">リスク分散の重要性</h3>
-            <p className="text-sm text-gray-600">
-              全てのお金を一つの商品に投資すると、そのリスクに全額がさらされます。
-              異なるタイプの商品に分散投資することで、リスクを減らし、安定したリターンが期待できます。
-              株式だけでなく、債券や預金などバランスよく保有しましょう。
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Investment Tips Section */}
+      <InvestmentTips />
+      
+      {/* Market Event Modal */}
+      <MarketEventDisplay event={currentEvent} isVisible={showEventModal} />
     </div>
   );
 };

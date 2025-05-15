@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import InvestmentPlantGarden from "./InvestmentPlantGarden";
 
 const InvestmentSimulation = () => {
