@@ -8,81 +8,82 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 20%; /* #333333 for body text */
+    --foreground: 0 0% 13%; /* #212121 for body text */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
+    --card-foreground: 0 0% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
+    --popover-foreground: 0 0% 13%;
 
-    --primary: 354 87% 72%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 100% 72%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 151 59% 40%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 162 66% 43%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 0 0% 37%; /* #5F5F5F for secondary text */
 
-    --accent: 43 100% 72%;
-    --accent-foreground: 0 0% 20%;
+    --accent: 39 100% 64%;
+    --accent-foreground: 0 0% 13%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 88%; /* #E0E0E0 */
+    --input: 0 0% 88%;
+    --ring: 0 0% 13%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 97%;
+    --sidebar-foreground: 0 0% 37%;
+    --sidebar-primary: 0 0% 13%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 97%;
+    --sidebar-accent-foreground: 0 0% 13%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 0 100% 72%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 13%;
+    --foreground: 0 0% 97%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 13%;
+    --card-foreground: 0 0% 97%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 97%;
 
-    --primary: 354 87% 72%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 100% 72%;
+    --primary-foreground: 0 0% 13%;
 
-    --secondary: 151 59% 40%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 162 66% 43%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 27%;
+    --muted-foreground: 0 0% 63%;
 
-    --accent: 43 100% 72%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 39 100% 64%;
+    --accent-foreground: 0 0% 13%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 97%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 0 0% 27%;
+    --input: 0 0% 27%;
+    --ring: 0 0% 83.9%;
+    
+    --sidebar-background: 0 0% 13%;
+    --sidebar-foreground: 0 0% 97%;
+    --sidebar-primary: 0 100% 72%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 0 0% 97%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 0 100% 72%;
   }
 }
 
@@ -111,11 +112,11 @@
   }
   
   .game-button {
-    @apply rounded-xl bg-gradient-to-r from-game-primary to-[#FF9BA4] px-6 py-3 font-medium text-white transition-all hover:brightness-105 active:scale-95;
+    @apply rounded-xl bg-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105 active:scale-95;
   }
   
   .game-button-secondary {
-    @apply rounded-xl bg-game-secondary px-6 py-3 font-medium text-white transition-all hover:brightness-105 active:scale-95;
+    @apply rounded-xl bg-transparent border border-primary text-primary px-6 py-3 font-medium transition-all hover:bg-primary/10 active:scale-95;
   }
   
   .game-button-accent {
@@ -143,10 +144,10 @@
   }
   
   .progress-bar {
-    @apply h-2.5 overflow-hidden rounded-full bg-[#D3DDE1];
+    @apply h-2.5 overflow-hidden rounded-full bg-[#E0E0E0];
   }
   
   .progress-bar-fill {
-    @apply h-full rounded-full bg-gradient-to-r from-game-primary to-game-accent transition-all duration-300 ease-out;
+    @apply h-full rounded-full bg-primary transition-all duration-300 ease-out;
   }
 }

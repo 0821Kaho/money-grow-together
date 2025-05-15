@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -28,17 +29,17 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#F37B83', // トントンピンク
+					DEFAULT: '#FF6F6F', // Updated brand primary color
 					light: '#FF9BA4',
 					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: '#2BA26B', // 安心グリーン
+					DEFAULT: '#25B589', // Updated accent color 1 (green)
 					foreground: '#FFFFFF'
 				},
 				accent: {
-					DEFAULT: '#FFD66E', // コインゴールド
-					foreground: '#333333'
+					DEFAULT: '#FFB547', // Updated accent color 2 (yellow)
+					foreground: '#212121'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -49,16 +50,16 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				game: {
-					'primary': '#F37B83',    // トントンピンク
-					'secondary': '#2BA26B',  // 安心グリーン
-					'accent': '#FFD66E',     // コインゴールド
+					'primary': '#FF6F6F',    // Updated brand primary color
+					'secondary': '#25B589',  // Updated accent color 1 (green)
+					'accent': '#FFB547',     // Updated accent color 2 (yellow)
 					'danger': '#FF6B6B',
-					'neutral': '#F5F5F5',    // 背景ニュートラル
-					'success': '#6BCB77',
+					'neutral': '#F7F7F7',    // Updated background alt
+					'success': '#25B589',
 					'info': '#4D96FF',
-					'warning': '#FFD166',
-					'dark': '#333333',       // 本文テキスト
-					'light': '#F5F5F5'       // 背景ニュートラル
+					'warning': '#FFB547',
+					'dark': '#212121',       // Updated text primary
+					'light': '#F7F7F7'       // Updated background alt
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -83,7 +84,7 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)',
-				xl: '24px', // 仕様のCTAボタン用
+				xl: '24px', // For CTA buttons
 			},
 			keyframes: {
 				'accordion-down': {
