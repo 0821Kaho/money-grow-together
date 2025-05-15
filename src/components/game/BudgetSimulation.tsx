@@ -41,6 +41,8 @@ const BudgetSimulation = () => {
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
   const { toast } = useToast();
+  // 星の数を追跡するための状態を追加
+  const [starCount, setStarCount] = useState(0);
   
   // 日付が変わった時のイベント処理
   useEffect(() => {
@@ -208,6 +210,7 @@ const BudgetSimulation = () => {
     
     setResultMessage(result);
     setShowResult(true);
+    setStarCount(stars);
     
     // 達成バッジの付与
     if (state.money >= 0 && !state.achievedBadges.includes("家計サバイバー")) {
@@ -233,7 +236,7 @@ const BudgetSimulation = () => {
             {[...Array(3)].map((_, i) => (
               <Star 
                 key={i} 
-                className={`h-8 w-8 ${i < stars ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-300'}`} 
+                className={`h-8 w-8 ${i < starCount ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-300'}`} 
               />
             ))}
           </div>
