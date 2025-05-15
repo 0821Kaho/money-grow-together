@@ -2,6 +2,8 @@
 import { useState } from "react";
 import InvestmentPlantGarden from "./InvestmentPlantGarden";
 import InvestmentStoryIntro from "./investment/InvestmentStoryIntro";
+import InvestmentCalculator from "./investment/InvestmentCalculator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
 
 const InvestmentSimulation = () => {
@@ -21,18 +23,29 @@ const InvestmentSimulation = () => {
     setGoal(Math.max(100000, newGoal));
   };
 
+  if (showIntro) {
+    return (
+      <InvestmentStoryIntro 
+        onComplete={handleIntroComplete} 
+        initialGoal={goal}
+        onGoalSet={handleGoalSet}
+      />
+    );
+  }
+
   return (
-    <>
-      {showIntro ? (
-        <InvestmentStoryIntro 
-          onComplete={handleIntroComplete} 
-          initialGoal={goal}
-          onGoalSet={handleGoalSet}
-        />
-      ) : (
+    <Tabs defaultValue="garden" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="garden">投資の庭</TabsTrigger>
+        <TabsTrigger value="calculator">積立シミュレーター</TabsTrigger>
+      </TabsList>
+      <TabsContent value="garden">
         <InvestmentPlantGarden initialGoal={goal} />
-      )}
-    </>
+      </TabsContent>
+      <TabsContent value="calculator">
+        <InvestmentCalculator />
+      </TabsContent>
+    </Tabs>
   );
 };
 
