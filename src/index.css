@@ -128,7 +128,7 @@
   }
 
   .achievement-badge {
-    @apply relative flex h-20 w-20 items-center justify-center rounded-full bg-game-primary p-1;
+    @apply relative flex h-20 w-20 items-center justify-center rounded-full bg-game-secondary p-1;
   }
   
   .achievement-badge-inner {
@@ -136,7 +136,7 @@
   }
   
   .module-card {
-    @apply relative overflow-hidden rounded-2xl border-2 border-transparent bg-white p-4 shadow-sm transition-all duration-300 hover:border-game-secondary;
+    @apply relative overflow-hidden rounded-2xl border-2 border-transparent bg-white p-6 shadow-sm transition-all duration-300 hover:border-game-secondary;
   }
   
   .module-card.locked {
@@ -149,5 +149,9 @@
   
   .progress-bar-fill {
     @apply h-full rounded-full bg-primary transition-all duration-300 ease-out;
+  }
+  
+  .progress-bar-fill-complete {
+    @apply h-full rounded-full bg-[#FFD700] transition-all duration-300 ease-out;
   }
 }

@@ -16,8 +16,8 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
-        silver: "bg-[#C0C0C0] text-[#212121] border-transparent", // Metal silver badge
-        gold: "bg-[#FFD700] text-[#212121] border-transparent", // Gold badge
+        silver: "bg-[#C0C0C0] text-[#212121] border-transparent", // Higher contrast for silver badge
+        gold: "bg-[#FFD700] text-[#212121] border-transparent", // Gold badge with better contrast
       },
     },
     defaultVariants: {

@@ -28,7 +28,7 @@ const AchievementPreview = () => {
   
   return (
     <motion.div 
-      className="mb-8 rounded-xl bg-white p-5 shadow-sm"
+      className="mb-8 rounded-xl bg-white p-6 shadow-sm"
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.4, duration: 0.5 }}
@@ -43,13 +43,13 @@ const AchievementPreview = () => {
         </button>
       </div>
       
-      <div className="flex gap-4 overflow-x-auto pb-2">
+      <div className="flex gap-5 overflow-x-auto pb-2">
         {achievements.map((achievement) => (
           <div 
             key={achievement.id} 
             className="flex min-w-[110px] flex-col items-center"
           >
-            <div className="achievement-badge mb-2">
+            <div className="achievement-badge mb-2 bg-game-secondary">
               <div className="achievement-badge-inner">
                 <span className="text-2xl">{achievement.icon}</span>
               </div>

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -29,8 +28,7 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#FF6F6F', // Updated brand primary color
-					light: '#FF9BA4',
+					DEFAULT: '#FF6F6F', // Main brand primary color
 					foreground: '#FFFFFF'
 				},
 				secondary: {
@@ -50,16 +48,16 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				game: {
-					'primary': '#FF6F6F',    // Updated brand primary color
+					'primary': '#FF6F6F',    // Single brand primary color
 					'secondary': '#25B589',  // Updated accent color 1 (green)
 					'accent': '#FFB547',     // Updated accent color 2 (yellow)
-					'danger': '#FF6B6B',
-					'neutral': '#F7F7F7',    // Updated background alt
+					'danger': '#E0E0E0',     // Changed from red to gray
+					'neutral': '#F7F7F7',    // Background alt
 					'success': '#25B589',
-					'info': '#4D96FF',
+					'info': '#E0E0E0',       // Changed from blue to gray
 					'warning': '#FFB547',
-					'dark': '#212121',       // Updated text primary
-					'light': '#F7F7F7'       // Updated background alt
+					'dark': '#212121',       // Text primary
+					'light': '#F7F7F7'       // Background alt
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',

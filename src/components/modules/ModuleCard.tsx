@@ -31,7 +31,7 @@ const ModuleCard = ({
   return (
     <div
       className={`module-card ${isLocked ? "locked" : ""} cursor-pointer`}
-      style={{ borderColor: isLocked ? "transparent" : "#2BA26B" }}
+      style={{ borderColor: isLocked ? "transparent" : "#25B589" }}
       onClick={handleClick}
     >
       {isLocked && (
@@ -55,7 +55,7 @@ const ModuleCard = ({
         </div>
       )}
 
-      <div className="mb-4 flex items-center gap-3">
+      <div className="mb-5 flex items-center gap-3">
         <div
           className="flex h-12 w-12 items-center justify-center rounded-full text-white"
           style={{ backgroundColor: color }}
@@ -65,18 +65,25 @@ const ModuleCard = ({
         <h3 className="text-lg font-semibold">{title}</h3>
       </div>
 
-      <p className="mb-4 text-sm text-game-dark">{description}</p>
+      <p className="mb-5 text-sm text-game-dark">{description}</p>
 
       <div className="mt-auto">
-        <div className="mb-1 flex justify-between">
+        <div className="mb-2 flex justify-between">
           <span className="text-xs font-medium">進捗</span>
           <span className="text-xs font-medium">{progress}%</span>
         </div>
         <div className="progress-bar">
-          <div
-            className="progress-bar-fill"
-            style={{ width: `${progress}%` }}
-          ></div>
+          {progress === 100 ? (
+            <div
+              className="progress-bar-fill-complete"
+              style={{ width: `${progress}%` }}
+            ></div>
+          ) : (
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${progress}%` }}
+            ></div>
+          )}
         </div>
       </div>
     </div>

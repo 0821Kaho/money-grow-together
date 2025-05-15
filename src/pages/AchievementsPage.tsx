@@ -78,7 +78,7 @@ const AchievementsPage = () => {
         </p>
       </div>
       
-      <div className="rounded-2xl bg-white p-5 shadow-sm">
+      <div className="rounded-2xl bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-medium">実績一覧</h2>
           <span className="rounded-full bg-game-light px-3 py-1 text-sm font-medium">
@@ -93,14 +93,14 @@ const AchievementsPage = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.2 }}
-              className="flex flex-col items-center rounded-lg border border-gray-200 p-4"
+              className="flex flex-col items-center rounded-lg border border-gray-200 p-6"
             >
               <div
-                className={`mb-2 flex h-16 w-16 items-center justify-center rounded-full ${
+                className={`mb-3 flex h-16 w-16 items-center justify-center rounded-full ${
                   achievement.unlocked
-                    ? "bg-gradient-to-br from-game-accent to-game-warning"
-                    : "bg-gray-200"
-                } mb-3`}
+                    ? "bg-game-secondary" // Consistent green for all unlocked badges
+                    : "bg-[#E0E0E0]" // Gray for locked badges (high contrast)
+                }`}
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
                   <span className="text-2xl">
@@ -111,7 +111,7 @@ const AchievementsPage = () => {
               <h3 className="mb-1 text-center font-medium">
                 {achievement.title}
               </h3>
-              <p className="text-center text-xs text-gray-600">
+              <p className="text-center text-xs text-[#5F5F5F]">
                 {achievement.description}
               </p>
             </motion.div>
