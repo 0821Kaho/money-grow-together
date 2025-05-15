@@ -1,143 +1,221 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import MascotCharacter from "@/components/mascot/MascotCharacter";
+import { ArrowRight } from "lucide-react";
 
 interface InvestmentStoryIntroProps {
   onComplete: () => void;
   initialGoal?: number;
-  onGoalSet: (goal: number) => void;
+  onGoalSet?: (goal: number) => void;
 }
 
-const InvestmentStoryIntro = ({ onComplete, initialGoal = 100000, onGoalSet }: InvestmentStoryIntroProps) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+const InvestmentStoryIntro = ({ 
+  onComplete, 
+  initialGoal = 100000,
+  onGoalSet
+}: InvestmentStoryIntroProps) => {
+  const [step, setStep] = useState(1);
   const [dreamItem, setDreamItem] = useState("");
-  const [customGoal, setCustomGoal] = useState(initialGoal);
+  const [goalAmount, setGoalAmount] = useState(initialGoal);
+  const [animationComplete, setAnimationComplete] = useState(false);
   
-  const slides = [
-    {
-      title: "お金を育てる冒険の始まり",
-      content: (
-        <div className="text-center">
-          <p className="mb-4">
-            あなたには叶えたい夢がありますか？
-            新しい車、マイホーム、海外旅行...
-          </p>
-          <p>
-            夢を実現するには、お金を「育てる」スキルが必要です。
-            これから植物を育てるように、あなたのお金も育てていきましょう！
-          </p>
-        </div>
-      )
-    },
-    {
-      title: "あなたの夢を教えてください",
-      content: (
-        <div className="text-center">
-          <p className="mb-4">5年後に実現したい夢は何ですか？</p>
-          <div className="mb-4">
-            <input
-              type="text"
-              value={dreamItem}
-              onChange={(e) => setDreamItem(e.target.value)}
-              placeholder="例：海外旅行、マイホーム..."
-              className="w-full rounded-md border border-gray-300 px-4 py-2"
-            />
-          </div>
-          <p className="text-sm text-gray-600">
-            目標を具体的にすることで、モチベーションが高まります！
-          </p>
-        </div>
-      )
-    },
-    {
-      title: "目標金額を設定しましょう",
-      content: (
-        <div className="text-center">
-          <p className="mb-4">
-            {dreamItem ? `「${dreamItem}」の実現` : "夢の実現"}のために必要な金額を設定しましょう
-          </p>
-          <div className="mb-4 flex items-center justify-center">
-            <input
-              type="number"
-              value={customGoal}
-              onChange={(e) => setCustomGoal(Number(e.target.value))}
-              min={50000}
-              max={1000000}
-              step={10000}
-              className="w-32 rounded-md border border-gray-300 px-4 py-2 text-right"
-            />
-            <span className="ml-2">円</span>
-          </div>
-          <div className="flex justify-center space-x-4">
-            <Button variant="outline" onClick={() => setCustomGoal(100000)}>10万円</Button>
-            <Button variant="outline" onClick={() => setCustomGoal(300000)}>30万円</Button>
-            <Button variant="outline" onClick={() => setCustomGoal(500000)}>50万円</Button>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "魔法の植物園へようこそ！",
-      content: (
-        <div className="text-center">
-          <p className="mb-4">
-            ここでは、お金の種を植えて育てる不思議な体験ができます。
-          </p>
-          <p className="mb-4">
-            預金、債券、株式...それぞれ特性の違う植物を育てながら、
-            投資の基本を学びましょう。
-          </p>
-          <p className="font-medium text-game-primary">
-            さあ、あなたの資産形成の旅を始めましょう！
-          </p>
-        </div>
-      )
-    }
-  ];
-  
-  const handleNext = () => {
-    if (currentSlide < slides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
+  const handleNextStep = () => {
+    if (step < 3) {
+      setStep(step + 1);
     } else {
-      onGoalSet(customGoal);
+      // Set goal if callback exists
+      if (onGoalSet) {
+        onGoalSet(goalAmount);
+      }
       onComplete();
     }
   };
   
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value > 0) {
+      setGoalAmount(value);
+    }
+  };
+  
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm">
-      <div className="relative mb-8 h-1 w-full bg-gray-200">
-        <motion.div 
-          className="absolute h-full bg-game-primary"
-          initial={{ width: `${(currentSlide / (slides.length - 1)) * 100}%` }}
-          animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
-          transition={{ duration: 0.3 }}
-        />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="rounded-2xl bg-white p-6 shadow-sm"
+    >
+      <div className="mb-6 flex items-center justify-between">
+        <Badge variant="outline" className="bg-game-primary/10 text-game-primary">
+          モジュール2: 初めての投資
+        </Badge>
+        <MascotCharacter size="small" />
       </div>
       
-      <motion.div
-        key={currentSlide}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mb-8"
-      >
-        <h2 className="mb-4 text-xl font-bold text-center">{slides[currentSlide].title}</h2>
-        {slides[currentSlide].content}
-      </motion.div>
+      <div className="mb-8">
+        <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h1 className="mb-2 text-2xl font-bold">魔法の植物園</h1>
+        </motion.div>
+        
+        <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <p className="text-gray-600">
+            お金を育てる冒険が始まります。あなたの選択次第で大きく育つでしょう。
+          </p>
+        </motion.div>
+      </div>
+      
+      {step === 1 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-8 space-y-4"
+        >
+          <h2 className="text-xl font-semibold">将来の夢</h2>
+          <p>あなたには叶えたい夢がありますか？</p>
+          
+          <div>
+            <label htmlFor="dreamItem" className="mb-2 block text-sm font-medium">
+              あなたの夢
+            </label>
+            <Input
+              id="dreamItem"
+              placeholder="例：新車を買う、旅行に行く、家を購入する"
+              value={dreamItem}
+              onChange={(e) => setDreamItem(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          
+          <motion.div 
+            className="relative h-60 overflow-hidden rounded-lg bg-[#F7F5F2]"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <div className="mb-4 text-5xl">✨</div>
+                <p className="font-medium">
+                  {dreamItem || "あなたの夢"}
+                </p>
+                <p className="mt-2 text-sm text-gray-500">
+                  を叶えるために投資を始めましょう
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+      
+      {step === 2 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-8 space-y-4"
+        >
+          <h2 className="text-xl font-semibold">目標を設定</h2>
+          <p>いくら貯めたいですか？</p>
+          
+          <div>
+            <label htmlFor="goalAmount" className="mb-2 block text-sm font-medium">
+              目標金額
+            </label>
+            <div className="flex items-center">
+              <Input
+                id="goalAmount"
+                type="number"
+                value={goalAmount}
+                onChange={handleAmountChange}
+                className="mb-4"
+              />
+              <span className="ml-2">円</span>
+            </div>
+          </div>
+          
+          <div className="rounded-lg bg-[#F7F5F2] p-4">
+            <h3 className="mb-2 font-medium">複利の力</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              投資を始めるのが早ければ早いほど、複利効果により大きな成果が得られます。
+            </p>
+            
+            <div className="flex items-center justify-between rounded-md bg-white p-3">
+              <div>
+                <p className="text-sm font-medium">10年後の目標金額</p>
+                <p className="text-xs text-gray-500">平均5%の収益率の場合</p>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-bold">{Math.round(goalAmount * 1.63).toLocaleString()}円</p>
+                <p className="text-xs text-game-success">+63%</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+      
+      {step === 3 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-8 space-y-4"
+        >
+          <h2 className="text-xl font-semibold">魔法の植物園へようこそ</h2>
+          <p>これからお金の育て方を学びましょう</p>
+          
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-lg bg-[#4CAF50]/10 p-3 text-center">
+              <div className="mb-2 text-3xl">🌳</div>
+              <p className="text-sm font-medium">預金ツリー</p>
+              <p className="text-xs text-gray-500">安全だけど成長遅い</p>
+            </div>
+            
+            <div className="rounded-lg bg-[#8BC34A]/10 p-3 text-center">
+              <div className="mb-2 text-3xl">🌿</div>
+              <p className="text-sm font-medium">債券ブッシュ</p>
+              <p className="text-xs text-gray-500">バランス型成長</p>
+            </div>
+            
+            <div className="rounded-lg bg-[#FF6B6B]/10 p-3 text-center">
+              <div className="mb-2 text-3xl">🌸</div>
+              <p className="text-sm font-medium">株式フラワー</p>
+              <p className="text-xs text-gray-500">成長早いけどリスク大</p>
+            </div>
+          </div>
+          
+          <div className="rounded-lg bg-[#F7F5F2] p-4">
+            <h3 className="mb-2 flex items-center font-medium">
+              <span className="mr-2 text-xl">💡</span>
+              投資の心得
+            </h3>
+            <ul className="list-disc space-y-2 pl-5 text-sm">
+              <li>リスクを分散させて、一つの投資に集中しないこと</li>
+              <li>長期的な視点で見ること</li>
+              <li>市場の変動に一喜一憂しないこと</li>
+            </ul>
+          </div>
+        </motion.div>
+      )}
       
       <div className="flex justify-center">
         <Button 
-          onClick={handleNext}
+          onClick={handleNextStep} 
           className="game-button flex items-center gap-2"
         >
-          {currentSlide === slides.length - 1 ? "始める" : "次へ"} 
-          <ChevronRight className="h-4 w-4" />
+          {step < 3 ? "次へ" : "始める"}
+          <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

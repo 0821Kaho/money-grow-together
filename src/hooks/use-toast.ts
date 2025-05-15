@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 5;
-const TOAST_REMOVE_DELAY = 1000000;
+const TOAST_REMOVE_DELAY = 3000;
 
 type ToasterToast = ToastProps & {
   id: string;
@@ -95,8 +95,10 @@ export function useToast() {
 
 export const toast = (props: Omit<ToasterToast, "id">) => {
   // This function is meant to be used outside of components
-  // and simply throws a console error since we need React context
-  console.error(
-    "Toast function called outside of component context. Please use useToast hook instead."
-  );
+  // and simply forwards the toast to the useToast hook
+  if (typeof document !== "undefined") {
+    // Dispatch a custom event to be caught by the ToastProvider
+    const event = new CustomEvent("toast", { detail: props });
+    document.dispatchEvent(event);
+  }
 };

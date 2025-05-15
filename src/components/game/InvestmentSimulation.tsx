@@ -1,9 +1,29 @@
 
 import { useState } from "react";
 import InvestmentPlantGarden from "./InvestmentPlantGarden";
+import InvestmentStoryIntro from "./investment/InvestmentStoryIntro";
+import { toast } from "@/hooks/use-toast";
 
 const InvestmentSimulation = () => {
-  return <InvestmentPlantGarden />;
+  const [showIntro, setShowIntro] = useState(true);
+  
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    toast({
+      title: "魔法の植物園へようこそ！",
+      description: "資産形成の冒険を始めましょう",
+    });
+  };
+
+  return (
+    <>
+      {showIntro ? (
+        <InvestmentStoryIntro onComplete={handleIntroComplete} />
+      ) : (
+        <InvestmentPlantGarden />
+      )}
+    </>
+  );
 };
 
 export default InvestmentSimulation;

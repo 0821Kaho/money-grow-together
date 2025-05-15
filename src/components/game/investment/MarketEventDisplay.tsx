@@ -1,5 +1,7 @@
 
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
 
 interface MarketEvent {
   name: string;
@@ -16,63 +18,87 @@ interface MarketEventDisplayProps {
 }
 
 const MarketEventDisplay = ({ event, isVisible }: MarketEventDisplayProps) => {
+  const [animationComplete, setAnimationComplete] = useState(false);
+  
+  useEffect(() => {
+    if (isVisible) {
+      setAnimationComplete(false);
+      const timer = setTimeout(() => {
+        setAnimationComplete(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, event]);
+  
   if (!event) return null;
   
-  const getEffectClass = (effect: number) => {
-    if (effect > 1) return "text-game-success";
-    if (effect < 1) return "text-game-danger";
-    return "text-gray-500";
-  };
-  
-  const formatEffect = (effect: number) => {
-    const percentage = ((effect - 1) * 100).toFixed(0);
-    return effect >= 1 ? `+${percentage}%` : `${percentage}%`;
+  const getEffectIcon = (effect: number) => {
+    if (effect > 1) return <TrendingUp className="h-4 w-4 text-game-success" />;
+    if (effect < 1) return <TrendingDown className="h-4 w-4 text-game-danger" />;
+    return null;
   };
   
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 50 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="fixed inset-0 z-50 flex items-center justify-center px-4"
-          style={{ pointerEvents: "none" }}
         >
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 text-2xl">
-                  {event.icon}
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold">{event.name}</h3>
-                  <p className="text-sm text-gray-600">市場イベント発生</p>
+          <div className="absolute inset-0 bg-black/50" />
+          <motion.div
+            className="relative max-w-md rounded-xl bg-white p-6 shadow-lg"
+            initial={{ rotateY: 0 }}
+            animate={{ 
+              rotateY: animationComplete ? 360 : 0
+            }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
+          >
+            <div className="flex flex-col items-center">
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-red-50 text-4xl">
+                {event.icon}
+              </div>
+              
+              <h3 className="mb-1 text-lg font-bold text-center">{event.name}</h3>
+              <p className="mb-4 text-center text-sm text-gray-600">{event.description}</p>
+              
+              <div className="mb-2 w-full rounded-lg bg-gray-50 p-3">
+                <h4 className="mb-2 font-medium text-sm flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-amber-500" />
+                  市場への影響
+                </h4>
+                
+                <div className="space-y-2">
+                  {Object.entries(event.effects).map(([investmentId, effect]) => {
+                    const effectPercent = effect > 1 
+                      ? `+${Math.round((effect - 1) * 100)}%` 
+                      : `${Math.round((effect - 1) * 100)}%`;
+                    
+                    const investmentNames: {[key: string]: string} = {
+                      stocks: "株式フラワー",
+                      bonds: "債券ブッシュ",
+                      savings: "預金ツリー"
+                    };
+                    
+                    return (
+                      <div key={investmentId} className="flex items-center justify-between">
+                        <span className="text-sm">{investmentNames[investmentId] || investmentId}</span>
+                        <span className={`text-sm font-medium flex items-center gap-1 ${
+                          effect > 1 ? "text-game-success" : effect < 1 ? "text-game-danger" : ""
+                        }`}>
+                          {getEffectIcon(effect)}
+                          {effectPercent}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
-            
-            <p className="mb-4 text-gray-700">{event.description}</p>
-            
-            <div className="space-y-2">
-              <h4 className="text-sm font-medium">各投資への影響:</h4>
-              <div className="grid grid-cols-3 gap-2">
-                {Object.entries(event.effects).map(([investmentId, effect]) => (
-                  <div key={investmentId} className="rounded-md border border-gray-200 p-2">
-                    <p className="text-xs">
-                      {investmentId === "savings" && "預金"}
-                      {investmentId === "bonds" && "債券"}
-                      {investmentId === "stocks" && "株式"}
-                    </p>
-                    <p className={`text-sm font-medium ${getEffectClass(effect)}`}>
-                      {formatEffect(effect)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
