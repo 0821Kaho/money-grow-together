@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GameLayout from "@/components/layout/GameLayout";
@@ -5,6 +6,7 @@ import BudgetSimulationPatched from "@/components/game/BudgetSimulationPatched";
 import InvestmentSimulation from "@/components/game/InvestmentSimulation";
 import RiskManagementSimulation from "@/components/game/RiskManagementSimulation";
 import LifePlanSimulation from "@/components/game/LifePlanSimulation";
+import StartupSideBusinessSimulation from "@/components/game/StartupSideBusinessSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
 
@@ -58,11 +60,12 @@ const modules = [
     id: 5,
     title: "起業・副業",
     description: "小さなビジネスや副収入を得るためのスキルを身につけよう",
-    component: null,
+    component: StartupSideBusinessSimulation,
     mascotMessages: [
       "新しい収入源を見つけましょう！",
       "あなたのスキルを活かす方法を考えてみましょう！",
-      "小さく始めて、徐々に成長させていくのがコツです！"
+      "小さく始めて、徐々に成長させていくのがコツです！",
+      "副業は特別なものではなく、誰でも始められるものです！"
     ]
   },
 ];
