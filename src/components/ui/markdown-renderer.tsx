@@ -45,45 +45,47 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     return <div className="text-red-500">{error}</div>;
   }
 
+  // Wrap ReactMarkdown in a div with the className instead of applying it to ReactMarkdown directly
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      className={cn("prose prose-slate dark:prose-invert max-w-none", className)}
-      components={{
-        // Define custom rendering for markdown elements
-        table: ({ ...props }) => (
-          <div className="overflow-x-auto my-8">
-            <table className="w-full border-collapse" {...props} />
-          </div>
-        ),
-        thead: ({ ...props }) => (
-          <thead className="bg-gray-100" {...props} />
-        ),
-        th: ({ ...props }) => (
-          <th className="border p-3 text-left font-semibold" {...props} />
-        ),
-        td: ({ ...props }) => (
-          <td className="border p-3" {...props} />
-        ),
-        a: ({ ...props }) => (
-          <a className="text-primary hover:underline" {...props} />
-        ),
-        blockquote: ({ ...props }) => (
-          <blockquote className="border-l-4 border-primary pl-4 italic my-6" {...props} />
-        ),
-        h1: ({ ...props }) => (
-          <h1 className="text-2xl font-heading font-bold my-6" {...props} />
-        ),
-        h2: ({ ...props }) => (
-          <h2 className="text-xl font-heading font-semibold mt-8 mb-4" {...props} />
-        ),
-        hr: ({ ...props }) => (
-          <hr className="my-8 border-gray-200" {...props} />
-        ),
-      }}
-    >
-      {markdown}
-    </ReactMarkdown>
+    <div className={cn("prose prose-slate dark:prose-invert max-w-none", className)}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          // Define custom rendering for markdown elements
+          table: ({ ...props }) => (
+            <div className="overflow-x-auto my-8">
+              <table className="w-full border-collapse" {...props} />
+            </div>
+          ),
+          thead: ({ ...props }) => (
+            <thead className="bg-gray-100" {...props} />
+          ),
+          th: ({ ...props }) => (
+            <th className="border p-3 text-left font-semibold" {...props} />
+          ),
+          td: ({ ...props }) => (
+            <td className="border p-3" {...props} />
+          ),
+          a: ({ ...props }) => (
+            <a className="text-primary hover:underline" {...props} />
+          ),
+          blockquote: ({ ...props }) => (
+            <blockquote className="border-l-4 border-primary pl-4 italic my-6" {...props} />
+          ),
+          h1: ({ ...props }) => (
+            <h1 className="text-2xl font-heading font-bold my-6" {...props} />
+          ),
+          h2: ({ ...props }) => (
+            <h2 className="text-xl font-heading font-semibold mt-8 mb-4" {...props} />
+          ),
+          hr: ({ ...props }) => (
+            <hr className="my-8 border-gray-200" {...props} />
+          ),
+        }}
+      >
+        {markdown}
+      </ReactMarkdown>
+    </div>
   );
 };
 
