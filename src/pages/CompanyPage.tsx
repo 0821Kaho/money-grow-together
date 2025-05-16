@@ -1,7 +1,7 @@
-
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/layout/Footer";
 
 const CompanyPage = () => {
   return (
@@ -163,36 +163,7 @@ const CompanyPage = () => {
         </div>
       </main>
       
-      {/* Footer with improved colors */}
-      <footer className="bg-[#333333] text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-            <div className="mb-4 md:mb-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-xl font-heading font-bold">Pigipe</h3>
-              </div>
-              <p className="text-sm text-gray-400 mt-2">遊んで学べるお金アプリ</p>
-            </div>
-            <div className="flex flex-wrap gap-8">
-              <Link to="/terms" className="text-gray-400 hover:text-gray-200 transition-colors">
-                利用規約
-              </Link>
-              <Link to="/privacy" className="text-gray-400 hover:text-gray-200 transition-colors">
-                プライバシーポリシー
-              </Link>
-              <Link to="/about" className="text-gray-400 hover:text-gray-200 transition-colors">
-                会社概要
-              </Link>
-              <Link to="/impact" className="text-gray-400 hover:text-gray-200 transition-colors">
-                社会インパクト
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            &copy; 2025 Pigipe All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
