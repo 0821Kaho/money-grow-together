@@ -1,5 +1,5 @@
 
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { Resend } from 'resend';
 import * as cron from 'node-cron';
 
