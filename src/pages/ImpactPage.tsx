@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -225,10 +224,10 @@ const ImpactPage = () => {
                 詳しい分析レポート (PDF) をご希望の政策担当者・研究者の方は以下までお問い合わせください。
               </p>
               <a 
-                href="mailto:kaho.satoyoshi@outlook.jp" 
+                href="mailto:satoyoshi.kaho@outlook.jp" 
                 className="inline-flex items-center text-primary hover:underline"
               >
-                kaho.satoyoshi@outlook.jp
+                satoyoshi.kaho@outlook.jp
               </a>
             </div>
           </section>
