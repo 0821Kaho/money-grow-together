@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -100,7 +101,7 @@ const ImpactPage = () => {
         </div>
       </main>
       
-      {/* Footer */}
+      {/* Footer - Updated to use vertical navigation */}
       <footer className="bg-[#333333] text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -110,7 +111,7 @@ const ImpactPage = () => {
               </div>
               <p className="text-sm text-gray-400 mt-1">5分で学べるお金アプリ</p>
             </div>
-            <div className="flex gap-6">
+            <div className="flex flex-col space-y-2">
               <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">
                 利用規約
               </Link>
