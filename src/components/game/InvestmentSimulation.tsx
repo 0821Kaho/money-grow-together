@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
@@ -321,6 +322,7 @@ const InvestmentSimulation = () => {
               selectedAssetId={selectedAssetId}
               onSetupComplete={handleSetupComplete}
               onGoalChange={handleResetWizard}
+              onGoalAmountChange={handleGoalSet}
             />
           )}
         </>

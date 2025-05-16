@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
@@ -7,6 +6,8 @@ import TimelineProjectionChart from "./TimelineProjectionChart";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { toast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 
 interface InvestmentResultsProps {
   goal: number;
@@ -18,6 +19,7 @@ interface InvestmentResultsProps {
   selectedAssetId?: number;
   onSetupComplete: () => void;
   onGoalChange: () => void;
+  onGoalAmountChange?: (amount: number) => void;
 }
 
 const formatCurrency = (amount: number): string => {
@@ -37,9 +39,12 @@ const InvestmentResults = ({
   assetClasses,
   selectedAssetId,
   onSetupComplete,
-  onGoalChange
+  onGoalChange,
+  onGoalAmountChange
 }: InvestmentResultsProps) => {
   const [showDetails, setShowDetails] = React.useState(false);
+  const [isEditingGoal, setIsEditingGoal] = useState(false);
+  const [newGoalAmount, setNewGoalAmount] = useState(goal);
   
   // Calculate future value using compound interest formula
   const calculateFutureValue = (monthly: number, rate: number, years: number): number => {
@@ -91,6 +96,51 @@ const InvestmentResults = ({
     }
   };
 
+  const handleGoalChange = () => {
+    if (isEditingGoal) {
+      // Save the new goal amount if it's valid
+      if (newGoalAmount >= 100000 && newGoalAmount <= 100000000) {
+        if (onGoalAmountChange) {
+          onGoalAmountChange(newGoalAmount);
+        }
+        toast({
+          title: "目標更新",
+          description: `目標金額を${formatCurrency(newGoalAmount)}に更新しました`,
+        });
+      }
+      setIsEditingGoal(false);
+    } else {
+      setIsEditingGoal(true);
+    }
+  };
+
+  const handleSliderChange = (value: number[]) => {
+    // Slider range: Min 100,000 to Max 10,000,000
+    const min = 100000;
+    const max = 10000000;
+    const newValue = Math.round(min + (value[0] / 100) * (max - min));
+    setNewGoalAmount(newValue);
+  };
+
+  const handleDirectAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Remove commas and convert to number
+    const rawValue = e.target.value.replace(/,/g, '');
+    
+    // Check if it's a valid number
+    if (/^\d*$/.test(rawValue)) {
+      const value = rawValue === '' ? 0 : parseInt(rawValue);
+      // Set a reasonable maximum (e.g., 100 million yen)
+      if (value <= 100000000) {
+        setNewGoalAmount(value);
+      }
+    }
+  };
+
+  // Format number with commas for display
+  const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <div className="space-y-4">
       <motion.div
@@ -105,29 +155,85 @@ const InvestmentResults = ({
               <h2 className="text-xl font-bold">このペースなら{years}年後に{formatCurrency(futureValue)}</h2>
             </div>
             
-            <div className="bg-muted p-3 rounded-md mb-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-medium">目標達成率</span>
-                <span className="font-bold">{achievementRate}%</span>
-              </div>
-              <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                <div 
-                  className={`h-full rounded-full transition-all duration-500 ${
-                    achievementRate >= 100 ? 'bg-green-500' : 'bg-primary'
-                  }`}
-                  style={{ width: `${achievementRate}%` }}
+            {isEditingGoal ? (
+              <div className="bg-muted p-3 rounded-md mb-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium">目標金額を設定</span>
+                  <span className="font-bold">{formatCurrency(newGoalAmount)}</span>
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Input
+                    type="text"
+                    value={formatNumber(newGoalAmount)}
+                    onChange={handleDirectAmountChange}
+                    className="text-right pr-10"
+                  />
+                  <span className="ml-1 absolute right-7 text-sm">円</span>
+                </div>
+                <Slider
+                  value={[((newGoalAmount - 100000) / (10000000 - 100000)) * 100]}
+                  min={0}
+                  max={100}
+                  step={1}
+                  onValueChange={handleSliderChange}
+                  className="mt-4"
                 />
+                <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                  <span>10万円</span>
+                  <span>1,000万円</span>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-muted p-3 rounded-md mb-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium">目標達成率</span>
+                  <span className="font-bold">{achievementRate}%</span>
+                </div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      achievementRate >= 100 ? 'bg-green-500' : 'bg-primary'
+                    }`}
+                    style={{ width: `${achievementRate}%` }}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-xs mt-1">
+                  <span className="text-muted-foreground">目標：{formatCurrency(goal)}</span>
+                </div>
+              </div>
+            )}
             
             <div className="grid grid-cols-2 gap-3">
-              <Button className="w-full" onClick={handleContinue}>
-                <span>毎月{formatCurrency(monthlyAmount)}で続ける</span>
-              </Button>
-              
-              <Button variant="outline" className="w-full" onClick={onGoalChange}>
-                <span>目標変更</span>
-              </Button>
+              {isEditingGoal ? (
+                <>
+                  <Button className="w-full" onClick={handleGoalChange}>
+                    <span>目標金額を確定</span>
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => {
+                    setIsEditingGoal(false);
+                    setNewGoalAmount(goal);
+                  }}>
+                    <span>キャンセル</span>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button className="w-full" onClick={handleContinue}>
+                    <span>毎月{formatCurrency(monthlyAmount)}で続ける</span>
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => {
+                    if (onGoalAmountChange) {
+                      // If we have the callback for changing goal amount, use our editing UI
+                      handleGoalChange();
+                    } else {
+                      // Otherwise fallback to original behavior
+                      onGoalChange();
+                    }
+                  }}>
+                    <span>目標変更</span>
+                  </Button>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
