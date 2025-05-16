@@ -7,38 +7,24 @@ declare global {
   var prisma: PrismaClientType | undefined;
 }
 
-// Import dynamically to avoid TypeScript errors
-async function getPrismaClient() {
-  try {
-    // Try to import from edge runtime first
-    const edgeModule = await import('@prisma/client/edge');
-    if (edgeModule && edgeModule.default) {
-      return edgeModule.default;
-    }
-    
-    // Fallback to regular Prisma client
-    const regularModule = await import('@prisma/client');
-    if (regularModule && regularModule.default) {
-      return regularModule.default;
-    }
-    
-    throw new Error('PrismaClient not found in any module');
-  } catch (error) {
-    console.error('Error importing Prisma client:', error);
-    throw error;
-  }
-}
-
-// Create and export a singleton instance
 let prismaInstance: PrismaClientType;
 
 export const getPrisma = async () => {
   if (!prismaInstance) {
-    const PrismaClient = await getPrismaClient();
-    prismaInstance = global.prisma || new PrismaClient();
-    
-    if (process.env.NODE_ENV !== 'production') {
-      global.prisma = prismaInstance;
+    try {
+      // Dynamic import for Prisma client
+      const { PrismaClient } = await import('@prisma/client');
+      
+      // Create new PrismaClient instance or use existing one
+      prismaInstance = global.prisma || new PrismaClient();
+      
+      // Save to global in development for hot-reload persistence
+      if (process.env.NODE_ENV !== 'production') {
+        global.prisma = prismaInstance;
+      }
+    } catch (error) {
+      console.error('Failed to initialize Prisma client:', error);
+      throw error;
     }
   }
   
