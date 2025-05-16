@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import LeafVisual from "@/components/ui/LeafVisual";
+import MoneyVisual from "@/components/ui/MoneyVisual";
 
 interface PlantGrowthVisualProps {
   plantType: string;
@@ -38,7 +40,7 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
   const renderPlant = () => {
     // Different visuals based on plant type
     switch (plantType) {
-      case "savings": // Palm tree style for savings
+      case "savings": // Savings plant with coins
         return (
           <div className="flex flex-col items-center">
             {/* Trunk */}
@@ -54,7 +56,7 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
               transition={{ duration: 1 }}
             />
             
-            {/* Leaves/Branches - only show if health > 0.3 */}
+            {/* Leaves/Branches - now using leaf visuals */}
             {normalizedHealth > 0.3 && (
               <motion.div 
                 className="flex flex-col items-center relative -mt-2"
@@ -62,35 +64,28 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                {[...Array(branches)].map((_, i) => (
-                  <div key={i} className="relative">
-                    <motion.div
-                      className="absolute"
-                      style={{ 
-                        left: i % 2 === 0 ? `-${15 + i * 5}px` : `${15 + i * 5}px`,
-                        top: `-${5 + i * 3}px`,
-                        transform: i % 2 === 0 ? "rotate(-30deg)" : "rotate(30deg)",
-                      }}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.7 + i * 0.1 }}
-                    >
-                      <svg height="20" width="30">
-                        <path 
-                          d={`M0,0 Q15,5 30,0 Q15,20 0,0`}
-                          fill={color}
-                          opacity={0.8 * normalizedHealth}
-                        />
-                      </svg>
-                    </motion.div>
-                  </div>
+                {/* Add themed coins to the plant */}
+                {[...Array(fruits)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute"
+                    style={{ 
+                      left: i % 2 === 0 ? `-${15 + i * 3}px` : `${15 + i * 3}px`,
+                      top: `-${10 + i * 10}px`
+                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.7 + i * 0.1 }}
+                  >
+                    <MoneyVisual type="coin" size="small" />
+                  </motion.div>
                 ))}
               </motion.div>
             )}
           </div>
         );
         
-      case "stocks": // Flower style for stocks
+      case "stocks": // Stocks plant with leaves
         return (
           <div className="flex flex-col items-center">
             {/* Stem */}
@@ -106,7 +101,7 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
               transition={{ duration: 1 }}
             />
             
-            {/* Flower */}
+            {/* LeafVisual components for stocks */}
             {normalizedHealth > 0.2 && (
               <motion.div 
                 className="relative -mt-4"
@@ -115,44 +110,29 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
                 transition={{ delay: 0.5 }}
               >
                 <div className="relative">
-                  {/* Flower petals */}
-                  {[...Array(Math.max(5, Math.floor(fruits * 0.8)))].map((_, i) => (
+                  {/* Use themed leaf visuals */}
+                  {[...Array(Math.max(3, Math.floor(fruits * 0.5)))].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute rounded-full"
+                      className="absolute"
                       style={{ 
-                        width: `${8 + fruits * 0.3}px`, 
-                        height: `${8 + fruits * 0.3}px`,
-                        backgroundColor: color,
-                        left: `${Math.cos(i * (Math.PI * 2) / 5) * 15}px`,
-                        top: `${Math.sin(i * (Math.PI * 2) / 5) * 15}px`,
-                        opacity: 0.7 * normalizedHealth
+                        left: `${(Math.cos(i * (Math.PI * 2) / 3) * 20) - 15}px`,
+                        top: `${(Math.sin(i * (Math.PI * 2) / 3) * 20) - 15}px`
                       }}
                       initial={{ opacity: 0 }}
-                      animate={{ opacity: 0.7 * normalizedHealth }}
+                      animate={{ opacity: normalizedHealth }}
                       transition={{ delay: 0.6 + i * 0.1 }}
-                    />
+                    >
+                      <LeafVisual type="single" size="small" animate={false} />
+                    </motion.div>
                   ))}
-                  
-                  {/* Flower center */}
-                  <motion.div 
-                    className="rounded-full bg-yellow-400"
-                    style={{ 
-                      width: `${10 + fruits * 0.2}px`, 
-                      height: `${10 + fruits * 0.2}px`,
-                      opacity: normalizedHealth 
-                    }}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 1 }}
-                  />
                 </div>
               </motion.div>
             )}
           </div>
         );
         
-      case "bonds": // Tree style for bonds
+      case "bonds": // Bonds with both coins and leaves
       default:
         return (
           <div className="flex flex-col items-center">
@@ -170,7 +150,7 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
               transition={{ duration: 1 }}
             />
             
-            {/* Branches and leaves */}
+            {/* Branches with both leaves and coins */}
             {normalizedHealth > 0.2 && (
               <motion.div 
                 className="relative -mt-3"
@@ -178,44 +158,36 @@ const PlantGrowthVisual = ({ plantType, growthPercentage, health, color, name }:
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <svg 
-                  height={`${40 + fruits * 5}`} 
-                  width={`${50 + branches * 5}`} 
-                  viewBox={`0 0 ${50 + branches * 5} ${40 + fruits * 5}`}
+                {/* Use LeafVisual for the canopy */}
+                <motion.div
+                  className="absolute"
                   style={{ 
-                    position: "relative", 
-                    left: `-${(50 + branches * 5) / 2}px` 
+                    left: `-20px`,
+                    top: `-30px`
                   }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: normalizedHealth }}
+                  transition={{ delay: 0.6 }}
                 >
-                  <ellipse 
-                    cx={(50 + branches * 5) / 2} 
-                    cy={(40 + fruits * 5) / 2} 
-                    rx={(25 + branches * 2.5)} 
-                    ry={(20 + fruits * 2.5)} 
-                    fill={color} 
-                    opacity={0.8 * normalizedHealth} 
-                  />
-                </svg>
+                  <LeafVisual type="multiple" size="medium" animate={false} />
+                </motion.div>
                 
-                {/* Fruits */}
-                <div className="relative">
-                  {[...Array(fruits)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute rounded-full bg-yellow-300"
-                      style={{ 
-                        width: "8px", 
-                        height: "8px",
-                        left: `${-20 + Math.random() * 40}px`,
-                        top: `${-20 + Math.random() * 30}px`,
-                        opacity: normalizedHealth 
-                      }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: normalizedHealth }}
-                      transition={{ delay: 1 + i * 0.2 }}
-                    />
-                  ))}
-                </div>
+                {/* Use MoneyVisual for the fruits/coins */}
+                {[...Array(fruits)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute"
+                    style={{ 
+                      left: `${-15 + Math.random() * 30}px`,
+                      top: `${-10 + Math.random() * 20}px`,
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: normalizedHealth }}
+                    transition={{ delay: 1 + i * 0.2 }}
+                  >
+                    <MoneyVisual type="coin" size="small" />
+                  </motion.div>
+                ))}
               </motion.div>
             )}
           </div>

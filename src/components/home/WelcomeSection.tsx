@@ -1,6 +1,8 @@
 
 import { motion } from "framer-motion";
 import MascotTooltip from "../mascot/MascotTooltip";
+import MoneyVisual from "@/components/ui/MoneyVisual";
+import LeafVisual from "@/components/ui/LeafVisual";
 
 const WelcomeSection = () => {
   const welcomeMessages = [
@@ -17,27 +19,35 @@ const WelcomeSection = () => {
       transition={{ delay: 0.2, duration: 0.5 }}
     >
       <div className="flex items-center justify-between">
-        <div>
+        <div className="flex-1">
           <h1 className="mb-2 text-2xl font-bold">ようこそ、ユーザーさん！</h1>
           <p className="text-white/90">
             お金について学びながら楽しく実践的なスキルを身につけましょう。
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-game-primary transition-all hover:bg-opacity-90">
+              今日のチャレンジ
+            </button>
+            <button className="rounded-xl bg-white/20 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/30">
+              続きから始める
+            </button>
+          </div>
         </div>
-        <motion.div 
-          className="ml-4 hidden sm:block"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ repeat: Infinity, duration: 3 }}
-        >
-          <MascotTooltip messages={welcomeMessages} characterSize="small" />
-        </motion.div>
-      </div>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-game-primary transition-all hover:bg-opacity-90">
-          今日のチャレンジ
-        </button>
-        <button className="rounded-xl bg-white/20 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/30">
-          続きから始める
-        </button>
+        
+        <div className="flex flex-col items-center gap-3 ml-4">
+          <motion.div 
+            className="hidden sm:block"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+          >
+            <MascotTooltip messages={welcomeMessages} characterSize="small" />
+          </motion.div>
+          
+          <div className="hidden sm:flex gap-2">
+            <MoneyVisual type="coin" size="small" />
+            <LeafVisual type="single" size="small" />
+          </div>
+        </div>
       </div>
     </motion.div>
   );

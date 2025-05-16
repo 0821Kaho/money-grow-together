@@ -8,6 +8,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
+import MoneyVisual from "@/components/ui/MoneyVisual";
+import LeafVisual from "@/components/ui/LeafVisual";
+import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 
 const modules = [
   { 
@@ -112,12 +115,13 @@ const Index = () => {
             <p className="text-lg text-muted-foreground">
               専門家監修のミニゲームで、楽しく学んで実践力を身につけよう
             </p>
-            <div className="pt-4">
+            <div className="pt-4 flex items-center gap-4">
               <Link to={isAuthenticated ? "/modules" : "/signup"}>
                 <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8">
                   {isAuthenticated ? "学習を始める" : "無料で始める"}
                 </Button>
               </Link>
+              <MoneyVisual type="coin" className="hidden md:flex" />
             </div>
           </div>
           <div className="relative">
@@ -127,6 +131,9 @@ const Index = () => {
               alt="お金の学習"
               className="rounded-xl shadow-lg"
             />
+            <div className="absolute -bottom-4 -right-4 hidden md:block">
+              <LeafVisual type="multiple" size="large" />
+            </div>
           </div>
         </motion.div>
       </section>
@@ -138,6 +145,9 @@ const Index = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             各モジュールは約5分で完了し、実践的なお金の知識を身につけられます
           </p>
+          <div className="flex justify-center mt-4">
+            <TontonGameVisuals type="combined" size="small" />
+          </div>
         </div>
 
         <div className="overflow-hidden px-4">
