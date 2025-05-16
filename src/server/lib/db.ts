@@ -1,5 +1,6 @@
 
-import { PrismaClient as PrismaClientType } from '@prisma/client/edge';
+// Type for the PrismaClient
+type PrismaClientType = any;
 
 declare global {
   // eslint-disable-next-line no-var
@@ -7,19 +8,18 @@ declare global {
 }
 
 // Import dynamically to avoid TypeScript errors
-// This is a workaround for the missing exports
 async function getPrismaClient() {
   try {
     // Try to import from edge runtime first
     const edgeModule = await import('@prisma/client/edge');
-    if (edgeModule && edgeModule.PrismaClient) {
-      return edgeModule.PrismaClient;
+    if (edgeModule && edgeModule.default) {
+      return edgeModule.default;
     }
     
     // Fallback to regular Prisma client
     const regularModule = await import('@prisma/client');
-    if (regularModule && regularModule.PrismaClient) {
-      return regularModule.PrismaClient;
+    if (regularModule && regularModule.default) {
+      return regularModule.default;
     }
     
     throw new Error('PrismaClient not found in any module');
@@ -46,5 +46,5 @@ export const getPrisma = async () => {
 };
 
 // For backward compatibility, export a pre-initialized prisma instance
+// This is an empty object that will be filled later
 export const prisma = global.prisma || ({} as PrismaClientType);
-
