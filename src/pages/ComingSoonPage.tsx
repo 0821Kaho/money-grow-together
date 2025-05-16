@@ -26,7 +26,7 @@ const ComingSoonPage = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="mb-8 flex justify-center">
-            <MascotImage variant="waiting" size="xl" />
+            <MascotImage variant="sad" size="xl" />
           </div>
           
           <h1 className="text-3xl font-heading font-bold mb-4">準備中です</h1>

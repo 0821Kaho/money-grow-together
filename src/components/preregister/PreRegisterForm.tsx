@@ -90,21 +90,21 @@ const PreRegisterForm = () => {
         
         {state === 'dup' && (
           <div className="flex items-center gap-2 justify-center text-amber-500 text-sm">
-            <MascotImage variant="thinking" size="xsmall" />
+            <MascotImage variant="question" size="small" />
             <p>すでに登録済みです</p>
           </div>
         )}
         
         {state === 'done' && (
           <div className="flex items-center gap-2 justify-center text-emerald-400 text-sm">
-            <MascotImage variant="happy" size="xsmall" />
+            <MascotImage variant="happy" size="small" />
             <p>登録ありがとう！公開日にメールをお送りします</p>
           </div>
         )}
         
         {state === 'error' && (
           <div className="flex items-center gap-2 justify-center text-red-500 text-sm">
-            <MascotImage variant="sad" size="xsmall" />
+            <MascotImage variant="sad" size="small" />
             <p>エラーが発生しました。もう一度お試しください</p>
           </div>
         )}

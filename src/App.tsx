@@ -13,8 +13,8 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import CompanyPage from "./pages/CompanyPage";
 import { AuthProvider } from "./contexts/AuthContext";
 
-// Update API lib for waitlist endpoints
-<lov-add-dependency>react-countdown@2.3.5</lov-add-dependency>
+// Create QueryClient instance
+const queryClient = new QueryClient();
 
 function AppRoutes() {
   return (
@@ -44,9 +44,6 @@ function AppRoutes() {
 }
 
 const App = () => {
-  // Create QueryClient instance inside the component
-  const queryClient = new QueryClient();
-
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
