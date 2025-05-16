@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -106,12 +107,11 @@ const Index = () => {
             <Badge variant="secondary" className="text-secondary bg-secondary/10">
               5分で学べるお金の知識
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              お金の不安をなくす<br />
-              <span className="text-primary">学びのアプリ</span>
+            <h1 className="text-4xl md:text-5xl font-logo leading-tight">
+              お金で<span className="text-primary">夢をあきらめない</span>
             </h1>
-            <p className="text-lg text-muted-foreground">
-              専門家監修のミニゲームで、楽しく学んで実践力を身につけよう
+            <p className="text-lg font-body text-muted-foreground">
+              Pigipeは5分で楽しく学べる金融エデュテイメントアプリ
             </p>
             <div className="pt-4 flex items-center gap-4">
               <Link to={isAuthenticated ? "/modules" : "/signup"}>

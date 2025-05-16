@@ -21,7 +21,7 @@ const KPIBanner = () => {
         </div>
         <div className="flex-1 text-[#333] leading-tight">
           <p className="font-logo text-lg font-bold">+1,300万円 相当の生涯便益<sup className="text-xs">*1</sup></p>
-          <p className="font-logo text-sm">しかも学びは <span className="font-bold text-[#FF5F7A]">完全無料！</span></p>
+          <p className="font-logo text-sm">完全無料で学べる！</p>
         </div>
         <span className="text-pink-500 font-bold">
           詳細を見る ›
