@@ -77,6 +77,20 @@ const InvestmentResults = ({
     onSetupComplete();
   };
 
+  // Get risk color based on risk level
+  const getRiskColor = (assetId: number) => {
+    const asset = assetClasses.find(a => a.id === Number(assetId));
+    if (!asset) return "bg-gray-500";
+    
+    switch (asset.riskLevel) {
+      case "低": return "bg-green-500";
+      case "中": return "bg-blue-500";
+      case "高": return "bg-red-500";
+      case "超高": return "bg-purple-500";
+      default: return "bg-gray-500";
+    }
+  };
+
   return (
     <div className="space-y-4">
       <motion.div
@@ -134,29 +148,35 @@ const InvestmentResults = ({
           <div>
             <h3 className="text-sm font-medium mb-2">ポートフォリオ内訳</h3>
             <div className="bg-slate-100 h-3 flex rounded-full overflow-hidden mb-2">
-              {Object.entries(allocation).map(([assetId, percentage]) => (
-                <div 
-                  key={assetId}
-                  className={`h-full ${
-                    Number(assetId) === 1 ? 'bg-green-500' :
-                    Number(assetId) === 2 ? 'bg-blue-500' : 'bg-red-500'
-                  }`} 
-                  style={{width: `${percentage}%`}}
-                />
-              ))}
-            </div>
-            <div className="flex text-xs text-muted-foreground justify-between">
-              {assetClasses.map(asset => (
-                <div key={asset.id} className="flex items-center">
+              {Object.entries(allocation)
+                .filter(([_, percentage]) => percentage > 0)
+                .sort((a, b) => Number(a[0]) - Number(b[0]))
+                .map(([assetId, percentage]) => (
                   <div 
-                    className={`w-2 h-2 rounded-full mr-1 ${
-                      asset.id === 1 ? 'bg-green-500' :
-                      asset.id === 2 ? 'bg-blue-500' : 'bg-red-500'
-                    }`}
+                    key={assetId}
+                    className={`h-full ${getRiskColor(Number(assetId))}`} 
+                    style={{width: `${percentage}%`}}
                   />
-                  <span>{asset.name}: {allocation[asset.id] || 0}%</span>
-                </div>
-              ))}
+                ))
+              }
+            </div>
+            <div className="flex flex-wrap text-xs text-muted-foreground gap-2 mt-2">
+              {Object.entries(allocation)
+                .filter(([_, percentage]) => percentage > 0)
+                .sort((a, b) => Number(a[0]) - Number(b[0]))
+                .map(([assetId, percentage]) => {
+                  const asset = assetClasses.find(a => a.id === Number(assetId));
+                  if (!asset) return null;
+                  return (
+                    <div key={assetId} className="flex items-center">
+                      <div 
+                        className={`w-2 h-2 rounded-full mr-1 ${getRiskColor(Number(assetId))}`}
+                      />
+                      <span>{asset.name}: {percentage}%</span>
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
           

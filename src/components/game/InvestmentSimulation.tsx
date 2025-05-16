@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
@@ -31,7 +30,8 @@ const assetClasses = [
       { year: '2022', value: 103 },
       { year: '2023', value: 104 }
     ],
-    color: "#4CAF50"
+    color: "#4CAF50",
+    nisaCategory: "対象外"
   },
   {
     id: 2,
@@ -47,7 +47,8 @@ const assetClasses = [
       { year: '2022', value: 106 },
       { year: '2023', value: 109 }
     ],
-    color: "#2196F3"
+    color: "#2196F3",
+    nisaCategory: "つみたて枠"
   },
   {
     id: 3,
@@ -63,7 +64,111 @@ const assetClasses = [
       { year: '2022', value: 105 },
       { year: '2023', value: 120 }
     ],
-    color: "#E9546B"
+    color: "#E9546B",
+    nisaCategory: "成長投資枠"
+  },
+  // 新規追加の資産クラス
+  {
+    id: 4,
+    name: "国内債券セーフ",
+    riskLevel: "低",
+    expectedReturn: 1.5,
+    volatility: 1,
+    description: "値動き小さく"守り"を固める",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 101 },
+      { year: '2021', value: 102.5 },
+      { year: '2022', value: 101.8 },
+      { year: '2023', value: 103 }
+    ],
+    color: "#4CAF50", // 低リスク：緑
+    nisaCategory: "つみたて枠"
+  },
+  {
+    id: 5,
+    name: "先進国株インデックス",
+    riskLevel: "中",
+    expectedReturn: 5,
+    volatility: 8,
+    description: "世界経済の平均点を狙う王道",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 95 },
+      { year: '2021', value: 110 },
+      { year: '2022', value: 108 },
+      { year: '2023', value: 115 }
+    ],
+    color: "#2196F3", // 中リスク：青
+    nisaCategory: "つみたて枠"
+  },
+  {
+    id: 6,
+    name: "新興国株インデックス",
+    riskLevel: "高",
+    expectedReturn: 7,
+    volatility: 12,
+    description: "成長余地大きい "伸びしろ"",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 85 },
+      { year: '2021', value: 120 },
+      { year: '2022', value: 110 },
+      { year: '2023', value: 125 }
+    ],
+    color: "#E9546B", // 高リスク：赤
+    nisaCategory: "成長投資枠"
+  },
+  {
+    id: 7,
+    name: "国内REIT",
+    riskLevel: "中",
+    expectedReturn: 4,
+    volatility: 6,
+    description: "賃料収入で配当が狙える資産",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 90 },
+      { year: '2021', value: 105 },
+      { year: '2022', value: 102 },
+      { year: '2023', value: 108 }
+    ],
+    color: "#2196F3", // 中リスク：青
+    nisaCategory: "成長投資枠"
+  },
+  {
+    id: 8,
+    name: "ゴールド & コモディティ",
+    riskLevel: "中",
+    expectedReturn: 3,
+    volatility: 7,
+    description: "物価上昇に強い"保険"役",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 105 },
+      { year: '2021', value: 102 },
+      { year: '2022', value: 110 },
+      { year: '2023', value: 108 }
+    ],
+    color: "#2196F3", // 中リスク：青
+    nisaCategory: "成長投資枠"
+  },
+  {
+    id: 9,
+    name: "仮想通貨ミックス",
+    riskLevel: "超高",
+    expectedReturn: 15,
+    volatility: 25,
+    description: "ハイリスク・ハイリターンの新興資産",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 150 },
+      { year: '2021', value: 300 },
+      { year: '2022', value: 120 },
+      { year: '2023', value: 180 }
+    ],
+    color: "#9C27B0", // 超高リスク：紫
+    nisaCategory: "NISA対象外"
   }
 ];
 
@@ -78,7 +183,11 @@ const InvestmentSimulation = () => {
   const [currentValue, setCurrentValue] = useState(300000); // Default to 300,000 yen
   const [years, setYears] = useState(10); // Default to 10 years
   const [showWizard, setShowWizard] = useState(true); // Start with wizard
-  const [allocation, setAllocation] = useState<Allocation>({ 1: 50, 2: 30, 3: 20 }); // Default allocation
+  const [allocation, setAllocation] = useState<Allocation>({ 
+    1: 20, 2: 20, 3: 10, 
+    4: 10, 5: 20, 6: 5, 
+    7: 10, 8: 5, 9: 0 
+  }); // Updated default allocation
   const [showLearningCard, setShowLearningCard] = useState(false);
   const [monthlyAmount, setMonthlyAmount] = useState(30000); // Default monthly amount
   const [activeTab, setActiveTab] = useState("portfolio");
