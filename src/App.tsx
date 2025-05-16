@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { RedirectMiddleware } from "./middleware";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
@@ -14,6 +15,7 @@ import ImpactPage from "./pages/ImpactPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import CompanyPage from "./pages/CompanyPage";
+import ComingSoonPage from "./pages/ComingSoonPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
@@ -40,6 +42,7 @@ function AppRoutes() {
       <Route path="/privacy" element={<PrivacyPolicyPage />} />
       <Route path="/about" element={<CompanyPage />} />
       <Route path="/company" element={<Navigate to="/about" replace />} />
+      <Route path="/coming-soon" element={<ComingSoonPage />} />
       
       {/* Protected routes */}
       <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
@@ -63,7 +66,9 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <AppRoutes />
+            <RedirectMiddleware>
+              <AppRoutes />
+            </RedirectMiddleware>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

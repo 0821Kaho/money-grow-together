@@ -53,3 +53,9 @@ export const authApi = {
   resetPassword: (token: string, password: string) => 
     api.post('/auth/reset-password', { token, password }),
 };
+
+// Waitlist related API calls
+export const waitlistApi = {
+  register: (email: string) => api.post('/waitlist', { email }),
+  getCount: () => api.get('/waitlist/count'),
+};

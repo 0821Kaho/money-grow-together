@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
 import MascotImage from "@/components/mascot/MascotImage";
@@ -12,6 +11,9 @@ import MoneyVisual from "@/components/ui/MoneyVisual";
 import LeafVisual from "@/components/ui/LeafVisual";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import KPIBanner from "@/components/home/KPIBanner";
+import Countdown from "@/components/prelaunch/Countdown";
+import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
+import Footer from "@/components/layout/Footer";
 
 const modules = [
   { 
@@ -66,6 +68,7 @@ const testimonials = [
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
+  const launchDate = "2025-05-23T10:00:00+09:00";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
@@ -77,18 +80,9 @@ const Index = () => {
           </div>
           <div className="flex gap-4">
             {isAuthenticated ? (
-              <Link to="/modules">
-                <Button variant="outline">学習を続ける</Button>
-              </Link>
+              <Button variant="outline" disabled className="opacity-70">公開後に開始できます</Button>
             ) : (
-              <>
-                <Link to="/login">
-                  <Button variant="outline">ログイン</Button>
-                </Link>
-                <Link to="/signup">
-                  <Button className="bg-primary hover:bg-primary/90">無料登録</Button>
-                </Link>
-              </>
+              <Button variant="outline" disabled className="opacity-70">公開後に開始できます</Button>
             )}
           </div>
         </div>
@@ -112,13 +106,21 @@ const Index = () => {
             <p className="text-lg font-body text-muted-foreground">
               Pigipeはピギペと遊んで学べるお金アプリ
             </p>
-            <div className="pt-4 flex items-center gap-4">
-              <Link to={isAuthenticated ? "/modules" : "/signup"}>
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold">
-                  {isAuthenticated ? "学習を始める" : "無料で始める"}
-                </Button>
-              </Link>
-              <MoneyVisual type="coin" className="hidden md:flex" />
+            
+            {/* Countdown Timer */}
+            <Countdown targetDate={launchDate} className="my-6" />
+            
+            <div className="pt-4">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold w-full md:w-auto"
+                onClick={() => {
+                  const formElement = document.getElementById('pre-register-form');
+                  formElement?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                事前登録する
+              </Button>
             </div>
           </div>
           <div className="relative">
@@ -149,6 +151,11 @@ const Index = () => {
             </div>
           </div>
         </motion.div>
+      </section>
+
+      {/* Pre-register Form */}
+      <section id="pre-register-form" className="container mx-auto px-4 pb-12">
+        <PreRegisterForm className="max-w-md mx-auto" />
       </section>
 
       {/* KPI Banner */}
@@ -245,35 +252,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#333333] text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-xl font-heading font-bold">Pigipe</h3>
-              </div>
-              <p className="text-sm text-gray-400 mt-1 font-body">遊んで学べるお金アプリ</p>
-            </div>
-            <div className="flex gap-6">
-              <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
-                利用規約
-              </Link>
-              <Link to="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
-                プライバシーポリシー
-              </Link>
-              <Link to="/impact" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
-                社会インパクト
-              </Link>
-              <Link to="/company" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
-                運営会社
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400 font-body">
-            &copy; 2025 Pigipe All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       {/* Floating Mascot */}
       <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">
