@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -79,7 +78,6 @@ const StartupSimulation = () => {
           toast({
             title: "おめでとうございます！",
             description: "副業シミュレーションを完了しました！",
-            variant: "success",
           });
         }, 1000);
       }
