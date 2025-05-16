@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -111,7 +110,7 @@ const Index = () => {
               お金で<span className="text-primary">夢をあきらめない</span>
             </h1>
             <p className="text-lg font-body text-muted-foreground">
-              Pigipeは遊び感覚で学べる金融エデュテイメントアプリ
+              Pigipeはピギペと遊んで学べるお金アプリ
             </p>
             <div className="pt-4 flex items-center gap-4">
               <Link to={isAuthenticated ? "/modules" : "/signup"}>
