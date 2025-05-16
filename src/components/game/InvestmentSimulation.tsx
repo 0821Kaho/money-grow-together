@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
@@ -74,7 +75,7 @@ const assetClasses = [
     riskLevel: "低",
     expectedReturn: 1.5,
     volatility: 1,
-    description: "値動き小さく"守り"を固める",
+    description: "値動き小さく「守り」を固める",
     chartData: [
       { year: '2019', value: 100 },
       { year: '2020', value: 101 },
@@ -108,7 +109,7 @@ const assetClasses = [
     riskLevel: "高",
     expectedReturn: 7,
     volatility: 12,
-    description: "成長余地大きい "伸びしろ"",
+    description: "成長余地大きい「伸びしろ」",
     chartData: [
       { year: '2019', value: 100 },
       { year: '2020', value: 85 },
@@ -142,7 +143,7 @@ const assetClasses = [
     riskLevel: "中",
     expectedReturn: 3,
     volatility: 7,
-    description: "物価上昇に強い"保険"役",
+    description: "物価上昇に強い「保険」役",
     chartData: [
       { year: '2019', value: 100 },
       { year: '2020', value: 105 },
