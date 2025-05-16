@@ -5,6 +5,7 @@ import GameLayout from "@/components/layout/GameLayout";
 import BudgetSimulationPatched from "@/components/game/BudgetSimulationPatched";
 import InvestmentSimulation from "@/components/game/InvestmentSimulation";
 import RiskManagementSimulation from "@/components/game/RiskManagementSimulation";
+import LifePlanSimulation from "@/components/game/LifePlanSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
 
@@ -46,7 +47,7 @@ const modules = [
     id: 4,
     title: "ライフプラン",
     description: "人生の重要イベントに向けた長期的な資金計画を立てよう",
-    component: null,
+    component: LifePlanSimulation,
     mascotMessages: [
       "人生の重要イベントにはお金が必要です！",
       "計画的に貯蓄することが大切です！",

@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 
@@ -35,8 +36,9 @@ const modules = [
     description: "人生の重要イベントに向けた長期的な資金計画を立てよう",
     icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h-2a2 2 0 00-2-2z" /></svg>',
     color: "#FF6B6B",
-    progress: 0,
-    isLocked: true,
+    progress: 10,
+    isLocked: false,
+    badge: "bronze"
   },
   {
     id: 5,
@@ -70,6 +72,7 @@ const ModulesList = () => {
             color={module.color}
             progress={module.progress}
             isLocked={module.isLocked}
+            badge={module.badge}
           />
         ))}
       </div>
