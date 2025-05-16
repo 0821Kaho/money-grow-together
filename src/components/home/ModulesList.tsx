@@ -11,6 +11,7 @@ const modules = [
     color: "#4DAA57",
     progress: 65,
     isLocked: false,
+    badge: "bronze" as const
   },
   {
     id: 2,
@@ -38,7 +39,7 @@ const modules = [
     color: "#FF6B6B",
     progress: 10,
     isLocked: false,
-    badge: "bronze"
+    badge: "bronze" as const
   },
   {
     id: 5,

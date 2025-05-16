@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GameLayout from "@/components/layout/GameLayout";
@@ -13,12 +12,13 @@ const modules = [
   {
     id: 1,
     title: "家計管理",
-    description: "予算を立てて収支を管理し、借入に頼らない生活を目指そう",
+    description: "予算を立てて収支を管理し、借入に頼らない生活を目指そう。カレンダー形式で1か月のサバイバルチャレンジを体験！",
     component: BudgetSimulationPatched,
     mascotMessages: [
       "家計管理の基本を学んでいきましょう！",
       "収入と支出のバランスが大切です！",
-      "予算を立てることで無駄遣いを減らせますよ！"
+      "予算を立てることで無駄遣いを減らせますよ！",
+      "高金利のローンには要注意！計画的な支出を心がけましょう！"
     ]
   },
   {
