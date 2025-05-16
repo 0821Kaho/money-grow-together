@@ -102,9 +102,9 @@ const BudgetCalendarView = ({
                               ) : (
                                 <Star className="h-4 w-4 text-[#FFB547]" />
                               )}
-                              <span className="font-medium">{event.title}</span>
+                              <span className="font-medium break-words">{event.title}</span>
                             </div>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 break-words">
                               {event.description}
                             </p>
                           </div>

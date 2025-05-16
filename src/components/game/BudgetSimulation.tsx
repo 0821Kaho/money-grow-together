@@ -16,6 +16,9 @@ import FinalTest from "./budget/FinalTest";
 import { getEventForDay, getBudgetEvents } from "@/lib/budget-events";
 import BudgetCalendarView from "./budget/BudgetCalendarView";
 
+// dayEventsを定義
+const dayEvents = getBudgetEvents();
+
 interface BudgetState {
   money: number;
   happiness: number;

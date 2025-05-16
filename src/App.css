@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -40,3 +41,9 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ゲームボタン共通スタイル */
+.game-button {
+  @apply rounded-lg bg-[#25B589] px-4 py-2 text-white hover:brightness-105 transition-all;
+}
+
