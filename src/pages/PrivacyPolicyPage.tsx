@@ -109,7 +109,7 @@ const PrivacyPolicyPage = () => {
               本社：〒176-0004 東京都練馬区北町2-29-10<br />
               営業所：〒150-0001 東京都渋谷区神宮前6-23-4 桑野ビル2F<br />
               電話：03-6750-7041<br />
-              メール：kaho.satoyoshi@outlook.jp
+              メール：satoyoshi.kaho@outlook.jp
             </p>
           </section>
 

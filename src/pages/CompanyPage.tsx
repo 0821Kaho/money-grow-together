@@ -44,7 +44,7 @@ const CompanyPage = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-gray-100 pb-2">
                 <div className="font-medium text-gray-700">メールアドレス</div>
-                <div className="md:col-span-2">kaho.satoyoshi@outlook.jp</div>
+                <div className="md:col-span-2">satoyoshi.kaho@outlook.jp</div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-gray-100 pb-2">
                 <div className="font-medium text-gray-700">資本金</div>
@@ -83,7 +83,7 @@ const CompanyPage = () => {
             <p className="mb-4">当社へのお問い合わせは、下記連絡先までお願いいたします。</p>
             <p className="mb-4">
               電話：03-6750-7041（平日 10:00-18:00）<br />
-              メール：kaho.satoyoshi@outlook.jp
+              メール：satoyoshi.kaho@outlook.jp
             </p>
             <p>お問い合わせの内容によっては、回答にお時間をいただく場合がございます。あらかじめご了承ください。</p>
           </section>
