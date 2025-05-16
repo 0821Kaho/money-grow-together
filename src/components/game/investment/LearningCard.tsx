@@ -12,6 +12,7 @@ interface LearningCardProps {
   coinReward?: number;
   onClose: () => void;
   tipType?: "nisa" | "tax" | "compound" | "diversification" | "fees";
+  icon?: React.ReactNode;
 }
 
 const LearningCard = ({ 
@@ -19,7 +20,8 @@ const LearningCard = ({
   description, 
   coinReward = 5, 
   onClose,
-  tipType = "nisa"
+  tipType = "nisa",
+  icon
 }: LearningCardProps) => {
   const [isRevealed, setIsRevealed] = useState(false);
   
@@ -53,42 +55,42 @@ const LearningCard = ({
     switch (tipType) {
       case "nisa":
         return {
-          icon: <Shield className="h-5 w-5" />,
+          icon: icon || <Shield className="h-5 w-5" />,
           bgColor: "bg-blue-100",
           textColor: "text-blue-700",
           tooltipText: "税金がかからず、長期的に大きな差になります"
         };
       case "tax":
         return {
-          icon: <Coins className="h-5 w-5" />,
+          icon: icon || <Coins className="h-5 w-5" />,
           bgColor: "bg-green-100",
           textColor: "text-green-700",
           tooltipText: "支払う税金を減らして、手元に残るお金を増やします"
         };
       case "compound":
         return {
-          icon: <TrendingUp className="h-5 w-5" />,
+          icon: icon || <TrendingUp className="h-5 w-5" />,
           bgColor: "bg-purple-100",
           textColor: "text-purple-700",
           tooltipText: "利益が利益を生み、時間とともに加速度的に増えます"
         };
       case "diversification":
         return {
-          icon: <ChartPie className="h-5 w-5" />,
+          icon: icon || <ChartPie className="h-5 w-5" />,
           bgColor: "bg-amber-100",
           textColor: "text-amber-700",
           tooltipText: "卵を複数のカゴに分けて、リスクを減らします"
         };
       case "fees":
         return {
-          icon: <Coins className="h-5 w-5" />,
+          icon: icon || <Coins className="h-5 w-5" />,
           bgColor: "bg-red-100",
           textColor: "text-red-700",
           tooltipText: "小さな手数料の差も、長期では大きな金額になります"
         };
       default:
         return {
-          icon: <GraduationCap className="h-5 w-5" />,
+          icon: icon || <GraduationCap className="h-5 w-5" />,
           bgColor: "bg-blue-100",
           textColor: "text-blue-700",
           tooltipText: "投資の基本を学んで、賢い選択をしましょう"

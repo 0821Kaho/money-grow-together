@@ -5,12 +5,65 @@ import { toast } from "@/components/ui/use-toast";
 import InvestmentPortfolio from "./investment/InvestmentPortfolio";
 import InvestmentCalculator from "./investment/InvestmentCalculator";
 import { Progress } from "@/components/ui/progress";
-import { Bell, Coins } from "lucide-react";
+import { Bell, Coins, FastForward } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import GoalWizard from "./investment/GoalWizard";
 import GoalAttainmentSlider from "./investment/GoalAttainmentSlider";
 import LearningCard from "./investment/LearningCard";
 import { Button } from "@/components/ui/button";
+import TimelineProjectionChart from "./investment/TimelineProjectionChart";
+
+// Define asset classes
+const assetClasses = [
+  {
+    id: 1,
+    name: "預金セーフ",
+    riskLevel: "低",
+    expectedReturn: 1,
+    volatility: 0.5,
+    description: "低リスク・低リターンの安全資産。元本割れの心配が少ない。",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 101 },
+      { year: '2021', value: 102 },
+      { year: '2022', value: 103 },
+      { year: '2023', value: 104 }
+    ],
+    color: "#4CAF50"
+  },
+  {
+    id: 2,
+    name: "債券バランス",
+    riskLevel: "中",
+    expectedReturn: 3,
+    volatility: 5,
+    description: "国債や社債を中心とした中リスク・中リターンの安定資産。",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 104 },
+      { year: '2021', value: 101 },
+      { year: '2022', value: 106 },
+      { year: '2023', value: 109 }
+    ],
+    color: "#2196F3"
+  },
+  {
+    id: 3,
+    name: "株式グロース",
+    riskLevel: "高",
+    expectedReturn: 8,
+    volatility: 15,
+    description: "世界中の株式に投資する高リスク・高リターンの成長資産。",
+    chartData: [
+      { year: '2019', value: 100 },
+      { year: '2020', value: 90 },
+      { year: '2021', value: 115 },
+      { year: '2022', value: 105 },
+      { year: '2023', value: 120 }
+    ],
+    color: "#E9546B"
+  }
+];
 
 // Define a type for the allocation
 interface Allocation {
@@ -29,6 +82,7 @@ const InvestmentSimulation = () => {
   const [activeTab, setActiveTab] = useState("portfolio");
   const [isNewUser, setIsNewUser] = useState(true); // Track if this is first time use
   const [showDemoMode, setShowDemoMode] = useState(false); // Demo mode for first-time users
+  const [selectedAssetId, setSelectedAssetId] = useState<number | undefined>(undefined);
   
   // Learning tips
   const learningTips = [
@@ -101,6 +155,10 @@ const InvestmentSimulation = () => {
   
   const handleMonthlyAmountChange = (amount: number) => {
     setMonthlyAmount(amount);
+  };
+  
+  const handleAssetSelected = (assetId: number) => {
+    setSelectedAssetId(assetId === selectedAssetId ? undefined : assetId);
   };
   
   // Calculate progress percentage
@@ -216,6 +274,16 @@ const InvestmentSimulation = () => {
                 onValueUpdate={handleValueUpdate}
                 goal={goal}
                 onGoalSet={handleGoalSet}
+                onAssetSelected={handleAssetSelected}
+              />
+              
+              {/* Add the future timeline projection chart */}
+              <TimelineProjectionChart
+                initialAmount={currentValue}
+                monthlyContribution={monthlyAmount}
+                allocation={allocation}
+                assetClasses={assetClasses}
+                selectedAssetId={selectedAssetId}
               />
             </TabsContent>
             <TabsContent value="simulator">

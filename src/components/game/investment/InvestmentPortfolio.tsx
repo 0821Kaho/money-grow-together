@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -78,13 +79,20 @@ interface InvestmentPortfolioProps {
   onValueUpdate: (value: number) => void;
   goal: number;
   onGoalSet: (goal: number) => void;
+  onAssetSelected?: (assetId: number) => void;
 }
 
-const InvestmentPortfolio = ({ onValueUpdate, goal, onGoalSet }: InvestmentPortfolioProps) => {
+const InvestmentPortfolio = ({ 
+  onValueUpdate, 
+  goal, 
+  onGoalSet, 
+  onAssetSelected 
+}: InvestmentPortfolioProps) => {
   const [allocation, setAllocation] = useState({ 1: 50, 2: 30, 3: 20 });
   const [monthlyAmount, setMonthlyAmount] = useState(30000);
   const [portfolioValue, setPortfolioValue] = useState(300000);
   const [earned, setEarned] = useState(0);
+  const [selectedAsset, setSelectedAsset] = useState<number | null>(null);
   
   // Update portfolio value based on allocation and simulated returns
   useEffect(() => {
@@ -140,6 +148,13 @@ const InvestmentPortfolio = ({ onValueUpdate, goal, onGoalSet }: InvestmentPortf
   
   const handleMonthlyChange = (value: number[]) => {
     setMonthlyAmount(value[0]);
+  };
+  
+  const handleAssetClick = (assetId: number) => {
+    setSelectedAsset(selectedAsset === assetId ? null : assetId);
+    if (onAssetSelected) {
+      onAssetSelected(assetId);
+    }
   };
   
   // Calculate risk level based on allocation
@@ -211,7 +226,13 @@ const InvestmentPortfolio = ({ onValueUpdate, goal, onGoalSet }: InvestmentPortf
         <h3 className="font-semibold">資産配分</h3>
         
         {assetClasses.map((asset) => (
-          <Card key={asset.id} className="overflow-hidden">
+          <Card 
+            key={asset.id} 
+            className={`overflow-hidden cursor-pointer transition-all ${
+              selectedAsset === asset.id ? 'ring-2 ring-primary' : ''
+            }`}
+            onClick={() => handleAssetClick(asset.id)}
+          >
             <CardContent className="p-4">
               <div className="flex justify-between items-center mb-2">
                 <div>
