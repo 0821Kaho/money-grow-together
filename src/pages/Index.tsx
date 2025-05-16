@@ -1,14 +1,51 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
+import MascotCharacter from "@/components/mascot/MascotCharacter";
 import MascotImage from "@/components/mascot/MascotImage";
 import MoneyVisual from "@/components/ui/MoneyVisual";
 import LeafVisual from "@/components/ui/LeafVisual";
+import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import KPIBanner from "@/components/home/KPIBanner";
-import PreRegisterForm from "@/components/preregister/PreRegisterForm";
-import Footer from "@/components/layout/Footer";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
+const modules = [
+  { 
+    id: "budget", 
+    title: "家計管理", 
+    description: "お金の使い方を見直し、貯金体質になるための基礎を学びます", 
+    color: "bg-primary/10" 
+  },
+  { 
+    id: "investment", 
+    title: "投資", 
+    description: "長期的な資産形成のための投資の基本を学びます", 
+    color: "bg-secondary/10" 
+  },
+  { 
+    id: "risk", 
+    title: "リスク管理", 
+    description: "お金のリスクを理解し、適切に対策する方法を学びます", 
+    color: "bg-accent/10" 
+  },
+  { 
+    id: "lifeplan", 
+    title: "ライフプラン", 
+    description: "将来の人生設計と必要な資金計画について学びます", 
+    color: "bg-primary/10" 
+  },
+  { 
+    id: "startup", 
+    title: "副業・起業", 
+    description: "小さな一歩から始める副業や起業の考え方を学びます", 
+    color: "bg-secondary/10" 
+  },
+];
 
 const testimonials = [
   {
@@ -29,6 +66,8 @@ const testimonials = [
 ];
 
 const Index = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
       {/* Header */}
@@ -36,6 +75,22 @@ const Index = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-heading font-bold text-[#333333]">Pigipe</h1>
+          </div>
+          <div className="flex gap-4">
+            {isAuthenticated ? (
+              <Link to="/modules">
+                <Button variant="outline">学習を続ける</Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="outline">ログイン</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button className="bg-primary hover:bg-primary/90">無料登録</Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -56,18 +111,15 @@ const Index = () => {
               お金で<span className="text-primary">夢をあきらめない</span>
             </h1>
             <p className="text-lg font-body text-muted-foreground">
-              ピギペと遊んで学べるお金アプリ
+              Pigipeは遊び感覚で学べる金融エデュテイメントアプリ
             </p>
             <div className="pt-4 flex items-center gap-4">
-              <Badge className="bg-accent/20 text-accent-foreground border-none px-3 py-1">
-                2025年5月22日 サービス開始
-              </Badge>
+              <Link to={isAuthenticated ? "/modules" : "/signup"}>
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold">
+                  {isAuthenticated ? "学習を始める" : "無料で始める"}
+                </Button>
+              </Link>
               <MoneyVisual type="coin" className="hidden md:flex" />
-            </div>
-            
-            {/* Pre-registration form */}
-            <div className="pt-6">
-              <PreRegisterForm />
             </div>
           </div>
           <div className="relative">
@@ -103,6 +155,40 @@ const Index = () => {
       {/* KPI Banner */}
       <section className="container mx-auto px-4 pb-12">
         <KPIBanner />
+      </section>
+
+      {/* Modules Section */}
+      <section className="container mx-auto px-4 py-12 md:py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-heading font-subheading mb-4">5つのお金の学習モジュール</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto font-body">
+            各モジュールは短時間で完了し、実践的なお金の知識を身につけられます
+          </p>
+          <div className="flex justify-center mt-4">
+            <TontonGameVisuals type="combined" size="small" />
+          </div>
+        </div>
+
+        <div className="overflow-hidden px-4">
+          <Carousel className="w-full max-w-5xl mx-auto">
+            <CarouselContent>
+              {modules.map((module) => (
+                <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3">
+                  <Card className={`h-full ${module.color} border-none shadow-sm hover:shadow transition-all`}>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-heading font-subheading mb-2">{module.title}</h3>
+                      <p className="text-muted-foreground text-sm font-body">{module.description}</p>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-center mt-6">
+              <CarouselPrevious className="static mx-2 translate-y-0" />
+              <CarouselNext className="static mx-2 translate-y-0" />
+            </div>
+          </Carousel>
+        </div>
       </section>
 
       {/* Testimonials */}
@@ -160,7 +246,35 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <Footer />
+      <footer className="bg-[#333333] text-white py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xl font-heading font-bold">Pigipe</h3>
+              </div>
+              <p className="text-sm text-gray-400 mt-1 font-body">遊んで学べるお金アプリ</p>
+            </div>
+            <div className="flex gap-6">
+              <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
+                利用規約
+              </Link>
+              <Link to="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
+                プライバシーポリシー
+              </Link>
+              <Link to="/impact" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
+                社会インパクト
+              </Link>
+              <Link to="/company" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
+                運営会社
+              </Link>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400 font-body">
+            &copy; 2025 Pigipe All rights reserved.
+          </div>
+        </div>
+      </footer>
 
       {/* Floating Mascot */}
       <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">

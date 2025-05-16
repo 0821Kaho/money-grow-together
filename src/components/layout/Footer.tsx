@@ -7,7 +7,7 @@ export const Footer = () => {
       <div className="container mx-auto max-w-md">
         <div className="flex flex-col">
           <h3 className="text-xl font-logo text-white">Pigipe</h3>
-          <p className="text-sm text-gray-400 mt-1 mb-6">ピギペと遊んで学べるお金アプリ</p>
+          <p className="text-sm text-gray-400 mt-1 mb-6">遊んで学べるお金アプリ</p>
           
           <nav className="flex flex-col sm:flex-row sm:gap-6 gap-2">
             <Link to="/terms" className="w-full text-xs hover:text-gray-100 transition-colors py-2">
