@@ -1,0 +1,98 @@
+
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+
+const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      await login(email, password);
+      toast({
+        title: "ログイン成功",
+        description: "Pigipeへようこそ！",
+      });
+      navigate("/modules");
+    } catch (error) {
+      toast({
+        title: "ログイン失敗",
+        description: "メールアドレスまたはパスワードが正しくありません",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Card className="shadow-lg border-[#E5DEFF]">
+      <CardHeader>
+        <CardTitle className="text-2xl text-center">ログイン</CardTitle>
+        <CardDescription className="text-center">
+          あなたの学習を続けましょう
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">メールアドレス</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">パスワード</Label>
+              <Link to="/forgot-password" className="text-xs text-[#9b87f5] hover:underline">
+                パスワードをお忘れですか？
+              </Link>
+            </div>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <Button
+            type="submit"
+            className="w-full bg-[#9b87f5] hover:bg-[#8B5CF6]"
+            disabled={isLoading}
+          >
+            {isLoading ? "ログイン中..." : "ログイン"}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-4">
+        <div className="text-center text-sm text-muted-foreground">
+          アカウントをお持ちでないですか？{" "}
+          <Link to="/signup" className="text-[#9b87f5] hover:underline">
+            新規登録
+          </Link>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
+
+export default LoginPage;
