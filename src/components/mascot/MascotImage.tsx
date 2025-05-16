@@ -7,6 +7,7 @@ interface MascotImageProps {
   animate?: boolean;
   className?: string;
   onClick?: () => void;
+  alt?: string; // Added alt prop to the interface
 }
 
 const MascotImage = ({ 
@@ -14,7 +15,8 @@ const MascotImage = ({
   size = "medium", 
   animate = true,
   className = "",
-  onClick
+  onClick,
+  alt = "トントン" // Default alt text
 }: MascotImageProps) => {
   
   const sizeClasses = {
@@ -96,7 +98,7 @@ const MascotImage = ({
     >
       <img 
         src={getImagePath()} 
-        alt="トントン" 
+        alt={alt} // Use the alt prop here
         className="w-full h-full object-contain" 
       />
     </motion.div>
