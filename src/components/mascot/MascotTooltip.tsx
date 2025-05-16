@@ -47,7 +47,7 @@ const MascotTooltip = ({
       <AnimatePresence>
         {showTooltip && (
           <motion.div 
-            className={`absolute ${positionClasses[position]} z-50 w-64 rounded-xl bg-white p-4 shadow-lg`}
+            className={`absolute ${positionClasses[position]} z-50 w-64 rounded-xl bg-white p-4 shadow-lg border border-primary/20`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}

@@ -1,37 +1,37 @@
 
 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Coin on head -->
-  <circle cx="100" cy="30" r="20" fill="#FFD66E" stroke="#333333" stroke-width="4"/>
-  <circle cx="100" cy="30" r="14" fill="#FFE9A3" stroke="#333333" stroke-width="1"/>
+  <circle cx="100" cy="30" r="20" fill="#FFD66E" stroke="#663311" stroke-width="4"/>
+  <circle cx="100" cy="30" r="14" fill="#FFDD88" stroke="#663311" stroke-width="1"/>
   
   <!-- Head -->
-  <path d="M160 100C160 138.66 133.137 170 100 170C66.8629 170 40 138.66 40 100C40 61.3401 66.8629 40 100 40C133.137 40 160 61.3401 160 100Z" fill="#F37B83" stroke="#333333" stroke-width="4"/>
+  <path d="M160 100C160 138.66 133.137 170 100 170C66.8629 170 40 138.66 40 100C40 61.3401 66.8629 40 100 40C133.137 40 160 61.3401 160 100Z" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
   
   <!-- Ears -->
-  <path d="M40 80C40 80 25 60 30 50C35 40 55 50 55 50" fill="#F37B83" stroke="#333333" stroke-width="4"/>
-  <path d="M160 80C160 80 175 60 170 50C165 40 145 50 145 50" fill="#F37B83" stroke="#333333" stroke-width="4"/>
+  <path d="M40 80C40 80 25 60 30 50C35 40 55 50 55 50" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
+  <path d="M160 80C160 80 175 60 170 50C165 40 145 50 145 50" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
   
   <!-- Cheeks -->
-  <circle cx="65" cy="110" r="15" fill="#F9A0A7"/>
-  <circle cx="135" cy="110" r="15" fill="#F9A0A7"/>
+  <circle cx="65" cy="110" r="15" fill="#FFB1A4"/>
+  <circle cx="135" cy="110" r="15" fill="#FFB1A4"/>
   
   <!-- Eyes -->
-  <ellipse cx="75" cy="90" rx="8" ry="12" fill="#333333"/>
-  <ellipse cx="125" cy="90" rx="8" ry="12" fill="#333333"/>
+  <ellipse cx="75" cy="90" rx="8" ry="12" fill="#663311"/>
+  <ellipse cx="125" cy="90" rx="8" ry="12" fill="#663311"/>
   
   <!-- Nose -->
-  <ellipse cx="100" cy="110" rx="15" ry="10" fill="#F5AAB0" stroke="#333333" stroke-width="4"/>
-  <ellipse cx="95" cy="110" rx="3" ry="2" fill="#333333"/>
-  <ellipse cx="105" cy="110" rx="3" ry="2" fill="#333333"/>
+  <ellipse cx="100" cy="110" rx="15" ry="10" fill="#FFA69E" stroke="#663311" stroke-width="4"/>
+  <ellipse cx="95" cy="110" rx="3" ry="2" fill="#663311"/>
+  <ellipse cx="105" cy="110" rx="3" ry="2" fill="#663311"/>
   
   <!-- Smile -->
-  <path d="M85 130C85 130 95 140 115 130" stroke="#333333" stroke-width="4" stroke-linecap="round"/>
+  <path d="M85 130C85 130 95 140 115 130" stroke="#663311" stroke-width="4" stroke-linecap="round"/>
   
   <!-- Arms -->
-  <path d="M50 125C50 125 40 135 45 150C50 165 60 150 60 150" fill="#F37B83" stroke="#333333" stroke-width="4"/>
-  <path d="M150 125C150 125 160 135 155 150C150 165 140 150 140 150" fill="#F37B83" stroke="#333333" stroke-width="4"/>
+  <path d="M50 125C50 125 40 135 45 150C50 165 60 150 60 150" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
+  <path d="M150 125C150 125 160 135 155 150C150 165 140 150 140 150" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
   
   <!-- Feet -->
-  <ellipse cx="80" cy="170" rx="15" ry="10" fill="#F37B83" stroke="#333333" stroke-width="4"/>
-  <ellipse cx="120" cy="170" rx="15" ry="10" fill="#F37B83" stroke="#333333" stroke-width="4"/>
+  <ellipse cx="80" cy="170" rx="15" ry="10" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
+  <ellipse cx="120" cy="170" rx="15" ry="10" fill="#FFC0B4" stroke="#663311" stroke-width="4"/>
 </svg>
