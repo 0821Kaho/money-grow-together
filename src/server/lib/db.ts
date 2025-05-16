@@ -12,12 +12,13 @@ let prismaInstance: any;
 export const getPrisma = async () => {
   if (!prismaInstance) {
     try {
-      // Dynamically import Prisma client with correct structure handling
+      // Dynamically import Prisma client
       const prismaModule = await import('@prisma/client');
       
-      // Handle different module structures in Prisma v6
-      const PrismaClient = prismaModule.default?.PrismaClient || 
-                          (prismaModule as any).PrismaClient;
+      // Access the PrismaClient constructor correctly
+      const PrismaClient = prismaModule.PrismaClient || 
+                          (prismaModule as any).default?.PrismaClient ||
+                          (prismaModule as any)['PrismaClient'];
       
       if (!PrismaClient) {
         throw new Error('PrismaClient not found in @prisma/client imports');
@@ -45,9 +46,10 @@ export const prisma = global.prisma || (() => {
     // We need to dynamically import here for CommonJS
     const prismaModule = require('@prisma/client');
     
-    // Handle different module structures in Prisma v6
-    const PrismaClient = prismaModule.default?.PrismaClient || 
-                        (prismaModule as any).PrismaClient;
+    // Access the PrismaClient constructor correctly
+    const PrismaClient = prismaModule.PrismaClient || 
+                        (prismaModule as any).default?.PrismaClient ||
+                        (prismaModule as any)['PrismaClient'];
     
     if (!PrismaClient) {
       console.error('PrismaClient not found in @prisma/client imports');
