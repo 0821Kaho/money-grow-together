@@ -1,6 +1,7 @@
 
 import { motion } from "framer-motion";
 import MascotTooltip from "../mascot/MascotTooltip";
+import MascotImage from "../mascot/MascotImage";
 import MoneyVisual from "@/components/ui/MoneyVisual";
 import LeafVisual from "@/components/ui/LeafVisual";
 
@@ -43,9 +44,8 @@ const WelcomeSection = () => {
             <MascotTooltip messages={welcomeMessages} characterSize="small" />
           </motion.div>
           
-          <div className="hidden sm:flex gap-2">
-            <MoneyVisual type="coin" size="small" />
-            <LeafVisual type="single" size="small" />
+          <div className="hidden sm:flex items-end gap-2">
+            <MascotImage variant="coin" size="small" />
           </div>
         </div>
       </div>

@@ -1,18 +1,20 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MascotCharacter from "./MascotCharacter";
+import MascotImage from "./MascotImage";
 
 interface MascotTooltipProps {
   messages: string[];
   position?: "left" | "right" | "top" | "bottom";
   characterSize?: "small" | "medium" | "large";
+  variant?: "default" | "coin" | "running" | "calculator" | "question" | "thumbsUp" | "happy";
 }
 
 const MascotTooltip = ({ 
   messages, 
   position = "right",
-  characterSize = "medium" 
+  characterSize = "medium",
+  variant = "default"
 }: MascotTooltipProps) => {
   const [currentMessage, setCurrentMessage] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -41,7 +43,7 @@ const MascotTooltip = ({
   return (
     <div className="relative inline-block">
       <div onClick={handleClick} className="cursor-pointer">
-        <MascotCharacter size={characterSize} />
+        <MascotImage variant={variant} size={characterSize} />
       </div>
       
       <AnimatePresence>

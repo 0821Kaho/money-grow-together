@@ -8,6 +8,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
+import MascotImage from "@/components/mascot/MascotImage";
 import MoneyVisual from "@/components/ui/MoneyVisual";
 import LeafVisual from "@/components/ui/LeafVisual";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
@@ -125,12 +126,28 @@ const Index = () => {
             </div>
           </div>
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-xl" />
-            <img
-              src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-              alt="お金の学習"
-              className="rounded-xl shadow-lg"
-            />
+            <div className="flex justify-center items-center relative">
+              <div className="absolute -left-8 top-4 -rotate-12 z-10">
+                <MascotImage variant="coin" size="medium" />
+              </div>
+              <div className="absolute -right-8 top-16 rotate-12 z-10">
+                <MascotImage variant="calculator" size="medium" />
+              </div>
+              <div className="absolute left-1/4 -top-8 z-10">
+                <MoneyVisual type="coin" size="small" className="animate-bounce" />
+              </div>
+              <div className="absolute right-1/4 -top-4 z-10">
+                <LeafVisual type="single" size="small" className="animate-float" />
+              </div>
+              <motion.div 
+                className="relative z-20 bg-white/90 p-8 rounded-3xl shadow-lg border-2 border-primary/20"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <MascotImage variant="happy" size="xl" />
+              </motion.div>
+            </div>
             <div className="absolute -bottom-4 -right-4 hidden md:block">
               <LeafVisual type="multiple" size="large" />
             </div>
@@ -259,7 +276,8 @@ const Index = () => {
 
       {/* Floating Mascot */}
       <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">
-        <MascotCharacter 
+        <MascotImage 
+          variant="default" 
           size="large" 
           className="shadow-md" 
         />

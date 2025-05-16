@@ -2,19 +2,22 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import mascotSvg from "@/assets/mascot.svg";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface MascotCharacterProps {
   size?: "small" | "medium" | "large";
   animate?: boolean;
   className?: string;
   onClick?: () => void;
+  tooltip?: string;
 }
 
 const MascotCharacter = ({ 
   size = "medium", 
   animate = true,
   className = "",
-  onClick
+  onClick,
+  tooltip
 }: MascotCharacterProps) => {
   const [isSpinning, setIsSpinning] = useState(false);
   
@@ -36,9 +39,9 @@ const MascotCharacter = ({
     }
   };
   
-  return (
+  const mascotContent = (
     <motion.div
-      className={`${sizeClasses[size]} ${className} rounded-full bg-white cursor-pointer overflow-hidden`}
+      className={`${sizeClasses[size]} ${className} rounded-full bg-transparent cursor-pointer overflow-hidden`}
       initial={animate && !isSpinning ? { y: 0 } : undefined}
       animate={animate && !isSpinning ? { 
         y: [0, -5, 0],
@@ -53,9 +56,30 @@ const MascotCharacter = ({
       }}
       onClick={handleClick}
     >
-      <img src={mascotSvg} alt="トントン" className="w-full h-full" />
+      <img 
+        src={mascotSvg} 
+        alt="トントン" 
+        className="w-full h-full object-contain" 
+      />
     </motion.div>
   );
+  
+  if (tooltip) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {mascotContent}
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+  
+  return mascotContent;
 };
 
 export default MascotCharacter;
