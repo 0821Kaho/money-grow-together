@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,15 +19,27 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'logo': ['"Kiwi Maru"', 'sans-serif'],
-				'heading': ['"M PLUS Rounded 1c"', 'sans-serif'],
-				'body': ['"Noto Sans JP"', '"Nunito"', 'sans-serif'],
-				'button': ['"Poppins"', 'sans-serif'],
-				'bubble': ['"Zen Maru Gothic"', 'sans-serif'],
-				// New font family presets as per the requirements
-				'head': ['"Kiwi Maru"', '"Noto Sans JP"', 'sans-serif'],
-				'display': ['"M PLUS Rounded 1c"', '"Noto Sans JP"', 'sans-serif'],
-				'num': ['"Poppins"', 'sans-serif'],
+				// Updated font families
+				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'body': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'number': ['Inter', 'sans-serif'],
+				// Keep the legacy font family presets for backward compatibility
+				'logo': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'display': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'body': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'bubble': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'button': ['Inter', 'sans-serif'],
+				'num': ['Inter', 'sans-serif'],
+				// Keep new font family presets
+				'head': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'display': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
+				'num': ['Inter', 'sans-serif'],
+			},
+			fontWeight: {
+				heading: '700',   // Bold
+				subheading: '500',// Medium
+				body: '400',      // Regular
 			},
 			colors: {
 				border: 'hsl(var(--border))',

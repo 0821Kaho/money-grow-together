@@ -99,12 +99,12 @@ const ModulePage = () => {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold">{module.title}</h1>
+            <h1 className="text-2xl font-heading font-bold">{module.title}</h1>
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-1 text-sm font-medium text-gray-500"
+            className="flex items-center gap-1 text-sm font-body font-medium text-gray-500"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +123,7 @@ const ModulePage = () => {
             戻る
           </button>
         </div>
-        <p className="text-gray-600">{module.description}</p>
+        <p className="font-body text-gray-600">{module.description}</p>
       </div>
       
       {ModuleComponent ? (
@@ -131,14 +131,14 @@ const ModulePage = () => {
       ) : (
         <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-12 shadow-sm">
           <div className="mb-4 text-5xl">🚧</div>
-          <h2 className="mb-2 text-xl font-bold">準備中</h2>
-          <p className="mb-6 text-center text-gray-600">
+          <h2 className="mb-2 text-xl font-heading font-subheading">準備中</h2>
+          <p className="mb-6 text-center font-body text-gray-600">
             このモジュールはまだ開発中です。もうしばらくお待ちください。
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button
               onClick={() => navigate("/")}
-              className="game-button"
+              className="game-button font-number font-bold"
             >
               ホームに戻る
             </button>

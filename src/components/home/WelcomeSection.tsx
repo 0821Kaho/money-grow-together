@@ -26,10 +26,10 @@ const WelcomeSection = () => {
             お金について学びながら楽しく実践的なスキルを身につけましょう。
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <button className="rounded-xl bg-white px-4 py-2 text-sm font-button text-game-primary transition-all hover:bg-opacity-90">
+            <button className="rounded-xl bg-white px-4 py-2 text-sm font-number font-bold text-game-primary transition-all hover:bg-opacity-90">
               今日のチャレンジ
             </button>
-            <button className="rounded-xl bg-white/20 px-4 py-2 text-sm font-button text-white transition-all hover:bg-white/30">
+            <button className="rounded-xl bg-white/20 px-4 py-2 text-sm font-number font-bold text-white transition-all hover:bg-white/30">
               続きから始める
             </button>
           </div>

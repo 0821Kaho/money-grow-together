@@ -74,7 +74,7 @@ const Index = () => {
       <header className="container mx-auto py-6 px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-logo text-[#333333]">Pigipe</h1>
+            <h1 className="text-2xl font-heading font-bold text-[#333333]">Pigipe</h1>
           </div>
           <div className="flex gap-4">
             {isAuthenticated ? (
@@ -105,17 +105,17 @@ const Index = () => {
         >
           <div className="space-y-6">
             <Badge variant="secondary" className="text-secondary bg-secondary/10">
-              5分で学べるお金の知識
+              遊んで学べるお金の知識
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-logo leading-tight">
+            <h1 className="text-4xl md:text-5xl font-heading font-bold leading-tight">
               お金で<span className="text-primary">夢をあきらめない</span>
             </h1>
             <p className="text-lg font-body text-muted-foreground">
-              Pigipeは5分で楽しく学べる金融エデュテイメントアプリ
+              Pigipeは遊び感覚で学べる金融エデュテイメントアプリ
             </p>
             <div className="pt-4 flex items-center gap-4">
               <Link to={isAuthenticated ? "/modules" : "/signup"}>
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold">
                   {isAuthenticated ? "学習を始める" : "無料で始める"}
                 </Button>
               </Link>
@@ -160,9 +160,9 @@ const Index = () => {
       {/* Modules Section */}
       <section className="container mx-auto px-4 py-12 md:py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">5つのお金の学習モジュール</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            各モジュールは約5分で完了し、実践的なお金の知識を身につけられます
+          <h2 className="text-3xl font-heading font-subheading mb-4">5つのお金の学習モジュール</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto font-body">
+            各モジュールは短時間で完了し、実践的なお金の知識を身につけられます
           </p>
           <div className="flex justify-center mt-4">
             <TontonGameVisuals type="combined" size="small" />
@@ -176,8 +176,8 @@ const Index = () => {
                 <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3">
                   <Card className={`h-full ${module.color} border-none shadow-sm hover:shadow transition-all`}>
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-semibold mb-2">{module.title}</h3>
-                      <p className="text-muted-foreground text-sm">{module.description}</p>
+                      <h3 className="text-xl font-heading font-subheading mb-2">{module.title}</h3>
+                      <p className="text-muted-foreground text-sm font-body">{module.description}</p>
                     </CardContent>
                   </Card>
                 </CarouselItem>
@@ -195,8 +195,8 @@ const Index = () => {
       <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">利用者の声</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-3xl font-heading font-subheading mb-4">利用者の声</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto font-body">
               Pigipeを使って学んだユーザーの変化をご紹介します
             </p>
           </div>
@@ -210,15 +210,15 @@ const Index = () => {
                       <div className="flex flex-col gap-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="bg-red-50 p-4 rounded-lg">
-                            <p className="text-sm text-muted-foreground font-medium mb-2">BEFORE</p>
-                            <p className="italic">「{testimonial.before}」</p>
+                            <p className="text-sm text-muted-foreground font-body font-medium mb-2">BEFORE</p>
+                            <p className="italic font-body">「{testimonial.before}」</p>
                           </div>
                           <div className="bg-green-50 p-4 rounded-lg">
-                            <p className="text-sm text-muted-foreground font-medium mb-2">AFTER</p>
-                            <p className="italic">「{testimonial.after}」</p>
+                            <p className="text-sm text-muted-foreground font-body font-medium mb-2">AFTER</p>
+                            <p className="italic font-body">「{testimonial.after}」</p>
                           </div>
                         </div>
-                        <p className="text-right font-medium">{testimonial.name}</p>
+                        <p className="text-right font-body font-medium">{testimonial.name}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -235,7 +235,7 @@ const Index = () => {
 
       {/* University Logo */}
       <section className="py-12 container mx-auto px-4 text-center">
-        <p className="text-sm text-muted-foreground mb-4">学術監修</p>
+        <p className="text-sm text-muted-foreground mb-4 font-body">学術監修</p>
         <div className="flex justify-center">
           <img 
             src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
@@ -251,26 +251,26 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-logo">Pigipe</h3>
+                <h3 className="text-xl font-heading font-bold">Pigipe</h3>
               </div>
-              <p className="text-sm text-gray-400 mt-1">5分で学べるお金アプリ</p>
+              <p className="text-sm text-gray-400 mt-1 font-body">遊んで学べるお金アプリ</p>
             </div>
             <div className="flex gap-6">
-              <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
                 利用規約
               </Link>
-              <Link to="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <Link to="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
                 プライバシーポリシー
               </Link>
-              <Link to="/impact" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <Link to="/impact" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
                 社会インパクト
               </Link>
-              <Link to="/company" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <Link to="/company" className="text-sm text-gray-400 hover:text-white transition-colors font-body">
                 運営会社
               </Link>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400">
+          <div className="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400 font-body">
             &copy; 2025 Pigipe All rights reserved.
           </div>
         </div>
