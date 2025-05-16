@@ -45,7 +45,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-game-primary text-white">
               <span className="text-lg font-bold">¥</span>
             </div>
-            <h1 className="text-xl font-bold">マネゴロー</h1>
+            <h1 className="text-xl font-bold">ピギペ</h1>
           </div>
           
           <div className="flex items-center gap-4">
@@ -129,7 +129,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
       {/* Floating Mascot FAB (56px) at bottom right */}
       <div className="fixed bottom-20 right-4 z-40">
         <MascotCharacter 
-          size="medium" 
+          size="large" 
           onClick={handleMascotClick}
           className="h-14 w-14 shadow-md" 
         />

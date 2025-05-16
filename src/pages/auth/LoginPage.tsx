@@ -39,7 +39,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Card className="shadow-lg border-[#E5DEFF]">
+    <Card className="shadow-lg border-[#F5F5F5]">
       <CardHeader>
         <CardTitle className="text-2xl text-center">ログイン</CardTitle>
         <CardDescription className="text-center">
@@ -62,7 +62,7 @@ const LoginPage = () => {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">パスワード</Label>
-              <Link to="/forgot-password" className="text-xs text-[#9b87f5] hover:underline">
+              <Link to="/forgot-password" className="text-xs text-primary hover:underline">
                 パスワードをお忘れですか？
               </Link>
             </div>
@@ -76,7 +76,7 @@ const LoginPage = () => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#9b87f5] hover:bg-[#8B5CF6]"
+            className="w-full bg-primary hover:bg-primary/90"
             disabled={isLoading}
           >
             {isLoading ? "ログイン中..." : "ログイン"}
@@ -86,7 +86,7 @@ const LoginPage = () => {
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
           アカウントをお持ちでないですか？{" "}
-          <Link to="/signup" className="text-[#9b87f5] hover:underline">
+          <Link to="/signup" className="text-primary hover:underline">
             新規登録
           </Link>
         </div>

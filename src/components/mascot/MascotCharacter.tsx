@@ -21,7 +21,7 @@ const MascotCharacter = ({
   const sizeClasses = {
     small: "w-12 h-12",
     medium: "w-16 h-16",
-    large: "w-24 h-24"
+    large: "w-14 h-14" // Updated to 56px (14rem)
   };
   
   const handleClick = () => {
@@ -38,7 +38,7 @@ const MascotCharacter = ({
   
   return (
     <motion.div
-      className={`${sizeClasses[size]} ${className} rounded-full bg-white shadow-sm cursor-pointer`}
+      className={`${sizeClasses[size]} ${className} rounded-full bg-white cursor-pointer`}
       initial={animate && !isSpinning ? { y: 0 } : undefined}
       animate={animate && !isSpinning ? { 
         y: [0, -5, 0],

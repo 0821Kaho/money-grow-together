@@ -51,7 +51,7 @@ const SignupPage = () => {
   };
 
   return (
-    <Card className="shadow-lg border-[#E5DEFF]">
+    <Card className="shadow-lg border-[#F5F5F5]">
       <CardHeader>
         <CardTitle className="text-2xl text-center">アカウント登録</CardTitle>
         <CardDescription className="text-center">
@@ -103,7 +103,7 @@ const SignupPage = () => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#9b87f5] hover:bg-[#8B5CF6]"
+            className="w-full bg-primary hover:bg-primary/90"
             disabled={isLoading}
           >
             {isLoading ? "登録中..." : "アカウント作成"}
@@ -113,7 +113,7 @@ const SignupPage = () => {
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
           すでにアカウントをお持ちですか？{" "}
-          <Link to="/login" className="text-[#9b87f5] hover:underline">
+          <Link to="/login" className="text-primary hover:underline">
             ログイン
           </Link>
         </div>

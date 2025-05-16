@@ -28,16 +28,16 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#FF6F6F', // Main brand primary color
+					DEFAULT: '#F37B83', // Updated to new primary pink
 					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: '#25B589', // Updated accent color 1 (green)
+					DEFAULT: '#2BA26B', // Updated to new secondary green
 					foreground: '#FFFFFF'
 				},
 				accent: {
-					DEFAULT: '#FFB547', // Updated accent color 2 (yellow)
-					foreground: '#212121'
+					DEFAULT: '#FFD66E', // Updated to new accent gold
+					foreground: '#333333'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -48,16 +48,16 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				game: {
-					'primary': '#FF6F6F',    // Single brand primary color
-					'secondary': '#25B589',  // Updated accent color 1 (green)
-					'accent': '#FFB547',     // Updated accent color 2 (yellow)
+					'primary': '#F37B83',    // Updated to new primary pink
+					'secondary': '#2BA26B',  // Updated to new secondary green
+					'accent': '#FFD66E',     // Updated to new accent gold
 					'danger': '#E0E0E0',     // Changed from red to gray
-					'neutral': '#F7F7F7',    // Background alt
-					'success': '#25B589',
+					'neutral': '#F5F5F5',    // Background
+					'success': '#2BA26B',    // Same as secondary
 					'info': '#E0E0E0',       // Changed from blue to gray
-					'warning': '#FFB547',
-					'dark': '#212121',       // Text primary
-					'light': '#F7F7F7'       // Background alt
+					'warning': '#FFD66E',    // Same as accent
+					'dark': '#333333',       // Text primary
+					'light': '#F5F5F5'       // Background neutral
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
