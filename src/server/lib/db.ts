@@ -12,11 +12,8 @@ let prismaInstance: PrismaClientType;
 export const getPrisma = async () => {
   if (!prismaInstance) {
     try {
-      // Import the whole module first
-      const prismaModule = await import('@prisma/client');
-      
-      // Access PrismaClient from the imported module
-      const PrismaClient = prismaModule.PrismaClient;
+      // Dynamic import for Prisma client
+      const { PrismaClient } = await import('@prisma/client/index.js');
       
       // Create new PrismaClient instance or use existing one
       prismaInstance = global.prisma || new PrismaClient();
