@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
+import MascotCharacter from "@/components/mascot/MascotCharacter";
 
 const modules = [
   { 
@@ -63,15 +64,15 @@ const Index = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F6E7FF] to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
       {/* Header */}
       <header className="container mx-auto py-6 px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#9b87f5] text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
               <span className="text-lg font-bold">P</span>
             </div>
-            <h1 className="text-2xl font-bold text-[#1A1F2C]">Pigipe</h1>
+            <h1 className="text-2xl font-bold text-[#333333]">Pigipe</h1>
           </div>
           <div className="flex gap-4">
             {isAuthenticated ? (
@@ -84,7 +85,7 @@ const Index = () => {
                   <Button variant="outline">ログイン</Button>
                 </Link>
                 <Link to="/signup">
-                  <Button className="bg-[#9b87f5] hover:bg-[#8B5CF6]">無料登録</Button>
+                  <Button className="bg-primary hover:bg-primary/90">無料登録</Button>
                 </Link>
               </>
             )}
@@ -101,26 +102,26 @@ const Index = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="space-y-6">
-            <Badge variant="secondary" className="text-[#8B5CF6] bg-[#E5DEFF]">
+            <Badge variant="secondary" className="text-secondary bg-secondary/10">
               5分で学べるお金の知識
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
               お金の不安をなくす<br />
-              <span className="text-[#9b87f5]">学びのアプリ</span>
+              <span className="text-primary">学びのアプリ</span>
             </h1>
             <p className="text-lg text-muted-foreground">
               専門家監修のミニゲームで、楽しく学んで実践力を身につけよう
             </p>
             <div className="pt-4">
               <Link to={isAuthenticated ? "/modules" : "/signup"}>
-                <Button size="lg" className="bg-[#9b87f5] hover:bg-[#8B5CF6] text-lg px-8">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8">
                   {isAuthenticated ? "学習を始める" : "無料で始める"}
                 </Button>
               </Link>
             </div>
           </div>
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#9b87f5]/20 to-transparent rounded-xl" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent rounded-xl" />
             <img
               src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
               alt="お金の学習"
@@ -216,12 +217,12 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1A1F2C] text-white py-8">
+      <footer className="bg-[#333333] text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#1A1F2C]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#333333]">
                   <span className="text-sm font-bold">P</span>
                 </div>
                 <h3 className="text-xl font-bold">Pigipe</h3>
@@ -245,6 +246,14 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Floating Mascot */}
+      <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">
+        <MascotCharacter 
+          size="large" 
+          className="shadow-md" 
+        />
+      </div>
     </div>
   );
 };
