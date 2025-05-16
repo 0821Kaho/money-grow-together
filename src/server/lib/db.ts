@@ -1,8 +1,6 @@
 
-import { PrismaClient } from '@prisma/client';
-
-// Type for the PrismaClient
-type PrismaClientType = PrismaClient;
+// We need to import Prisma differently since it uses a default export
+import { PrismaClient as PrismaClientType } from '.prisma/client';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -14,6 +12,9 @@ let prismaInstance: PrismaClientType;
 export const getPrisma = async () => {
   if (!prismaInstance) {
     try {
+      // Dynamic import to ensure we get the client correctly
+      const { PrismaClient } = await import('.prisma/client');
+      
       // Create new PrismaClient instance or use existing one
       prismaInstance = global.prisma || new PrismaClient();
       
@@ -31,4 +32,13 @@ export const getPrisma = async () => {
 };
 
 // For backward compatibility, export a pre-initialized prisma instance
-export const prisma = global.prisma || new PrismaClient();
+export const prisma = global.prisma || (() => {
+  try {
+    // We need to dynamically import here too
+    const { PrismaClient } = require('.prisma/client');
+    return new PrismaClient();
+  } catch (error) {
+    console.error('Failed to initialize Prisma client:', error);
+    return {} as PrismaClientType;
+  }
+})();
