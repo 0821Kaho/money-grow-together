@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,7 @@ import MascotImage from "@/components/mascot/MascotImage";
 import MoneyVisual from "@/components/ui/MoneyVisual";
 import LeafVisual from "@/components/ui/LeafVisual";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
+import KPIBanner from "@/components/home/KPIBanner";
 
 const modules = [
   { 
@@ -73,10 +73,7 @@ const Index = () => {
       <header className="container mx-auto py-6 px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-              <span className="text-lg font-bold">P</span>
-            </div>
-            <h1 className="text-2xl font-bold text-[#333333]">Pigipe</h1>
+            <h1 className="text-2xl font-logo text-[#333333]">Pigipe</h1>
           </div>
           <div className="flex gap-4">
             {isAuthenticated ? (
@@ -153,6 +150,11 @@ const Index = () => {
             </div>
           </div>
         </motion.div>
+      </section>
+
+      {/* KPI Banner */}
+      <section className="container mx-auto px-4 pb-12">
+        <KPIBanner />
       </section>
 
       {/* Modules Section */}
@@ -249,10 +251,7 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#333333]">
-                  <span className="text-sm font-bold">P</span>
-                </div>
-                <h3 className="text-xl font-bold">Pigipe</h3>
+                <h3 className="text-xl font-logo">Pigipe</h3>
               </div>
               <p className="text-sm text-gray-400 mt-1">5分で学べるお金アプリ</p>
             </div>
@@ -262,6 +261,9 @@ const Index = () => {
               </Link>
               <Link to="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">
                 プライバシーポリシー
+              </Link>
+              <Link to="/impact" className="text-sm text-gray-400 hover:text-white transition-colors">
+                社会インパクト
               </Link>
               <Link to="/company" className="text-sm text-gray-400 hover:text-white transition-colors">
                 運営会社
