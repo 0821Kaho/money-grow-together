@@ -86,6 +86,11 @@ const TimelineProjectionChart = ({
       maximumFractionDigits: 0
     }).format(value);
   };
+
+  // Format Y-axis values in "万円" (10,000 JPY)
+  const formatYenInMan = (value: number) => {
+    return `${(value / 10000).toFixed(0)}万`;
+  };
   
   // Calculate gains and returns
   const totalInvestment = useMemo(() => {
@@ -187,10 +192,16 @@ const TimelineProjectionChart = ({
               <YAxis 
                 width={50}
                 tick={{ fontSize: 11 }}
-                tickFormatter={(value) => value >= 1000000 
-                  ? `${(value / 1000000).toFixed(1)}M` 
-                  : `${(value / 10000).toFixed(0)}万`
-                }
+                tickFormatter={formatYenInMan}
+                label={{ 
+                  value: '資産額（万円）', 
+                  angle: -90, 
+                  position: 'insideLeft',
+                  style: { 
+                    textAnchor: 'middle',
+                    fontSize: 11
+                  } 
+                }}
               />
               <Tooltip 
                 formatter={(value: any) => [formatCurrency(value), '']}
