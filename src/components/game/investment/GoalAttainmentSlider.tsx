@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowUp } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface GoalAttainmentSliderProps {
   goalAmount: number;
@@ -12,6 +13,8 @@ interface GoalAttainmentSliderProps {
   returnRate: number;
   monthlyDefault: number;
   onMonthlyChange: (amount: number) => void;
+  salary?: number;
+  onSalaryChange?: (amount: number) => void;
 }
 
 const GoalAttainmentSlider = ({
@@ -19,11 +22,17 @@ const GoalAttainmentSlider = ({
   years,
   returnRate,
   monthlyDefault,
-  onMonthlyChange
+  onMonthlyChange,
+  salary = 300000,
+  onSalaryChange
 }: GoalAttainmentSliderProps) => {
   const [monthlyAmount, setMonthlyAmount] = useState(monthlyDefault);
   const [attainmentPercent, setAttainmentPercent] = useState(0);
   const [wasShownTip, setWasShownTip] = useState(false);
+  const [inputMode, setInputMode] = useState<"amount" | "percentage">("amount");
+  const [monthlyPercentage, setMonthlyPercentage] = useState(Math.round((monthlyDefault / salary) * 100));
+  const [userSalary, setUserSalary] = useState(salary);
+  const [showRecommendation, setShowRecommendation] = useState(false);
   
   // Calculate future value using compound interest
   const calculateFutureValue = (monthly: number, rate: number, years: number): number => {
@@ -32,6 +41,21 @@ const GoalAttainmentSlider = ({
     // Formula: FV = PMT * ((1 + r)^n - 1) / r * (1 + r)
     return monthly * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
   };
+  
+  // Update percentage when amount or salary changes
+  useEffect(() => {
+    if (userSalary > 0) {
+      setMonthlyPercentage(Math.round((monthlyAmount / userSalary) * 100));
+    }
+  }, [monthlyAmount, userSalary]);
+  
+  // Update amount when percentage changes
+  useEffect(() => {
+    if (inputMode === "percentage" && userSalary > 0) {
+      const newAmount = Math.round((monthlyPercentage / 100) * userSalary / 1000) * 1000;
+      setMonthlyAmount(newAmount);
+    }
+  }, [monthlyPercentage, userSalary, inputMode]);
   
   useEffect(() => {
     // Calculate how current monthly amount will attain goal
@@ -72,16 +96,124 @@ const GoalAttainmentSlider = ({
     return "bg-red-500";
   };
 
-  // Handle direct input change
+  // Handle direct input change for monthly amount
   const handleDirectInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     if (value >= 0 && value <= 100000) {
       setMonthlyAmount(value);
     }
   };
+  
+  // Handle salary input change
+  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value >= 50000 && value <= 2000000) {
+      setUserSalary(value);
+      if (onSalaryChange) onSalaryChange(value);
+      
+      // Show recommendation toast
+      if (!showRecommendation) {
+        const recommendedAmount = Math.round(value * 0.1);
+        toast({
+          title: "家計管理ルール",
+          description: `収入の10%＝${formatCurrency(recommendedAmount)}を推奨します`,
+        });
+        setShowRecommendation(true);
+      }
+    }
+  };
+  
+  // Handle percentage slider change
+  const handlePercentageChange = (values: number[]) => {
+    setMonthlyPercentage(values[0]);
+  };
 
   return (
     <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label htmlFor="salary" className="block text-sm font-medium mb-1">月収</label>
+          <div className="flex items-center">
+            <Input
+              id="salary"
+              type="number"
+              min={50000}
+              max={2000000}
+              step={10000}
+              value={userSalary}
+              onChange={handleSalaryChange}
+              className="text-right pr-10"
+              placeholder="300,000"
+            />
+            <span className="ml-1 absolute right-3 text-sm">円</span>
+          </div>
+          {userSalary < 50000 && userSalary > 0 && (
+            <p className="text-xs text-red-500 mt-1">
+              最低50,000円を入力してください
+            </p>
+          )}
+        </div>
+
+        <div>
+          <div className="flex justify-between mb-1">
+            <label htmlFor="contribution" className="text-sm font-medium">積立額</label>
+            <span className="text-sm font-medium">{formatCurrency(monthlyAmount)}</span>
+          </div>
+          <Tabs value={inputMode} onValueChange={(v) => setInputMode(v as "amount" | "percentage")} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-2">
+              <TabsTrigger value="amount">金額指定</TabsTrigger>
+              <TabsTrigger value="percentage">% 指定</TabsTrigger>
+            </TabsList>
+            <TabsContent value="amount" className="mt-0 pt-0">
+              <div className="flex gap-2 items-center">
+                <Slider
+                  id="monthly"
+                  min={1000}
+                  max={Math.min(100000, userSalary)}
+                  step={1000}
+                  value={[monthlyAmount]}
+                  onValueChange={(values) => setMonthlyAmount(values[0])}
+                  className="flex-1"
+                />
+                <div className="w-28 flex items-center relative">
+                  <Input
+                    type="number"
+                    min={0}
+                    max={Math.min(100000, userSalary)}
+                    step={1000}
+                    value={monthlyAmount}
+                    onChange={handleDirectInputChange}
+                    className="text-right pr-10"
+                  />
+                  <span className="ml-1 absolute right-3 text-sm">円</span>
+                </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="percentage" className="mt-0 pt-0">
+              <div className="space-y-2">
+                <Slider
+                  id="monthlyPercentage"
+                  min={1}
+                  max={50}
+                  step={1}
+                  value={[monthlyPercentage]}
+                  onValueChange={handlePercentageChange}
+                  className="flex-1"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>1%</span>
+                  <span>25%</span>
+                  <span>50%</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  収入の{monthlyPercentage}% = {formatCurrency(monthlyAmount)}
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <h3 className="font-medium">目標達成度</h3>
@@ -102,46 +234,6 @@ const GoalAttainmentSlider = ({
           <span>0%</span>
           <span>50%</span>
           <span>100%</span>
-        </div>
-      </div>
-      
-      <div className="mt-6 space-y-2">
-        <div className="flex justify-between">
-          <label htmlFor="monthly" className="text-sm font-medium">
-            毎月いくら積み立てる？
-          </label>
-          <span className="text-sm font-medium">{formatCurrency(monthlyAmount)}</span>
-        </div>
-        
-        <div className="flex gap-2 items-center">
-          <Slider
-            id="monthly"
-            min={5000}
-            max={100000}
-            step={1000}
-            value={[monthlyAmount]}
-            onValueChange={(values) => setMonthlyAmount(values[0])}
-            className="flex-1"
-          />
-          
-          <div className="w-28 flex items-center">
-            <Input
-              type="number"
-              min={0}
-              max={100000}
-              step={1000}
-              value={monthlyAmount}
-              onChange={handleDirectInputChange}
-              className="text-right"
-            />
-            <span className="ml-1 text-sm">円</span>
-          </div>
-        </div>
-        
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>¥5,000</span>
-          <span>¥50,000</span>
-          <span>¥100,000</span>
         </div>
       </div>
       

@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import TimelineProjectionChart from "./investment/TimelineProjectionChart";
 import InvestmentResults from "./investment/InvestmentResults";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 
 // Define asset classes
 const assetClasses = [
@@ -257,6 +256,10 @@ const InvestmentSimulation = () => {
   const handleMonthlyAmountChange = (amount: number) => {
     setMonthlyAmount(amount);
   };
+
+  const handleSalaryChange = (amount: number) => {
+    setSalary(amount);
+  };
   
   const handleAssetSelected = (assetId: number) => {
     setSelectedAssetId(assetId === selectedAssetId ? undefined : assetId);
@@ -346,47 +349,6 @@ const InvestmentSimulation = () => {
             </div>
           </div>
           
-          {/* Income and monthly contribution inputs */}
-          <Card className="mb-4">
-            <CardContent className="pt-6 space-y-4">
-              <div>
-                <label htmlFor="salary" className="block text-sm text-muted-foreground mb-1">月収</label>
-                <div className="flex items-center">
-                  <Input 
-                    id="salary"
-                    type="number" 
-                    value={salary}
-                    onChange={(e) => setSalary(Number(e.target.value))}
-                    className="w-full"
-                    min={0}
-                    step={10000}
-                  />
-                  <span className="ml-2 text-sm">円</span>
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="monthlyAmount" className="block text-sm text-muted-foreground mb-1">毎月の積立額</label>
-                <div className="flex items-center">
-                  <Input 
-                    id="monthlyAmount"
-                    type="number" 
-                    value={monthlyAmount}
-                    onChange={(e) => setMonthlyAmount(Number(e.target.value))}
-                    className="w-full"
-                    min={0}
-                    max={salary}
-                    step={1000}
-                  />
-                  <span className="ml-2 text-sm">円</span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  収入の{monthlyAmount > 0 && salary > 0 ? Math.round((monthlyAmount / salary) * 100) : 0}%
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          
           {/* Goal tracking */}
           <Card className="mb-4">
             <CardContent className="pt-6">
@@ -455,6 +417,8 @@ const InvestmentSimulation = () => {
                   returnRate={5} // Default return rate
                   monthlyDefault={monthlyAmount}
                   onMonthlyChange={handleMonthlyAmountChange}
+                  salary={salary}
+                  onSalaryChange={handleSalaryChange}
                 />
                 
                 <div className="mt-6">
