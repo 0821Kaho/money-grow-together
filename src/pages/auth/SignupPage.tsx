@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,6 +14,7 @@ const SignupPage = () => {
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { signup } = useAuth();
   const navigate = useNavigate();
@@ -25,6 +27,15 @@ const SignupPage = () => {
       toast({
         title: "パスワードエラー",
         description: "パスワードが一致しません",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!termsAccepted) {
+      toast({
+        title: "利用規約エラー",
+        description: "利用規約に同意してください",
         variant: "destructive",
       });
       return;
@@ -101,10 +112,25 @@ const SignupPage = () => {
               required
             />
           </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="terms" 
+              checked={termsAccepted}
+              onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+            />
+            <Label htmlFor="terms" className="text-sm">
+              <span className="text-muted-foreground">
+                <Link to="/terms" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                  利用規約
+                </Link>
+                に同意します
+              </span>
+            </Label>
+          </div>
           <Button
             type="submit"
             className="w-full bg-primary hover:bg-primary/90"
-            disabled={isLoading}
+            disabled={isLoading || !termsAccepted}
           >
             {isLoading ? "登録中..." : "アカウント作成"}
           </Button>

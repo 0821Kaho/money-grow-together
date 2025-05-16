@@ -11,6 +11,7 @@ import ModulesListPage from "./pages/ModulesListPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import ProfilePage from "./pages/ProfilePage";
 import ImpactPage from "./pages/ImpactPage";
+import TermsPage from "./pages/TermsPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
@@ -35,6 +36,7 @@ function AppRoutes() {
       <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
       <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
       <Route path="/impact" element={<ImpactPage />} />
+      <Route path="/terms" element={<TermsPage />} />
       
       {/* Protected routes */}
       <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
