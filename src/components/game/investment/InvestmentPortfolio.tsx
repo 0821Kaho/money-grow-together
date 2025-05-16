@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,7 +5,6 @@ import { Slider } from "@/components/ui/slider";
 import { toast } from "@/components/ui/use-toast";
 import { ChartLine } from "lucide-react";
 import { 
-  Chart as ChartComponent, 
   ChartContainer, 
   ChartTooltip,
   ChartTooltipContent
