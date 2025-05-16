@@ -13,20 +13,10 @@ export const getPrisma = async () => {
   if (!prismaInstance) {
     try {
       // Dynamically import Prisma client
-      const prismaModule = await import('@prisma/client');
-      
-      // Try to find PrismaClient in different possible locations based on Prisma v6 structure
-      const PrismaClientClass = 
-        prismaModule.PrismaClient || 
-        (prismaModule.default && prismaModule.default.PrismaClient) || 
-        (typeof prismaModule === 'function' ? prismaModule : undefined);
-      
-      if (!PrismaClientClass) {
-        throw new Error('PrismaClient not found in @prisma/client imports');
-      }
+      const { PrismaClient } = await import('@prisma/client');
       
       // Create new PrismaClient instance or use existing one
-      prismaInstance = global.prisma || new PrismaClientClass();
+      prismaInstance = global.prisma || new PrismaClient();
       
       // Save to global in development for hot-reload persistence
       if (process.env.NODE_ENV !== 'production') {
@@ -45,20 +35,8 @@ export const getPrisma = async () => {
 export const prisma = global.prisma || (() => {
   try {
     // We need to dynamically import here for CommonJS
-    const prismaModule = require('@prisma/client');
-    
-    // Try to find PrismaClient in different possible locations
-    const PrismaClientClass = 
-      prismaModule.PrismaClient || 
-      (prismaModule.default && prismaModule.default.PrismaClient) || 
-      (typeof prismaModule === 'function' ? prismaModule : undefined);
-    
-    if (!PrismaClientClass) {
-      console.error('PrismaClient not found in @prisma/client imports');
-      return {};
-    }
-    
-    return new PrismaClientClass();
+    const { PrismaClient } = require('@prisma/client');
+    return new PrismaClient();
   } catch (error) {
     console.error('Failed to initialize Prisma client:', error);
     return {};
