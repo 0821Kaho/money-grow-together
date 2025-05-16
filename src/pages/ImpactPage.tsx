@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -77,19 +76,14 @@ const ImpactPage = () => {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <p className="text-xs mb-2">学術監修</p>
-                  <img 
-                    src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
-                    alt="東北大学" 
-                    className="h-6 object-contain"
-                  />
                 </div>
                 <a 
-                  href="#" 
+                  href="https://tytonpartners.com/tyton-partners-investing-in-tomorrow-research-reveals-a-100000-per-student-impact-of-high-school-financial-education/" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="text-primary underline"
                 >
-                  詳細レポート (PDF)
+                  詳細レポート
                 </a>
               </div>
             </div>
