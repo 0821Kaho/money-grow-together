@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +22,7 @@ const goalOptions = [
   {
     id: "skill",
     title: "スキルアップ資金",
-    description: "資格取得・オンライン講座など"稼ぐ力"を伸ばす投資",
+    description: "資格取得・オンライン講座など「稼ぐ力」を伸ばす投資",
     icon: Briefcase,
     amount: 200000,
     years: 1
