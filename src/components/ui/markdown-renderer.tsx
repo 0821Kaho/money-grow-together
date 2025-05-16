@@ -50,6 +50,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       remarkPlugins={[remarkGfm]}
       className={cn("prose prose-slate dark:prose-invert max-w-none", className)}
       components={{
+        // Define custom rendering for markdown elements
         table: ({ ...props }) => (
           <div className="overflow-x-auto my-8">
             <table className="w-full border-collapse" {...props} />
