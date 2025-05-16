@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,7 +20,11 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'sans': ['Noto Sans JP', 'sans-serif'],
+				'logo': ['"Kiwi Maru"', 'sans-serif'],
+				'heading': ['"M PLUS Rounded 1c"', 'sans-serif'],
+				'body': ['"Noto Sans JP"', '"Nunito"', 'sans-serif'],
+				'button': ['"Poppins"', 'sans-serif'],
+				'bubble': ['"Zen Maru Gothic"', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

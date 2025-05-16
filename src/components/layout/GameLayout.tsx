@@ -42,10 +42,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigate('/')}
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-game-primary text-white">
-              <span className="text-lg font-bold">¥</span>
-            </div>
-            <h1 className="text-xl font-bold">ピギペ</h1>
+            <h1 className="text-xl font-logo">ピギペ</h1>
           </div>
           
           <div className="flex items-center gap-4">

@@ -21,15 +21,15 @@ const WelcomeSection = () => {
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <h1 className="mb-2 text-2xl font-bold">ようこそ、ユーザーさん！</h1>
-          <p className="text-white/90">
+          <h1 className="mb-2 text-2xl font-heading font-bold">ようこそ、ユーザーさん！</h1>
+          <p className="text-white/90 font-body">
             お金について学びながら楽しく実践的なスキルを身につけましょう。
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <button className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-game-primary transition-all hover:bg-opacity-90">
+            <button className="rounded-xl bg-white px-4 py-2 text-sm font-button text-game-primary transition-all hover:bg-opacity-90">
               今日のチャレンジ
             </button>
-            <button className="rounded-xl bg-white/20 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/30">
+            <button className="rounded-xl bg-white/20 px-4 py-2 text-sm font-button text-white transition-all hover:bg-white/30">
               続きから始める
             </button>
           </div>
@@ -45,7 +45,7 @@ const WelcomeSection = () => {
           </motion.div>
           
           <div className="hidden sm:flex items-end gap-2">
-            <MascotImage variant="coin" size="small" />
+            <MascotImage variant="coin" size="small" alt="コインを持つピギペ" />
           </div>
         </div>
       </div>

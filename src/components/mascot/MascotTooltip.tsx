@@ -39,23 +39,36 @@ const MascotTooltip = ({
       setCurrentMessage(0);
     }
   };
+
+  // Map variant to appropriate alt text
+  const getAltText = (variant: string) => {
+    switch(variant) {
+      case "coin": return "コインを掲げるピギペ";
+      case "running": return "走るピギペ";
+      case "calculator": return "電卓をたたくピギペ";
+      case "question": return "首をかしげるピギペ";
+      case "thumbsUp": return "親指を立てるピギペ";
+      case "happy": return "嬉しそうなピギペ";
+      default: return "ピギペ";
+    }
+  };
   
   return (
     <div className="relative inline-block">
       <div onClick={handleClick} className="cursor-pointer">
-        <MascotImage variant={variant} size={characterSize} />
+        <MascotImage variant={variant} size={characterSize} alt={getAltText(variant)} />
       </div>
       
       <AnimatePresence>
         {showTooltip && (
           <motion.div 
-            className={`absolute ${positionClasses[position]} z-50 w-64 rounded-xl bg-white p-4 shadow-lg border border-primary/20`}
+            className={`absolute ${positionClasses[position]} z-50 w-64 rounded-xl bg-white p-4 shadow-lg border border-primary/20 mascot-tooltip`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
           >
             <div className="relative">
-              <p className="text-sm">{messages[currentMessage]}</p>
+              <p className="text-sm font-bubble">{messages[currentMessage]}</p>
               <div className="mt-2 text-xs text-right text-gray-500">
                 {currentMessage + 1}/{messages.length}
               </div>

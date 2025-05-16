@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -92,16 +98,28 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-body;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   
   h1 {
-    @apply font-bold text-2xl; /* Weight 700 */
+    @apply font-heading font-bold text-2xl; /* Weight 700 */
   }
   
   h2 {
-    @apply font-semibold text-xl; /* Weight 600 */
+    @apply font-heading font-semibold text-xl; /* Weight 600 */
+  }
+  
+  h3 {
+    @apply font-heading font-medium text-lg;
+  }
+
+  button, .button {
+    @apply font-button;
+  }
+  
+  .mascot-tooltip {
+    @apply font-bubble;
   }
 }
 
@@ -111,19 +129,19 @@
   }
   
   .game-button {
-    @apply rounded-xl bg-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105 active:scale-95;
+    @apply rounded-xl bg-primary px-6 py-3 font-button text-white transition-all hover:brightness-105 active:scale-95;
   }
   
   .game-button-secondary {
-    @apply rounded-xl bg-transparent border border-primary text-primary px-6 py-3 font-medium transition-all hover:bg-primary/10 active:scale-95;
+    @apply rounded-xl bg-transparent border border-primary text-primary px-6 py-3 font-button transition-all hover:bg-primary/10 active:scale-95;
   }
   
   .game-button-accent {
-    @apply rounded-xl bg-game-accent px-6 py-3 font-medium text-game-dark transition-all hover:brightness-105 active:scale-95;
+    @apply rounded-xl bg-game-accent px-6 py-3 font-button text-game-dark transition-all hover:brightness-105 active:scale-95;
   }
 
   .coin {
-    @apply flex h-16 w-16 items-center justify-center rounded-full bg-game-accent text-white text-xl font-bold;
+    @apply flex h-16 w-16 items-center justify-center rounded-full bg-game-accent text-white text-xl font-button;
   }
 
   .achievement-badge {

@@ -10,6 +10,7 @@ interface MascotCharacterProps {
   className?: string;
   onClick?: () => void;
   tooltip?: string;
+  alt?: string;
 }
 
 const MascotCharacter = ({ 
@@ -17,7 +18,8 @@ const MascotCharacter = ({
   animate = true,
   className = "",
   onClick,
-  tooltip
+  tooltip,
+  alt = "ピギペ"
 }: MascotCharacterProps) => {
   const [isSpinning, setIsSpinning] = useState(false);
   
@@ -58,7 +60,7 @@ const MascotCharacter = ({
     >
       <img 
         src={mascotSvg} 
-        alt="トントン" 
+        alt={alt} 
         className="w-full h-full object-contain" 
       />
     </motion.div>
@@ -71,7 +73,7 @@ const MascotCharacter = ({
           <TooltipTrigger asChild>
             {mascotContent}
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent className="font-bubble">
             <p>{tooltip}</p>
           </TooltipContent>
         </Tooltip>
