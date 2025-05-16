@@ -25,6 +25,10 @@ export default {
 				'body': ['"Noto Sans JP"', '"Nunito"', 'sans-serif'],
 				'button': ['"Poppins"', 'sans-serif'],
 				'bubble': ['"Zen Maru Gothic"', 'sans-serif'],
+				// New font family presets as per the requirements
+				'head': ['"Kiwi Maru"', '"Noto Sans JP"', 'sans-serif'],
+				'display': ['"M PLUS Rounded 1c"', '"Noto Sans JP"', 'sans-serif'],
+				'num': ['"Poppins"', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
