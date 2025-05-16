@@ -12,6 +12,8 @@ import AchievementsPage from "./pages/AchievementsPage";
 import ProfilePage from "./pages/ProfilePage";
 import ImpactPage from "./pages/ImpactPage";
 import TermsPage from "./pages/TermsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import CompanyPage from "./pages/CompanyPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
@@ -37,6 +39,8 @@ function AppRoutes() {
       <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
       <Route path="/impact" element={<ImpactPage />} />
       <Route path="/terms" element={<TermsPage />} />
+      <Route path="/privacy" element={<PrivacyPolicyPage />} />
+      <Route path="/about" element={<CompanyPage />} />
       
       {/* Protected routes */}
       <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />

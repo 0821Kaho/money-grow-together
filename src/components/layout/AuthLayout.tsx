@@ -33,8 +33,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         <div className="flex justify-center space-x-4">
           <Link to="/terms" className="hover:underline">利用規約</Link>
           <Link to="/privacy" className="hover:underline">プライバシーポリシー</Link>
+          <Link to="/about" className="hover:underline">会社概要</Link>
         </div>
-        <p className="mt-2">© 2025 Pigipe All rights reserved.</p>
+        <p className="mt-2">© 2025 NextGens株式会社 All rights reserved.</p>
       </footer>
     </div>
   );

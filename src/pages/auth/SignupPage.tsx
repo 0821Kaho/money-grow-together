@@ -112,20 +112,28 @@ const SignupPage = () => {
               required
             />
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox 
-              id="terms" 
-              checked={termsAccepted}
-              onCheckedChange={(checked) => setTermsAccepted(checked === true)}
-            />
-            <Label htmlFor="terms" className="text-sm">
-              <span className="text-muted-foreground">
-                <Link to="/terms" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-                  利用規約
-                </Link>
-                に同意します
-              </span>
-            </Label>
+          <div className="space-y-4 pt-2">
+            <div className="flex items-start space-x-2">
+              <Checkbox 
+                id="terms" 
+                className="mt-1"
+                checked={termsAccepted}
+                onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+              />
+              <Label htmlFor="terms" className="text-sm leading-tight">
+                <span className="text-muted-foreground">
+                  登録をもって
+                  <Link to="/terms" className="text-primary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
+                    利用規約
+                  </Link>
+                  と
+                  <Link to="/privacy" className="text-primary hover:underline mx-1" target="_blank" rel="noopener noreferrer">
+                    プライバシーポリシー
+                  </Link>
+                  に同意し、運営会社 NextGens株式会社が個人情報を取扱うことを承諾します。
+                </span>
+              </Label>
+            </div>
           </div>
           <Button
             type="submit"
