@@ -1,5 +1,5 @@
 
-import { prisma } from '../lib/db';
+import { getPrisma } from '../lib/db';
 import { Resend } from 'resend';
 import * as cron from 'node-cron';
 
@@ -8,6 +8,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // API to register for the waitlist
 export async function registerWaitlist(email: string) {
   try {
+    const prisma = await getPrisma();
+    
     const existingUser = await prisma.waitlist.findUnique({
       where: { email },
     });
@@ -30,6 +32,7 @@ export async function registerWaitlist(email: string) {
 // API to get the count of waitlist registrations
 export async function getWaitlistCount() {
   try {
+    const prisma = await getPrisma();
     const count = await prisma.waitlist.count();
     return { status: 200, count };
   } catch (error) {
@@ -43,6 +46,8 @@ export function scheduleLaunchNotification() {
   // Schedule for May 23, 2025 at 10:00 AM
   cron.schedule('0 10 23 5 *', async () => {
     try {
+      const prisma = await getPrisma();
+      
       // Get all waitlist subscribers
       const subscribers = await prisma.waitlist.findMany();
       
