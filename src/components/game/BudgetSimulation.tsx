@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -15,6 +14,7 @@ import LoanComparison from "./budget/LoanComparison";
 import BudgetPlanner from "./budget/BudgetPlanner";
 import FinalTest from "./budget/FinalTest";
 import { getEventForDay, getBudgetEvents } from "@/lib/budget-events";
+import BudgetCalendarView from "./budget/BudgetCalendarView";
 
 interface BudgetState {
   money: number;
@@ -155,6 +155,29 @@ const BudgetSimulation = () => {
       setCurrentEvent(todaysEvent);
     }
   }, [state.day, state.hasLoan, state.hasWildBoarLoan, state.currentStage]);
+  
+  // カレンダービューを表示するための関数
+  const renderCalendarView = () => {
+    return (
+      <BudgetCalendarView
+        onSelectDay={(day) => {
+          // カレンダー上の日付をクリックした時の処理
+          if (day <= state.day) {
+            // その日のイベントを表示するだけ（既に過ぎた日）
+            const pastEvent = dayEvents.find(e => e.day === day);
+            if (pastEvent) {
+              toast({
+                title: `${day}日目のイベント`,
+                description: pastEvent.title,
+              });
+            }
+          }
+        }}
+        currentDay={state.day}
+        completedDays={state.completedEvents}
+      />
+    );
+  };
   
   // 次の日へ進む
   const handleNextDay = () => {
@@ -577,6 +600,9 @@ const BudgetSimulation = () => {
           
           {state.currentStage === "simulation" && (
             <>
+              {/* カレンダービューを表示 */}
+              {renderCalendarView()}
+              
               {showWildBoarLoanOffer && (
                 <WildBoarLoanOffer 
                   onDecision={handleWildBoarLoanDecision} 

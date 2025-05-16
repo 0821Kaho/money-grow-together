@@ -1,8 +1,14 @@
 
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import BudgetModules from "./budget/BudgetModules";
+import BudgetSimulation from "./BudgetSimulation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calendar, CalendarCheck2 } from "lucide-react";
 
 const BudgetSimulationPatched = () => {
+  const [activeTab, setActiveTab] = useState<string>("simulation");
+
   return (
     <Card>
       <CardContent className="pt-6">
@@ -14,7 +20,27 @@ const BudgetSimulationPatched = () => {
             計画的な家計管理で「家計サバイバー」バッジを目指せ！
           </p>
         </div>
-        <BudgetModules />
+
+        <Tabs defaultValue="simulation" className="w-full" onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="simulation" className="flex items-center gap-2">
+              <CalendarCheck2 className="h-4 w-4" />
+              カレンダーシミュレーション
+            </TabsTrigger>
+            <TabsTrigger value="modules" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              学習モジュール
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="simulation" className="mt-0">
+            <BudgetSimulation />
+          </TabsContent>
+          
+          <TabsContent value="modules" className="mt-0">
+            <BudgetModules />
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );
