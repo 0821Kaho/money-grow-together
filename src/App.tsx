@@ -18,11 +18,32 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
-// Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+// Protected route component - moved inside the app to avoid React hooks outside components
+function AppRoutes() {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
-};
+  
+  // Protected route component
+  const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+    return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+  };
+
+  return (
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<Index />} />
+      <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
+      <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
+      
+      {/* Protected routes */}
+      <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
+      <Route path="/module/:id" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
+      <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
+      <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -31,20 +52,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
-            <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
-            
-            {/* Protected routes */}
-            <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
-            <Route path="/module/:id" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
-            <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
-            <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
