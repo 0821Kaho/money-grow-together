@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -61,7 +60,7 @@ const Index = () => {
             </p>
             <div className="pt-4 flex items-center gap-4">
               <Badge className="bg-accent/20 text-accent-foreground border-none px-3 py-1">
-                2025年5月25日 サービス開始
+                2025年5月22日 サービス開始
               </Badge>
               <MoneyVisual type="coin" className="hidden md:flex" />
             </div>

@@ -113,7 +113,7 @@ const PreRegisterForm = () => {
       <div className="text-center space-y-2">
         <h3 className="text-lg font-medium text-gray-600">公開まで残り</h3>
         <Countdown 
-          date="2025-05-25T00:00:00+09:00" 
+          date="2025-05-22T00:00:00+09:00" 
           renderer={countdownRenderer}
         />
       </div>
