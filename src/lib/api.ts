@@ -30,6 +30,12 @@ api.interceptors.response.use(
   }
 );
 
+// Waitlist related API calls
+export const waitlistApi = {
+  register: (email: string) => api.post('/waitlist', { email }),
+  getCount: () => api.get('/waitlist/count'),
+};
+
 // User related API calls
 export const userApi = {
   me: () => api.get('/me'),
