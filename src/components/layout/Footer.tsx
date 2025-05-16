@@ -9,7 +9,7 @@ export const Footer = () => {
           <h3 className="text-xl font-logo text-white">Pigipe</h3>
           <p className="text-sm text-gray-400 mt-1 mb-6">遊んで学べるお金アプリ</p>
           
-          <div className="flex flex-col space-y-4">
+          <nav className="flex flex-col sm:flex-row sm:gap-6 gap-4 items-start">
             <Link to="/terms" className="text-xs hover:text-gray-100 transition-colors">
               利用規約
             </Link>
@@ -22,7 +22,7 @@ export const Footer = () => {
             <Link to="/about" className="text-xs hover:text-gray-100 transition-colors">
               運営会社
             </Link>
-          </div>
+          </nav>
         </div>
         
         <div className="border-t border-gray-700 mt-6 pt-6 text-center text-xs text-gray-400">
