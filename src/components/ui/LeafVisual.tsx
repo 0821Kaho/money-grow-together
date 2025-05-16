@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Leaf, Leaves } from "lucide-react";
+import { Leaf, LeafyGreen } from "lucide-react";
 
 interface LeafVisualProps {
   size?: "small" | "medium" | "large";
@@ -44,7 +44,7 @@ const LeafVisual = ({
             strokeWidth={1.5} 
           />
         ) : (
-          <Leaves 
+          <LeafyGreen 
             size={size === "large" ? 32 : size === "medium" ? 24 : 16} 
             color="#2BA26B" 
             strokeWidth={1.5} 
