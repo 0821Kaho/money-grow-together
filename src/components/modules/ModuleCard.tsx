@@ -1,5 +1,8 @@
 
 import { useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge"; 
+import { motion } from "framer-motion";
+import { Trophy } from "lucide-react";
 
 interface ModuleCardProps {
   id: number;
@@ -9,6 +12,7 @@ interface ModuleCardProps {
   color: string;
   progress: number;
   isLocked?: boolean;
+  badge?: "bronze" | "silver" | "gold" | null;
 }
 
 const ModuleCard = ({
@@ -19,6 +23,7 @@ const ModuleCard = ({
   color,
   progress,
   isLocked = false,
+  badge = null,
 }: ModuleCardProps) => {
   const navigate = useNavigate();
 
@@ -29,13 +34,14 @@ const ModuleCard = ({
   };
 
   return (
-    <div
-      className={`module-card ${isLocked ? "locked" : ""} cursor-pointer`}
-      style={{ borderColor: isLocked ? "transparent" : "#25B589" }}
+    <motion.div
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer p-5 bg-white rounded-xl shadow-sm border-l-4`}
+      style={{ borderLeftColor: isLocked ? "#D1D5DB" : color }}
       onClick={handleClick}
     >
       {isLocked && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl">
           <div className="rounded-full bg-white/90 p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,11 +64,23 @@ const ModuleCard = ({
       <div className="mb-5 flex items-center gap-3">
         <div
           className="flex h-12 w-12 items-center justify-center rounded-full text-white"
-          style={{ backgroundColor: color }}
+          style={{ backgroundColor: isLocked ? "#9CA3AF" : color }}
         >
           <div dangerouslySetInnerHTML={{ __html: icon }} />
         </div>
-        <h3 className="text-lg font-semibold">{title}</h3>
+        <div>
+          <h3 className="text-lg font-semibold">{title}</h3>
+          
+          {badge && (
+            <Badge 
+              variant={badge === "bronze" ? "default" : badge}
+              className="mt-1 flex items-center gap-1 text-xs"
+            >
+              <Trophy className="h-3 w-3" />
+              {badge === "bronze" ? "ブロンズ" : badge === "silver" ? "シルバー" : "ゴールド"}
+            </Badge>
+          )}
+        </div>
       </div>
 
       <p className="mb-5 text-sm text-game-dark">{description}</p>
@@ -72,21 +90,21 @@ const ModuleCard = ({
           <span className="text-xs font-medium">進捗</span>
           <span className="text-xs font-medium">{progress}%</span>
         </div>
-        <div className="progress-bar">
+        <div className="progress-bar bg-gray-100 rounded-full h-2 overflow-hidden">
           {progress === 100 ? (
             <div
-              className="progress-bar-fill-complete"
+              className="h-full bg-green-500"
               style={{ width: `${progress}%` }}
             ></div>
           ) : (
             <div
-              className="progress-bar-fill"
-              style={{ width: `${progress}%` }}
+              className="h-full"
+              style={{ width: `${progress}%`, backgroundColor: color }}
             ></div>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

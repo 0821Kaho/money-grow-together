@@ -1,8 +1,10 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GameLayout from "@/components/layout/GameLayout";
 import BudgetSimulation from "@/components/game/BudgetSimulation";
 import InvestmentSimulation from "@/components/game/InvestmentSimulation";
+import RiskManagementSimulation from "@/components/game/RiskManagementSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
 
@@ -33,7 +35,7 @@ const modules = [
     id: 3,
     title: "リスク管理",
     description: "突然の出費や将来の不安に備えるリスク対策を学ぼう",
-    component: null,
+    component: RiskManagementSimulation,
     mascotMessages: [
       "リスク管理は将来の安心につながります！",
       "備えあれば憂いなしです！",

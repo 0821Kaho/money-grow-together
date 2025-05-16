@@ -18,6 +18,7 @@ const badgeVariants = cva(
         outline: "text-foreground",
         silver: "bg-[#C0C0C0] text-[#212121] border-transparent", // Higher contrast for silver badge
         gold: "bg-[#FFD700] text-[#212121] border-transparent", // Gold badge with better contrast
+        bronze: "bg-[#CD7F32] text-white border-transparent", // Bronze badge
       },
     },
     defaultVariants: {
