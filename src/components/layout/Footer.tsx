@@ -10,7 +10,7 @@ export const Footer = () => {
             <div className="flex items-center gap-2">
               <h3 className="text-xl font-logo text-white">Pigipe</h3>
             </div>
-            <p className="text-sm text-gray-400 mt-1">5分で学べるお金アプリ</p>
+            <p className="text-sm text-gray-400 mt-1">遊んで学べるお金アプリ</p>
           </div>
           <div className="max-w-screen-sm flex flex-col items-start gap-2 md:flex-row md:gap-6">
             <Link to="/terms" className="w-full md:w-auto text-xs hover:text-gray-100 transition-colors leading-6">
