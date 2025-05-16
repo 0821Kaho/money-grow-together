@@ -1,9 +1,8 @@
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/db';
 import { Resend } from 'resend';
 import * as cron from 'node-cron';
 
-const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // API to register for the waitlist
