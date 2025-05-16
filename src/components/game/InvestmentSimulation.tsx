@@ -12,13 +12,18 @@ import GoalAttainmentSlider from "./investment/GoalAttainmentSlider";
 import LearningCard from "./investment/LearningCard";
 import { Button } from "@/components/ui/button";
 
+// Define a type for the allocation
+interface Allocation {
+  [key: number]: number;
+}
+
 const InvestmentSimulation = () => {
   // State
   const [goal, setGoal] = useState(1000000); // Default to 1,000,000 yen (1 million)
   const [currentValue, setCurrentValue] = useState(300000); // Default to 300,000 yen
   const [years, setYears] = useState(10); // Default to 10 years
   const [showWizard, setShowWizard] = useState(true); // Start with wizard
-  const [allocation, setAllocation] = useState({ 1: 50, 2: 30, 3: 20 }); // Default allocation
+  const [allocation, setAllocation] = useState<Allocation>({ 1: 50, 2: 30, 3: 20 }); // Default allocation
   const [showLearningCard, setShowLearningCard] = useState(false);
   const [monthlyAmount, setMonthlyAmount] = useState(30000); // Default monthly amount
   const [activeTab, setActiveTab] = useState("portfolio");
@@ -30,22 +35,22 @@ const InvestmentSimulation = () => {
     {
       title: "NISAを活用しよう！",
       description: "NISAは投資の利益が非課税になる制度です。年間120万円まで投資できます。",
-      tipType: "nisa"
+      tipType: "nisa" as const
     },
     {
       title: "複利効果を活かそう",
       description: "早く始めるほど時間の力で資産が大きく育ちます。10年で約2倍になることも！",
-      tipType: "compound"
+      tipType: "compound" as const
     },
     {
       title: "手数料は大敵",
       description: "投資信託の手数料は年利の1%未満がおすすめ。長期ではとても大きな差に！",
-      tipType: "fees"
+      tipType: "fees" as const
     },
     {
       title: "収入の一部を自動積立",
       description: "給料日に自動で引き落とす設定をすると、続けやすくなります。",
-      tipType: "diversification"
+      tipType: "diversification" as const
     }
   ];
   
@@ -90,7 +95,7 @@ const InvestmentSimulation = () => {
     }
   };
   
-  const handleRiskProfileSelected = (newAllocation: {[key: number]: number}) => {
+  const handleRiskProfileSelected = (newAllocation: Allocation) => {
     setAllocation(newAllocation);
   };
   
@@ -108,6 +113,11 @@ const InvestmentSimulation = () => {
       currency: 'JPY',
       maximumFractionDigits: 0
     }).format(amount);
+  };
+  
+  // Get a random learning tip
+  const getRandomTip = () => {
+    return learningTips[Math.floor(Math.random() * learningTips.length)];
   };
   
   return (
@@ -182,9 +192,9 @@ const InvestmentSimulation = () => {
           {showLearningCard && (
             <div className="mb-4">
               <LearningCard
-                title={learningTips[Math.floor(Math.random() * learningTips.length)].title}
-                description={learningTips[Math.floor(Math.random() * learningTips.length)].description}
-                tipType={learningTips[Math.floor(Math.random() * learningTips.length)].tipType}
+                title={getRandomTip().title}
+                description={getRandomTip().description}
+                tipType={getRandomTip().tipType}
                 onClose={() => setShowLearningCard(false)}
               />
             </div>

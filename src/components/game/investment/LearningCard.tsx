@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, X, Coins } from "lucide-react";
+import { GraduationCap, X, Coins, Info, Shield, TrendingUp, ChartPie } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 interface LearningCardProps {
   title: string;
@@ -27,36 +29,74 @@ const LearningCard = ({
       onClose();
     }, 1000);
   };
+
+  // Get badge label based on tip type
+  const getBadgeLabel = () => {
+    switch (tipType) {
+      case "nisa":
+        return "税制優遇";
+      case "tax":
+        return "節税効果";
+      case "compound":
+        return "複利の力";
+      case "diversification":
+        return "分散投資";
+      case "fees":
+        return "コスト削減";
+      default:
+        return "投資の知恵";
+    }
+  };
   
-  // Get icon based on tip type
+  // Get icon and colors based on tip type
   const getTipIcon = () => {
     switch (tipType) {
       case "nisa":
-        return <div className="bg-blue-100 text-blue-700 p-2 rounded-full">
-          <GraduationCap className="h-5 w-5" />
-        </div>;
+        return {
+          icon: <Shield className="h-5 w-5" />,
+          bgColor: "bg-blue-100",
+          textColor: "text-blue-700",
+          tooltipText: "税金がかからず、長期的に大きな差になります"
+        };
       case "tax":
-        return <div className="bg-green-100 text-green-700 p-2 rounded-full">
-          <Coins className="h-5 w-5" />
-        </div>;
+        return {
+          icon: <Coins className="h-5 w-5" />,
+          bgColor: "bg-green-100",
+          textColor: "text-green-700",
+          tooltipText: "支払う税金を減らして、手元に残るお金を増やします"
+        };
       case "compound":
-        return <div className="bg-purple-100 text-purple-700 p-2 rounded-full">
-          <GraduationCap className="h-5 w-5" />
-        </div>;
+        return {
+          icon: <TrendingUp className="h-5 w-5" />,
+          bgColor: "bg-purple-100",
+          textColor: "text-purple-700",
+          tooltipText: "利益が利益を生み、時間とともに加速度的に増えます"
+        };
       case "diversification":
-        return <div className="bg-amber-100 text-amber-700 p-2 rounded-full">
-          <GraduationCap className="h-5 w-5" />
-        </div>;
+        return {
+          icon: <ChartPie className="h-5 w-5" />,
+          bgColor: "bg-amber-100",
+          textColor: "text-amber-700",
+          tooltipText: "卵を複数のカゴに分けて、リスクを減らします"
+        };
       case "fees":
-        return <div className="bg-red-100 text-red-700 p-2 rounded-full">
-          <Coins className="h-5 w-5" />
-        </div>;
+        return {
+          icon: <Coins className="h-5 w-5" />,
+          bgColor: "bg-red-100",
+          textColor: "text-red-700",
+          tooltipText: "小さな手数料の差も、長期では大きな金額になります"
+        };
       default:
-        return <div className="bg-blue-100 text-blue-700 p-2 rounded-full">
-          <GraduationCap className="h-5 w-5" />
-        </div>;
+        return {
+          icon: <GraduationCap className="h-5 w-5" />,
+          bgColor: "bg-blue-100",
+          textColor: "text-blue-700",
+          tooltipText: "投資の基本を学んで、賢い選択をしましょう"
+        };
     }
   };
+
+  const tipStyle = getTipIcon();
 
   return (
     <Card className="relative border-l-4 border-l-accent">
@@ -70,10 +110,26 @@ const LearningCard = ({
       
       <CardContent className="pt-6 pb-4">
         <div className="flex items-start space-x-3">
-          {getTipIcon()}
+          <div className={`${tipStyle.bgColor} ${tipStyle.textColor} p-2 rounded-full`}>
+            {tipStyle.icon}
+          </div>
           
           <div className="flex-1">
-            <h3 className="text-sm font-medium">{title}</h3>
+            <div className="flex items-center mb-1">
+              <h3 className="text-sm font-medium mr-2">{title}</h3>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Badge variant="outline" className="text-xs px-2 py-0.5">
+                      {getBadgeLabel()}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-xs max-w-[200px]">{tipStyle.tooltipText}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <p className="text-xs text-muted-foreground mt-1">{description}</p>
             
             {!isRevealed ? (
