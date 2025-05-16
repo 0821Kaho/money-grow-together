@@ -1,81 +1,86 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ArrowRight, GraduationCap, Plane, Shield, Home, Gift } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Shield, Home, GraduationCap, Briefcase, Heart, Coins } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { toast } from "@/components/ui/use-toast";
+import StepIndicator from "./StepIndicator";
+import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Progress } from "@/components/ui/progress";
 
-// Goal options for users to select from
+// Updated goal options with more adult-focused categories and preset amounts
 const goalOptions = [
   {
-    id: "travel",
-    title: "海外旅行",
-    description: "夢の旅行に行くための費用",
-    icon: Plane,
+    id: "emergency",
+    title: "生活防衛費",
+    description: "3ヶ月分の生活費を確保し、突然の収入減や医療費にも備える",
+    icon: Shield,
+    amount: 600000,
+    years: 2
+  },
+  {
+    id: "skill",
+    title: "スキルアップ資金",
+    description: "資格取得・オンライン講座など"稼ぐ力"を伸ばす投資",
+    icon: Briefcase,
+    amount: 200000,
+    years: 1
+  },
+  {
+    id: "medical",
+    title: "緊急費用",
+    description: "ケガ・家電故障など突発コスト専用の「もしも」資金",
+    icon: Heart,
     amount: 500000,
     years: 2
   },
   {
-    id: "education",
-    title: "教育資金",
-    description: "スキルアップや子どもの教育",
-    icon: GraduationCap,
-    amount: 2000000,
-    years: 10
-  },
-  {
-    id: "emergency",
-    title: "緊急資金",
-    description: "急な出費に備えた安心資金",
-    icon: Shield,
-    amount: 1000000,
-    years: 3
-  },
-  {
     id: "home",
-    title: "住宅資金",
-    description: "マイホーム購入の頭金",
+    title: "マイホーム頭金",
+    description: "賃貸→持ち家を検討する層向け。住宅ローン審査で評価される頭金",
     icon: Home,
-    amount: 5000000,
-    years: 15
+    amount: 2000000,
+    years: 7
   },
   {
-    id: "other",
-    title: "その他の目標",
-    description: "自分だけの特別な目標",
-    icon: Gift,
-    amount: 1000000,
-    years: 5
+    id: "education",
+    title: "子どもの教育資金",
+    description: "保育料〜大学入学前の学習費を「学資保険＋積立投資」で分散",
+    icon: GraduationCap,
+    amount: 3000000,
+    years: 10
   }
 ];
 
-// Risk profile presets
+// Risk profile presets with more intuitive names and descriptions
 const riskProfiles = [
   {
     id: "safe",
-    title: "超安心型",
-    description: "元本割れのリスクを最小限に抑えます",
+    title: "家賃を確実に払うレベル",
+    description: "安定性重視、変動幅 -1%〜+3%",
     allocation: { 1: 80, 2: 20, 3: 0 },
-    weather: "sun",
-    emotion: "smile"
+    expectedReturn: 2,
+    emoji: "🛖",
+    riskLevel: "低"
   },
   {
     id: "balance",
-    title: "バランス型",
-    description: "安定性と成長性のバランスを重視します",
+    title: "少し成長を求めるレベル",
+    description: "安定と成長のバランス、変動幅 -3%〜+6%",
     allocation: { 1: 40, 2: 40, 3: 20 },
-    weather: "cloud",
-    emotion: "smile"
+    expectedReturn: 4,
+    emoji: "🏠",
+    riskLevel: "中"
   },
   {
     id: "growth",
-    title: "成長型",
-    description: "リスクを取って高い成長を目指します",
+    title: "副業で攻めるレベル",
+    description: "成長重視、変動幅 -10%〜+15%",
     allocation: { 1: 10, 2: 30, 3: 60 },
-    weather: "cloud-lightning",
-    emotion: "frown"
+    expectedReturn: 7,
+    emoji: "🚀",
+    riskLevel: "高"
   }
 ];
 
@@ -88,7 +93,23 @@ interface GoalWizardProps {
 const GoalWizard = ({ onGoalSelected, onRiskProfileSelected, onComplete }: GoalWizardProps) => {
   const [step, setStep] = useState<number>(1);
   const [selectedGoal, setSelectedGoal] = useState<string | null>(null);
-  const [personalityTraits, setPersonalityTraits] = useState<string[]>([]);
+  const [selectedRiskProfile, setSelectedRiskProfile] = useState<string | null>(null);
+  const [panicLevel, setPanicLevel] = useState<number>(50); // 0-100, middle is balanced
+  const [investmentPreference, setInvestmentPreference] = useState<number>(50); // 0-100
+  
+  // Get step title based on current step
+  const getStepTitle = () => {
+    switch (step) {
+      case 1:
+        return "目標を決める";
+      case 2: 
+        return "リスク許容度を選ぶ";
+      case 3:
+        return "結果確認";
+      default:
+        return "";
+    }
+  };
   
   const handleGoalSelect = (goalId: string) => {
     setSelectedGoal(goalId);
@@ -100,69 +121,66 @@ const GoalWizard = ({ onGoalSelected, onRiskProfileSelected, onComplete }: GoalW
   };
   
   const handleRiskProfileSelect = (profileId: string) => {
+    setSelectedRiskProfile(profileId);
+    const profile = riskProfiles.find(p => p.id === profileId);
+    if (profile) {
+      onRiskProfileSelected(profile.allocation);
+      
+      // Show immediate feedback with toast
+      toast({
+        title: "想定年平均リターン",
+        description: `+${profile.expectedReturn}%`,
+        duration: 3000,
+      });
+    }
+  };
+  
+  const handleFinishPersonalityQuestions = () => {
+    // Determine risk profile based on questionnaire
+    let profileId = "balance"; // Default is balanced
+    
+    const totalScore = panicLevel + investmentPreference;
+    if (totalScore < 90) {
+      profileId = "safe";
+    } else if (totalScore > 130) {
+      profileId = "growth";
+    }
+    
     const profile = riskProfiles.find(p => p.id === profileId);
     if (profile) {
       onRiskProfileSelected(profile.allocation);
     }
-    setStep(3);
-  };
-  
-  const handlePersonalityQuestion = (trait: string) => {
-    setPersonalityTraits([...personalityTraits, trait]);
     
-    // If we have 2 answers, determine risk profile and complete
-    if (personalityTraits.length === 1) {
-      // Simple algorithm: 
-      // cautious + save = safe
-      // cautious + invest = balance
-      // risk + save = balance
-      // risk + invest = growth
-      let profileId = "balance"; // Default
-      
-      if (trait === "save" && personalityTraits[0] === "cautious") {
-        profileId = "safe";
-      } else if (trait === "invest" && personalityTraits[0] === "risk") {
-        profileId = "growth";
-      }
-      
-      const profile = riskProfiles.find(p => p.id === profileId);
-      if (profile) {
-        onRiskProfileSelected(profile.allocation);
-      }
-      
-      // Complete the wizard after a short delay
-      setTimeout(() => {
-        onComplete();
-      }, 1000);
+    // Complete the wizard
+    onComplete();
+  };
+
+  const getRiskColor = (riskLevel: string) => {
+    switch (riskLevel) {
+      case "低": return "bg-green-500";
+      case "中": return "bg-yellow-500";
+      case "高": return "bg-red-500";
+      default: return "bg-green-500";
     }
   };
 
-  const getWeatherIcon = (weather: string) => {
-    switch (weather) {
-      case "sun": return <span className="text-green-500">☀️</span>;
-      case "cloud": return <span className="text-blue-500">⛅️</span>;
-      case "cloud-lightning": return <span className="text-red-500">🌩</span>;
-      default: return <span>☀️</span>;
-    }
-  };
-  
-  const getEmotionIcon = (emotion: string) => {
-    switch (emotion) {
-      case "smile": return <span className="text-green-500">😌</span>;
-      case "neutral": return <span className="text-blue-500">🙂</span>;
-      case "frown": return <span className="text-red-500">😬</span>;
-      default: return <span>🙂</span>;
-    }
-  };
-  
   return (
     <div className="space-y-6 animate-fade-in">
+      <StepIndicator 
+        currentStep={step} 
+        totalSteps={3} 
+        stepTitle={getStepTitle()} 
+      />
+      
       {step === 1 && (
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-center">何のためにお金を増やしたいですか？</h2>
-          <p className="text-center text-muted-foreground">目的を選ぶと、あなたに合った投資プランを提案します</p>
+          <p className="text-center text-muted-foreground">あなたの目的に合わせた投資プランを提案します</p>
           
-          <div className="grid gap-4 mt-6">
+          <div className="text-center mb-3">
+            <Badge variant="outline" className="bg-primary/5">最少投資額 ¥500〜</Badge>
+          </div>
+          
+          <div className="grid gap-4">
             {goalOptions.map((goal) => (
               <Card 
                 key={goal.id} 
@@ -177,7 +195,10 @@ const GoalWizard = ({ onGoalSelected, onRiskProfileSelected, onComplete }: GoalW
                     <h3 className="font-semibold">{goal.title}</h3>
                     <p className="text-sm text-muted-foreground">{goal.description}</p>
                   </div>
-                  <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-right">
+                    <div className="text-sm font-medium text-gray-400">¥{goal.amount.toLocaleString()}</div>
+                    <div className="text-xs text-gray-400">{goal.years}年目標</div>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -186,43 +207,26 @@ const GoalWizard = ({ onGoalSelected, onRiskProfileSelected, onComplete }: GoalW
       )}
       
       {step === 2 && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-center">投資スタイルを選びましょう</h2>
-          <p className="text-center text-muted-foreground">あなたに合った方法を選んでください</p>
-          
-          <Tabs defaultValue="choose" className="mt-6">
-            <TabsList className="grid grid-cols-1 mb-4">
-              <TabsTrigger value="choose">スタイルを選ぶ</TabsTrigger>
-            </TabsList>
+        <div className="space-y-6">
+          <div className="space-y-4 mb-8">
+            <p className="text-center text-muted-foreground">あなたに合った投資スタイルを選びましょう</p>
             
-            <TabsContent value="choose" className="space-y-4">
+            <div className="grid gap-4">
               {riskProfiles.map((profile) => (
                 <Card 
                   key={profile.id} 
-                  className="hover:bg-accent/10 cursor-pointer transition-colors"
+                  className={`hover:bg-accent/10 cursor-pointer transition-colors ${selectedRiskProfile === profile.id ? 'border-primary bg-primary/5' : ''}`}
                   onClick={() => handleRiskProfileSelect(profile.id)}
                 >
                   <CardContent className="p-4">
                     <div className="flex justify-between items-center">
-                      <h3 className="font-semibold">{profile.title}</h3>
-                      <div className="flex items-center space-x-2">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <span className="flex space-x-1">
-                                {getWeatherIcon(profile.weather)}
-                                {getEmotionIcon(profile.emotion)}
-                              </span>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>リスクレベル: {
-                                profile.id === "safe" ? "低め" :
-                                profile.id === "balance" ? "中程度" :
-                                "高め"
-                              }</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{profile.emoji}</span>
+                        <h3 className="font-semibold">{profile.title}</h3>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className={`w-3 h-3 rounded-full ${getRiskColor(profile.riskLevel)}`}></div>
+                        <span className="text-sm font-medium">{profile.riskLevel}リスク</span>
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mt-2">{profile.description}</p>
@@ -232,20 +236,20 @@ const GoalWizard = ({ onGoalSelected, onRiskProfileSelected, onComplete }: GoalW
                         {profile.id === "safe" && (
                           <>
                             <div className="bg-green-500 h-full" style={{width: '80%'}}></div>
-                            <div className="bg-blue-500 h-full" style={{width: '20%'}}></div>
+                            <div className="bg-yellow-500 h-full" style={{width: '20%'}}></div>
                           </>
                         )}
                         {profile.id === "balance" && (
                           <>
                             <div className="bg-green-500 h-full" style={{width: '40%'}}></div>
-                            <div className="bg-blue-500 h-full" style={{width: '40%'}}></div>
+                            <div className="bg-yellow-500 h-full" style={{width: '40%'}}></div>
                             <div className="bg-red-500 h-full" style={{width: '20%'}}></div>
                           </>
                         )}
                         {profile.id === "growth" && (
                           <>
                             <div className="bg-green-500 h-full" style={{width: '10%'}}></div>
-                            <div className="bg-blue-500 h-full" style={{width: '30%'}}></div>
+                            <div className="bg-yellow-500 h-full" style={{width: '30%'}}></div>
                             <div className="bg-red-500 h-full" style={{width: '60%'}}></div>
                           </>
                         )}
@@ -258,100 +262,62 @@ const GoalWizard = ({ onGoalSelected, onRiskProfileSelected, onComplete }: GoalW
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </div>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">質問に答えて、あなたにぴったりのプランを見つけましょう</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Q1: 給料日にボーナスが入ったら？</span>
+                </div>
+                <div className="px-2">
+                  <Slider 
+                    value={[panicLevel]} 
+                    min={0} 
+                    max={100} 
+                    step={10} 
+                    onValueChange={(values) => setPanicLevel(values[0])}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                    <span>まずは貯金する</span>
+                    <span>少しリスクを取って増やしたい</span>
+                  </div>
+                </div>
+              </div>
               
-              <Card className="hover:bg-accent/10 cursor-pointer transition-colors">
-                <CardContent className="p-4" onClick={() => setStep(3)}>
-                  <div className="flex items-center">
-                    <div className="bg-primary/10 rounded-full p-3 mr-4">
-                      <GraduationCap className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">AIおまかせ</h3>
-                      <p className="text-sm text-muted-foreground">簡単な質問であなたに合ったプランを提案</p>
-                    </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Q2: もし投資額が20%下がったら？</span>
+                </div>
+                <div className="px-2">
+                  <Slider 
+                    value={[investmentPreference]} 
+                    min={0} 
+                    max={100} 
+                    step={10} 
+                    onValueChange={(values) => setInvestmentPreference(values[0])}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                    <span>慌てて現金化する</span>
+                    <span>しばらく様子を見る</span>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      )}
-      
-      {step === 3 && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-bold text-center">あなたの性格を教えてください</h2>
-          <p className="text-center text-muted-foreground">2つの質問であなたに最適なプランを提案します</p>
-          
-          {personalityTraits.length === 0 && (
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-lg">質問1: お金について、どちらに近いですか？</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col space-y-3">
+                </div>
+              </div>
+              
+              <div className="pt-2">
                 <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-3"
-                  onClick={() => setPersonalityTraits(["cautious"])}
+                  className="w-full" 
+                  onClick={handleFinishPersonalityQuestions}
                 >
-                  <div className="text-left">
-                    <div className="font-medium">安全第一で考えたい</div>
-                    <div className="text-sm text-muted-foreground">元本割れしないことが大切</div>
-                  </div>
+                  結果を見る
                 </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-3"
-                  onClick={() => setPersonalityTraits(["risk"])}
-                >
-                  <div className="text-left">
-                    <div className="font-medium">ある程度リスクは取れる</div>
-                    <div className="text-sm text-muted-foreground">リターンのためなら変動は許容できる</div>
-                  </div>
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-          
-          {personalityTraits.length === 1 && (
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="text-lg">質問2: 将来のお金について、どう考えますか？</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-3"
-                  onClick={() => handlePersonalityQuestion("save")}
-                >
-                  <div className="text-left">
-                    <div className="font-medium">貯めることが優先</div>
-                    <div className="text-sm text-muted-foreground">安定して貯まることが大切</div>
-                  </div>
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="justify-start h-auto py-3"
-                  onClick={() => handlePersonalityQuestion("invest")}
-                >
-                  <div className="text-left">
-                    <div className="font-medium">増やすことが優先</div>
-                    <div className="text-sm text-muted-foreground">多少のリスクがあっても増やしたい</div>
-                  </div>
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-          
-          {personalityTraits.length === 2 && (
-            <Card className="mt-6">
-              <CardContent className="p-6 text-center">
-                <div className="text-xl mb-3">あなたに最適なプランを作成中...</div>
-                <Progress value={60} className="h-2 mb-4" />
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

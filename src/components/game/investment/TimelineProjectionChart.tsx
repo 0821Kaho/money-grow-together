@@ -1,280 +1,281 @@
 
-import { useState, useEffect } from "react";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { Slider } from "@/components/ui/slider";
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { FastForward, Info } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Tooltip as TooltipUI, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { LineChart, Line, XAxis, YAxis, Tooltip, Area, ResponsiveContainer, ComposedChart } from 'recharts';
+import { FastForward, Play, Pause } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 interface TimelineProjectionChartProps {
   initialAmount: number;
   monthlyContribution: number;
-  allocation: { [key: number]: number };
-  assetClasses: {
-    id: number;
-    name: string;
-    expectedReturn: number;
-    volatility: number;
-    color: string;
-    description?: string;
-  }[];
+  allocation: {[key: number]: number};
+  assetClasses: any[];
   selectedAssetId?: number;
+  maxYears?: number;
+  animated?: boolean;
 }
 
-const TimelineProjectionChart = ({
-  initialAmount,
-  monthlyContribution,
-  allocation,
+const TimelineProjectionChart = ({ 
+  initialAmount, 
+  monthlyContribution, 
+  allocation, 
   assetClasses,
-  selectedAssetId
+  selectedAssetId,
+  maxYears = 30,
+  animated = false
 }: TimelineProjectionChartProps) => {
   const [yearsToProject, setYearsToProject] = useState(10);
-  const [projectionData, setProjectionData] = useState<any[]>([]);
-  const [isValueIncreasing, setIsValueIncreasing] = useState(false);
-  const [isValueDecreasing, setIsValueDecreasing] = useState(false);
-  const [animationTimeout, setAnimationTimeout] = useState<NodeJS.Timeout | null>(null);
-
-  // Calculate projected data when inputs change
-  useEffect(() => {
-    generateProjectionData();
-  }, [initialAmount, monthlyContribution, allocation, yearsToProject]);
-
-  // Clean up timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (animationTimeout) clearTimeout(animationTimeout);
-    };
-  }, [animationTimeout]);
-
-  const generateProjectionData = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showPulse, setShowPulse] = useState(false);
+  const [pulseType, setPulseType] = useState<'positive' | 'negative'>('positive');
+  
+  // Prepare chart data based on allocation
+  const projectionData = useMemo(() => {
     const data = [];
-    let currentValue = initialAmount;
-    let previousValue = initialAmount;
+    let currentTotal = initialAmount;
+    let assetValues: {[key: number]: number} = {};
     
-    // Get weighted return rate from allocation
-    const calculateWeightedReturn = () => {
-      let totalReturn = 0;
-      assetClasses.forEach(asset => {
-        const weight = allocation[asset.id] / 100;
-        totalReturn += asset.expectedReturn * weight;
-      });
-      return totalReturn / 100; // Convert to decimal for calculation
-    };
+    // Initialize asset values
+    assetClasses.forEach(asset => {
+      const percentage = allocation[asset.id] || 0;
+      assetValues[asset.id] = initialAmount * (percentage / 100);
+    });
     
-    const annualReturnRate = calculateWeightedReturn();
-    const monthlyReturnRate = Math.pow(1 + annualReturnRate, 1/12) - 1;
-    
-    // Generate data for each year
+    // Project for yearsToProject years
     for (let year = 0; year <= yearsToProject; year++) {
-      // For each year, calculate monthly compounding
-      if (year > 0) {
-        for (let month = 0; month < 12; month++) {
-          // Add monthly contribution
-          currentValue += monthlyContribution;
-          // Apply monthly return
-          currentValue *= (1 + monthlyReturnRate);
-        }
-      }
+      let yearData: any = { year };
+      let yearlyTotal = 0;
       
-      // Calculate individual asset values
-      const assetValues: { [key: string]: number } = {};
+      // Calculate values for each asset class
       assetClasses.forEach(asset => {
-        const weight = allocation[asset.id] / 100;
-        assetValues[`asset${asset.id}`] = currentValue * weight;
+        const percentage = allocation[asset.id] || 0;
+        
+        // First year is just initial distribution
+        if (year === 0) {
+          yearData[`asset${asset.id}`] = assetValues[asset.id];
+          yearlyTotal += assetValues[asset.id];
+        } else {
+          // Calculate yearly return based on expected return
+          const previousValue = assetValues[asset.id];
+          // Add monthly contributions distributed according to allocation
+          const yearlyContribution = monthlyContribution * 12 * (percentage / 100);
+          // Calculate asset value with growth
+          const newValue = previousValue * (1 + asset.expectedReturn / 100) + yearlyContribution;
+          assetValues[asset.id] = newValue;
+          yearData[`asset${asset.id}`] = newValue;
+          yearlyTotal += newValue;
+        }
       });
       
-      // Add data point for this year
-      data.push({
-        year,
-        totalValue: Math.round(currentValue),
-        ...assetValues,
-        growth: currentValue - previousValue
-      });
-      
-      previousValue = currentValue;
+      // Add total to data
+      yearData.total = yearlyTotal;
+      data.push(yearData);
     }
     
-    // Show animation effect based on growth
-    if (data.length > 1 && data[data.length-1].growth > 0) {
-      showPositiveAnimation();
-    } else if (data.length > 1 && data[data.length-1].growth < 0) {
-      showNegativeAnimation();
-    }
-    
-    setProjectionData(data);
-  };
+    return data;
+  }, [initialAmount, monthlyContribution, allocation, assetClasses, yearsToProject]);
   
-  const showPositiveAnimation = () => {
-    if (animationTimeout) clearTimeout(animationTimeout);
-    setIsValueIncreasing(true);
-    setIsValueDecreasing(false);
-    const timeout = setTimeout(() => {
-      setIsValueIncreasing(false);
-    }, 1000);
-    setAnimationTimeout(timeout);
-  };
-  
-  const showNegativeAnimation = () => {
-    if (animationTimeout) clearTimeout(animationTimeout);
-    setIsValueDecreasing(true);
-    setIsValueIncreasing(false);
-    const timeout = setTimeout(() => {
-      setIsValueDecreasing(false);
-    }, 1000);
-    setAnimationTimeout(timeout);
-  };
-  
-  // Format currency for display
+  // Format currency for tooltips
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('ja-JP', {
-      style: 'currency',
+    return new Intl.NumberFormat('ja-JP', { 
+      style: 'currency', 
       currency: 'JPY',
       maximumFractionDigits: 0
     }).format(value);
   };
   
-  // Get selected asset details
-  const selectedAsset = selectedAssetId 
-    ? assetClasses.find(asset => asset.id === selectedAssetId)
-    : null;
-
+  // Calculate gains and returns
+  const totalInvestment = useMemo(() => {
+    // Initial amount + monthly contributions over time
+    return initialAmount + (monthlyContribution * 12 * yearsToProject);
+  }, [initialAmount, monthlyContribution, yearsToProject]);
+  
+  const projectedEndValue = useMemo(() => {
+    return projectionData.length > 0 ? projectionData[projectionData.length - 1].total : 0;
+  }, [projectionData]);
+  
+  const projectedGains = useMemo(() => {
+    return projectedEndValue - totalInvestment;
+  }, [projectedEndValue, totalInvestment]);
+  
+  const isPositiveGain = projectedGains > 0;
+  
+  // Animation effect
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isPlaying) {
+      timer = setInterval(() => {
+        setYearsToProject(prev => {
+          if (prev < maxYears) {
+            // Trigger pulse animation
+            setShowPulse(true);
+            setPulseType(isPositiveGain ? 'positive' : 'negative');
+            setTimeout(() => setShowPulse(false), 800);
+            return prev + 1;
+          } else {
+            setIsPlaying(false);
+            return prev;
+          }
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isPlaying, maxYears, isPositiveGain]);
+  
+  // Reset if props change
+  useEffect(() => {
+    setYearsToProject(Math.min(10, maxYears));
+    setIsPlaying(false);
+  }, [initialAmount, monthlyContribution, allocation, maxYears]);
+  
+  const handleYearSliderChange = (values: number[]) => {
+    setYearsToProject(values[0]);
+    setIsPlaying(false);
+  };
+  
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+    if (!isPlaying && yearsToProject >= maxYears) {
+      setYearsToProject(1);
+    }
+  };
+  
+  const selectedAsset = selectedAssetId ? assetClasses.find(a => a.id === selectedAssetId) : null;
+  
   return (
     <Card className="mt-6">
-      <CardContent className="pt-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            <h3 className="font-medium text-sm">未来予測チャート</h3>
-            <TooltipProvider>
-              <TooltipUI>
-                <TooltipTrigger asChild>
-                  <button className="ml-1.5 p-1 hover:bg-muted rounded-full">
-                    <Info className="h-3.5 w-3.5 text-muted-foreground" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xs max-w-[200px]">
-                    このチャートは将来の予測であり、実際の結果は変動します。
-                    複利効果と時間の力で資産がどう増えるか確認できます。
-                  </p>
-                </TooltipContent>
-              </TooltipUI>
-            </TooltipProvider>
+      <CardContent className="p-4">
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="text-sm font-medium">資産成長予測</h3>
+          <div className="flex items-center gap-2">
+            {animated && (
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="h-8 px-2 text-xs"
+                onClick={togglePlay}
+              >
+                {isPlaying ? <Pause className="h-3 w-3 mr-1" /> : <Play className="h-3 w-3 mr-1" />}
+                {isPlaying ? '一時停止' : '自動再生'}
+              </Button>
+            )}
+            <Badge variant="outline" className="bg-primary/5 text-xs">
+              {yearsToProject}年後
+            </Badge>
           </div>
-          
-          {projectionData.length > 0 && (
-            <div 
-              className={`text-sm font-medium transition-colors duration-500 ${
-                isValueIncreasing ? 'text-green-500 animate-pulse' : 
-                isValueDecreasing ? 'text-red-500 animate-pulse' : ''
-              }`}
-            >
-              {formatCurrency(projectionData[projectionData.length - 1]?.totalValue || initialAmount)}
-            </div>
-          )}
         </div>
         
-        {/* Chart Area */}
-        <div className="h-40 mb-6 relative">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={projectionData}
-              margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
+        <div className="relative">
+          <ResponsiveContainer width="100%" height={200}>
+            <ComposedChart data={projectionData}>
+              <defs>
+                {assetClasses.map((asset) => (
+                  <linearGradient key={asset.id} id={`colorAsset${asset.id}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={asset.color} stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor={asset.color} stopOpacity={0.1}/>
+                  </linearGradient>
+                ))}
+              </defs>
               <XAxis 
                 dataKey="year" 
-                axisLine={false} 
-                tickLine={false}
-                tick={{ fontSize: 10 }}
+                tick={{ fontSize: 11 }} 
                 tickFormatter={(value) => `${value}年`}
               />
               <YAxis 
-                axisLine={false} 
-                tickLine={false} 
-                tick={{ fontSize: 10 }}
-                tickFormatter={(value) => formatCurrency(value).replace('円', '')}
-                width={60}
+                width={50}
+                tick={{ fontSize: 11 }}
+                tickFormatter={(value) => value >= 1000000 
+                  ? `${(value / 1000000).toFixed(1)}M` 
+                  : `${(value / 10000).toFixed(0)}万`
+                }
               />
-              <Tooltip
-                content={({active, payload}) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="p-2 bg-background border rounded-md shadow-md">
-                        <p className="text-xs font-medium">{payload[0].payload.year}年後</p>
-                        <p className="text-xs mt-1">{formatCurrency(payload[0].payload.totalValue)}</p>
-                        {selectedAsset && (
-                          <p className="text-xs mt-1">
-                            {selectedAsset.name}: {formatCurrency(payload[0].payload[`asset${selectedAsset.id}`])}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
+              <Tooltip 
+                formatter={(value: any) => [formatCurrency(value), '']}
+                labelFormatter={(label) => `${label}年目`}
               />
               
-              {/* Selected Asset Area Chart (if an asset is selected) */}
-              {selectedAsset && (
+              {/* Area charts for each asset class */}
+              {assetClasses.map((asset) => (
                 <Area
+                  key={asset.id}
                   type="monotone"
-                  dataKey={`asset${selectedAsset.id}`}
-                  stroke={selectedAsset.color}
-                  fill={selectedAsset.color}
-                  fillOpacity={0.3}
-                  strokeWidth={1}
-                  activeDot={{ r: 5, stroke: selectedAsset.color, strokeWidth: 2 }}
+                  dataKey={`asset${asset.id}`}
+                  stroke={asset.color}
+                  fillOpacity={selectedAssetId ? (selectedAssetId === asset.id ? 0.8 : 0.1) : 0.8}
+                  fill={`url(#colorAsset${asset.id})`}
+                  stackId="1"
                 />
-              )}
+              ))}
               
-              {/* Total Portfolio Line */}
-              <Area
-                type="monotone"
-                dataKey="totalValue"
-                stroke="#9b87f5"
-                strokeWidth={2}
-                fill="#9b87f5"
-                fillOpacity={0.1}
-                activeDot={{ r: 6, stroke: "#9b87f5", strokeWidth: 2, fill: "#fff" }}
+              {/* Total line */}
+              <Line 
+                type="monotone" 
+                dataKey="total" 
+                stroke="#8884d8" 
+                strokeWidth={2} 
+                dot={false} 
               />
-            </AreaChart>
+            </ComposedChart>
           </ResponsiveContainer>
           
-          {/* Pulse effect overlay for positive/negative changes */}
-          <div 
-            className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${
-              isValueIncreasing ? 'bg-green-500 opacity-10 animate-pulse' : 
-              isValueDecreasing ? 'bg-red-500 opacity-10 animate-pulse' : 
-              'opacity-0'
-            }`}
-          />
+          {/* Pulse animation overlay */}
+          {showPulse && (
+            <motion.div 
+              initial={{ opacity: 0.8, scale: 1 }}
+              animate={{ opacity: 0, scale: 1.5 }}
+              transition={{ duration: 0.8 }}
+              className={`absolute inset-0 rounded-lg ${
+                pulseType === 'positive' ? 'bg-green-500/10' : 'bg-red-500/10'
+              }`}
+            />
+          )}
         </div>
         
-        {/* Time Slider */}
-        <div className="mt-4">
-          <div className="flex items-center mb-2">
-            <FastForward className="h-4 w-4 mr-1.5 text-muted-foreground" />
-            <h4 className="text-xs font-medium">未来を早送り</h4>
-            <span className="ml-auto text-xs font-medium">{yearsToProject}年後</span>
+        {animated && (
+          <div className="mt-4">
+            <div className="mb-1 flex justify-between text-xs text-muted-foreground">
+              <span>1年</span>
+              <span>{maxYears}年</span>
+            </div>
+            <Slider
+              value={[yearsToProject]}
+              min={1}
+              max={maxYears}
+              step={1}
+              onValueChange={handleYearSliderChange}
+            />
           </div>
-          
-          <Slider
-            value={[yearsToProject]}
-            onValueChange={(value) => setYearsToProject(value[0])}
-            min={1}
-            max={30}
-            step={1}
-            className="mb-1"
-          />
-          
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>1年</span>
-            <span>15年</span>
-            <span>30年</span>
+        )}
+        
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <div className="text-xs text-muted-foreground">投資元本</div>
+            <div className="font-medium">{formatCurrency(totalInvestment)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs text-muted-foreground">予測資産</div>
+            <div className="font-medium">{formatCurrency(projectedEndValue)}</div>
           </div>
         </div>
+        
+        <div className="mt-2">
+          <div className="text-xs text-muted-foreground">運用益</div>
+          <div className={`font-medium ${isPositiveGain ? 'text-green-600' : 'text-red-600'}`}>
+            {isPositiveGain ? '+' : ''}{formatCurrency(projectedGains)}
+          </div>
+        </div>
+        
+        {selectedAsset && (
+          <div className="mt-4 p-2 bg-slate-50 rounded-md">
+            <div className="text-xs font-medium">{selectedAsset.name}を選択中</div>
+            <div className="text-xs text-muted-foreground">
+              {selectedAsset.description}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

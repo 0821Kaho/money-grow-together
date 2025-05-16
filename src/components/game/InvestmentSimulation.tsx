@@ -5,13 +5,15 @@ import { toast } from "@/components/ui/use-toast";
 import InvestmentPortfolio from "./investment/InvestmentPortfolio";
 import InvestmentCalculator from "./investment/InvestmentCalculator";
 import { Progress } from "@/components/ui/progress";
-import { Bell, Coins, FastForward } from "lucide-react";
+import { Bell, Coins, FastForward, Award, Flame } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import GoalWizard from "./investment/GoalWizard";
 import GoalAttainmentSlider from "./investment/GoalAttainmentSlider";
 import LearningCard from "./investment/LearningCard";
 import { Button } from "@/components/ui/button";
 import TimelineProjectionChart from "./investment/TimelineProjectionChart";
+import InvestmentResults from "./investment/InvestmentResults";
+import { Badge } from "@/components/ui/badge";
 
 // Define asset classes
 const assetClasses = [
@@ -83,6 +85,9 @@ const InvestmentSimulation = () => {
   const [isNewUser, setIsNewUser] = useState(true); // Track if this is first time use
   const [showDemoMode, setShowDemoMode] = useState(false); // Demo mode for first-time users
   const [selectedAssetId, setSelectedAssetId] = useState<number | undefined>(undefined);
+  const [wizardComplete, setWizardComplete] = useState(false);
+  const [userLevel, setUserLevel] = useState(1);
+  const [streakDays, setStreakDays] = useState(1);
   
   // Learning tips
   const learningTips = [
@@ -120,7 +125,7 @@ const InvestmentSimulation = () => {
   const handleGoalWizardComplete = (goalAmount: number, goalYears: number) => {
     setGoal(goalAmount);
     setYears(goalYears);
-    setShowWizard(false);
+    setWizardComplete(true);
     
     // Show welcome message
     toast({
@@ -132,21 +137,6 @@ const InvestmentSimulation = () => {
     setTimeout(() => {
       setShowLearningCard(true);
     }, 3000);
-    
-    // For first-time users, show demo mode
-    if (isNewUser) {
-      setShowDemoMode(true);
-      
-      // Exit demo mode after 30 seconds
-      setTimeout(() => {
-        setShowDemoMode(false);
-        setIsNewUser(false);
-        toast({
-          title: "デモモード終了",
-          description: "これからは実際にあなたの目標で投資シミュレーションをしましょう！",
-        });
-      }, 30000);
-    }
   };
   
   const handleRiskProfileSelected = (newAllocation: Allocation) => {
@@ -159,6 +149,20 @@ const InvestmentSimulation = () => {
   
   const handleAssetSelected = (assetId: number) => {
     setSelectedAssetId(assetId === selectedAssetId ? undefined : assetId);
+  };
+  
+  const handleSetupComplete = () => {
+    setShowWizard(false);
+    setUserLevel(prev => prev + 1);
+    
+    toast({
+      title: "レベルアップ！",
+      description: `投資の達人Lv${userLevel + 1}になりました！`,
+    });
+  };
+  
+  const handleResetWizard = () => {
+    setWizardComplete(false);
   };
   
   // Calculate progress percentage
@@ -182,14 +186,30 @@ const InvestmentSimulation = () => {
     <div className="max-w-3xl mx-auto">
       {/* Show wizard if first time */}
       {showWizard ? (
-        <GoalWizard 
-          onGoalSelected={(amount, years) => {
-            setGoal(amount);
-            setYears(years);
-          }}
-          onRiskProfileSelected={handleRiskProfileSelected}
-          onComplete={() => handleGoalWizardComplete(goal, years)}
-        />
+        <>
+          {!wizardComplete ? (
+            <GoalWizard 
+              onGoalSelected={(amount, years) => {
+                setGoal(amount);
+                setYears(years);
+              }}
+              onRiskProfileSelected={handleRiskProfileSelected}
+              onComplete={() => handleGoalWizardComplete(goal, years)}
+            />
+          ) : (
+            <InvestmentResults
+              goal={goal}
+              years={years}
+              currentValue={currentValue}
+              monthlyAmount={monthlyAmount}
+              allocation={allocation}
+              assetClasses={assetClasses}
+              selectedAssetId={selectedAssetId}
+              onSetupComplete={handleSetupComplete}
+              onGoalChange={handleResetWizard}
+            />
+          )}
+        </>
       ) : (
         <>
           {/* Header with logo and notification bell */}
@@ -200,9 +220,19 @@ const InvestmentSimulation = () => {
               </div>
               <span className="font-semibold text-lg">マネゴロー</span>
             </div>
-            <button className="p-1.5 hover:bg-muted rounded-full">
-              <Bell className="h-5 w-5" />
-            </button>
+            <div className="flex items-center gap-2">
+              <Badge variant="silver" className="flex items-center gap-1">
+                <Flame className="h-3 w-3" />
+                <span>{streakDays}日連続</span>
+              </Badge>
+              <Badge variant="gold" className="flex items-center gap-1">
+                <Award className="h-3 w-3" />
+                <span>Lv{userLevel}</span>
+              </Badge>
+              <button className="p-1.5 hover:bg-muted rounded-full">
+                <Bell className="h-5 w-5" />
+              </button>
+            </div>
           </div>
           
           {/* Goal tracking */}
@@ -223,28 +253,6 @@ const InvestmentSimulation = () => {
               </div>
             </CardContent>
           </Card>
-          
-          {showDemoMode && (
-            <Card className="mb-4 bg-blue-50 border-blue-200">
-              <CardContent className="py-3 px-4">
-                <div className="flex items-center">
-                  <div className="mr-3 bg-blue-100 p-1.5 rounded-full">
-                    <Coins className="h-4 w-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-medium text-blue-800">デモモード</h4>
-                    <p className="text-xs text-blue-600">
-                      まずは¥10,000でシミュレーション体験をしてみましょう！
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-          
-          <div className="text-center mb-4">
-            <p className="text-sm font-medium text-secondary">少額でも、20年後は大きな一歩。</p>
-          </div>
           
           {/* Learning Card - shown occasionally */}
           {showLearningCard && (
@@ -284,6 +292,7 @@ const InvestmentSimulation = () => {
                 allocation={allocation}
                 assetClasses={assetClasses}
                 selectedAssetId={selectedAssetId}
+                animated={true}
               />
             </TabsContent>
             <TabsContent value="simulator">
@@ -331,7 +340,7 @@ const InvestmentSimulation = () => {
                 </div>
                 <div>
                   <h4 className="text-sm font-medium">今日のチャレンジ</h4>
-                  <p className="text-xs text-muted-foreground">積立額を +¥500 増やしてみましょう！</p>
+                  <p className="text-xs text-muted-foreground">コンビニコーヒーを1回減らして¥150貯めよう！</p>
                 </div>
               </div>
             </CardContent>
