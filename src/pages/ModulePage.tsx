@@ -2,7 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GameLayout from "@/components/layout/GameLayout";
-import BudgetSimulation from "@/components/game/BudgetSimulation";
+import BudgetSimulationPatched from "@/components/game/BudgetSimulationPatched";
 import InvestmentSimulation from "@/components/game/InvestmentSimulation";
 import RiskManagementSimulation from "@/components/game/RiskManagementSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
@@ -13,7 +13,7 @@ const modules = [
     id: 1,
     title: "家計管理",
     description: "予算を立てて収支を管理し、借入に頼らない生活を目指そう",
-    component: BudgetSimulation,
+    component: BudgetSimulationPatched,
     mascotMessages: [
       "家計管理の基本を学んでいきましょう！",
       "収入と支出のバランスが大切です！",
