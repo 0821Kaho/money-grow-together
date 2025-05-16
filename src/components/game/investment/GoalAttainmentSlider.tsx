@@ -4,6 +4,7 @@ import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
 import { ArrowUp } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 
 interface GoalAttainmentSliderProps {
   goalAmount: number;
@@ -71,6 +72,14 @@ const GoalAttainmentSlider = ({
     return "bg-red-500";
   };
 
+  // Handle direct input change
+  const handleDirectInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value >= 0 && value <= 100000) {
+      setMonthlyAmount(value);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -104,15 +113,30 @@ const GoalAttainmentSlider = ({
           <span className="text-sm font-medium">{formatCurrency(monthlyAmount)}</span>
         </div>
         
-        <Slider
-          id="monthly"
-          min={5000}
-          max={100000}
-          step={1000}
-          value={[monthlyAmount]}
-          onValueChange={(values) => setMonthlyAmount(values[0])}
-          className="py-4"
-        />
+        <div className="flex gap-2 items-center">
+          <Slider
+            id="monthly"
+            min={5000}
+            max={100000}
+            step={1000}
+            value={[monthlyAmount]}
+            onValueChange={(values) => setMonthlyAmount(values[0])}
+            className="flex-1"
+          />
+          
+          <div className="w-28 flex items-center">
+            <Input
+              type="number"
+              min={0}
+              max={100000}
+              step={1000}
+              value={monthlyAmount}
+              onChange={handleDirectInputChange}
+              className="text-right"
+            />
+            <span className="ml-1 text-sm">円</span>
+          </div>
+        </div>
         
         <div className="flex justify-between text-xs text-muted-foreground">
           <span>¥5,000</span>

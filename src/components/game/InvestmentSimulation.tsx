@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import TimelineProjectionChart from "./investment/TimelineProjectionChart";
 import InvestmentResults from "./investment/InvestmentResults";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
 // Define asset classes
 const assetClasses = [
@@ -198,6 +198,7 @@ const InvestmentSimulation = () => {
   const [wizardComplete, setWizardComplete] = useState(false);
   const [userLevel, setUserLevel] = useState(1);
   const [streakDays, setStreakDays] = useState(1);
+  const [salary, setSalary] = useState(300000); // Default monthly salary
   
   // Learning tips
   const learningTips = [
@@ -344,6 +345,47 @@ const InvestmentSimulation = () => {
               </button>
             </div>
           </div>
+          
+          {/* Income and monthly contribution inputs */}
+          <Card className="mb-4">
+            <CardContent className="pt-6 space-y-4">
+              <div>
+                <label htmlFor="salary" className="block text-sm text-muted-foreground mb-1">月収</label>
+                <div className="flex items-center">
+                  <Input 
+                    id="salary"
+                    type="number" 
+                    value={salary}
+                    onChange={(e) => setSalary(Number(e.target.value))}
+                    className="w-full"
+                    min={0}
+                    step={10000}
+                  />
+                  <span className="ml-2 text-sm">円</span>
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="monthlyAmount" className="block text-sm text-muted-foreground mb-1">毎月の積立額</label>
+                <div className="flex items-center">
+                  <Input 
+                    id="monthlyAmount"
+                    type="number" 
+                    value={monthlyAmount}
+                    onChange={(e) => setMonthlyAmount(Number(e.target.value))}
+                    className="w-full"
+                    min={0}
+                    max={salary}
+                    step={1000}
+                  />
+                  <span className="ml-2 text-sm">円</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  収入の{monthlyAmount > 0 && salary > 0 ? Math.round((monthlyAmount / salary) * 100) : 0}%
+                </p>
+              </div>
+            </CardContent>
+          </Card>
           
           {/* Goal tracking */}
           <Card className="mb-4">
