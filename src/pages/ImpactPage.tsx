@@ -50,7 +50,7 @@ const ImpactPage = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl font-heading font-bold mb-6 text-center">
-            どうして "1万円の学習" が<br />
+            どうして遊んでお金を学ぶだけで<br />
             最大 +1,300 万円の価値になるの？
           </h1>
 
