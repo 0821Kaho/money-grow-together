@@ -53,12 +53,12 @@ const goalOptions = [
   }
 ];
 
-// Risk profile presets with more intuitive names and descriptions
+// Risk profile presets with updated names
 // Updated to include new asset allocations
 const riskProfiles = [
   {
     id: "safe",
-    title: "家賃を確実に払うレベル",
+    title: "守り重視（安定型）",
     description: "安定性重視、変動幅 -1%〜+3%",
     allocation: { 
       1: 40, 2: 20, 3: 0, 
@@ -71,7 +71,7 @@ const riskProfiles = [
   },
   {
     id: "balance",
-    title: "少し成長を求めるレベル",
+    title: "バランス型",
     description: "安定と成長のバランス、変動幅 -3%〜+6%",
     allocation: { 
       1: 20, 2: 20, 3: 10,
@@ -84,7 +84,7 @@ const riskProfiles = [
   },
   {
     id: "growth",
-    title: "副業で攻めるレベル",
+    title: "攻め重視（成長型）",
     description: "成長重視、変動幅 -10%〜+15%",
     allocation: { 
       1: 5, 2: 10, 3: 30, 
