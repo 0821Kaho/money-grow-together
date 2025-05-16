@@ -1,6 +1,5 @@
 
 // Handle Prisma imports carefully with proper types
-import { type Prisma } from '@prisma/client';
 
 // For type declaration only
 declare global {
@@ -16,15 +15,18 @@ export const getPrisma = async () => {
       // Dynamically import Prisma client
       const prismaModule = await import('@prisma/client');
       
-      // In Prisma v6, the PrismaClient is often available differently
-      const PrismaClient = prismaModule.PrismaClient || prismaModule.default?.PrismaClient;
+      // Try to find PrismaClient in different possible locations based on Prisma v6 structure
+      const PrismaClientClass = 
+        prismaModule.PrismaClient || 
+        (prismaModule.default && prismaModule.default.PrismaClient) || 
+        (typeof prismaModule === 'function' ? prismaModule : undefined);
       
-      if (!PrismaClient) {
+      if (!PrismaClientClass) {
         throw new Error('PrismaClient not found in @prisma/client imports');
       }
       
       // Create new PrismaClient instance or use existing one
-      prismaInstance = global.prisma || new PrismaClient();
+      prismaInstance = global.prisma || new PrismaClientClass();
       
       // Save to global in development for hot-reload persistence
       if (process.env.NODE_ENV !== 'production') {
@@ -44,14 +46,19 @@ export const prisma = global.prisma || (() => {
   try {
     // We need to dynamically import here for CommonJS
     const prismaModule = require('@prisma/client');
-    const PrismaClient = prismaModule.PrismaClient || prismaModule.default?.PrismaClient;
     
-    if (!PrismaClient) {
+    // Try to find PrismaClient in different possible locations
+    const PrismaClientClass = 
+      prismaModule.PrismaClient || 
+      (prismaModule.default && prismaModule.default.PrismaClient) || 
+      (typeof prismaModule === 'function' ? prismaModule : undefined);
+    
+    if (!PrismaClientClass) {
       console.error('PrismaClient not found in @prisma/client imports');
       return {};
     }
     
-    return new PrismaClient();
+    return new PrismaClientClass();
   } catch (error) {
     console.error('Failed to initialize Prisma client:', error);
     return {};
