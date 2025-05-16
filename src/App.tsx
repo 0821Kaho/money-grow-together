@@ -41,6 +41,7 @@ function AppRoutes() {
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/privacy" element={<PrivacyPolicyPage />} />
       <Route path="/about" element={<CompanyPage />} />
+      <Route path="/company" element={<Navigate to="/about" replace />} />
       
       {/* Protected routes */}
       <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />

@@ -22,7 +22,7 @@ export const Footer = () => {
             <Link to="/impact" className="w-full md:w-auto text-xs hover:text-gray-100 transition-colors leading-6">
               社会インパクト
             </Link>
-            <Link to="/company" className="w-full md:w-auto text-xs hover:text-gray-100 transition-colors leading-6">
+            <Link to="/about" className="w-full md:w-auto text-xs hover:text-gray-100 transition-colors leading-6">
               運営会社
             </Link>
           </div>
