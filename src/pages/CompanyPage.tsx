@@ -52,7 +52,7 @@ const CompanyPage = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-gray-100 pb-2">
                 <div className="font-medium text-gray-700">設立</div>
-                <div className="md:col-span-2">2024年3月</div>
+                <div className="md:col-span-2">2024年11月</div>
               </div>
             </div>
           </section>
@@ -60,11 +60,9 @@ const CompanyPage = () => {
           <section className="mb-8">
             <h2 id="business" className="text-xl font-heading font-subheading mb-3">事業内容</h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li>K-12向けエデュテインメント × FinTechアプリ「Pigipe」の開発・運営</li>
+              <li>エデュテインメント × FinTechアプリ「Pigipe」の開発・運営</li>
               <li>金融リテラシー教育コンテンツの企画・制作</li>
-              <li>教育機関向けパートナーシップ・プログラムの提供</li>
               <li>マーケティング・PRサービスの提供</li>
-              <li>海外セールスサポート</li>
             </ul>
           </section>
 
