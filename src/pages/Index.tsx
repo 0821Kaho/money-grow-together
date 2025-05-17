@@ -99,7 +99,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-12 md:pb-8">
         <motion.div
-          className="grid md:grid-cols-2 gap-8 items-center"
+          className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -152,19 +152,23 @@ const Index = () => {
 
       {/* Countdown */}
       <section className="container mx-auto px-4 py-8">
-        <Countdown targetDate={launchDate} className="my-4" />
+        <div className="max-w-4xl mx-auto">
+          <Countdown targetDate={launchDate} className="my-4" />
+        </div>
       </section>
       
-      <hr className="border-t border-dashed border-gray-200 my-8 max-w-5xl mx-auto" />
+      <hr className="border-t border-dashed border-gray-200 my-8 max-w-4xl mx-auto" />
 
       {/* KPI Banner */}
       <section className="container mx-auto px-4 py-8">
-        <KPIBanner />
+        <div className="max-w-4xl mx-auto">
+          <KPIBanner />
+        </div>
       </section>
 
       {/* Modules Section */}
       <section className="container mx-auto px-4 py-12 md:py-16">
-        <div className="text-center mb-12">
+        <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-3xl font-heading font-subheading mb-4">5つのお金の学習モジュール</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto font-body">
             各モジュールは短時間で完了し、実践的なお金の知識を身につけられます
@@ -175,7 +179,7 @@ const Index = () => {
         </div>
 
         <div className="overflow-hidden px-4">
-          <Carousel className="w-full max-w-5xl mx-auto">
+          <Carousel className="w-full max-w-4xl mx-auto">
             <CarouselContent>
               {modules.map((module) => (
                 <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3">
@@ -199,7 +203,7 @@ const Index = () => {
       {/* Testimonials */}
       <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="max-w-4xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-heading font-subheading mb-4">利用者の声</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto font-body">
               Pigipeを使って学んだユーザーの変化をご紹介します
@@ -240,13 +244,15 @@ const Index = () => {
 
       {/* University Logo */}
       <section className="py-12 container mx-auto px-4 text-center">
-        <p className="text-sm text-muted-foreground mb-4 font-body">学術監修</p>
-        <div className="flex justify-center">
-          <img 
-            src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
-            alt="東北大学" 
-            className="h-12 object-contain"
-          />
+        <div className="max-w-4xl mx-auto">
+          <p className="text-sm text-muted-foreground mb-4 font-body">学術監修</p>
+          <div className="flex justify-center">
+            <img 
+              src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
+              alt="東北大学" 
+              className="h-12 object-contain"
+            />
+          </div>
         </div>
       </section>
 
