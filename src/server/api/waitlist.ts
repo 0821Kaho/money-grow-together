@@ -22,3 +22,14 @@ export const addToWaitlist = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Failed to add to waitlist' });
   }
 };
+
+// Add a new endpoint to get the waitlist count
+export const getWaitlistCount = async (_req: Request, res: Response) => {
+  try {
+    const count = await prisma.waitlist.count();
+    return res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error getting waitlist count:', error);
+    return res.status(500).json({ error: 'Failed to get waitlist count' });
+  }
+};
