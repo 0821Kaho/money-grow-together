@@ -23,7 +23,7 @@ export const addToWaitlist = async (req: Request, res: Response) => {
   }
 };
 
-// Add a new endpoint to get the waitlist count
+// Endpoint to get the waitlist count
 export const getWaitlistCount = async (_req: Request, res: Response) => {
   try {
     const count = await prisma.waitlist.count();
