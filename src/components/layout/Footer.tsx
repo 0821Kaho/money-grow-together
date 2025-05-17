@@ -3,23 +3,25 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <footer className="bg-[#333333] py-8 px-6 text-gray-300">
-      <div className="container mx-auto max-w-md">
-        <div className="flex flex-col">
-          <h3 className="text-xl font-logo text-white">Pigipe</h3>
-          <p className="text-sm text-gray-400 mt-1 mb-6">ピギペと遊んで学べるお金アプリ</p>
+    <footer className="w-full bg-[#333333] py-10 px-6 text-gray-300">
+      <div className="container mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div className="mb-6 sm:mb-0">
+            <h3 className="text-xl font-logo text-white">Pigipe</h3>
+            <p className="text-sm text-gray-400 mt-1">ピギペと遊んで学べるお金アプリ</p>
+          </div>
           
-          <nav className="flex flex-col sm:flex-row sm:gap-6 gap-2">
-            <Link to="/terms" className="w-full text-xs hover:text-gray-100 transition-colors py-2">
+          <nav className="flex flex-col sm:flex-row gap-2 sm:gap-8">
+            <Link to="/terms" className="text-sm hover:text-gray-100 transition-colors">
               利用規約
             </Link>
-            <Link to="/privacy" className="w-full text-xs hover:text-gray-100 transition-colors py-2">
+            <Link to="/privacy" className="text-sm hover:text-gray-100 transition-colors">
               プライバシーポリシー
             </Link>
-            <Link to="/impact" className="w-full text-xs hover:text-gray-100 transition-colors py-2">
+            <Link to="/impact" className="text-sm hover:text-gray-100 transition-colors">
               社会インパクト
             </Link>
-            <Link to="/about" className="w-full text-xs hover:text-gray-100 transition-colors py-2">
+            <Link to="/about" className="text-sm hover:text-gray-100 transition-colors">
               運営会社
             </Link>
           </nav>

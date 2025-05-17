@@ -112,36 +112,7 @@ const TermsPage = () => {
         </div>
       </main>
       
-      {/* Footer */}
-      <footer className="bg-[#333333] text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-xl font-heading font-bold">Pigipe</h3>
-              </div>
-              <p className="text-sm text-gray-400 mt-1">遊んで学べるお金アプリ</p>
-            </div>
-            <div className="flex gap-6">
-              <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">
-                利用規約
-              </Link>
-              <Link to="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">
-                プライバシーポリシー
-              </Link>
-              <Link to="/impact" className="text-sm text-gray-400 hover:text-white transition-colors">
-                社会インパクト
-              </Link>
-              <Link to="/company" className="text-sm text-gray-400 hover:text-white transition-colors">
-                運営会社
-              </Link>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-6 pt-6 text-center text-sm text-gray-400">
-            &copy; 2025 Pigipe All rights reserved.
-          </div>
-        </div>
-      </footer>
+      {/* Footer removed from here as it's now in App.tsx */}
     </div>
   );
 };
