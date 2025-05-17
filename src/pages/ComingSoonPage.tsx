@@ -28,6 +28,7 @@ const ComingSoonPage = () => {
           </Link>
         </div>
       </div>
+      {/* Remove the footer from individual pages as it's now rendered at the App level */}
     </div>
   );
 };

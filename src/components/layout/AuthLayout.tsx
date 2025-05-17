@@ -28,15 +28,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </motion.div>
       </div>
       
-      {/* Footer */}
-      <footer className="container mx-auto py-4 px-4 text-center text-sm text-muted-foreground">
-        <div className="flex justify-center space-x-4">
-          <Link to="/terms" className="hover:underline">利用規約</Link>
-          <Link to="/privacy" className="hover:underline">プライバシーポリシー</Link>
-          <Link to="/about" className="hover:underline">会社概要</Link>
-        </div>
-        <p className="mt-2">© 2025 NextGens株式会社 All rights reserved.</p>
-      </footer>
+      {/* Remove the footer from here as it's now rendered at the App level */}
     </div>
   );
 };

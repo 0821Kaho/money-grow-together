@@ -58,6 +58,8 @@ function AppRoutes() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      {/* Footer is now only included once here, at the App level */}
+      <Footer />
     </div>
   );
 }
@@ -79,7 +81,7 @@ const App = () => {
                   <AppRoutes />
                 </div>
               </RedirectMiddleware>
-              <Footer />
+              {/* Remove the duplicate Footer from here */}
             </div>
           </BrowserRouter>
         </TooltipProvider>
