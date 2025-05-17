@@ -44,27 +44,27 @@ const Countdown = ({ targetDate, className = "" }: CountdownProps) => {
       <div className="flex justify-center gap-4">
         <div className="flex flex-col items-center">
           <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
-            <span className="font-number text-2xl font-bold text-primary">{timeLeft.days}</span>
+            <span className="font-number text-2xl text-pink-500">{timeLeft.days}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">日</span>
+          <span className="text-xs mt-1 font-body text-gray-600">日</span>
         </div>
         <div className="flex flex-col items-center">
           <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
-            <span className="font-number text-2xl font-bold text-primary">{timeLeft.hours}</span>
+            <span className="font-number text-2xl text-pink-500">{timeLeft.hours}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">時間</span>
+          <span className="text-xs mt-1 font-body text-gray-600">時間</span>
         </div>
         <div className="flex flex-col items-center">
           <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
-            <span className="font-number text-2xl font-bold text-primary">{timeLeft.minutes}</span>
+            <span className="font-number text-2xl text-pink-500">{timeLeft.minutes}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">分</span>
+          <span className="text-xs mt-1 font-body text-gray-600">分</span>
         </div>
         <div className="flex flex-col items-center">
           <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
-            <span className="font-number text-2xl font-bold text-primary">{timeLeft.seconds}</span>
+            <span className="font-number text-2xl text-pink-500">{timeLeft.seconds}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">秒</span>
+          <span className="text-xs mt-1 font-body text-gray-600">秒</span>
         </div>
       </div>
     </div>

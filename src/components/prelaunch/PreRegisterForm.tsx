@@ -25,9 +25,10 @@ type FormValues = z.infer<typeof formSchema>;
 type PreRegisterFormProps = {
   className?: string;
   onSuccess?: () => void;
+  id?: string; // Added id prop to allow setting an HTML id
 };
 
-const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) => {
+const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: PreRegisterFormProps) => {
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
   const [registeredCount, setRegisteredCount] = useState<number | null>(null);
@@ -68,16 +69,16 @@ const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) =>
   }
 
   return (
-    <div className={className} id="waitlist-form">
+    <div className={className} id={id}>
       {!registered ? (
-        <div className="rounded-lg border p-6 shadow-sm bg-white">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="bg-white shadow-md rounded-xl p-4 space-y-3">
+          <div className="flex items-center gap-2 mb-2">
             <Mail className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-heading font-bold">公開のお知らせを受け取る</h3>
           </div>
           
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <FormField
                 control={form.control}
                 name="email"
@@ -98,14 +99,15 @@ const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) =>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "登録中..." : "事前登録する"}
               </Button>
-              <p className="text-[12px] text-gray-500 text-center">
-                ※メールは公開通知のみに使用します
-              </p>
             </form>
           </Form>
           
+          <p className="text-[12px] text-gray-500 text-center">
+            ※通知は一度だけ / 退会は1クリック
+          </p>
+          
           {registeredCount !== null && (
-            <p className="text-center text-sm text-muted-foreground mt-4">
+            <p className="text-center text-sm text-muted-foreground">
               現在 <span className="font-medium text-primary">{registeredCount}</span> 人が事前登録済み
             </p>
           )}
