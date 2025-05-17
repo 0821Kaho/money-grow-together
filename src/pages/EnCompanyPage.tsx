@@ -1,10 +1,8 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import Footer from "@/components/layout/Footer";
 
 const EnCompanyPage = () => {
   return (
@@ -271,8 +269,6 @@ const EnCompanyPage = () => {
           </div>
         </section>
       </main>
-      
-      <Footer />
     </div>
   );
 };

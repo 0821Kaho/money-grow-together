@@ -22,6 +22,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import AuthLayout from "./components/layout/AuthLayout";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import Footer from "./components/layout/Footer";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
@@ -33,27 +34,31 @@ function AppRoutes() {
   };
 
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/" element={<Index />} />
-      <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
-      <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
-      <Route path="/impact" element={<ImpactPage />} />
-      <Route path="/terms" element={<TermsPage />} />
-      <Route path="/privacy" element={<PrivacyPolicyPage />} />
-      <Route path="/about" element={<CompanyPage />} />
-      <Route path="/en/about" element={<EnCompanyPage />} />
-      <Route path="/company" element={<Navigate to="/about" replace />} />
-      <Route path="/coming-soon" element={<ComingSoonPage />} />
-      
-      {/* Protected routes */}
-      <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
-      <Route path="/module/:id" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
-      <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
-      <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
-      <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow">
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
+          <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
+          <Route path="/impact" element={<ImpactPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/about" element={<CompanyPage />} />
+          <Route path="/en/about" element={<EnCompanyPage />} />
+          <Route path="/company" element={<Navigate to="/about" replace />} />
+          <Route path="/coming-soon" element={<ComingSoonPage />} />
+          
+          {/* Protected routes */}
+          <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
+          <Route path="/module/:id" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
+          <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
+          <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </div>
   );
 }
 
@@ -68,9 +73,14 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <RedirectMiddleware>
-              <AppRoutes />
-            </RedirectMiddleware>
+            <div className="flex flex-col min-h-screen">
+              <RedirectMiddleware>
+                <div className="flex-grow">
+                  <AppRoutes />
+                </div>
+              </RedirectMiddleware>
+              <Footer />
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

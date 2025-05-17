@@ -2,7 +2,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock } from "lucide-react";
-import Footer from "@/components/layout/Footer";
 
 const ComingSoonPage = () => {
   return (
@@ -29,8 +28,6 @@ const ComingSoonPage = () => {
           </Link>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };
