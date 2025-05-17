@@ -25,9 +25,10 @@ type FormValues = z.infer<typeof formSchema>;
 type PreRegisterFormProps = {
   className?: string;
   onSuccess?: () => void;
+  id?: string; // Added id prop to allow setting an HTML id
 };
 
-const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) => {
+const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: PreRegisterFormProps) => {
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
   const [registeredCount, setRegisteredCount] = useState<number | null>(null);
@@ -68,7 +69,7 @@ const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) =>
   }
 
   return (
-    <div className={className}>
+    <div className={className} id={id}>
       {!registered ? (
         <div className="rounded-lg border p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-4">

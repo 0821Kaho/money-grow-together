@@ -14,6 +14,7 @@ import KPIBanner from "@/components/home/KPIBanner";
 import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
 import Footer from "@/components/layout/Footer";
+import { ArrowDown } from "lucide-react";
 
 const modules = [
   { 
@@ -69,6 +70,11 @@ const testimonials = [
 const Index = () => {
   const { isAuthenticated } = useAuth();
   const launchDate = "2025-05-23T10:00:00+09:00";
+  
+  // Function to handle scrolling to the waitlist form
+  const scrollToForm = () => {
+    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
@@ -113,13 +119,12 @@ const Index = () => {
             <div className="pt-4">
               <Button 
                 size="lg" 
-                className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold w-full md:w-auto"
-                onClick={() => {
-                  const formElement = document.getElementById('pre-register-form');
-                  formElement?.scrollIntoView({ behavior: 'smooth' });
-                }}
+                className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold w-full md:w-auto group"
+                onClick={scrollToForm}
+                aria-label="事前登録フォームへスクロール"
               >
-                事前登録する
+                事前登録フォームへ
+                <ArrowDown className="ml-2 h-4 w-4 transition-transform group-hover:translate-y-1" />
               </Button>
             </div>
           </div>
@@ -154,8 +159,8 @@ const Index = () => {
       </section>
 
       {/* Pre-register Form */}
-      <section id="pre-register-form" className="container mx-auto px-4 pb-12">
-        <PreRegisterForm className="max-w-md mx-auto" />
+      <section className="container mx-auto px-4 pb-12">
+        <PreRegisterForm className="max-w-md mx-auto" id="waitlist-form" />
       </section>
 
       {/* KPI Banner */}
