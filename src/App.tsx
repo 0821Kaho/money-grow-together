@@ -15,6 +15,7 @@ import ImpactPage from "./pages/ImpactPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import CompanyPage from "./pages/CompanyPage";
+import EnCompanyPage from "./pages/EnCompanyPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import LoginPage from "./pages/auth/LoginPage";
@@ -41,6 +42,7 @@ function AppRoutes() {
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/privacy" element={<PrivacyPolicyPage />} />
       <Route path="/about" element={<CompanyPage />} />
+      <Route path="/en/about" element={<EnCompanyPage />} />
       <Route path="/company" element={<Navigate to="/about" replace />} />
       <Route path="/coming-soon" element={<ComingSoonPage />} />
       
