@@ -25,10 +25,9 @@ type FormValues = z.infer<typeof formSchema>;
 type PreRegisterFormProps = {
   className?: string;
   onSuccess?: () => void;
-  id?: string; // Added id prop to allow setting an HTML id
 };
 
-const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: PreRegisterFormProps) => {
+const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) => {
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
   const [registeredCount, setRegisteredCount] = useState<number | null>(null);
@@ -69,16 +68,16 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
   }
 
   return (
-    <div className={className} id={id}>
+    <div className={className}>
       {!registered ? (
-        <div className="bg-white shadow-md rounded-xl p-4 space-y-3">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="rounded-lg border p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
             <Mail className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-heading font-bold">公開日のお知らせを受け取る</h3>
           </div>
           
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="email"
@@ -102,12 +101,8 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
             </form>
           </Form>
           
-          <p className="text-[12px] text-gray-500 text-center">
-            ※通知は一度だけ / 退会は1クリック
-          </p>
-          
           {registeredCount !== null && (
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-muted-foreground mt-4">
               現在 <span className="font-medium text-primary">{registeredCount}</span> 人が事前登録済み
             </p>
           )}

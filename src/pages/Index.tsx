@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -15,8 +14,6 @@ import KPIBanner from "@/components/home/KPIBanner";
 import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
 import Footer from "@/components/layout/Footer";
-import { ArrowDown } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 const modules = [
   { 
@@ -72,11 +69,6 @@ const testimonials = [
 const Index = () => {
   const { isAuthenticated } = useAuth();
   const launchDate = "2025-05-23T10:00:00+09:00";
-  
-  // Function to handle scrolling to the waitlist form
-  const scrollToForm = () => {
-    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
@@ -97,7 +89,7 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 md:pb-8">
+      <section className="container mx-auto px-4 py-12 md:py-24">
         <motion.div
           className="grid md:grid-cols-2 gap-8 items-center"
           initial={{ opacity: 0, y: 20 }}
@@ -115,12 +107,23 @@ const Index = () => {
               Pigipeはピギペと遊んで学べるお金アプリ
             </p>
             
-            {/* Pre-register Form */}
+            {/* Countdown Timer */}
+            <Countdown targetDate={launchDate} className="my-6" />
+            
             <div className="pt-4">
-              <PreRegisterForm className="w-full" id="waitlist-form" />
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold w-full md:w-auto"
+                onClick={() => {
+                  const formElement = document.getElementById('pre-register-form');
+                  formElement?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                事前登録する
+              </Button>
             </div>
           </div>
-          <div className="relative hidden md:block">
+          <div className="relative">
             <div className="flex justify-center items-center relative">
               <div className="absolute -left-8 top-4 -rotate-12 z-10">
                 <MascotImage variant="coin" size="medium" />
@@ -143,22 +146,20 @@ const Index = () => {
                 <MascotImage variant="happy" size="xl" />
               </motion.div>
             </div>
-            <div className="absolute -bottom-4 -right-4">
+            <div className="absolute -bottom-4 -right-4 hidden md:block">
               <LeafVisual type="multiple" size="large" />
             </div>
           </div>
         </motion.div>
       </section>
 
-      {/* Countdown */}
-      <section className="container mx-auto px-4 py-8">
-        <Countdown targetDate={launchDate} className="my-4" />
+      {/* Pre-register Form */}
+      <section id="pre-register-form" className="container mx-auto px-4 pb-12">
+        <PreRegisterForm className="max-w-md mx-auto" />
       </section>
-      
-      <hr className="border-t border-dashed border-gray-200 my-8 max-w-5xl mx-auto" />
 
       {/* KPI Banner */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto px-4 pb-12">
         <KPIBanner />
       </section>
 
@@ -254,7 +255,7 @@ const Index = () => {
       <Footer />
 
       {/* Floating Mascot */}
-      <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6 hidden md:block">
+      <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">
         <MascotImage 
           variant="default" 
           size="large" 
