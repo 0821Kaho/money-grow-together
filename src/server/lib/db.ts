@@ -1,6 +1,6 @@
 
-// In Prisma 6, the client is imported differently
-import { createClient } from '@prisma/client/runtime/library';
+// Import PrismaClient properly for Prisma 6
+import { PrismaClient } from '@prisma/client';
 
 // Create a Prisma Client instance
-export const prisma = createClient();
+export const prisma = new PrismaClient();
