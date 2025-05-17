@@ -1,6 +1,7 @@
 
-// Import PrismaClient properly for Prisma 6
-import { PrismaClient } from '@prisma/client';
+// For Prisma 6, we need to use a different approach
+import { Prisma } from '@prisma/client';
 
 // Create a Prisma Client instance
-export const prisma = new PrismaClient();
+// In Prisma 6, PrismaClient is accessed through Prisma namespace
+export const prisma = new Prisma.PrismaClient();
