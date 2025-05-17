@@ -68,12 +68,12 @@ const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) =>
   }
 
   return (
-    <div className={className}>
+    <div className={className} id="waitlist-form">
       {!registered ? (
-        <div className="rounded-lg border p-6 shadow-sm">
+        <div className="rounded-lg border p-6 shadow-sm bg-white">
           <div className="flex items-center gap-2 mb-4">
             <Mail className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-heading font-bold">公開日のお知らせを受け取る</h3>
+            <h3 className="text-lg font-heading font-bold">公開のお知らせを受け取る</h3>
           </div>
           
           <Form {...form}>
@@ -98,6 +98,9 @@ const PreRegisterForm = ({ className = "", onSuccess }: PreRegisterFormProps) =>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "登録中..." : "事前登録する"}
               </Button>
+              <p className="text-[12px] text-gray-500 text-center">
+                ※メールは公開通知のみに使用します
+              </p>
             </form>
           </Form>
           

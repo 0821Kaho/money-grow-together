@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -88,85 +89,62 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 md:py-24">
-        <motion.div
-          className="grid md:grid-cols-2 gap-8 items-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="space-y-6">
+      {/* Hero Section with Integrated Form */}
+      <section className="container mx-auto px-4 pt-8 pb-4 md:pt-16 md:pb-8 max-w-screen-lg">
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <motion.div
+            className="space-y-5"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <Badge variant="secondary" className="text-secondary bg-secondary/10">
               遊んで学べるお金の知識
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold leading-tight">
+            <h1 className="text-[26px] md:text-[32px] font-heading font-bold leading-tight">
               お金で<span className="text-primary">夢をあきらめない</span>
             </h1>
-            <p className="text-lg font-body text-muted-foreground">
+            <p className="text-[14px] md:text-base font-body text-gray-700">
               Pigipeはピギペと遊んで学べるお金アプリ
             </p>
             
             {/* Countdown Timer */}
-            <Countdown targetDate={launchDate} className="my-6" />
+            <Countdown targetDate={launchDate} className="mt-6" />
             
-            <div className="pt-4">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold w-full md:w-auto"
-                onClick={() => {
-                  const formElement = document.getElementById('pre-register-form');
-                  formElement?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                事前登録する
-              </Button>
-            </div>
+            <Button 
+              size="lg" 
+              className="w-full md:w-auto h-12 px-6 rounded-full"
+              onClick={() => {
+                const formElement = document.getElementById('waitlist-form');
+                formElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+            >
+              事前登録フォームへ
+            </Button>
+          </motion.div>
+          
+          <div className="relative mt-6 md:mt-0">
+            <PreRegisterForm className="max-w-full" />
           </div>
-          <div className="relative">
-            <div className="flex justify-center items-center relative">
-              <div className="absolute -left-8 top-4 -rotate-12 z-10">
-                <MascotImage variant="coin" size="medium" />
-              </div>
-              <div className="absolute -right-8 top-16 rotate-12 z-10">
-                <MascotImage variant="calculator" size="medium" />
-              </div>
-              <div className="absolute left-1/4 -top-8 z-10">
-                <MoneyVisual type="coin" size="small" className="animate-bounce" />
-              </div>
-              <div className="absolute right-1/4 -top-4 z-10">
-                <LeafVisual type="single" size="small" className="animate-float" />
-              </div>
-              <motion.div 
-                className="relative z-20 bg-white/90 p-8 rounded-3xl shadow-lg border-2 border-primary/20"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <MascotImage variant="happy" size="xl" />
-              </motion.div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 hidden md:block">
-              <LeafVisual type="multiple" size="large" />
-            </div>
+        </div>
+      </section>
+
+      {/* KPI Banner */}
+      <section className="container mx-auto px-4 py-8 max-w-lg">
+        <motion.div className="relative">
+          <KPIBanner />
+          <div className="hidden sm:block absolute right-6 bottom-0 z-10">
+            <MascotImage variant="happy" size="small" />
           </div>
         </motion.div>
       </section>
 
-      {/* Pre-register Form */}
-      <section id="pre-register-form" className="container mx-auto px-4 pb-12">
-        <PreRegisterForm className="max-w-md mx-auto" />
-      </section>
-
-      {/* KPI Banner */}
-      <section className="container mx-auto px-4 pb-12">
-        <KPIBanner />
-      </section>
+      <hr className="border-t border-dashed border-gray-200 my-8 max-w-4xl mx-auto" />
 
       {/* Modules Section */}
-      <section className="container mx-auto px-4 py-12 md:py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-heading font-subheading mb-4">5つのお金の学習モジュール</h2>
+      <section className="container mx-auto px-4 py-8 md:py-12">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-heading font-subheading mb-3">5つのお金の学習モジュール</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto font-body">
             各モジュールは短時間で完了し、実践的なお金の知識を身につけられます
           </p>
@@ -254,8 +232,8 @@ const Index = () => {
       {/* Footer */}
       <Footer />
 
-      {/* Floating Mascot */}
-      <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">
+      {/* Floating Mascot - PC only */}
+      <div className="fixed bottom-4 right-4 z-40 hidden md:block">
         <MascotImage 
           variant="default" 
           size="large" 
