@@ -145,10 +145,12 @@ const Index = () => {
       
       <hr className="border-t border-dashed border-gray-200 my-8 max-w-4xl mx-auto" />
 
-      {/* KPI Banner */}
+      {/* KPI Banner - Updated for width constraints */}
       <section className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <KPIBanner />
+        <div className="flex justify-center">
+          <div className="w-full max-w-md">
+            <KPIBanner />
+          </div>
         </div>
       </section>
 
