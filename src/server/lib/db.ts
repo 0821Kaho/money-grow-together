@@ -1,5 +1,5 @@
 
-import { PrismaClient } from '@prisma/client';
+import { createClient } from '@prisma/client/runtime/library';
 
 // Use a single instance of Prisma Client
-export const prisma = new PrismaClient();
+export const prisma = createClient();
