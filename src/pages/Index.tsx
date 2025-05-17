@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -96,46 +95,35 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 md:pb-8">
+      {/* Hero Section - Restructured to follow the requested order */}
+      <section className="container mx-auto px-4 py-12">
         <motion.div
-          className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center"
+          className="max-w-4xl mx-auto flex flex-col items-center text-center gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="space-y-6">
-            <Badge variant="secondary" className="text-secondary bg-secondary/10">
-              遊んで学べるお金の知識
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold leading-tight">
-              お金で<span className="text-primary">夢をあきらめない</span>
-            </h1>
-            <p className="text-lg font-body text-muted-foreground">
-              Pigipeはピギペと遊んで学べるお金アプリ
-            </p>
-            
-            {/* Pre-register Form */}
-            <div className="pt-4">
-              <PreRegisterForm className="w-full" id="waitlist-form" />
-            </div>
-          </div>
-          <div className="relative hidden md:block">
-            <div className="flex justify-center items-center relative">
+          {/* 1. Headline */}
+          <h1 className="text-4xl md:text-5xl font-heading font-bold leading-tight">
+            お金で<span className="text-primary">夢をあきらめない</span>
+          </h1>
+          
+          {/* 2. Sub-headline */}
+          <p className="text-lg font-body text-muted-foreground">
+            Pigipeはピギペと遊んで学べるお金アプリ
+          </p>
+          
+          {/* 3. Character Illustration */}
+          <div className="w-48 h-48 relative">
+            <div className="relative">
               <div className="absolute -left-8 top-4 -rotate-12 z-10">
-                <MascotImage variant="coin" size="medium" />
+                <MascotImage variant="coin" size="small" />
               </div>
-              <div className="absolute -right-8 top-16 rotate-12 z-10">
-                <MascotImage variant="calculator" size="medium" />
-              </div>
-              <div className="absolute left-1/4 -top-8 z-10">
-                <MoneyVisual type="coin" size="small" className="animate-bounce" />
-              </div>
-              <div className="absolute right-1/4 -top-4 z-10">
-                <LeafVisual type="single" size="small" className="animate-float" />
+              <div className="absolute -right-8 top-4 rotate-12 z-10">
+                <MascotImage variant="calculator" size="small" />
               </div>
               <motion.div 
-                className="relative z-20 bg-white/90 p-8 rounded-3xl shadow-lg border-2 border-primary/20"
+                className="relative z-20"
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
@@ -143,18 +131,16 @@ const Index = () => {
                 <MascotImage variant="happy" size="xl" />
               </motion.div>
             </div>
-            <div className="absolute -bottom-4 -right-4">
-              <LeafVisual type="multiple" size="large" />
-            </div>
+          </div>
+          
+          {/* 4. Countdown */}
+          <Countdown targetDate={launchDate} className="w-full" />
+          
+          {/* 5. CTA Form */}
+          <div className="w-full">
+            <PreRegisterForm className="w-full max-w-md mx-auto" id="waitlist-form" />
           </div>
         </motion.div>
-      </section>
-
-      {/* Countdown */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Countdown targetDate={launchDate} className="my-4" />
-        </div>
       </section>
       
       <hr className="border-t border-dashed border-gray-200 my-8 max-w-4xl mx-auto" />

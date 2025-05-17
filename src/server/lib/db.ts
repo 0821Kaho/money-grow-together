@@ -1,28 +1,13 @@
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 
-// This is a workaround for PrismaClient singleton pattern when using Next.js
-// https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/nextjs-prisma-client-dev-practices
+// Use a single instance of Prisma Client
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-// Approach adapted to work with both ESM and CJS module systems
-// and handle different export patterns in Prisma client versions
+export const db =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  });
 
-let prisma: PrismaClient;
-
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient();
-} else {
-  // @ts-ignore - global is a Node.js global
-  if (!global.prisma) {
-    // @ts-ignore - global is a Node.js global
-    global.prisma = new PrismaClient();
-  }
-  // @ts-ignore - global is a Node.js global
-  prisma = global.prisma;
-}
-
-export function getPrisma() {
-  return prisma;
-}
-
-export default prisma;
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
