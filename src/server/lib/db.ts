@@ -13,12 +13,7 @@ export const getPrisma = async () => {
   if (!prismaInstance) {
     try {
       // Dynamically import Prisma client
-      const prismaModule = await import('@prisma/client');
-      
-      // Access the PrismaClient constructor correctly
-      const PrismaClient = prismaModule.PrismaClient || 
-                          (prismaModule as any).default?.PrismaClient ||
-                          (prismaModule as any)['PrismaClient'];
+      const { PrismaClient } = await import('@prisma/client');
       
       if (!PrismaClient) {
         throw new Error('PrismaClient not found in @prisma/client imports');
@@ -43,13 +38,8 @@ export const getPrisma = async () => {
 // For backward compatibility, export a pre-initialized prisma instance
 export const prisma = global.prisma || (() => {
   try {
-    // We need to dynamically import here for CommonJS
-    const prismaModule = require('@prisma/client');
-    
-    // Access the PrismaClient constructor correctly
-    const PrismaClient = prismaModule.PrismaClient || 
-                        (prismaModule as any).default?.PrismaClient ||
-                        (prismaModule as any)['PrismaClient'];
+    // We need to use direct import for CommonJS
+    const { PrismaClient } = require('@prisma/client');
     
     if (!PrismaClient) {
       console.error('PrismaClient not found in @prisma/client imports');
