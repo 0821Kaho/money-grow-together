@@ -1,5 +1,6 @@
 
-import { PrismaClient } from '@prisma/client';
+// In Prisma 6, the import syntax has changed
+import { PrismaClient } from '@prisma/client/edge';
 
 // Use a single instance of Prisma Client
 export const prisma = new PrismaClient();
