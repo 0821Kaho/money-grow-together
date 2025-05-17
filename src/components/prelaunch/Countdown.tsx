@@ -43,28 +43,28 @@ const Countdown = ({ targetDate, className = "" }: CountdownProps) => {
       <p className="text-muted-foreground mb-2 font-body">公開まであと</p>
       <div className="flex justify-center gap-4">
         <div className="flex flex-col items-center">
-          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center text-2xl font-number font-bold text-primary">
-            {timeLeft.days}
+          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
+            <span className="font-number text-2xl text-pink-500">{timeLeft.days}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">日</span>
+          <span className="text-xs mt-1 font-body text-gray-600">日</span>
         </div>
         <div className="flex flex-col items-center">
-          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center text-2xl font-number font-bold text-primary">
-            {timeLeft.hours}
+          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
+            <span className="font-number text-2xl text-pink-500">{timeLeft.hours}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">時間</span>
+          <span className="text-xs mt-1 font-body text-gray-600">時間</span>
         </div>
         <div className="flex flex-col items-center">
-          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center text-2xl font-number font-bold text-primary">
-            {timeLeft.minutes}
+          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
+            <span className="font-number text-2xl text-pink-500">{timeLeft.minutes}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">分</span>
+          <span className="text-xs mt-1 font-body text-gray-600">分</span>
         </div>
         <div className="flex flex-col items-center">
-          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center text-2xl font-number font-bold text-primary">
-            {timeLeft.seconds}
+          <div className="bg-primary/10 rounded-md w-16 h-16 flex items-center justify-center">
+            <span className="font-number text-2xl text-pink-500">{timeLeft.seconds}</span>
           </div>
-          <span className="text-xs mt-1 font-body text-muted-foreground">秒</span>
+          <span className="text-xs mt-1 font-body text-gray-600">秒</span>
         </div>
       </div>
     </div>

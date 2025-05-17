@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
 import Footer from "@/components/layout/Footer";
 import { ArrowDown } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 const modules = [
   { 
@@ -95,7 +97,7 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-12 md:py-24">
+      <section className="container mx-auto px-4 py-12 md:pb-8">
         <motion.div
           className="grid md:grid-cols-2 gap-8 items-center"
           initial={{ opacity: 0, y: 20 }}
@@ -113,22 +115,12 @@ const Index = () => {
               Pigipeはピギペと遊んで学べるお金アプリ
             </p>
             
-            {/* Countdown Timer */}
-            <Countdown targetDate={launchDate} className="my-6" />
-            
+            {/* Pre-register Form */}
             <div className="pt-4">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-lg px-8 font-number font-bold w-full md:w-auto group"
-                onClick={scrollToForm}
-                aria-label="事前登録フォームへスクロール"
-              >
-                事前登録フォームへ
-                <ArrowDown className="ml-2 h-4 w-4 transition-transform group-hover:translate-y-1" />
-              </Button>
+              <PreRegisterForm className="w-full" id="waitlist-form" />
             </div>
           </div>
-          <div className="relative">
+          <div className="relative hidden md:block">
             <div className="flex justify-center items-center relative">
               <div className="absolute -left-8 top-4 -rotate-12 z-10">
                 <MascotImage variant="coin" size="medium" />
@@ -151,20 +143,22 @@ const Index = () => {
                 <MascotImage variant="happy" size="xl" />
               </motion.div>
             </div>
-            <div className="absolute -bottom-4 -right-4 hidden md:block">
+            <div className="absolute -bottom-4 -right-4">
               <LeafVisual type="multiple" size="large" />
             </div>
           </div>
         </motion.div>
       </section>
 
-      {/* Pre-register Form */}
-      <section className="container mx-auto px-4 pb-12">
-        <PreRegisterForm className="max-w-md mx-auto" id="waitlist-form" />
+      {/* Countdown */}
+      <section className="container mx-auto px-4 py-8">
+        <Countdown targetDate={launchDate} className="my-4" />
       </section>
+      
+      <hr className="border-t border-dashed border-gray-200 my-8 max-w-5xl mx-auto" />
 
       {/* KPI Banner */}
-      <section className="container mx-auto px-4 pb-12">
+      <section className="container mx-auto px-4 py-8">
         <KPIBanner />
       </section>
 
@@ -260,7 +254,7 @@ const Index = () => {
       <Footer />
 
       {/* Floating Mascot */}
-      <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6">
+      <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6 hidden md:block">
         <MascotImage 
           variant="default" 
           size="large" 
