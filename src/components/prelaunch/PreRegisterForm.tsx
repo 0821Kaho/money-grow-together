@@ -74,7 +74,7 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
         <div className="bg-white shadow-md rounded-xl p-4 space-y-3">
           <div className="flex items-center gap-2 mb-2">
             <Mail className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-heading font-bold">公開のお知らせを受け取る</h3>
+            <h3 className="text-lg font-heading font-bold">公開日のお知らせを受け取る</h3>
           </div>
           
           <Form {...form}>
