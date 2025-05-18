@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
@@ -228,11 +227,7 @@ const EnCompanyPage = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
-                <img 
-                  src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
-                  alt="Tohoku University" 
-                  className="h-8 sm:h-10 object-contain"
-                />
+                <div className="text-center font-heading text-gray-700">Tohoku University</div>
               </div>
               
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
@@ -240,7 +235,7 @@ const EnCompanyPage = () => {
               </div>
               
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
-                <div className="text-center font-heading text-gray-700">Child Financial Education Support Association</div>
+                <div className="text-center font-heading text-gray-700">Kita Villa Papillon (Germany)</div>
               </div>
             </div>
             

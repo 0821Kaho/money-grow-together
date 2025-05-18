@@ -227,11 +227,7 @@ const CompanyPage = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
-                <img 
-                  src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
-                  alt="東北大学" 
-                  className="h-8 sm:h-10 object-contain"
-                />
+                <div className="text-center font-heading text-gray-700">東北大学</div>
               </div>
               
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
@@ -239,7 +235,7 @@ const CompanyPage = () => {
               </div>
               
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
-                <div className="text-center font-heading text-gray-700">子ども金融教育支援協会</div>
+                <div className="text-center font-heading text-gray-700">Kita Villa Papillon (ドイツ)</div>
               </div>
             </div>
             
