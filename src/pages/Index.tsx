@@ -13,7 +13,6 @@ import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import KPIBanner from "@/components/home/KPIBanner";
 import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
-import Footer from "@/components/layout/Footer";
 import { ArrowDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -87,7 +86,7 @@ const Index = () => {
           </div>
           <div className="flex gap-4">
             {isAuthenticated ? (
-              <Button variant="outline" disabled className="opacity-70">公開後に開始できます</Button>
+              <Button variant="outline" disabled className="opacity-70">公開後に開始でき��す</Button>
             ) : (
               <Button variant="outline" disabled className="opacity-70">公開後に開始できます</Button>
             )}
@@ -243,9 +242,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
 
       {/* Floating Mascot */}
       <div className="fixed bottom-4 right-4 z-40 md:bottom-6 md:right-6 hidden md:block">
