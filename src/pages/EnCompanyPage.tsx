@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
@@ -38,7 +39,7 @@ const EnCompanyPage = () => {
               for Every Child and Adult.
             </motion.h1>
             <p className="font-body text-lg text-gray-700 max-w-2xl mx-auto mb-8">
-              Bridging opportunity gaps through K-12 Edutainment × FinTech
+              Bridging opportunity gaps through Edutainment × FinTech
             </p>
             <Link to="/">
               <Button size="lg" className="rounded-xl">
@@ -84,7 +85,7 @@ const EnCompanyPage = () => {
                 <div className="bg-primary/10 p-3 inline-flex rounded-full mb-2">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-heading text-lg font-subheading">K-12 Edutainment × FinTech</h3>
+                <h3 className="font-heading text-lg font-subheading">Edutainment × FinTech</h3>
                 <p className="font-body text-gray-700 text-sm">
                   Development of research-based financial learning apps and games
                 </p>

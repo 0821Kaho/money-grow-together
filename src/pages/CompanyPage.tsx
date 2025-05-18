@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
@@ -38,7 +39,7 @@ const CompanyPage = () => {
               次のチャンスを。
             </motion.h1>
             <p className="font-body text-lg text-gray-700 max-w-2xl mx-auto mb-8">
-              K-12向けエデュテインメント × FinTech で機会格差をなくす
+              エデュテインメント × FinTech で機会格差をなくす
             </p>
             <Link to="/">
               <Button size="lg" className="rounded-xl">
@@ -84,7 +85,7 @@ const CompanyPage = () => {
                 <div className="bg-primary/10 p-3 inline-flex rounded-full mb-2">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-heading text-lg font-subheading">K-12 Edutainment × FinTech</h3>
+                <h3 className="font-heading text-lg font-subheading">Edutainment × FinTech</h3>
                 <p className="font-body text-gray-700 text-sm">
                   研究成果に基づく金融学習アプリ／ゲーム開発
                 </p>
