@@ -1,7 +1,6 @@
 
 // For Prisma 6, we need to create a PrismaClient instance
-import { PrismaClient as PrismaClientType } from '@prisma/client/runtime/library';
+import { PrismaClient } from '@prisma/client';
 
 // Create a Prisma Client instance
-const PrismaClient = PrismaClientType;
 export const prisma = new PrismaClient();
