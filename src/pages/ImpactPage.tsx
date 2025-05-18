@@ -1,9 +1,9 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, FileText, TrendingUp, Shield, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import Footer from "@/components/layout/Footer";
 import { Badge } from "@/components/ui/badge";
 
 const ImpactPage = () => {
@@ -243,7 +243,7 @@ const ImpactPage = () => {
         </div>
       </main>
       
-      <Footer />
+      {/* Remove Footer component from here as it's already included in App.tsx */}
     </div>
   );
 };

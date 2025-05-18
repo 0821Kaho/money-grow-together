@@ -1,10 +1,8 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import Footer from "@/components/layout/Footer";
 
 const CompanyPage = () => {
   return (
@@ -64,7 +62,7 @@ const CompanyPage = () => {
                 <Users className="h-8 w-8 text-primary" />
               </div>
               <h3 className="font-heading text-xl font-subheading mb-3">ビジョン</h3>
-              <p className="font-body text-gray-700">「誰もがお金で夢をあきらめない世界を創る」</p>
+              <p className="font-body text-gray-700">「誰もがお金で夢をあき��めない世界を創る」</p>
             </div>
             
             <div className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center">
@@ -271,8 +269,6 @@ const CompanyPage = () => {
           </div>
         </section>
       </main>
-      
-      <Footer />
     </div>
   );
 };
