@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -130,7 +129,7 @@ const Index = () => {
           
           {/* 2. Sub-headline - Updated with new text */}
           <p className="text-base md:text-lg font-body text-muted-foreground mobile-break-fix">
-            Pigipeと遊んで"お金で夢をあきらめない" 💰をピギペと遊んで学べるお金のアプリ💰
+            ピギペと遊んで学べるお金のアプリ💰
           </p>
           
           {/* Move CTA button above the video */}

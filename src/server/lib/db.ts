@@ -1,8 +1,20 @@
 
-// Import PrismaClient with correct syntax
-import { PrismaClient } from "@prisma/client";
+// Fixing the import for PrismaClient
+import { Prisma, PrismaClient as PrismaClientType } from "@prisma/client";
 
-// Create a single instance of Prisma Client
-const prisma = new PrismaClient();
+// Create new PrismaClient instance
+const prismaClientSingleton = () => {
+  return new PrismaClientType({
+    log: ["error", "warn"],
+  });
+};
 
-export default prisma;
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined;
+};
+
+export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
