@@ -28,7 +28,8 @@ const WelcomeSection = () => {
           playsInline
           className="w-full h-full object-cover"
         >
-          <source src="https://cdn.pixabay.com/vimeo/529857546/84326.mp4?width=640&hash=c602c244077e03aaaacd1f6cd4e25f46e50df788" type="video/mp4" />
+          {/* ここのsource srcをアップロードした動画のパスに変更します */}
+          <source src="/lovable-uploads/your-uploaded-video.mp4" type="video/mp4" />
         </video>
       </div>
 

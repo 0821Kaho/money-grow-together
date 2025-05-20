@@ -121,7 +121,8 @@ const Index = () => {
               playsInline
               className="w-full h-full object-cover"
             >
-              <source src="https://cdn.pixabay.com/vimeo/149710294/24253.mp4?width=640&hash=8c0b012a3f64c7d83f4c3bc3d44c0ae3203a0f36" type="video/mp4" />
+              {/* ここのsource srcをアップロードした動画のパスに変更します */}
+              <source src="/lovable-uploads/your-uploaded-video.mp4" type="video/mp4" />
               あなたのブラウザはビデオをサポートしていません。
             </video>
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center pb-6">
