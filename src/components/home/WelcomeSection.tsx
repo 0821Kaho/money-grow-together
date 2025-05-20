@@ -40,7 +40,7 @@ const WelcomeSection = () => {
               repeatType: "reverse"
             }}
           >
-            <MoneyVisual size={10 + (i * 3)} />
+            <MoneyVisual size={i < 3 ? "small" : i < 6 ? "medium" : "large"} />
           </motion.div>
         ))}
       </div>
