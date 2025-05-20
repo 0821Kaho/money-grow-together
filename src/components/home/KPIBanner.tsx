@@ -11,7 +11,7 @@ const KPIBanner = () => {
     >
       <div className="flex flex-col md:flex-row">
         {/* Video Section */}
-        <div className="w-full md:w-1/3 bg-gray-50 relative overflow-hidden">
+        <div className="w-full md:w-1/3 bg-gradient-to-b from-pink-50 to-white relative overflow-hidden">
           <video 
             autoPlay 
             muted 
@@ -22,6 +22,16 @@ const KPIBanner = () => {
             <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
             あなたのブラウザはビデオをサポートしていません。
           </video>
+          
+          {/* +1,300万 Overlay */}
+          <motion.div 
+            className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-primary"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            +1,300万円
+          </motion.div>
         </div>
         
         {/* Stats Section */}

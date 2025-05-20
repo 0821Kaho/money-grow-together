@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -94,10 +95,10 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section - Now with video background */}
-      <section className="container mx-auto px-4 py-12">
+      {/* Hero Section - Now with improved Kawaii_Piggy Bank video as KV */}
+      <section className="container mx-auto px-4 py-8 md:py-12">
         <motion.div
-          className="max-w-4xl mx-auto flex flex-col items-center text-center gap-8"
+          className="max-w-4xl mx-auto flex flex-col items-center text-center gap-6 md:gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -107,28 +108,91 @@ const Index = () => {
             お金で<span className="text-primary">夢をあきらめない</span>
           </h1>
           
-          {/* 2. Sub-headline */}
+          {/* 2. Sub-headline - More conversational with emoji */}
           <p className="text-lg font-body text-muted-foreground">
-            Pigipeはピギペと遊んで学べるお金アプリ
+            Pigipeと遊んで"お金で夢をあきらめない" 💰
           </p>
           
-          {/* 3. Video Background replaces Character Illustration */}
-          <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg">
-            <video 
-              autoPlay 
-              muted 
-              loop 
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              {/* ここのsource srcをアップロードした動画のパスに変更します */}
-              <source src="/lovable-uploads/your-uploaded-video.mp4" type="video/mp4" />
-              あなたのブラウザはビデオをサポートしていません。
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center pb-6">
-              <MascotImage variant="happy" size="medium" className="drop-shadow-lg" />
+          {/* 3. Hero Video KV with proper styling and animation */}
+          <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg bg-gradient-to-b from-pink-50 to-white">
+            <div className="absolute inset-0 z-0 overflow-hidden opacity-10">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute text-primary"
+                  initial={{ 
+                    x: `${Math.random() * 100}%`, 
+                    y: `${Math.random() * 100}%`,
+                  }}
+                  animate={{ 
+                    y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
+                    x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`]
+                  }}
+                  transition={{ 
+                    duration: 15 + (Math.random() * 10),
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                >
+                  ¥
+                </motion.div>
+              ))}
+            </div>
+            
+            <div className="pt-4 pb-0 px-4 md:pt-8 md:pb-0 md:px-8 flex flex-col items-center">
+              <motion.div
+                className="w-full relative"
+                initial={{ scale: 0.95, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <video 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  className="w-full h-full max-h-[280px] object-contain z-10 relative"
+                >
+                  <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
+                  あなたのブラウザはビデオをサポートしていません。
+                </video>
+                
+                {/* CTA Button with spring effect */}
+                <motion.div
+                  className="mt-4 flex justify-center"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                    delay: 1.5
+                  }}
+                >
+                  <Button 
+                    onClick={scrollToForm} 
+                    size="lg" 
+                    className="rounded-full shadow-md bg-primary hover:bg-primary/90"
+                  >
+                    早期登録する
+                  </Button>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
+          
+          {/* Scroll indicator */}
+          <motion.div 
+            className="text-muted-foreground mt-2"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 2
+            }}
+            onClick={scrollToForm}
+          >
+            <ArrowDown className="mx-auto h-6 w-6" />
+          </motion.div>
           
           {/* 4. Countdown */}
           <Countdown targetDate={launchDate} className="w-full" />
