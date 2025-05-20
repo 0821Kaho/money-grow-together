@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import MascotImage from "@/components/mascot/MascotImage";
@@ -43,7 +44,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
     
     // Add manual play trigger when user interactions occur
     const handleUserInteraction = () => {
-      if (video && videoLoaded && !video.playing) {
+      if (video && videoLoaded && !video.paused) {
         video.play().catch(err => {
           console.log("User-triggered play failed:", err);
         });
