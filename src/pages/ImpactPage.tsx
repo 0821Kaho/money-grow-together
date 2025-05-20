@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, FileText, TrendingUp, Shield, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Table,
   TableBody,
@@ -16,6 +17,7 @@ import {
 
 const ImpactPage = () => {
   const { isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
   
   const personalBenefits = [
     {
@@ -88,11 +90,13 @@ const ImpactPage = () => {
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
             <Badge variant="secondary" className="mb-4">社会インパクト</Badge>
-            <h1 className="text-3xl md:text-4xl font-heading font-bold mb-3 text-[#333333]">
-              ピギペがもたらす経済・社会的効果
+            <h1 className={`${isMobile ? "text-2xl" : "text-3xl md:text-4xl"} font-heading font-bold mb-3 text-[#333333]`}>
+              ピギペがもたらす<br className="md:hidden" />
+              経済・社会的効果
             </h1>
-            <p className="text-muted-foreground text-lg italic">
-              個人のライフタイム便益から政府財政への貢献まで
+            <p className={`${isMobile ? "text-base" : "text-lg"} text-muted-foreground italic`}>
+              個人のライフタイム便益から<br className="md:hidden" />
+              政府財政への貢献まで
             </p>
           </div>
 
@@ -100,7 +104,10 @@ const ImpactPage = () => {
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-heading font-bold">1. 個人レベル：生涯で得られる経済便益</h2>
+              <h2 className={`${isMobile ? "text-xl" : "text-2xl"} font-heading font-bold`}>
+                1. 個人レベル：<br className="md:hidden" />
+                生涯で得られる経済便益
+              </h2>
             </div>
             
             <div className="mb-6">
@@ -138,7 +145,10 @@ const ImpactPage = () => {
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
               <Shield className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-heading font-bold">2. 政府レベル：財政・公共支出へのプラス効果</h2>
+              <h2 className={`${isMobile ? "text-xl" : "text-2xl"} font-heading font-bold`}>
+                2. 政府レベル：<br className="md:hidden" />
+                財政・公共支出へのプラス効果
+              </h2>
             </div>
             
             <div className="mb-6">
@@ -176,7 +186,9 @@ const ImpactPage = () => {
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-heading font-bold">3. 社会 ROI（Public ROI）</h2>
+              <h2 className={`${isMobile ? "text-xl" : "text-2xl"} font-heading font-bold`}>
+                3. 社会 ROI（Public ROI）
+              </h2>
             </div>
             
             <ul className="space-y-4">
@@ -195,7 +207,9 @@ const ImpactPage = () => {
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
               <FileText className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-heading font-bold">4. 出典・エビデンス</h2>
+              <h2 className={`${isMobile ? "text-xl" : "text-2xl"} font-heading font-bold`}>
+                4. 出典・エビデンス
+              </h2>
             </div>
             
             <ul className="list-disc list-inside space-y-2 text-muted-foreground">
@@ -209,7 +223,9 @@ const ImpactPage = () => {
           <section className="mb-16">
             <div className="flex items-center gap-2 mb-6">
               <Shield className="h-5 w-5 text-primary" />
-              <h2 className="text-2xl font-heading font-bold">5. まとめ</h2>
+              <h2 className={`${isMobile ? "text-xl" : "text-2xl"} font-heading font-bold`}>
+                5. まとめ
+              </h2>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-sm mb-8">
