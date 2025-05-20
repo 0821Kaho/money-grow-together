@@ -47,13 +47,11 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
     const video = videoRef.current;
     if (!video) return;
     
-    // Ensure the video is properly loaded
     const handleCanPlay = () => {
       console.log("Video can play now");
       setVideoLoaded(true);
     };
     
-    // Video loaded metadata
     const handleLoadedMetadata = () => {
       console.log("Video metadata loaded");
       setVideoLoaded(true);

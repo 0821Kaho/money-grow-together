@@ -57,7 +57,9 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
         </p>
         
         {/* Hero Video placed directly after the description */}
-        <HeroVideoSection className="w-full" />
+        <div className="w-full flex justify-center">
+          <HeroVideoSection className="w-full max-w-xs" />
+        </div>
         
         {/* CTA Button */}
         <motion.div
