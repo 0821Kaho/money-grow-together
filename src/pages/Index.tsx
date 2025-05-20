@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -234,12 +233,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Modules Section */}
+      {/* Modules Section - Updated text size and line breaks for mobile */}
       <section className="container mx-auto px-4 py-12 md:py-16">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-3xl font-heading font-subheading mb-4">5つのお金の学習モジュール</h2>
+          <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">5つのお金の学習モジュール</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto font-body">
-            各モジュールは短時間で完了し、実践的なお金の知識を身につけられます
+            各モジュールは短時間で完了し、<br className="hidden sm:block" />
+            実践的なお金の知識を身につけられます
           </p>
           <div className="flex justify-center mt-4">
             <TontonGameVisuals type="combined" size="small" />
@@ -268,13 +268,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials - Updated text size and line breaks for mobile */}
       <section className="bg-white py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-heading font-subheading mb-4">利用者の声</h2>
+            <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">利用者の声</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto font-body">
-              Pigipeを使って学んだユーザーの変化をご紹介します
+              Pigipeを使って学んだユーザーの変化を<br className="hidden sm:block" />
+              ご紹介します
             </p>
           </div>
 
