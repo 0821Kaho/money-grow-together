@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -179,9 +180,9 @@ const Index = () => {
                   </video>
                 </div>
                 
-                {/* CTA Button with updated text to match form */}
+                {/* CTA Button with updated text to match form - Added mt-8 for more spacing */}
                 <motion.div
-                  className="mt-4 flex justify-center"
+                  className="mt-8 flex justify-center"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ 
