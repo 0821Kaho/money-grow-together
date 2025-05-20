@@ -1,6 +1,5 @@
 
-import { createClient } from '@prisma/client/edge';
-import { PrismaClient } from '@prisma/client/edge';
+import { PrismaClient } from '@prisma/client';
 
 // Add prisma to the global scope during development to preserve connection between hot reloads
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
