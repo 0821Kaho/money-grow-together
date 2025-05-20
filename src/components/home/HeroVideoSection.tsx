@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import MascotImage from "@/components/mascot/MascotImage";
@@ -102,7 +101,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
       {/* Social Media Thumbnail - Only visible in exported images but hidden on actual site */}
       <div className="social-media-thumbnail hidden">
         <img 
-          src="/lovable-uploads/b44f345d-95c0-4a33-aad2-2ae8baa3ccb2.png" 
+          src="/lovable-uploads/43420c5e-8e4d-4dcd-8f17-4c88bde90a20.png" 
           alt="Pigipe - お金で夢をあきらめない" 
           className="w-full"
         />
