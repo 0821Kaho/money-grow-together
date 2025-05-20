@@ -118,9 +118,6 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
               <div className="w-[180px] sm:w-[220px] md:w-[260px] lg:w-[280px] max-w-[48vw]">
                 <MascotImage variant="default" size="xl" className="w-full h-full" />
               </div>
-              <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
-                クリックして再生
-              </div>
             </div>
           )}
           <video 
