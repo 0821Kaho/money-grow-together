@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -234,10 +235,28 @@ const Index = () => {
       
       <hr className="border-t border-dashed border-gray-200 my-12 max-w-4xl mx-auto" />
 
-      {/* KPI Banner */}
+      {/* KPI Banner - Replaced with Video */}
       <section className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          <KPIBanner />
+          <div className="relative mx-auto rounded-xl overflow-hidden shadow-lg">
+            <video 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              className="w-full"
+              preload="auto"
+            >
+              <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
+              あなたのブラウザはビデオをサポートしていません。
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-transparent flex items-center p-8">
+              <div className="text-white">
+                <h3 className="text-2xl font-bold mb-2">+1,300万</h3>
+                <p className="text-sm font-medium">ユーザーが貯めた平均金額</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
