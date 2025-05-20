@@ -17,14 +17,7 @@ const PageHeader = () => {
           <Link to="/" className="text-2xl font-heading font-bold text-[#333333]">Pigipe</Link>
         </div>
         <div className="flex gap-4">
-          {isAuthenticated ? (
-            <Button 
-              variant="outline"
-              onClick={() => window.location.href = '/modules'}
-            >
-              学習を始める
-            </Button>
-          ) : (
+          {!isAuthenticated && (
             <Button 
               variant="outline"
               onClick={scrollToWaitlist}
