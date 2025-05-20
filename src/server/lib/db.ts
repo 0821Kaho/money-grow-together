@@ -1,4 +1,5 @@
 
+// Import PrismaClient with correct syntax
 import { PrismaClient } from "@prisma/client";
 
 // Create a single instance of Prisma Client
