@@ -97,8 +97,45 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
     }
   };
 
+  // Array of mascot variants for the thumbnail row
+  const mascotVariants = [
+    "question", // questioning pig
+    "reading", // reading pig
+    "default", // coin pig
+    null, // center space for text
+    "happy", // happy pig
+    "running", // running pig
+    "sleeping" // sleeping pig
+  ];
+
   return (
     <div className={`mx-auto ${className}`}>
+      {/* Thumbnail style container for social media */}
+      <div className="thumbnail-container bg-[#FFFAEB] p-4 rounded-lg mb-4 hidden md:block">
+        <div className="flex flex-col items-center">
+          <h1 className="text-[#6B4B35] text-3xl font-bold mb-4">お金で夢をあきらめない</h1>
+          
+          <div className="flex items-center justify-center space-x-2 w-full">
+            {mascotVariants.map((variant, index) => 
+              variant === null ? (
+                <div key="pigipe-text" className="text-[#FF8DC0] text-5xl font-bold px-4">
+                  Pigipe
+                </div>
+              ) : (
+                <div key={index} className="w-16 h-16">
+                  <MascotImage 
+                    variant={variant as any} 
+                    size="small"
+                    animate={true}
+                  />
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {/* Regular hero video container */}
       <div 
         className="relative mx-auto hero-video-container cursor-pointer"
         onClick={handleVideoContainerClick}

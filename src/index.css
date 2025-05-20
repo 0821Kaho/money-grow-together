@@ -104,6 +104,20 @@
   word-wrap: break-word;
 }
 
+/* Thumbnail container for social sharing */
+.thumbnail-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  aspect-ratio: 1200/630; /* Standard social media image ratio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #FFE4E4;
+}
+
+/* Responsive styling */
 @media (max-width: 640px) {
   .mobile-break-fix {
     font-size: 0.9rem;
@@ -114,6 +128,31 @@
     max-width: 100%;
     aspect-ratio: 1/1;
   }
+  
+  /* Hide thumbnail on mobile */
+  .thumbnail-container {
+    display: none;
+  }
 }
 
+/* Add subtle floating animation for the video container */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
 
+.hero-video-container {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Animation for the thumbnail pig characters */
+@keyframes hop {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.thumbnail-container .mascot-animation {
+  animation: hop 2s ease-in-out infinite;
+}
