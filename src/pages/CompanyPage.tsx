@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
@@ -259,7 +258,7 @@ const CompanyPage = () => {
                 つくりませんか？
               </h2>
               <p className="font-body text-gray-700 mb-8 max-w-lg mx-auto">
-                私たちと一緒に、未来を担う子どもたちの可能性を広げる活動に参加しませんか？
+                私たちと一緒に、人々の未来の可能性を広げる活動に参加しませんか？
                 お気軽にお問い合わせください。
               </p>
               <a 
