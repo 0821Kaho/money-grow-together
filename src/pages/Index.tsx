@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -150,12 +149,12 @@ const Index = () => {
           transition={{ duration: 0.6 }}
         >
           {/* Headline */}
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight">
             お金で<span className="text-primary">夢をあきらめない</span>
           </h1>
           
           {/* Sub-headline */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-lg">
+          <p className="text-lg text-muted-foreground max-w-lg">
             ピギペと遊んで学べる完全無料のお金のアプリ
           </p>
           
@@ -245,10 +244,9 @@ const Index = () => {
       {/* Modules Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">5つのお金の学習モジュール</h2>
+          <h2 className="text-2xl font-bold mb-4">5つのお金の学習モジュール</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            各モジュールは短時間で完了し、<br />
-            実践的なお金の知識を身につけられます
+            各モジュールは短時間で完了し、実践的なお金の知識を身につけられます
           </p>
           <div className="flex justify-center mt-4">
             <TontonGameVisuals type="combined" size="small" />
@@ -281,10 +279,9 @@ const Index = () => {
       <section className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">利用者の声</h2>
+            <h2 className="text-2xl font-bold mb-4">利用者の声</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Pigipeを使って学んだ<br />
-              ユーザーの変化をご紹介します
+              Pigipeを使って学んだユーザーの変化をご紹介します
             </p>
           </div>
 
