@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,7 @@ import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
 import { ArrowDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useEffect, useRef } from "react";
 
 const modules = [
   { 
@@ -71,11 +71,30 @@ const testimonials = [
 const Index = () => {
   const { isAuthenticated } = useAuth();
   const launchDate = "2025-05-23T10:00:00+09:00";
+  const arrowRef = useRef<HTMLDivElement>(null);
   
   // Function to handle scrolling to the waitlist form
   const scrollToForm = () => {
     document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Function to occasionally bounce the arrow
+  useEffect(() => {
+    const arrowElement = arrowRef.current;
+    if (!arrowElement) return;
+    
+    // Add occasional bounce animation every 3 seconds
+    const interval = setInterval(() => {
+      arrowElement.classList.add("animate-bounce");
+      
+      // Remove animation class after animation completes
+      setTimeout(() => {
+        arrowElement.classList.remove("animate-bounce");
+      }, 1000);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
@@ -95,7 +114,7 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section - Now with improved Kawaii_Piggy Bank video as KV */}
+      {/* Hero Section with enhanced styling and optimizations */}
       <section className="container mx-auto px-4 py-8 md:py-12">
         <motion.div
           className="max-w-4xl mx-auto flex flex-col items-center text-center gap-6 md:gap-8"
@@ -113,7 +132,7 @@ const Index = () => {
             Pigipeと遊んで"お金で夢をあきらめない" 💰
           </p>
           
-          {/* 3. Hero Video KV with proper styling and animation */}
+          {/* 3. Hero Video KV with proper 1:1 aspect ratio styling */}
           <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg bg-gradient-to-b from-pink-50 to-white">
             <div className="absolute inset-0 z-0 overflow-hidden opacity-10">
               {[...Array(5)].map((_, i) => (
@@ -146,18 +165,21 @@ const Index = () => {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <video 
-                  autoPlay 
-                  muted 
-                  loop 
-                  playsInline
-                  className="w-full h-full max-h-[280px] object-contain z-10 relative"
-                >
-                  <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
-                  あなたのブラウザはビデオをサポートしていません。
-                </video>
+                {/* Square aspect ratio video with object-fit: cover */}
+                <div className="hero-video-container mx-auto">
+                  <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    className="hero-video"
+                  >
+                    <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
+                    あなたのブラウザはビデオをサポートしていません。
+                  </video>
+                </div>
                 
-                {/* CTA Button with spring effect */}
+                {/* CTA Button with updated text to match form */}
                 <motion.div
                   className="mt-4 flex justify-center"
                   initial={{ scale: 0, opacity: 0 }}
@@ -174,21 +196,17 @@ const Index = () => {
                     size="lg" 
                     className="rounded-full shadow-md bg-primary hover:bg-primary/90"
                   >
-                    早期登録する
+                    事前登録する
                   </Button>
                 </motion.div>
               </motion.div>
             </div>
           </div>
           
-          {/* Scroll indicator */}
+          {/* Scroll indicator with improved animation */}
           <motion.div 
-            className="text-muted-foreground mt-2"
-            animate={{ y: [0, 5, 0] }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 2
-            }}
+            ref={arrowRef}
+            className="text-muted-foreground mt-2 cursor-pointer"
             onClick={scrollToForm}
           >
             <ArrowDown className="mx-auto h-6 w-6" />
