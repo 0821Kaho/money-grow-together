@@ -19,18 +19,30 @@ const WelcomeSection = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
-      {/* Background Video */}
-      <div className="absolute inset-0 z-0 opacity-20">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          {/* ここのsource srcをアップロードした動画のパスに変更します */}
-          <source src="/lovable-uploads/your-uploaded-video.mp4" type="video/mp4" />
-        </video>
+      {/* Animated background with floating coins */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute"
+            initial={{ 
+              x: `${Math.random() * 100}%`, 
+              y: `${Math.random() * 100}%`,
+              opacity: 0.05 + (Math.random() * 0.1)
+            }}
+            animate={{ 
+              y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
+              x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`]
+            }}
+            transition={{ 
+              duration: 15 + (Math.random() * 10),
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          >
+            <MoneyVisual size={10 + (i * 3)} />
+          </motion.div>
+        ))}
       </div>
 
       <div className="flex items-center justify-between relative z-10">
@@ -52,15 +64,24 @@ const WelcomeSection = () => {
         <div className="flex flex-col items-center gap-3 ml-4">
           <motion.div 
             className="hidden sm:block"
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 3 }}
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
             <MascotTooltip messages={welcomeMessages} characterSize="small" />
           </motion.div>
           
-          <div className="hidden sm:flex items-end gap-2">
+          <motion.div 
+            className="hidden sm:flex items-end gap-2"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 3,
+              ease: "easeInOut" 
+            }}
+          >
             <MascotImage variant="coin" size="small" alt="コインを持つピギペ" />
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>
