@@ -20,20 +20,7 @@ const KPIBanner = () => {
             />
           </div>
           
-          {/* +1,300万 Overlay with Piggy Image */}
-          <motion.div 
-            className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-primary flex items-center gap-2"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <img 
-              src="/lovable-uploads/82291aa4-53b2-4c72-8fdb-8599a34fdd33.png" 
-              alt="Piggy Bank" 
-              className="h-6 w-6"
-            />
-            +1,300万円
-          </motion.div>
+          {/* Removed the +1,300万 Overlay with Piggy Image */}
         </div>
         
         {/* Stats Section */}
