@@ -23,13 +23,18 @@ const KPIBanner = () => {
             あなたのブラウザはビデオをサポートしていません。
           </video>
           
-          {/* +1,300万 Overlay */}
+          {/* +1,300万 Overlay with Piggy Image */}
           <motion.div 
-            className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-primary"
+            className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-primary flex items-center gap-2"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
+            <img 
+              src="/lovable-uploads/82291aa4-53b2-4c72-8fdb-8599a34fdd33.png" 
+              alt="Piggy Bank" 
+              className="h-6 w-6"
+            />
             +1,300万円
           </motion.div>
         </div>
@@ -39,7 +44,14 @@ const KPIBanner = () => {
           <h3 className="text-xl font-heading font-bold text-gray-800 mb-2">みんなで成長しよう！</h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
             <div className="p-3">
-              <p className="text-xl md:text-2xl font-number font-bold text-primary">1,300万円+</p>
+              <div className="flex justify-center items-center gap-2">
+                <img 
+                  src="/lovable-uploads/82291aa4-53b2-4c72-8fdb-8599a34fdd33.png" 
+                  alt="Piggy Bank" 
+                  className="h-5 w-5"
+                />
+                <p className="text-xl md:text-2xl font-number font-bold text-primary">1,300万円+</p>
+              </div>
               <p className="text-xs text-gray-500 font-body">貯蓄達成額</p>
             </div>
             <div className="p-3">

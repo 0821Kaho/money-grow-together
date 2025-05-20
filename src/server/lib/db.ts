@@ -1,7 +1,13 @@
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-// Create a new PrismaClient instance
-const prisma = new PrismaClient();
+// Use a single instance of Prisma Client in development
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-export { prisma };
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
