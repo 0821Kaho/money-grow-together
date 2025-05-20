@@ -1,15 +1,19 @@
 
-// Using CommonJS require syntax since ES module syntax is causing issues
-// with how Prisma is exporting the PrismaClient
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
-// Create a singleton instance of PrismaClient
-const globalForPrisma = global as unknown as { prisma: typeof PrismaClient };
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
+// Create a new PrismaClient instance
+const prismaClientSingleton = () => {
+  return new PrismaClient({
     log: ["error", "warn"],
   });
+};
+
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined;
+};
+
+export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
