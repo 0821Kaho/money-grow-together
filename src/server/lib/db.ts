@@ -1,6 +1,5 @@
 
-// Import PrismaClient from the client output directory
-import { PrismaClient } from "../node_modules/.prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 // Create a single instance of Prisma Client
 const prisma = new PrismaClient();

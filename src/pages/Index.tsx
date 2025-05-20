@@ -274,8 +274,8 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">利用者の声</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto font-body">
-              Pigipeを使って学んだユーザーの変化を<br />
-              ご紹介します
+              Pigipeを使って学んだ<br />
+              ユーザーの変化をご紹介します
             </p>
           </div>
 
