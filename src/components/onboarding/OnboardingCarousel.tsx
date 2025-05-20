@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -5,8 +6,8 @@ import MascotCharacter from '../mascot/MascotCharacter';
 
 const onboardingSteps = [
   {
-    title: "Pigipeへようこそ！",
-    description: "金融リテラシーを楽しく学べるアプリです。Pigipeと一緒に学びましょう！",
+    title: "ピギペへようこそ！",
+    description: "金融リテラシーを楽しく学べるアプリです。ピギペと一緒に学びましょう！",
     image: "🏦"
   },
   {

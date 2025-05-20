@@ -23,8 +23,9 @@ export default {
 				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'body': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'number': ['Inter', 'sans-serif'],
+				// Logo specific font
+				'logo': ['Poppins', 'Inter', 'sans-serif'],
 				// Keep the legacy font family presets for backward compatibility
-				'logo': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'display': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'body': ['"Noto Sans JP"', 'Inter', 'sans-serif'],

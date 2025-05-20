@@ -28,7 +28,7 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-6 pt-6 text-center text-xs text-gray-400">
-          &copy; 2025 <span className="font-bold">Pigipe</span> All rights reserved.
+          &copy; 2025 <span className="font-logo font-bold">Pigipe</span> All rights reserved.
         </div>
       </div>
     </footer>

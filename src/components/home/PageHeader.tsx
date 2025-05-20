@@ -14,7 +14,7 @@ const PageHeader = () => {
     <header className="container mx-auto py-6 px-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <Link to="/" className="text-2xl font-heading font-bold text-[#333333]">
+          <Link to="/" className="text-2xl font-logo font-bold text-[#333333]">
             <span className="font-extrabold">Pigipe</span>
           </Link>
         </div>

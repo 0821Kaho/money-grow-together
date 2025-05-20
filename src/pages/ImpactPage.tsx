@@ -74,7 +74,7 @@ const ImpactPage = () => {
       <header className="container mx-auto py-6 px-4">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
-            <h1 className="text-2xl font-logo text-[#333333]">Pigipe</h1>
+            <h1 className="text-2xl font-logo font-bold text-[#333333]">Pigipe</h1>
           </Link>
           <Link to="/" className="ml-auto flex items-center text-muted-foreground hover:text-foreground">
             <ChevronLeft className="h-4 w-4 mr-1" />
@@ -89,7 +89,7 @@ const ImpactPage = () => {
           <div className="mb-12">
             <Badge variant="secondary" className="mb-4">社会インパクト</Badge>
             <h1 className="text-3xl md:text-4xl font-heading font-bold mb-3 text-[#333333]">
-              Pigipe がもたらす経済・社会的効果
+              ピギペがもたらす経済・社会的効果
             </h1>
             <p className="text-muted-foreground text-lg italic">
               個人のライフタイム便益から政府財政への貢献まで
@@ -214,7 +214,7 @@ const ImpactPage = () => {
             
             <div className="bg-white p-6 rounded-xl shadow-sm mb-8">
               <p className="mb-4">
-                Pigipe は、<span className="font-bold">完全無料で学べる金融教育プログラム</span> を通じ
+                ピギペは、<span className="font-bold">完全無料で学べる金融教育プログラム</span> を通じ
               </p>
               <ul className="list-disc list-inside space-y-2 mb-4">
                 <li>個人に <span className="text-primary font-bold">+1,300万円相当</span> の生涯便益</li>
