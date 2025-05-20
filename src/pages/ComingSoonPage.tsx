@@ -20,7 +20,7 @@ const ComingSoonPage = () => {
           </div>
           <h1 className="text-3xl font-heading font-bold mb-4">ただいま準備中</h1>
           <p className="text-muted-foreground mb-8">
-            Pigipeは現在準備中です。2025年5月23日の公開をお楽しみに！
+            Pigipeは現在準備中です。2023年5月22日20時の公開をお楽しみに！
             トップページから事前登録すると、公開時にお知らせをお送りします。
           </p>
           <Link to="/">
@@ -28,7 +28,6 @@ const ComingSoonPage = () => {
           </Link>
         </div>
       </div>
-      {/* Remove the footer from individual pages as it's now rendered at the App level */}
     </div>
   );
 };

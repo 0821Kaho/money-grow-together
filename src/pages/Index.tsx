@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -70,7 +71,7 @@ const testimonials = [
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
-  const launchDate = "2025-05-23T10:00:00+09:00";
+  const launchDate = "2023-05-22T20:00:00+09:00"; // Updated to May 22, 2023, 20:00 JST
   const arrowRef = useRef<HTMLDivElement>(null);
   
   // Function to handle scrolling to the waitlist form
