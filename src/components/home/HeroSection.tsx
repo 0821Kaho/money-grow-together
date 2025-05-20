@@ -51,14 +51,14 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
         </h1>
         
         {/* Sub-headline - Modified with Pigipe mention */}
-        <p className="text-lg text-muted-foreground max-w-lg">
+        <p className="text-lg text-muted-foreground max-w-lg mx-auto">
           <span className="sm:inline block">ピギペと遊んで学べる</span>
           <span className="sm:inline block">完全無料のお金のアプリ</span>
         </p>
         
         {/* Hero Video placed directly after the description */}
         <div className="w-full flex justify-center">
-          <HeroVideoSection className="w-full max-w-xs" />
+          <HeroVideoSection className="w-full max-w-md" />
         </div>
         
         {/* CTA Button */}

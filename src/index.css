@@ -82,10 +82,11 @@
 .hero-video-container {
   position: relative;
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
   aspect-ratio: 1/1;
   overflow: hidden;
   border-radius: 0.75rem;
+  margin: 0 auto;
 }
 
 .hero-video {
@@ -107,5 +108,9 @@
   .mobile-break-fix {
     font-size: 0.9rem;
     line-height: 1.5;
+  }
+  
+  .hero-video-container {
+    max-width: 300px;
   }
 }
