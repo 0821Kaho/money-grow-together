@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,7 +16,6 @@ import TermsPage from "./pages/TermsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import CompanyPage from "./pages/CompanyPage";
 import EnCompanyPage from "./pages/EnCompanyPage";
-import ComingSoonPage from "./pages/ComingSoonPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
@@ -46,7 +46,6 @@ function AppRoutes() {
           <Route path="/about" element={<CompanyPage />} />
           <Route path="/en/about" element={<EnCompanyPage />} />
           <Route path="/company" element={<Navigate to="/about" replace />} />
-          <Route path="/coming-soon" element={<ComingSoonPage />} />
           
           {/* Protected routes */}
           <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
@@ -74,14 +73,9 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <div className="flex flex-col min-h-screen">
-              <RedirectMiddleware>
-                <div className="flex-grow">
-                  <AppRoutes />
-                </div>
-              </RedirectMiddleware>
-              {/* Remove the duplicate Footer from here */}
-            </div>
+            <RedirectMiddleware>
+              <AppRoutes />
+            </RedirectMiddleware>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
