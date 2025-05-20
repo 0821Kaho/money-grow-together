@@ -56,7 +56,7 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
           <span className="sm:inline block">完全無料のお金のアプリ</span>
         </p>
         
-        {/* Hero Video */}
+        {/* Hero Video - Moved below the headline text */}
         <HeroVideoSection />
         
         {/* CTA Button */}

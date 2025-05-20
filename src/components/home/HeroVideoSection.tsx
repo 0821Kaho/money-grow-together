@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import MascotImage from "@/components/mascot/MascotImage";
@@ -54,7 +55,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
     document.addEventListener('click', handleUserInteraction);
     document.addEventListener('touchstart', handleUserInteraction);
     
-    // Add visible controls to allow user-initiated playback
+    // Add visible controls to allow user-initiated playback if autoplay fails
     video.controls = false;
     
     // Ensure video is preloaded
@@ -81,18 +82,21 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
   };
 
   return (
-    <div className={`w-full max-w-lg py-8 ${className}`}>
+    <div className={`w-full max-w-sm mx-auto py-4 ${className}`}>
       <div 
-        className="relative mx-auto hero-video-container" 
+        className="relative hero-video-container cursor-pointer"
         style={{
           background: 'linear-gradient(to bottom right, #ffc0d6, #fff5f8)',
           borderColor: '#ffb0d0',
+          width: '220px',
+          height: '220px',
+          margin: '0 auto',
         }}
         onClick={handleVideoContainerClick}
       >
         {!videoLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-white">
-            <MascotImage variant="default" size="medium" />
+            <MascotImage variant="default" size="small" />
           </div>
         )}
         <video 
@@ -102,7 +106,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
           muted 
           loop 
           preload="auto"
-          className="hero-video w-full rounded-lg shadow-md"
+          className="hero-video w-full h-full rounded-lg"
           poster="/lovable-uploads/daaffc30-c79d-48f1-ae00-6160772f79ca.png"
         >
           <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
