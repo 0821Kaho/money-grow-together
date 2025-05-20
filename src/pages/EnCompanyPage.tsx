@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
@@ -242,10 +241,6 @@ const EnCompanyPage = () => {
                 <div className="text-center font-heading text-gray-700">Kita Villa Papillon (Germany)</div>
               </div>
             </div>
-            
-            <p className="mt-8 text-center text-sm text-gray-500 font-body">
-              We collaborate with numerous educational institutions and companies
-            </p>
           </div>
         </section>
 

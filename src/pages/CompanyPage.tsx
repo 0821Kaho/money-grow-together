@@ -242,10 +242,6 @@ const CompanyPage = () => {
                 <div className="text-center font-heading text-gray-700">Kita Villa Papillon (ドイツ)</div>
               </div>
             </div>
-            
-            <p className="mt-8 text-center text-sm text-gray-500 font-body">
-              その他多数の教育機関・企業と連携しています
-            </p>
           </div>
         </section>
 
