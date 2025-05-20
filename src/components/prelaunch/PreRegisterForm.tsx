@@ -35,7 +35,6 @@ type PreRegisterFormProps = {
 const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: PreRegisterFormProps) => {
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
-  const [registeredCount, setRegisteredCount] = useState<number | null>(null);
   const navigate = useNavigate();
   const { signup } = useAuth();
 
@@ -47,17 +46,6 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
       age: undefined,
     },
   });
-
-  // Fetch the registered count when component mounts
-  useEffect(() => {
-    // Mock implementation for now due to API issues
-    setRegisteredCount(13427);
-    
-    // Real implementation (commented out for now)
-    // api.get("/waitlist/count")
-    //   .then(response => setRegisteredCount(response.data.count))
-    //   .catch(error => console.error("Failed to fetch waitlist count", error));
-  }, []);
 
   async function onSubmit(values: FormValues) {
     setLoading(true);
@@ -180,12 +168,6 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
           <p className="text-[12px] text-gray-500 text-center">
             ※通知は一度だけ / 退会は1クリック
           </p>
-          
-          {registeredCount !== null && (
-            <p className="text-center text-sm text-muted-foreground">
-              現在 <span className="font-medium text-primary">{registeredCount}</span> 人が事前登録済み
-            </p>
-          )}
         </div>
       ) : (
         <div className="rounded-lg border p-6 shadow-sm bg-green-50 space-y-4">
