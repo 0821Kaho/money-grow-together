@@ -117,7 +117,7 @@ const Index = () => {
 
       {/* Hero Section with enhanced styling and animation */}
       <section className="container mx-auto px-4 py-8 md:py-16">
-        <div 
+        <motion.div 
           className="max-w-4xl mx-auto flex flex-col items-center text-center gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -186,7 +186,7 @@ const Index = () => {
           <div id="waitlist-form" className="w-full max-w-md mx-auto pt-8">
             <PreRegisterForm className="w-full" />
           </div>
-        </div>
+        </motion.div>
       </section>
       
       <hr className="border-t border-dashed border-gray-200 my-12 max-w-4xl mx-auto" />

@@ -47,20 +47,45 @@
   @apply rounded-lg bg-[#25B589] px-4 py-2 text-white hover:brightness-105 transition-all;
 }
 
-/* Hero Video Styling - Square Aspect Ratio */
+/* Hero Video Styling - Updated for better visual appeal */
 .hero-video-container {
   position: relative;
-  width: 256px;
-  height: 256px;
+  width: 280px;
+  height: 280px;
   overflow: hidden;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 1.25rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(to bottom right, #ffeef6, #fff);
+  border: 2px solid #ffd1e6;
 }
 
 .hero-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Add subtle animated floating coins in background */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0.02; }
+  50% { transform: translateY(-15px) rotate(5deg); opacity: 0.05; }
+  100% { transform: translateY(0px) rotate(0deg); opacity: 0.02; }
+}
+
+.floating-coin {
+  position: absolute;
+  opacity: 0.02;
+  animation: float 8s ease-in-out infinite;
+}
+
+.floating-coin:nth-child(2) {
+  animation-delay: 2s;
+  animation-duration: 10s;
+}
+
+.floating-coin:nth-child(3) {
+  animation-delay: 4s;
+  animation-duration: 12s;
 }
 
 /* For reduced motion preference */
@@ -73,5 +98,9 @@
     background-image: url('/Kawaii_Piggy Bank.mp4?frame=1');
     background-size: cover;
     background-position: center;
+  }
+  
+  .floating-coin {
+    display: none;
   }
 }
