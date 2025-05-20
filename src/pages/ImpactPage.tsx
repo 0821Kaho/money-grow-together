@@ -5,6 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, FileText, TrendingUp, Shield, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const ImpactPage = () => {
   const { isAuthenticated } = useAuth();
@@ -95,27 +103,27 @@ const ImpactPage = () => {
               <h2 className="text-2xl font-heading font-bold">1. 個人レベル：生涯で得られる経済便益</h2>
             </div>
             
-            <div className="overflow-x-auto mb-6">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border p-3 text-left">内訳</th>
-                    <th className="border p-3 text-left">便益（保守）</th>
-                    <th className="border p-3 text-left">便益（平均）</th>
-                    <th className="border p-3 text-left">しくみ</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="mb-6">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-100">
+                    <TableHead className="w-[25%] whitespace-nowrap">内訳</TableHead>
+                    <TableHead className="w-[20%] whitespace-nowrap">便益（保守）</TableHead>
+                    <TableHead className="w-[20%] whitespace-nowrap">便益（平均）</TableHead>
+                    <TableHead className="w-[35%] whitespace-nowrap">しくみ</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {personalBenefits.map((benefit, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                      <td className="border p-3 font-medium">{benefit.title}</td>
-                      <td className="border p-3 text-rose-600 font-bold">{benefit.valueConservative}</td>
-                      <td className="border p-3 text-primary font-bold">{benefit.valueAverage}</td>
-                      <td className="border p-3 text-muted-foreground">{benefit.description}</td>
-                    </tr>
+                    <TableRow key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                      <TableCell className="font-medium whitespace-nowrap">{benefit.title}</TableCell>
+                      <TableCell className="text-rose-600 font-bold whitespace-nowrap">{benefit.valueConservative}</TableCell>
+                      <TableCell className="text-primary font-bold whitespace-nowrap">{benefit.valueAverage}</TableCell>
+                      <TableCell className="text-muted-foreground whitespace-nowrap">{benefit.description}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
             
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
@@ -133,25 +141,25 @@ const ImpactPage = () => {
               <h2 className="text-2xl font-heading font-bold">2. 政府レベル：財政・公共支出へのプラス効果</h2>
             </div>
             
-            <div className="overflow-x-auto mb-6">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border p-3 text-left">効果</th>
-                    <th className="border p-3 text-left">金額／倍率</th>
-                    <th className="border p-3 text-left">詳細</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="mb-6">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-100">
+                    <TableHead className="w-[40%] whitespace-nowrap">効果</TableHead>
+                    <TableHead className="w-[25%] whitespace-nowrap">金額／倍率</TableHead>
+                    <TableHead className="w-[35%] whitespace-nowrap">詳細</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {governmentEffects.map((effect, index) => (
-                    <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                      <td className="border p-3 font-medium">{effect.title}</td>
-                      <td className="border p-3 text-primary font-bold">{effect.value}</td>
-                      <td className="border p-3 text-muted-foreground">{effect.description}</td>
-                    </tr>
+                    <TableRow key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                      <TableCell className="font-medium whitespace-nowrap">{effect.title}</TableCell>
+                      <TableCell className="text-primary font-bold whitespace-nowrap">{effect.value}</TableCell>
+                      <TableCell className="text-muted-foreground whitespace-nowrap">{effect.description}</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
             
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -242,8 +250,6 @@ const ImpactPage = () => {
           </div>
         </div>
       </main>
-      
-      {/* Remove Footer component from here as it's already included in App.tsx */}
     </div>
   );
 };
