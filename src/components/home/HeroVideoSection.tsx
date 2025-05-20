@@ -1,8 +1,6 @@
-
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import MascotImage from "@/components/mascot/MascotImage";
-import MoneyVisual from "@/components/ui/MoneyVisual";
 
 interface HeroVideoSectionProps {
   className?: string;
@@ -69,9 +67,12 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
 
   return (
     <div className={`w-full max-w-lg py-8 ${className}`}>
-      <div className="relative mx-auto hero-video-container">
+      <div className="relative mx-auto hero-video-container" style={{
+        background: 'linear-gradient(to bottom right, #ffc0d6, #fff5f8)',
+        borderColor: '#ffb0d0',
+      }}>
         {!videoLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-50 to-white">
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-white">
             <MascotImage variant="default" size="medium" />
           </div>
         )}
@@ -88,17 +89,6 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
           <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
           あなたのブラウザはビデオをサポートしていません。
         </video>
-        
-        {/* Add floating coins as decorative elements */}
-        <div className="absolute floating-coin" style={{ top: '10%', left: '10%', width: '20px', height: '20px' }}>
-          <MoneyVisual type="coin" size="small" />
-        </div>
-        <div className="absolute floating-coin" style={{ top: '70%', left: '80%', width: '15px', height: '15px' }}>
-          <MoneyVisual type="coin" size="small" />
-        </div>
-        <div className="absolute floating-coin" style={{ top: '40%', left: '85%', width: '12px', height: '12px' }}>
-          <MoneyVisual type="coin" size="small" />
-        </div>
       </div>
     </div>
   );
