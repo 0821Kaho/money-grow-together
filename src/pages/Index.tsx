@@ -122,13 +122,13 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* 1. Headline */}
-          <h1 className="text-4xl md:text-5xl font-heading font-bold leading-tight">
+          {/* 1. Headline - Modified for better mobile display */}
+          <h1 className="text-3xl md:text-5xl font-heading font-bold leading-tight sm:whitespace-nowrap">
             お金で<span className="text-primary">夢をあきらめない</span>
           </h1>
           
-          {/* 2. Sub-headline - More conversational with emoji */}
-          <p className="text-lg font-body text-muted-foreground">
+          {/* 2. Sub-headline - Improved mobile display */}
+          <p className="text-base md:text-lg font-body text-muted-foreground mobile-break-fix">
             Pigipeと遊んで"お金で夢をあきらめない" 💰
           </p>
           

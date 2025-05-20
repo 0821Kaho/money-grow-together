@@ -91,3 +91,20 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Fix for mobile text breaks */
+.mobile-break-fix {
+  max-width: 100%;
+  display: inline-block;
+  white-space: normal;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+  .mobile-break-fix {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
