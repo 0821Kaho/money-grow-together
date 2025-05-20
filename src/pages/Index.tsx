@@ -238,7 +238,7 @@ const Index = () => {
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">5つのお金の学習モジュール</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto font-body">
-            各モジュールは短時間で完了し、<br className="hidden sm:block" />
+            各モジュールは短時間で完了し、<br />
             実践的なお金の知識を身につけられます
           </p>
           <div className="flex justify-center mt-4">
@@ -274,7 +274,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">利用者の声</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto font-body">
-              Pigipeを使って学んだユーザーの変化を<br className="hidden sm:block" />
+              Pigipeを使って学んだユーザーの変化を<br />
               ご紹介します
             </p>
           </div>
