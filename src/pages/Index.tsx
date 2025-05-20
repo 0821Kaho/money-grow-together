@@ -48,7 +48,8 @@ const Index = () => {
       </div>
 
       {/* CSS for floating animation */}
-      <style jsx>{`
+      <style>
+        {`
         @keyframes float {
           0% {
             transform: translateY(0px);
@@ -60,7 +61,8 @@ const Index = () => {
             transform: translateY(0px);
           }
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };

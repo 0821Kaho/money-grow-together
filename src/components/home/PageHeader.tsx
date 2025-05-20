@@ -15,17 +15,15 @@ const PageHeader = () => {
         <div className="flex gap-4">
           {isAuthenticated ? (
             <Button 
-              as={Link} 
-              to="/modules" 
               variant="outline"
+              onClick={() => window.location.href = '/modules'}
             >
               学習を始める
             </Button>
           ) : (
             <Button 
-              as={Link}
-              to="/signup"
               variant="outline"
+              onClick={() => window.location.href = '/signup'}
             >
               無料でアカウント作成
             </Button>
