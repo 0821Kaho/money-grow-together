@@ -98,35 +98,46 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
   };
 
   return (
-    <div className={`mx-auto ${className}`}>
-      <div 
-        className="relative mx-auto hero-video-container cursor-pointer"
-        onClick={handleVideoContainerClick}
-      >
-        {(showFallback || !videoLoaded) && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-white rounded-lg">
-            <div className="w-[180px] sm:w-[220px] md:w-[260px] lg:w-[280px] max-w-[48vw]">
-              <MascotImage variant="default" size="xl" className="w-full h-full" />
-            </div>
-            <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
-              クリックして再生
-            </div>
-          </div>
-        )}
-        <video 
-          ref={videoRef}
-          playsInline
-          muted 
-          loop 
-          preload="metadata"
-          className="hero-video w-full h-full rounded-lg shadow-md object-cover"
-          poster="/lovable-uploads/daaffc30-c79d-48f1-ae00-6160772f79ca.png"
-        >
-          <source src="/Kawaii_Piggy_Bank.mp4" type="video/mp4" />
-          あなたのブラウザはビデオをサポートしていません。
-        </video>
+    <>
+      {/* Social Media Thumbnail - Only visible in exported images but hidden on actual site */}
+      <div className="social-media-thumbnail hidden">
+        <img 
+          src="/lovable-uploads/8b0da5e9-dc3c-470e-a2db-10a3b7879502.png" 
+          alt="Pigipe - お金で夢をあきらめない" 
+          className="w-full"
+        />
       </div>
-    </div>
+
+      <div className={`mx-auto ${className}`}>
+        <div 
+          className="relative mx-auto hero-video-container cursor-pointer"
+          onClick={handleVideoContainerClick}
+        >
+          {(showFallback || !videoLoaded) && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-white rounded-lg">
+              <div className="w-[180px] sm:w-[220px] md:w-[260px] lg:w-[280px] max-w-[48vw]">
+                <MascotImage variant="default" size="xl" className="w-full h-full" />
+              </div>
+              <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
+                クリックして再生
+              </div>
+            </div>
+          )}
+          <video 
+            ref={videoRef}
+            playsInline
+            muted 
+            loop 
+            preload="metadata"
+            className="hero-video w-full h-full rounded-lg shadow-md object-cover"
+            poster="/lovable-uploads/daaffc30-c79d-48f1-ae00-6160772f79ca.png"
+          >
+            <source src="/Kawaii_Piggy_Bank.mp4" type="video/mp4" />
+            あなたのブラウザはビデオをサポートしていません。
+          </video>
+        </div>
+      </div>
+    </>
   );
 };
 

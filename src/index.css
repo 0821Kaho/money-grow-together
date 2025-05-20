@@ -95,6 +95,26 @@
   object-fit: cover;
 }
 
+/* Social Media Thumbnail Styling */
+.social-media-thumbnail {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
+  /* Hidden on the actual site but will appear when shared on social media */
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+/* Add meta property for social media sharing */
+html {
+  /* This ensures Facebook and other platforms pick up the image */
+  background-image: url('/lovable-uploads/8b0da5e9-dc3c-470e-a2db-10a3b7879502.png');
+  background-size: 0;
+}
+
 /* Fix for mobile text breaks */
 .mobile-break-fix {
   max-width: 100%;
@@ -115,5 +135,3 @@
     aspect-ratio: 1/1;
   }
 }
-
-
