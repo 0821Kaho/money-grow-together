@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 const PageHeader = () => {
   const { isAuthenticated } = useAuth();
 
+  const scrollToWaitlist = () => {
+    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <header className="container mx-auto py-6 px-4">
       <div className="flex justify-between items-center">
@@ -23,9 +27,9 @@ const PageHeader = () => {
           ) : (
             <Button 
               variant="outline"
-              onClick={() => window.location.href = '/signup'}
+              onClick={scrollToWaitlist}
             >
-              無料でアカウント作成
+              事前登録する
             </Button>
           )}
         </div>

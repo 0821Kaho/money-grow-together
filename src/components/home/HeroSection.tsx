@@ -6,7 +6,6 @@ import { useRef, useEffect } from "react";
 import HeroVideoSection from "@/components/home/HeroVideoSection";
 import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
-import { useNavigate } from "react-router-dom";
 
 interface HeroSectionProps {
   launchDate: string;
@@ -14,16 +13,10 @@ interface HeroSectionProps {
 
 const HeroSection = ({ launchDate }: HeroSectionProps) => {
   const arrowRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
   
   // Function to handle scrolling to the waitlist form
   const scrollToForm = () => {
     document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  // Function for directing users to sign up page
-  const goToSignup = () => {
-    navigate("/signup");
   };
 
   // Function to occasionally bounce the arrow
@@ -70,7 +63,7 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
         
         {/* CTA Button */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex justify-center"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ 
@@ -86,14 +79,6 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
             className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
           >
             事前登録する
-          </Button>
-          <Button 
-            onClick={goToSignup} 
-            size="lg" 
-            variant="outline"
-            className="rounded-full shadow-lg"
-          >
-            アカウント作成
           </Button>
         </motion.div>
         

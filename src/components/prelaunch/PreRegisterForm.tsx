@@ -4,11 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Mail, Merge } from "lucide-react";
+import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Form,
   FormControl,
@@ -34,6 +35,7 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
   const [registered, setRegistered] = useState(false);
   const [registeredCount, setRegisteredCount] = useState<number | null>(null);
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -56,23 +58,27 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
   async function onSubmit(values: FormValues) {
     setLoading(true);
     try {
+      // First register the email to the waitlist
       // Mock implementation
       // In production this would call the actual API
       // await api.post("/waitlist", values);
       
-      setRegistered(true);
+      // Then create an account and automatically sign them up
+      const tempPassword = generateTempPassword();
+      await signup(values.email, tempPassword);
+      
       toast.success("事前登録が完了しました！", {
-        description: "公開日にメールでお知らせします。",
+        description: "アカウントが作成され、公開日にメールでお知らせします。",
       });
       
       if (onSuccess) onSuccess();
       
-      // Store email in localStorage for signup page
-      localStorage.setItem("preregisteredEmail", values.email);
+      // Navigate to onboarding
+      navigate("/onboarding");
+      
     } catch (error: any) {
       if (error.response?.status === 409) {
         toast.info("このメールアドレスはすでに登録されています。");
-        setRegistered(true);
       } else {
         toast.error("登録に失敗しました。もう一度お試しください。");
       }
@@ -81,8 +87,14 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
     }
   }
 
-  const handleSignup = () => {
-    navigate("/signup");
+  // Generate a temporary secure password
+  const generateTempPassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+    let password = '';
+    for (let i = 0; i < 16; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
   };
 
   return (
@@ -136,16 +148,6 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
             <p className="text-green-600">
               公開日（2025年5月23日）にお知らせメールをお送りします。
             </p>
-          </div>
-          
-          <div className="flex flex-col gap-3">
-            <Button 
-              onClick={handleSignup} 
-              className="w-full bg-primary flex items-center justify-center gap-2"
-            >
-              <Merge className="h-4 w-4" />
-              今すぐアカウント作成
-            </Button>
           </div>
         </div>
       )}
