@@ -102,7 +102,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
       {/* Social Media Thumbnail - Only visible in exported images but hidden on actual site */}
       <div className="social-media-thumbnail hidden">
         <img 
-          src="/lovable-uploads/8b0da5e9-dc3c-470e-a2db-10a3b7879502.png" 
+          src="/lovable-uploads/b44f345d-95c0-4a33-aad2-2ae8baa3ccb2.png" 
           alt="Pigipe - お金で夢をあきらめない" 
           className="w-full"
         />
