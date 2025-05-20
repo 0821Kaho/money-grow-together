@@ -1,9 +1,9 @@
 
-import { PrismaClient as PrismaClientType } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
-// Create new PrismaClient instance
+// Create a new PrismaClient instance
 const prismaClientSingleton = () => {
-  return new PrismaClientType({
+  return new Prisma.PrismaClient({
     log: ["error", "warn"],
   });
 };
