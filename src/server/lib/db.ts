@@ -1,11 +1,11 @@
 
-import { PrismaClient } from '@prisma/client'
+// This file handles database client connections
+import { PrismaClient as PrismaClientType } from "@prisma/client";
 
-// Use a single instance of Prisma Client in development
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+// Workaround for the PrismaClient import issue
+const PrismaClient = PrismaClientType as any;
 
-export const prisma = globalForPrisma.prisma || new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-});
+// Create a single instance of Prisma Client
+const prisma = new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+export { prisma };
