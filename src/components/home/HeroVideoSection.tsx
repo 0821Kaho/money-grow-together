@@ -115,7 +115,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
         >
           {(showFallback || !videoLoaded) && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-white rounded-lg">
-              <div className="w-[180px] sm:w-[220px] md:w-[260px] lg:w-[280px] max-w-[48vw]">
+              <div className="w-[360px] sm:w-[440px] md:w-[520px] lg:w-[560px] max-w-[96vw]">
                 <MascotImage variant="default" size="xl" className="w-full h-full" />
               </div>
             </div>

@@ -93,6 +93,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  will-change: transform; /* Performance optimization for animations */
+  transform: translateZ(0); /* Force GPU acceleration */
 }
 
 /* Social Media Thumbnail Styling */
@@ -134,4 +136,28 @@ html {
     max-width: 100%;
     aspect-ratio: 1/1;
   }
+}
+
+/* For reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none;
+  }
+  
+  .hero-video-container {
+    background-image: url('/lovable-uploads/daaffc30-c79d-48f1-ae00-6160772f79ca.png');
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+/* Add subtle floating animation for the video container */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.hero-video-container {
+  animation: float 3s ease-in-out infinite;
 }
