@@ -13,7 +13,36 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
   const [showFallback, setShowFallback] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   
-  // Handle video loading
+  // Check if element is in viewport
+  const useOnScreen = (ref: React.RefObject<HTMLElement>) => {
+    const [isIntersecting, setIntersecting] = useState(false);
+  
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setIntersecting(entry.isIntersecting);
+        },
+        { threshold: 0.1 }
+      );
+  
+      const currentRef = ref.current;
+      if (currentRef) {
+        observer.observe(currentRef);
+      }
+  
+      return () => {
+        if (currentRef) {
+          observer.unobserve(currentRef);
+        }
+      };
+    }, [ref]);
+  
+    return isIntersecting;
+  };
+  
+  const isOnScreen = useOnScreen(videoRef);
+  
+  // Handle video loading and playing/pausing based on visibility
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -22,95 +51,62 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
     const handleCanPlay = () => {
       console.log("Video can play now");
       setVideoLoaded(true);
-      setShowFallback(false);
-      
-      if (!playAttempted) {
-        setPlayAttempted(true);
-        // Use a slight delay to improve playback success rate
-        setTimeout(() => {
-          video.play().catch(err => {
-            console.log("Auto-play prevented:", err);
-            // Keep video element visible even if autoplay fails
-            setVideoLoaded(true);
-            setShowFallback(true);
-          });
-        }, 300);
-      }
     };
     
-    // Event for when metadata is loaded (dimensions, duration)
+    // Video loaded metadata
     const handleLoadedMetadata = () => {
       console.log("Video metadata loaded");
+      setVideoLoaded(true);
     };
     
-    // Add user interaction event to help with playback
-    const handleUserInteraction = () => {
-      if (video && videoLoaded && video.paused) {
-        video.play().catch(err => {
-          console.log("User-triggered play failed:", err);
-          setShowFallback(true);
-        });
-      }
-    };
+    // Play video when in viewport
+    if (isOnScreen && videoLoaded && !playAttempted) {
+      setPlayAttempted(true);
+      video.play().catch(err => {
+        console.log("Auto-play prevented:", err);
+        setShowFallback(true);
+      });
+    }
     
-    // Set up event listeners
+    // Pause video when not in viewport (battery/performance saving)
+    if (!isOnScreen && videoLoaded && !video.paused) {
+      video.pause();
+    }
+    
+    // Add event listeners
     video.addEventListener('canplaythrough', handleCanPlay);
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    document.addEventListener('click', handleUserInteraction, { once: true });
-    document.addEventListener('touchstart', handleUserInteraction, { once: true });
-    
-    // Explicitly show controls if autoplay fails
-    video.addEventListener('pause', () => {
-      if (videoLoaded) setShowFallback(true);
-    });
-    
-    video.addEventListener('play', () => {
-      setShowFallback(false);
-    });
-    
-    // Force a load attempt
-    video.load();
     
     return () => {
-      // Clean up event listeners
       video.removeEventListener('canplaythrough', handleCanPlay);
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      document.removeEventListener('click', handleUserInteraction);
-      document.removeEventListener('touchstart', handleUserInteraction);
-      video.removeEventListener('pause', () => setShowFallback(true));
-      video.removeEventListener('play', () => setShowFallback(false));
     };
-  }, [playAttempted, videoLoaded]);
+  }, [isOnScreen, videoLoaded, playAttempted]);
   
-  // Add a click handler directly on the video container
+  // Handle user interaction
   const handleVideoContainerClick = () => {
     const video = videoRef.current;
     if (video) {
       if (video.paused) {
-        video.play().catch(err => {
-          console.log("Click play failed:", err);
+        video.play().catch(() => {
           setShowFallback(true);
         });
+        setShowFallback(false);
       } else {
         video.pause();
+        setShowFallback(true);
       }
     }
   };
 
   return (
-    <div className={`w-full max-w-md py-4 ${className}`}>
+    <div className={`mx-auto ${className}`}>
       <div 
         className="relative mx-auto hero-video-container cursor-pointer"
         onClick={handleVideoContainerClick}
-        style={{
-          maxWidth: "260px", 
-          maxHeight: "260px",
-          background: 'linear-gradient(to bottom right, #ffc0d6, #fff5f8)',
-          borderColor: '#ffb0d0',
-        }}
       >
         {(showFallback || !videoLoaded) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-100 to-white">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-white rounded-lg">
             <MascotImage variant="default" size="medium" />
             <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
               クリックして再生
@@ -122,7 +118,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
           playsInline
           muted 
           loop 
-          preload="auto"
+          preload="metadata"
           className="hero-video w-full h-full rounded-lg shadow-md object-cover"
           poster="/lovable-uploads/daaffc30-c79d-48f1-ae00-6160772f79ca.png"
         >

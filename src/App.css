@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -49,12 +50,14 @@
 /* Hero Video Styling - Updated for more pink look */
 .hero-video-container {
   position: relative;
-  width: 280px;
-  height: 280px;
+  width: 100%;
+  max-width: 260px;
+  height: 260px;
+  margin: 0 auto;
   overflow: hidden;
   border-radius: 1.25rem;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-  background: linear-gradient(to bottom right, #ffc0d6, #fff5f8);
+  box-shadow: 0 4px 15px rgba(246, 62, 124, 0.1);
+  background: linear-gradient(to bottom right, #ffd0e0, #fff5f8);
   border: 2px solid #ffb0d0;
 }
 
@@ -72,8 +75,19 @@
   }
   
   .hero-video-container {
-    background-image: url('/Kawaii_Piggy Bank.mp4?frame=1');
+    background-image: url('/lovable-uploads/daaffc30-c79d-48f1-ae00-6160772f79ca.png');
     background-size: cover;
     background-position: center;
   }
+}
+
+/* Add subtle floating animation for the video container */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.hero-video-container {
+  animation: float 3s ease-in-out infinite;
 }
