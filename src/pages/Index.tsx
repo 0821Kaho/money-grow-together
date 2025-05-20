@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -181,13 +182,13 @@ const Index = () => {
               
               {/* Add floating coins as decorative elements */}
               <div className="floating-coin" style={{ top: '10%', left: '10%', width: '20px', height: '20px' }}>
-                <MoneyVisual variant="coin" size="small" />
+                <MoneyVisual type="coin" size="small" />
               </div>
               <div className="floating-coin" style={{ top: '70%', left: '80%', width: '15px', height: '15px' }}>
-                <MoneyVisual variant="coin" size="small" />
+                <MoneyVisual type="coin" size="small" />
               </div>
               <div className="floating-coin" style={{ top: '40%', left: '85%', width: '12px', height: '12px' }}>
-                <MoneyVisual variant="coin" size="small" />
+                <MoneyVisual type="coin" size="small" />
               </div>
             </div>
           </div>
