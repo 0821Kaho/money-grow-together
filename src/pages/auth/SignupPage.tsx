@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");
@@ -18,26 +18,27 @@ const SignupPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { signup } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
+
+  // Get pre-registered email from localStorage if available
+  useEffect(() => {
+    const preregisteredEmail = localStorage.getItem("preregisteredEmail");
+    if (preregisteredEmail) {
+      setEmail(preregisteredEmail);
+      // Clear the stored email to prevent it from being used multiple times
+      localStorage.removeItem("preregisteredEmail");
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
-      toast({
-        title: "パスワードエラー",
-        description: "パスワードが一致しません",
-        variant: "destructive",
-      });
+      toast.error("パスワードが一致しません");
       return;
     }
     
     if (!termsAccepted) {
-      toast({
-        title: "利用規約エラー",
-        description: "利用規約に同意してください",
-        variant: "destructive",
-      });
+      toast.error("利用規約に同意してください");
       return;
     }
     
@@ -45,16 +46,13 @@ const SignupPage = () => {
 
     try {
       await signup(email, password, displayName);
-      toast({
-        title: "登録成功",
+      toast.success("登録成功", {
         description: "Pigipeへようこそ！",
       });
       navigate("/onboarding");
     } catch (error) {
-      toast({
-        title: "登録失敗",
+      toast.error("登録失敗", {
         description: "アカウントの作成に失敗しました",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
