@@ -1,10 +1,14 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ChevronLeft, Users, Briefcase, FileText, FileSearch, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const EnCompanyPage = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
       {/* Sticky Header with blur effect */}
@@ -55,7 +59,7 @@ const EnCompanyPage = () => {
 
         {/* 2. Vision & Mission Section */}
         <section className="py-16 sm:py-24 container mx-auto px-4">
-          <h2 className="font-heading text-3xl font-subheading text-center mb-12">Vision & Mission</h2>
+          <h2 className={`font-heading ${isMobile ? "text-2xl" : "text-3xl"} font-subheading text-center mb-12`}>Vision & Mission</h2>
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white shadow-md rounded-2xl p-8 flex flex-col items-center text-center">
               <div className="bg-primary/10 p-3 rounded-full mb-4">
@@ -78,7 +82,7 @@ const EnCompanyPage = () => {
         {/* 3. Business Domains Section */}
         <section className="py-16 sm:py-24 bg-[#F9F9F9]">
           <div className="container mx-auto px-4">
-            <h2 className="font-heading text-3xl font-subheading text-center mb-12">Business Domains</h2>
+            <h2 className={`font-heading ${isMobile ? "text-2xl" : "text-3xl"} font-subheading text-center mb-12`}>Business Domains</h2>
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white shadow-md rounded-2xl p-6 space-y-4 h-full">
                 <div className="bg-primary/10 p-3 inline-flex rounded-full mb-2">
@@ -117,7 +121,7 @@ const EnCompanyPage = () => {
         {/* 4. Company Profile Section */}
         <section className="py-16 sm:py-24 container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-heading text-3xl font-subheading text-center mb-12">Company Profile</h2>
+            <h2 className={`font-heading ${isMobile ? "text-2xl" : "text-3xl"} font-subheading text-center mb-12`}>Company Profile</h2>
             <div className="bg-white shadow-md rounded-2xl p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#F5F5F5] p-2 rounded-full">
@@ -174,7 +178,7 @@ const EnCompanyPage = () => {
         <section className="py-16 sm:py-24 bg-[#F9F9F9]">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="font-heading text-3xl font-subheading text-center mb-12">Research & Development</h2>
+              <h2 className={`font-heading ${isMobile ? "text-2xl" : "text-3xl"} font-subheading text-center mb-12`}>Research & Development</h2>
               
               <div className="bg-white shadow-md rounded-2xl p-6 sm:p-8">
                 <div className="flex items-center gap-3 mb-6">
@@ -223,7 +227,7 @@ const EnCompanyPage = () => {
         {/* 6. Partners Section */}
         <section className="py-16 sm:py-24 container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-heading text-3xl font-subheading text-center mb-12">Partners</h2>
+            <h2 className={`font-heading ${isMobile ? "text-2xl" : "text-3xl"} font-subheading text-center mb-12`}>Partners</h2>
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               <div className="flex flex-col items-center justify-center bg-white shadow-sm rounded-lg p-4 aspect-video">
@@ -249,7 +253,10 @@ const EnCompanyPage = () => {
         <section className="py-16 sm:py-24 bg-gradient-to-b from-[#FFF8E1] to-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-6">Would you like to create the next opportunity with us?</h2>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-6">
+                Would you like to create the next opportunity<br className={isMobile ? "" : "hidden"} />
+                with us?
+              </h2>
               <p className="font-body text-gray-700 mb-8 max-w-lg mx-auto">
                 Join us in our mission to expand possibilities for children who will lead our future.
                 Please feel free to contact us.
