@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
-import { Mail } from "lucide-react";
+import { Mail, Lock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
@@ -20,6 +20,8 @@ import {
 
 const formSchema = z.object({
   email: z.string().email("有効なメールアドレスを入力してください"),
+  password: z.string().min(8, "パスワードは8文字以上である必要があります"),
+  age: z.coerce.number().min(12, "12歳以上である必要があります").max(120, "有効な年齢を入力してください"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -41,6 +43,8 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
+      password: "",
+      age: undefined,
     },
   });
 
@@ -58,14 +62,11 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
   async function onSubmit(values: FormValues) {
     setLoading(true);
     try {
-      // First register the email to the waitlist
-      // Mock implementation
-      // In production this would call the actual API
-      // await api.post("/waitlist", values);
+      // Register with email and password
+      await signup(values.email, values.password);
       
-      // Then create an account and automatically sign them up
-      const tempPassword = generateTempPassword();
-      await signup(values.email, tempPassword);
+      // In a real implementation, we would also store the age
+      // await api.post("/user/profile", { age: values.age });
       
       toast.success("事前登録が完了しました！", {
         description: "アカウントが作成され、公開日にメールでお知らせします。",
@@ -87,16 +88,6 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
     }
   }
 
-  // Generate a temporary secure password
-  const generateTempPassword = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
-    let password = '';
-    for (let i = 0; i < 16; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return password;
-  };
-
   return (
     <div className={className} id={id}>
       {!registered ? (
@@ -114,17 +105,72 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="メールアドレス"
-                        type="email"
-                        disabled={loading}
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="メールアドレス"
+                          type="email"
+                          className="pl-10"
+                          disabled={loading}
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="パスワード（8文字以上）"
+                          type="password"
+                          className="pl-10"
+                          disabled={loading}
+                          {...field}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="年齢"
+                          type="number"
+                          className="pl-10"
+                          min={12}
+                          max={120}
+                          disabled={loading}
+                          {...field}
+                          onChange={(e) => {
+                            const value = e.target.value === "" ? undefined : Number(e.target.value);
+                            field.onChange(value);
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "登録中..." : "事前登録する"}
               </Button>
