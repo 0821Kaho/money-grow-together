@@ -10,7 +10,7 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import AcademicSection from "@/components/home/AcademicSection";
 
 const Index = () => {
-  const launchDate = "2025-05-22T20:00:00+09:00"; // Updated to May 22, 2025, 20:00 JST
+  const launchDate = "2025-05-23T20:00:00+09:00"; // Updated to May 23, 2025, 20:00 JST
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
