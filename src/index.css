@@ -1,170 +1,93 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+ 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 20%; /* #333333 for body text */
+    --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
-
+    --card-foreground: 222.2 84% 4.9%;
+ 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
-
-    --primary: 354 85% 72%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 156 59% 41%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%; /* Muted text */
-
-    --accent: 42 100% 72%;
-    --accent-foreground: 0 0% 20%;
-
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 346 88% 64%; /* #F63E7C - Pigipe Pink */
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 90%; /* #E5E5E5 */
-    --input: 0 0% 90%;
-    --ring: 0 0% 20%;
-
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 97%;
-    --sidebar-foreground: 0 0% 37%;
-    --sidebar-primary: 0 0% 13%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 97%;
-    --sidebar-accent-foreground: 0 0% 13%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 0 100% 72%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+ 
+    --radius: 0.5rem;
   }
-
+ 
   .dark {
-    --background: 0 0% 13%;
-    --foreground: 0 0% 97%;
-
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 97%;
-
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 97%;
-
-    --primary: 0 100% 72%;
-    --primary-foreground: 0 0% 13%;
-
-    --secondary: 162 66% 43%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 27%;
-    --muted-foreground: 0 0% 63%;
-
-    --accent: 39 100% 64%;
-    --accent-foreground: 0 0% 13%;
-
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 346 88% 64%; /* #F63E7C - Pigipe Pink */
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+ 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 97%;
-
-    --border: 0 0% 27%;
-    --input: 0 0% 27%;
-    --ring: 0 0% 83.9%;
-    
-    --sidebar-background: 0 0% 13%;
-    --sidebar-foreground: 0 0% 97%;
-    --sidebar-primary: 0 100% 72%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 18%;
-    --sidebar-accent-foreground: 0 0% 97%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 0 100% 72%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
-    @apply bg-background text-foreground font-body;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-  
-  h1 {
-    @apply font-heading font-bold text-2xl; /* Weight 700 */
-  }
-  
-  h2 {
-    @apply font-heading font-subheading text-xl; /* Weight 500 */
-  }
-  
-  h3 {
-    @apply font-heading font-subheading text-lg;
-  }
-
-  button, .button {
-    @apply font-number font-bold;
-  }
-  
-  .mascot-tooltip {
-    @apply font-body;
+    @apply bg-background text-foreground;
   }
 }
 
-@layer components {
-  .game-card {
-    @apply relative overflow-hidden rounded-2xl bg-white p-5 shadow-md transition-all duration-300 hover:shadow-lg;
-  }
-  
-  .game-button {
-    @apply rounded-xl bg-primary px-6 py-3 font-number font-bold text-white transition-all hover:brightness-105 active:scale-95;
-  }
-  
-  .game-button-secondary {
-    @apply rounded-xl bg-transparent border border-primary text-primary px-6 py-3 font-number font-bold transition-all hover:bg-primary/10 active:scale-95;
-  }
-  
-  .game-button-accent {
-    @apply rounded-xl bg-game-accent px-6 py-3 font-number font-bold text-game-dark transition-all hover:brightness-105 active:scale-95;
-  }
+/* Add custom styles for the hero video container */
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
 
-  .coin {
-    @apply flex h-16 w-16 items-center justify-center rounded-full bg-game-accent text-white text-xl font-number font-bold;
-  }
-
-  .achievement-badge {
-    @apply relative flex h-20 w-20 items-center justify-center rounded-full bg-game-secondary p-1;
-  }
-  
-  .achievement-badge-inner {
-    @apply flex h-full w-full items-center justify-center rounded-full bg-white;
-  }
-  
-  .module-card {
-    @apply relative overflow-hidden rounded-2xl border-2 border-transparent bg-white p-6 shadow-sm transition-all duration-300 hover:border-game-secondary;
-  }
-  
-  .module-card.locked {
-    @apply opacity-60 grayscale;
-  }
-  
-  .progress-bar {
-    @apply h-2.5 overflow-hidden rounded-full bg-[#E0E0E0];
-  }
-  
-  .progress-bar-fill {
-    @apply h-full rounded-full bg-primary transition-all duration-300 ease-out;
-  }
-  
-  .progress-bar-fill-complete {
-    @apply h-full rounded-full bg-[#FFD700] transition-all duration-300 ease-out;
-  }
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

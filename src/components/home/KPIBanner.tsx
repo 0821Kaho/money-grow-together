@@ -1,5 +1,7 @@
 
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const KPIBanner = () => {
   return (
@@ -37,26 +39,13 @@ const KPIBanner = () => {
             </div>
           </div>
           
-          <div className="mt-4 text-xs">
-            <p className="font-medium text-gray-700">項目別効果内訳</p>
-            <div className="grid grid-cols-3 gap-2 mt-1">
-              <div className="font-medium">項目</div>
-              <div className="font-medium">便益（保守）</div>
-              <div className="font-medium">便益（平均）</div>
-              
-              <div>高金利借入回避・利息削減</div>
-              <div className="text-rose-600">¥200,000</div>
-              <div className="text-primary">¥2,000,000</div>
-              
-              <div>早期からの積立投資リターン</div>
-              <div className="text-rose-600">¥600,000</div>
-              <div className="text-primary">¥8,000,000</div>
-              
-              <div>収入向上・副業効果など</div>
-              <div className="text-rose-600">¥200,000</div>
-              <div className="text-primary">¥3,000,000</div>
-            </div>
-          </div>
+          <Link 
+            to="/impact" 
+            className="mt-4 inline-flex items-center text-primary hover:underline"
+          >
+            詳細な効果分析を見る
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Link>
         </div>
       </div>
     </motion.div>
