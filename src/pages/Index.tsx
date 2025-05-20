@@ -22,15 +22,15 @@ const Index = () => {
       
       <hr className="border-t border-dashed border-gray-200 my-12 max-w-4xl mx-auto" />
 
-      {/* KPI Banner */}
+      {/* Modules Section - Moved above KPI Banner */}
+      <ModulesSection />
+
+      {/* KPI Banner - Now appears after Modules Section */}
       <section className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <KPIBanner />
         </div>
       </section>
-
-      {/* Modules Section */}
-      <ModulesSection />
 
       {/* Testimonials */}
       <TestimonialsSection />
