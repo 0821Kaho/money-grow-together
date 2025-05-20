@@ -180,7 +180,7 @@ const Index = () => {
                   </video>
                 </div>
                 
-                {/* +1,300万 Overlay with Piggy Image */}
+                {/* +1,300万 Overlay with Static Piggy Image */}
                 <motion.div 
                   className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-primary flex items-center gap-2"
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -188,7 +188,7 @@ const Index = () => {
                   transition={{ delay: 1.0 }}
                 >
                   <img 
-                    src="/lovable-uploads/82291aa4-53b2-4c72-8fdb-8599a34fdd33.png" 
+                    src="/lovable-uploads/8222b1da-7b67-4414-9861-8040d87f70ab.png" 
                     alt="Piggy Bank" 
                     className="h-5 w-5"
                   />
