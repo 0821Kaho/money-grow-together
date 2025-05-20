@@ -115,96 +115,62 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section with enhanced styling and optimizations */}
-      <section className="container mx-auto px-4 py-8 md:py-12">
-        <motion.div
-          className="max-w-4xl mx-auto flex flex-col items-center text-center gap-6 md:gap-8"
+      {/* Hero Section with enhanced styling and animation */}
+      <section className="container mx-auto px-4 py-8 md:py-16">
+        <div 
+          className="max-w-4xl mx-auto flex flex-col items-center text-center gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* 1. Headline - Modified for better mobile display */}
-          <h1 className="text-3xl md:text-5xl font-heading font-bold leading-tight sm:whitespace-nowrap">
+          {/* Headline */}
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
             お金で<span className="text-primary">夢をあきらめない</span>
           </h1>
           
-          {/* 2. Sub-headline - Updated with new text to include "completely free" */}
-          <p className="text-base md:text-lg font-body text-muted-foreground mobile-break-fix">
-            ピギペと遊んで学べる完全無料のお金のアプリ💰
+          {/* Sub-headline */}
+          <p className="text-lg md:text-xl text-muted-foreground max-w-lg">
+            ピギペと遊んで学べる完全無料のお金のアプリ
           </p>
           
-          {/* Move CTA button above the video */}
+          {/* Hero Video with Mascot Animation */}
+          <div className="w-full max-w-lg py-8">
+            <div className="relative mx-auto hero-video-container">
+              <video 
+                autoPlay 
+                muted 
+                loop 
+                playsInline
+                className="hero-video"
+              >
+                <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
+                あなたのブラウザはビデオをサポートしていません。
+              </video>
+            </div>
+          </div>
+          
+          {/* CTA Button */}
           <motion.div
-            className="mb-3 flex justify-center"
+            className="flex justify-center"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ 
               type: "spring",
               stiffness: 260,
               damping: 20,
-              delay: 1.5
+              delay: 0.5
             }}
           >
             <Button 
               onClick={scrollToForm} 
               size="lg" 
-              className="rounded-full shadow-md bg-primary hover:bg-primary/90"
+              className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
             >
               事前登録する
             </Button>
           </motion.div>
           
-          {/* 3. Hero Video KV with proper 1:1 aspect ratio styling */}
-          <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg bg-gradient-to-b from-pink-50 to-white">
-            <div className="absolute inset-0 z-0 overflow-hidden opacity-10">
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute text-primary"
-                  initial={{ 
-                    x: `${Math.random() * 100}%`, 
-                    y: `${Math.random() * 100}%`,
-                  }}
-                  animate={{ 
-                    y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-                    x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`]
-                  }}
-                  transition={{ 
-                    duration: 15 + (Math.random() * 10),
-                    repeat: Infinity,
-                    repeatType: "reverse"
-                  }}
-                >
-                  ¥
-                </motion.div>
-              ))}
-            </div>
-            
-            <div className="pt-4 pb-0 px-4 md:pt-8 md:pb-0 md:px-8 flex flex-col items-center">
-              <motion.div
-                className="w-full relative"
-                initial={{ scale: 0.95, y: 20, opacity: 0 }}
-                animate={{ scale: 1, y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                {/* Square aspect ratio video with object-fit: cover */}
-                <div className="hero-video-container mx-auto">
-                  <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
-                    className="hero-video"
-                  >
-                    <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
-                    あなたのブラウザはビデオをサポートしていません。
-                  </video>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-          
-          {/* Scroll indicator with improved animation */}
+          {/* Scroll indicator */}
           <motion.div 
             ref={arrowRef}
             className="text-muted-foreground mt-2 cursor-pointer"
@@ -213,32 +179,30 @@ const Index = () => {
             <ArrowDown className="mx-auto h-6 w-6" />
           </motion.div>
           
-          {/* 4. Countdown */}
-          <Countdown targetDate={launchDate} className="w-full" />
+          {/* Countdown */}
+          <Countdown targetDate={launchDate} className="w-full mt-8" />
           
-          {/* 5. CTA Form */}
-          <div className="w-full">
-            <PreRegisterForm className="w-full max-w-md mx-auto" id="waitlist-form" />
-          </div>
-        </motion.div>
-      </section>
-      
-      <hr className="border-t border-dashed border-gray-200 my-8 max-w-4xl mx-auto" />
-
-      {/* KPI Banner - Updated for width constraints */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="flex justify-center">
-          <div className="w-full max-w-md">
-            <KPIBanner />
+          {/* Pre-register form */}
+          <div id="waitlist-form" className="w-full max-w-md mx-auto pt-8">
+            <PreRegisterForm className="w-full" />
           </div>
         </div>
       </section>
+      
+      <hr className="border-t border-dashed border-gray-200 my-12 max-w-4xl mx-auto" />
 
-      {/* Modules Section - Updated text size and line breaks for mobile */}
-      <section className="container mx-auto px-4 py-12 md:py-16">
+      {/* KPI Banner */}
+      <section className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <KPIBanner />
+        </div>
+      </section>
+
+      {/* Modules Section */}
+      <section className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">5つのお金の学習モジュール</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto font-body">
+          <h2 className="text-3xl font-bold mb-4">5つのお金の学習モジュール</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             各モジュールは短時間で完了し、<br />
             実践的なお金の知識を身につけられます
           </p>
@@ -254,8 +218,8 @@ const Index = () => {
                 <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3">
                   <Card className={`h-full ${module.color} border-none shadow-sm hover:shadow transition-all`}>
                     <CardContent className="p-6">
-                      <h3 className="text-xl font-heading font-subheading mb-2">{module.title}</h3>
-                      <p className="text-muted-foreground text-sm font-body">{module.description}</p>
+                      <h3 className="text-xl font-bold mb-2">{module.title}</h3>
+                      <p className="text-muted-foreground text-sm">{module.description}</p>
                     </CardContent>
                   </Card>
                 </CarouselItem>
@@ -269,12 +233,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials - Updated text size and line breaks for mobile */}
-      <section className="bg-white py-12 md:py-16">
+      {/* Testimonials */}
+      <section className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-heading font-subheading mb-4 whitespace-nowrap">利用者の声</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto font-body">
+            <h2 className="text-3xl font-bold mb-4">利用者の声</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Pigipeを使って学んだ<br />
               ユーザーの変化をご紹介します
             </p>
@@ -289,15 +253,15 @@ const Index = () => {
                       <div className="flex flex-col gap-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div className="bg-red-50 p-4 rounded-lg">
-                            <p className="text-sm text-muted-foreground font-body font-medium mb-2">BEFORE</p>
-                            <p className="italic font-body">「{testimonial.before}」</p>
+                            <p className="text-sm text-muted-foreground font-medium mb-2">BEFORE</p>
+                            <p className="italic">「{testimonial.before}」</p>
                           </div>
                           <div className="bg-green-50 p-4 rounded-lg">
-                            <p className="text-sm text-muted-foreground font-body font-medium mb-2">AFTER</p>
-                            <p className="italic font-body">「{testimonial.after}」</p>
+                            <p className="text-sm text-muted-foreground font-medium mb-2">AFTER</p>
+                            <p className="italic">「{testimonial.after}」</p>
                           </div>
                         </div>
-                        <p className="text-right font-body font-medium">{testimonial.name}</p>
+                        <p className="text-right font-medium">{testimonial.name}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -315,7 +279,7 @@ const Index = () => {
       {/* University Logo */}
       <section className="py-12 container mx-auto px-4 text-center">
         <div className="max-w-4xl mx-auto">
-          <p className="text-sm text-muted-foreground mb-4 font-body">学術監修</p>
+          <p className="text-sm text-muted-foreground mb-4">学術監修</p>
           <div className="flex justify-center">
             <img 
               src="https://www.tohoku.ac.jp/japanese/common_img/loogo.png" 
