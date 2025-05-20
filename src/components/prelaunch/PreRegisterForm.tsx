@@ -60,10 +60,9 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
         description: "アカウントが作成され、公開日にメールでお知らせします。",
       });
       
-      if (onSuccess) onSuccess();
+      setRegistered(true);
       
-      // Navigate to onboarding
-      navigate("/onboarding");
+      if (onSuccess) onSuccess();
       
     } catch (error: any) {
       if (error.response?.status === 409) {
@@ -174,7 +173,10 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
           <div className="text-center">
             <h3 className="text-lg font-heading font-bold mb-2 text-green-700">登録完了！</h3>
             <p className="text-green-600">
-              公開日（2025年5月23日）にお知らせメールをお送りします。
+              公開日（2025年5月23日）にアプリが利用可能になります。
+            </p>
+            <p className="text-green-600 mt-2">
+              お知らせメールをお送りしますので、公開後にログインしてご利用ください。
             </p>
           </div>
         </div>
