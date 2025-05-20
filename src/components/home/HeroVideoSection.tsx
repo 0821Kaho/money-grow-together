@@ -105,7 +105,7 @@ const HeroVideoSection = ({ className = "" }: HeroVideoSectionProps) => {
       >
         {(showFallback || !videoLoaded) && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 to-white rounded-lg">
-            <MascotImage variant="default" size="xl" />
+            <MascotImage variant="default" size="xl" className="scale-150" />
             <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
               クリックして再生
             </div>
