@@ -86,7 +86,7 @@ const Index = () => {
           </div>
           <div className="flex gap-4">
             {isAuthenticated ? (
-              <Button variant="outline" disabled className="opacity-70">公開後に開始でき��す</Button>
+              <Button variant="outline" disabled className="opacity-70">公開後に開始できます</Button>
             ) : (
               <Button variant="outline" disabled className="opacity-70">公開後に開始できます</Button>
             )}
@@ -94,7 +94,7 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section - Restructured to follow the requested order */}
+      {/* Hero Section - Now with video background */}
       <section className="container mx-auto px-4 py-12">
         <motion.div
           className="max-w-4xl mx-auto flex flex-col items-center text-center gap-8"
@@ -112,23 +112,20 @@ const Index = () => {
             Pigipeはピギペと遊んで学べるお金アプリ
           </p>
           
-          {/* 3. Character Illustration */}
-          <div className="w-48 h-48 relative">
-            <div className="relative">
-              <div className="absolute -left-8 top-4 -rotate-12 z-10">
-                <MascotImage variant="coin" size="small" />
-              </div>
-              <div className="absolute -right-8 top-4 rotate-12 z-10">
-                <MascotImage variant="calculator" size="small" />
-              </div>
-              <motion.div 
-                className="relative z-20"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <MascotImage variant="happy" size="xl" />
-              </motion.div>
+          {/* 3. Video Background replaces Character Illustration */}
+          <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg">
+            <video 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="https://cdn.pixabay.com/vimeo/149710294/24253.mp4?width=640&hash=8c0b012a3f64c7d83f4c3bc3d44c0ae3203a0f36" type="video/mp4" />
+              あなたのブラウザはビデオをサポートしていません。
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center pb-6">
+              <MascotImage variant="happy" size="medium" className="drop-shadow-lg" />
             </div>
           </div>
           

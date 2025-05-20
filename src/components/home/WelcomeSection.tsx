@@ -14,12 +14,25 @@ const WelcomeSection = () => {
   
   return (
     <motion.div 
-      className="mb-8 rounded-xl bg-gradient-to-r from-game-primary to-[#FF9BA4] p-6 text-white"
+      className="mb-8 rounded-xl bg-gradient-to-r from-game-primary to-[#FF9BA4] p-6 text-white overflow-hidden relative"
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
-      <div className="flex items-center justify-between">
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="https://cdn.pixabay.com/vimeo/529857546/84326.mp4?width=640&hash=c602c244077e03aaaacd1f6cd4e25f46e50df788" type="video/mp4" />
+        </video>
+      </div>
+
+      <div className="flex items-center justify-between relative z-10">
         <div className="flex-1">
           <h1 className="mb-2 text-2xl font-heading font-bold">ようこそ、ユーザーさん！</h1>
           <p className="text-white/90 font-body">
