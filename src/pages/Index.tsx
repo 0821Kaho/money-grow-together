@@ -133,6 +133,27 @@ const Index = () => {
             Pigipeと遊んで"お金で夢をあきらめない" 💰
           </p>
           
+          {/* Move CTA button above the video */}
+          <motion.div
+            className="mb-3 flex justify-center"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+              delay: 1.5
+            }}
+          >
+            <Button 
+              onClick={scrollToForm} 
+              size="lg" 
+              className="rounded-full shadow-md bg-primary hover:bg-primary/90"
+            >
+              事前登録する
+            </Button>
+          </motion.div>
+          
           {/* 3. Hero Video KV with proper 1:1 aspect ratio styling */}
           <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg bg-gradient-to-b from-pink-50 to-white">
             <div className="absolute inset-0 z-0 overflow-hidden opacity-10">
@@ -179,27 +200,6 @@ const Index = () => {
                     あなたのブラウザはビデオをサポートしていません。
                   </video>
                 </div>
-                
-                {/* CTA Button with updated text to match form - Added mt-8 for more spacing */}
-                <motion.div
-                  className="mt-8 flex justify-center"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ 
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                    delay: 1.5
-                  }}
-                >
-                  <Button 
-                    onClick={scrollToForm} 
-                    size="lg" 
-                    className="rounded-full shadow-md bg-primary hover:bg-primary/90"
-                  >
-                    事前登録する
-                  </Button>
-                </motion.div>
               </motion.div>
             </div>
           </div>
