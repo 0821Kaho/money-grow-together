@@ -1,6 +1,5 @@
 
-// Use the fully qualified path to the generated Prisma client
-import { PrismaClient } from '../node_modules/.prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 // Use a single instance of Prisma Client in development
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
