@@ -101,8 +101,10 @@ const TermsPage = () => {
             <h2 id="contact" className="text-xl font-heading font-subheading mb-3">11. お問い合わせ</h2>
             <p className="mb-4">本サービスに関するお問い合わせは、下記までご連絡ください。</p>
             <p className="mb-4">
-              メールアドレス: info@pigipe.com<br />
-              所在地: 〒980-0021 宮城県仙台市青葉区中央1-1-1
+              社名: 株式会社NextGens<br />
+              所在地: 〒176-0081 東京都練馬区北町2-29-10<br />
+              電話番号: 03-6750-7041<br />
+              メールアドレス: satoyoshi.kaho@outlook.jp
             </p>
           </section>
 
