@@ -1,4 +1,5 @@
-import { NextRequest } from 'next/server';
+
+import { Request, Response } from "express";
 import { z } from 'zod';
 import { prisma } from "../lib/db";
 
@@ -6,19 +7,14 @@ const schema = z.object({
   email: z.string().email(),
 });
 
-export async function POST(req: NextRequest) {
+// Add a new email to the waitlist
+export const addToWaitlist = async (req: Request, res: Response) => {
   try {
-    const body = await req.json();
-    const result = schema.safeParse(body);
+    const result = schema.safeParse(req.body);
 
     if (!result.success) {
       console.log(result.error);
-      return new Response(JSON.stringify({ success: false, error: result.error }), {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      return res.status(400).json({ success: false, error: result.error });
     }
 
     const { email } = result.data;
@@ -31,12 +27,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (existingEntry) {
-      return new Response(JSON.stringify({ success: false, message: "Email already exists in the waitlist." }), {
-        status: 409,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      return res.status(409).json({ success: false, message: "Email already exists in the waitlist." });
     }
 
     // Add the email to the waitlist
@@ -46,19 +37,20 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return new Response(JSON.stringify({ success: true, message: "Email added to waitlist." }), {
-      status: 201,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return res.status(201).json({ success: true, message: "Email added to waitlist." });
   } catch (e) {
     console.error(e);
-    return new Response(JSON.stringify({ success: false, error: "Something went wrong" }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return res.status(500).json({ success: false, error: "Something went wrong" });
   }
-}
+};
+
+// Get the count of waitlist entries
+export const getWaitlistCount = async (_req: Request, res: Response) => {
+  try {
+    const count = await prisma.waitlist.count();
+    return res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error getting waitlist count:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
