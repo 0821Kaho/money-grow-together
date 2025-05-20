@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import KPIBanner from "@/components/home/KPIBanner";
 import Countdown from "@/components/prelaunch/Countdown";
 import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
+import HeroVideoSection from "@/components/home/HeroVideoSection";
 import { ArrowDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useRef, useState } from "react";
@@ -73,8 +73,6 @@ const Index = () => {
   const { isAuthenticated } = useAuth();
   const launchDate = "2025-05-22T20:00:00+09:00"; // Updated to May 22, 2025, 20:00 JST
   const arrowRef = useRef<HTMLDivElement>(null);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   
   // Function to handle scrolling to the waitlist form
   const scrollToForm = () => {
@@ -97,30 +95,6 @@ const Index = () => {
     }, 3000);
     
     return () => clearInterval(interval);
-  }, []);
-
-  // Handle video loading
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    
-    const handleCanPlay = () => {
-      setVideoLoaded(true);
-      video.play().catch(err => {
-        console.log("Auto-play prevented:", err);
-        // Keep video element visible even if autoplay fails
-        setVideoLoaded(true);
-      });
-    };
-    
-    video.addEventListener('canplaythrough', handleCanPlay);
-    
-    // Try to load and play the video
-    video.load();
-    
-    return () => {
-      video.removeEventListener('canplaythrough', handleCanPlay);
-    };
   }, []);
 
   return (
@@ -160,39 +134,8 @@ const Index = () => {
             <span className="sm:inline block">完全無料のお金のアプリ</span>
           </p>
           
-          {/* Hero Video with Mascot Animation */}
-          <div className="w-full max-w-lg py-8">
-            <div className="relative mx-auto hero-video-container">
-              {!videoLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-pink-50 to-white">
-                  <MascotImage variant="default" size="medium" />
-                </div>
-              )}
-              <video 
-                ref={videoRef}
-                autoPlay 
-                muted 
-                loop 
-                playsInline
-                className="hero-video"
-                preload="auto"
-              >
-                <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
-                あなたのブラウザはビデオをサポートしていません。
-              </video>
-              
-              {/* Add floating coins as decorative elements */}
-              <div className="floating-coin" style={{ top: '10%', left: '10%', width: '20px', height: '20px' }}>
-                <MoneyVisual type="coin" size="small" />
-              </div>
-              <div className="floating-coin" style={{ top: '70%', left: '80%', width: '15px', height: '15px' }}>
-                <MoneyVisual type="coin" size="small" />
-              </div>
-              <div className="floating-coin" style={{ top: '40%', left: '85%', width: '12px', height: '12px' }}>
-                <MoneyVisual type="coin" size="small" />
-              </div>
-            </div>
-          </div>
+          {/* Hero Video - Now using the reusable component */}
+          <HeroVideoSection />
           
           {/* CTA Button */}
           <motion.div
