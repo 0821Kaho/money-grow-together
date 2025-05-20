@@ -19,32 +19,42 @@ const KPIBanner = () => {
               className="w-full h-auto max-h-[200px] object-contain p-4"
             />
           </div>
-          
-          {/* Removed the +1,300万 Overlay with Piggy Image */}
         </div>
         
-        {/* Stats Section */}
+        {/* Stats Section - Updated with academic evidence */}
         <div className="w-full md:w-2/3 p-4">
-          <h3 className="text-xl font-heading font-bold text-gray-800 mb-2">みんなで成長しよう！</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-            <div className="p-3">
-              <div className="flex justify-center items-center gap-2">
-                <img 
-                  src="/lovable-uploads/82291aa4-53b2-4c72-8fdb-8599a34fdd33.png" 
-                  alt="Piggy Bank" 
-                  className="h-5 w-5"
-                />
-                <p className="text-xl md:text-2xl font-number font-bold text-primary">1,300万円+</p>
-              </div>
-              <p className="text-xs text-gray-500 font-body">貯蓄達成額</p>
+          <h3 className="text-xl font-heading font-bold text-gray-800 mb-2">学術エビデンスに基づく効果</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <p className="text-muted-foreground font-medium mb-1">保守シナリオ（最低効果）</p>
+              <p className="text-xl font-number font-bold text-primary">+¥1,000,000</p>
+              <p className="text-xs text-gray-500 font-body">生涯便益（利息削減 + 早期投資のみ換算）</p>
             </div>
-            <div className="p-3">
-              <p className="text-xl md:text-2xl font-number font-bold text-primary">8,500人+</p>
-              <p className="text-xs text-gray-500 font-body">学習者数</p>
+            <div className="bg-green-50 p-3 rounded-lg">
+              <p className="text-muted-foreground font-medium mb-1">学術エビデンス平均</p>
+              <p className="text-xl font-number font-bold text-primary">+¥13,000,000</p>
+              <p className="text-xs text-gray-500 font-body">生涯便益（米国高校 15h コース試算：US$100k）</p>
             </div>
-            <div className="p-3">
-              <p className="text-xl md:text-2xl font-number font-bold text-primary">24,000+</p>
-              <p className="text-xs text-gray-500 font-body">達成された目標</p>
+          </div>
+          
+          <div className="mt-4 text-xs">
+            <p className="font-medium text-gray-700">項目別効果内訳</p>
+            <div className="grid grid-cols-3 gap-2 mt-1">
+              <div className="font-medium">項目</div>
+              <div className="font-medium">便益（保守）</div>
+              <div className="font-medium">便益（平均）</div>
+              
+              <div>高金利借入回避・利息削減</div>
+              <div className="text-rose-600">¥200,000</div>
+              <div className="text-primary">¥2,000,000</div>
+              
+              <div>早期からの積立投資リターン</div>
+              <div className="text-rose-600">¥600,000</div>
+              <div className="text-primary">¥8,000,000</div>
+              
+              <div>収入向上・副業効果など</div>
+              <div className="text-rose-600">¥200,000</div>
+              <div className="text-primary">¥3,000,000</div>
             </div>
           </div>
         </div>
