@@ -10,18 +10,15 @@ const KPIBanner = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="flex flex-col md:flex-row">
-        {/* Video Section */}
+        {/* Image Section (replacing video) */}
         <div className="w-full md:w-1/3 bg-gradient-to-b from-pink-50 to-white relative overflow-hidden">
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
-            あなたのブラウザはビデオをサポートしていません。
-          </video>
+          <div className="p-4 flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/c37894af-e24b-4472-99b3-349dd9fa00b0.png" 
+              alt="Piggy Bank Mascot" 
+              className="w-48 h-48 object-contain"
+            />
+          </div>
           
           {/* +1,300万 Overlay with Piggy Image */}
           <motion.div 

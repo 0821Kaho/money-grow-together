@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -133,7 +132,7 @@ const Index = () => {
             Pigipeと遊んで"お金で夢をあきらめない" 💰
           </p>
           
-          {/* 3. Hero Video KV with proper 1:1 aspect ratio styling */}
+          {/* 3. Hero Image KV with proper 1:1 aspect ratio styling */}
           <div className="w-full max-w-xl relative rounded-xl overflow-hidden shadow-lg bg-gradient-to-b from-pink-50 to-white">
             <div className="absolute inset-0 z-0 overflow-hidden opacity-10">
               {[...Array(5)].map((_, i) => (
@@ -166,18 +165,13 @@ const Index = () => {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                {/* Square aspect ratio video with object-fit: cover */}
+                {/* Square aspect ratio image with object-fit: cover */}
                 <div className="hero-video-container mx-auto">
-                  <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
+                  <img 
+                    src="/lovable-uploads/c37894af-e24b-4472-99b3-349dd9fa00b0.png" 
+                    alt="Kawaii Piggy Bank" 
                     className="hero-video"
-                  >
-                    <source src="/Kawaii_Piggy Bank.mp4" type="video/mp4" />
-                    あなたのブラウザはビデオをサポートしていません。
-                  </video>
+                  />
                 </div>
                 
                 {/* +1,300万 Overlay with Piggy Image */}
