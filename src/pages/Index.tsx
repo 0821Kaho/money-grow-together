@@ -180,9 +180,9 @@ const Index = () => {
                   </video>
                 </div>
                 
-                {/* +1,300万 Overlay with Static Piggy Image */}
+                {/* Replace misleading stat with accurate information */}
                 <motion.div 
-                  className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-primary flex items-center gap-2"
+                  className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-bold text-amber-600 flex items-center gap-2"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.0 }}
@@ -192,7 +192,7 @@ const Index = () => {
                     alt="Piggy Bank" 
                     className="h-5 w-5"
                   />
-                  +1,300万円
+                  +¥13,000,000
                 </motion.div>
                 
                 {/* CTA Button with updated text to match form */}
