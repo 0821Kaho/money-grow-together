@@ -7,7 +7,7 @@ export const Footer = () => {
       <div className="container mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="mb-6 sm:mb-0">
-            <h3 className="text-xl font-logo text-white">Pigipe</h3>
+            <h3 className="text-xl font-logo text-white font-extrabold">Pigipe</h3>
             <p className="text-sm text-gray-400 mt-1">ピギペと遊んで学べるお金アプリ</p>
           </div>
           
@@ -28,7 +28,7 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-6 pt-6 text-center text-xs text-gray-400">
-          &copy; 2025 Pigipe All rights reserved.
+          &copy; 2025 <span className="font-bold">Pigipe</span> All rights reserved.
         </div>
       </div>
     </footer>
