@@ -128,9 +128,9 @@ const Index = () => {
             お金で<span className="text-primary">夢をあきらめない</span>
           </h1>
           
-          {/* 2. Sub-headline - Updated with new text */}
+          {/* 2. Sub-headline - Updated with new text to include "completely free" */}
           <p className="text-base md:text-lg font-body text-muted-foreground mobile-break-fix">
-            ピギペと遊んで学べるお金のアプリ💰
+            ピギペと遊んで学べる完全無料のお金のアプリ💰
           </p>
           
           {/* Move CTA button above the video */}
