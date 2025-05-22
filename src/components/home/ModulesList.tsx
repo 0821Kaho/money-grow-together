@@ -106,7 +106,7 @@ const ModulesList = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 * module.id / 5 }}
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-3 bg-gradient-to-br ${getBgGradient(module.color)}`}
+            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-4 bg-gradient-to-br ${getBgGradient(module.color)}`}
             style={{ borderColor: `${module.color}85` }}
           >
             <div className="flex flex-col gap-4 relative z-10">
@@ -119,7 +119,7 @@ const ModulesList = () => {
               </div>
               
               <div className="space-y-3">
-                <h3 className="text-lg font-bold text-gray-800" style={{ color: module.color }}>{module.title}</h3>
+                <h3 className="text-lg font-bold" style={{ color: module.color }}>{module.title}</h3>
                 
                 <p className="text-sm text-gray-600">
                   {module.description}

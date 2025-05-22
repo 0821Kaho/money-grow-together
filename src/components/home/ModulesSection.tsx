@@ -72,25 +72,8 @@ const ModulesSection = () => {
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
             transition={{ duration: 0.2 }}
           >
-            <Card className={`h-full border-3 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}85` }}>
+            <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}85` }}>
               <CardContent className="p-6 relative">
-                {/* Pigipe character in background */}
-                <motion.div
-                  className="absolute bottom-2 right-2 w-10 h-10 opacity-30"
-                  animate={{ y: [0, -3, 0] }}
-                  transition={{ 
-                    repeat: Infinity,
-                    duration: 3,
-                    ease: "easeInOut" 
-                  }}
-                >
-                  <img
-                    src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png"
-                    alt="Pigipe"
-                    className="w-full h-full object-contain"
-                  />
-                </motion.div>
-                
                 {/* Module illustration */}
                 {module.illustration && (
                   <motion.div 

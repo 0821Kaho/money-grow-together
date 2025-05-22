@@ -70,7 +70,7 @@ const ModuleCard = ({
       <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
       
       {/* Border */}
-      <div className="absolute inset-0 border-3 rounded-xl z-0" style={{ borderColor: `${color}85` }}></div>
+      <div className="absolute inset-0 border-4 rounded-xl z-0" style={{ borderColor: `${color}85` }}></div>
       
       {/* Lock overlay */}
       {isLocked && (
@@ -198,23 +198,6 @@ const ModuleCard = ({
           ))}
         </motion.div>
       )}
-
-      {/* Pigipe character */}
-      <motion.div 
-        className="absolute bottom-2 right-2 h-10 w-10 opacity-30 z-0"
-        animate={{ y: [0, -5, 0] }}
-        transition={{ 
-          repeat: Infinity, 
-          duration: 3,
-          ease: "easeInOut",
-        }}
-      >
-        <img 
-          src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png" 
-          alt="Pigipe" 
-          className="w-full h-full object-contain"
-        />
-      </motion.div>
     </motion.div>
   );
 };
