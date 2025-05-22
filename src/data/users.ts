@@ -23,8 +23,7 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
     
     // Start base query
     let userQuery = supabaseMock.from('users')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .select();
     
     // Apply search filter if provided
     if (query) {
@@ -32,7 +31,8 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
       userQuery = {
         ...userQuery,
         range: (start: number, end: number) => {
-          let filteredData = mockUsers.filter(user => 
+          // Use the mockUsers from supabaseMock rather than directly referencing it
+          let filteredData = supabaseMock.getMockUsers().filter(user => 
             user.email.toLowerCase().includes(query.toLowerCase()) || 
             (user.full_name && user.full_name.toLowerCase().includes(query.toLowerCase()))
           );
@@ -73,7 +73,7 @@ export async function getUserById(userId: string) {
   try {
     // Modified: Fixed to match the mock implementation capabilities
     const result = await supabaseMock.from('users')
-      .select('*')
+      .select()
       .eq('id', userId);
     
     const user = result.data && result.data.length > 0 ? result.data[0] : null;
