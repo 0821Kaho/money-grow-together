@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -72,7 +71,7 @@ function AppRoutes() {
           {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
-          <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
+          <Route path="/signup" element={<AuthLayout><SignupPage /></SignupPage>} />
           <Route path="/impact" element={<ImpactPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPolicyPage />} />

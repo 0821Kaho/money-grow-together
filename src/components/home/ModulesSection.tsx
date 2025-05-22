@@ -99,10 +99,10 @@ const ModulesSection = () => {
       <div className="relative px-4 py-4" ref={carouselRef}>
         <Carousel
           opts={{
-            align: "center", // Changed from "start" to "center" to ensure full visibility
+            align: "center",
             loop: true,
             dragFree: true,
-            containScroll: "trimSnaps", // Ensures blocks are fully visible
+            containScroll: "trimSnaps",
             skipSnaps: false,
           }}
           className="w-full"
@@ -141,8 +141,9 @@ const ModulesSection = () => {
                       
                       <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
                       
+                      {/* Fixed-width button with no text wrapping and arrow icon */}
                       <motion.button
-                        className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto"
+                        className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto w-[104px] h-9 whitespace-nowrap"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
