@@ -11,14 +11,13 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { MessageCircle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 type Feedback = {
   id: string;
   user_id: string;
-  email: string;
-  subject: string;
   message: string;
-  read: boolean;
+  is_read: boolean;
   created_at: string;
 };
 
@@ -39,20 +38,20 @@ const FeedbackPage = () => {
   
   const columns: ColumnDef<Feedback>[] = [
     {
-      accessorKey: "email",
-      header: "送信者",
-      cell: ({ row }) => <div className="font-medium">{row.getValue("email")}</div>,
+      accessorKey: "user_id",
+      header: "ユーザーID",
+      cell: ({ row }) => <div className="truncate w-32">{row.getValue("user_id")}</div>,
     },
     {
-      accessorKey: "subject",
-      header: "件名",
-      cell: ({ row }) => <div>{row.getValue("subject")}</div>,
+      accessorKey: "message",
+      header: "メッセージ",
+      cell: ({ row }) => <div className="truncate max-w-md">{row.getValue("message")}</div>,
     },
     {
-      accessorKey: "read",
+      accessorKey: "is_read",
       header: "状態",
       cell: ({ row }) => {
-        const read = row.getValue("read") as boolean;
+        const read = row.getValue("is_read") as boolean;
         return (
           <Badge
             variant={read ? "outline" : "default"}
@@ -79,36 +78,29 @@ const FeedbackPage = () => {
     }
   ];
 
-  // Fetch feedback data from our admin API
+  // Fetch feedback data from Supabase
   const fetchFeedback = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/admin/feedback?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize}&unread=${unreadOnly}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const offset = pagination.pageIndex * pagination.pageSize;
       
-      if (!response.ok) {
-        throw new Error('Failed to fetch feedback');
+      let query = supabase
+        .from('feedback')
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false });
+      
+      // Filter by read status if requested
+      if (unreadOnly) {
+        query = query.eq('is_read', false);
       }
       
-      const data = await response.json();
+      const { data, error, count } = await query
+        .range(offset, offset + pagination.pageSize - 1);
       
-      // Transform the data to match our Feedback type
-      const formattedFeedback = data.feedback.map(item => ({
-        id: item.id,
-        user_id: item.user_id,
-        email: item.profiles.email,
-        subject: item.subject,
-        message: item.message,
-        read: item.read,
-        created_at: item.created_at,
-      }));
+      if (error) throw error;
       
-      setFeedback(formattedFeedback);
-      setPageCount(Math.ceil(data.total / pagination.pageSize) || 1);
+      setFeedback(data || []);
+      setPageCount(Math.ceil((count || 0) / pagination.pageSize) || 1);
     } catch (error) {
       console.error('Error fetching feedback:', error);
       toast.error('フィードバックの取得に失敗しました');
@@ -127,27 +119,22 @@ const FeedbackPage = () => {
     setIsDialogOpen(true);
     
     // If feedback is unread, mark it as read
-    if (!feedback.read) {
+    if (!feedback.is_read) {
       try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/api/admin/feedback/${feedback.id}/read`, {
-          method: 'PATCH',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const { error } = await supabase
+          .from('feedback')
+          .update({ is_read: true })
+          .eq('id', feedback.id);
         
-        if (!response.ok) {
-          throw new Error('Failed to mark feedback as read');
-        }
+        if (error) throw error;
         
         // Update the feedback in the state
         setFeedback(prev => prev.map(item => 
-          item.id === feedback.id ? { ...item, read: true } : item
+          item.id === feedback.id ? { ...item, is_read: true } : item
         ));
         
         // Update the selected feedback too
-        setSelectedFeedback(prev => prev ? { ...prev, read: true } : null);
+        setSelectedFeedback(prev => prev ? { ...prev, is_read: true } : null);
       } catch (error) {
         console.error('Error marking feedback as read:', error);
         // Don't toast here as it's a background operation
@@ -195,8 +182,8 @@ const FeedbackPage = () => {
         pageCount={pageCount}
         pagination={pagination}
         onPaginationChange={handlePaginationChange}
-        searchPlaceholder="件名やメールアドレスで検索..."
-        searchColumn="subject"
+        searchPlaceholder="メッセージで検索..."
+        searchColumn="message"
       />
       
       {/* Feedback detail dialog */}
@@ -207,10 +194,10 @@ const FeedbackPage = () => {
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5 text-brand-pink" />
-                  {selectedFeedback.subject}
+                  フィードバック詳細
                 </DialogTitle>
                 <DialogDescription>
-                  送信者: {selectedFeedback.email}
+                  ユーザーID: {selectedFeedback.user_id}
                 </DialogDescription>
               </DialogHeader>
               <div className="p-4 border rounded-md bg-muted/30">
@@ -219,12 +206,12 @@ const FeedbackPage = () => {
               <div className="flex justify-between items-center text-sm text-muted-foreground">
                 <p>{new Date(selectedFeedback.created_at).toLocaleString('ja-JP')}</p>
                 <Badge
-                  variant={selectedFeedback.read ? "outline" : "default"}
+                  variant={selectedFeedback.is_read ? "outline" : "default"}
                   className={
-                    selectedFeedback.read ? "bg-transparent" : "bg-brand-pink text-white"
+                    selectedFeedback.is_read ? "bg-transparent" : "bg-brand-pink text-white"
                   }
                 >
-                  {selectedFeedback.read ? "既読" : "未読"}
+                  {selectedFeedback.is_read ? "既読" : "未読"}
                 </Badge>
               </div>
             </>

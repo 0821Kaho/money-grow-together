@@ -21,13 +21,13 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
     // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
     
-    // Start base query
-    let userQuery = supabase.from('users')
-      .select('*', { count: 'exact' });
+    // Start base query - use profiles table which references auth.users
+    let userQuery = supabase.from('profiles')
+      .select('id, name, role, created_at', { count: 'exact' });
     
     // Apply search filter if provided
     if (query) {
-      userQuery = userQuery.or(`email.ilike.%${query}%,full_name.ilike.%${query}%`);
+      userQuery = userQuery.or(`name.ilike.%${query}%`);
     }
     
     // Execute query with pagination
@@ -40,8 +40,19 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
       throw new Error('Failed to fetch users');
     }
     
+    // Transform the data to match the expected User type
+    const transformedUsers = users?.map(profile => ({
+      id: profile.id,
+      email: '', // We don't have access to email from profiles table
+      full_name: profile.name || '',
+      role: profile.role,
+      plan: 'free', // Default plan value
+      status: 'active', // Default status value
+      created_at: profile.created_at
+    })) || [];
+    
     return { 
-      users: users || [], 
+      users: transformedUsers, 
       total: count || 0
     };
   } catch (error) {
@@ -55,8 +66,8 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
  */
 export async function getUserById(userId: string) {
   try {
-    const { data: user, error } = await supabase
-      .from('users')
+    const { data: profile, error } = await supabase
+      .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
@@ -66,9 +77,20 @@ export async function getUserById(userId: string) {
       throw new Error('Failed to fetch user');
     }
     
-    if (!user) {
+    if (!profile) {
       throw new Error('User not found');
     }
+    
+    // Transform to match expected User type
+    const user = {
+      id: profile.id,
+      email: '', // We don't have access to email from profiles table
+      full_name: profile.name || '',
+      role: profile.role,
+      plan: 'free', // Default plan value
+      status: 'active', // Default status value
+      created_at: profile.created_at
+    };
     
     return user;
   } catch (error) {
@@ -83,7 +105,7 @@ export async function getUserById(userId: string) {
 export async function updateUser(userId: string, userData: { [key: string]: any }) {
   try {
     const { data, error } = await supabase
-      .from('users')
+      .from('profiles')
       .update(userData)
       .eq('id', userId);
     

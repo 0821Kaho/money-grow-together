@@ -1,4 +1,3 @@
-
 /**
  * Admin Dashboard Home Page
  * 
@@ -12,7 +11,7 @@ import { Users, MessageSquare, BookOpen, Award, BarChart3, Settings } from 'luci
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { getDashboardStats } from '@/data/dashboard';
 
 type DashboardStats = {
   totalUsers: number;
@@ -39,33 +38,14 @@ const DashboardPage = () => {
     const fetchStats = async () => {
       setIsLoading(true);
       try {
-        // Get total users count
-        const { count: totalUsers, error: totalError } = await supabase
-          .from('users')
-          .select('*', { count: 'exact', head: true });
-        
-        if (totalError) throw totalError;
-        
-        // Get active users count
-        const { count: activeUsers, error: activeError } = await supabase
-          .from('users')
-          .select('*', { count: 'exact', head: true })
-          .eq('status', 'active');
-        
-        if (activeError) throw activeError;
-        
-        // For modules and feedback we'll continue using mock data
-        // as these tables aren't implemented yet
-        const completedModules = 12453; // Mock value
-        const unreadFeedback = 18;      // Mock value
+        const dashboardStats = await getDashboardStats();
         
         setStats({
-          totalUsers: totalUsers || 0,
-          activeUsers: activeUsers || 0,
-          completedModules,
-          unreadFeedback
+          totalUsers: dashboardStats.totalUsers,
+          activeUsers: dashboardStats.activeUsers,
+          completedModules: dashboardStats.completedModules,
+          unreadFeedback: dashboardStats.unreadFeedback
         });
-        
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
         toast.error('データの取得に失敗しました');

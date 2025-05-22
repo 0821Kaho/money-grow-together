@@ -40,6 +40,7 @@ const UsersPage = () => {
     pageIndex: 0,
     pageSize: 20,
   });
+  const [searchQuery, setSearchQuery] = useState('');
   
   // Fetch users data from Supabase
   const fetchUsers = async () => {
@@ -49,10 +50,9 @@ const UsersPage = () => {
       const { users: fetchedUsers, total } = await listUsers(
         pagination.pageIndex + 1,
         pagination.pageSize,
-        ''
+        searchQuery
       );
 
-      console.log("Fetched users:", fetchedUsers);
       setUsers(fetchedUsers);
       setPageCount(Math.ceil(total / pagination.pageSize) || 1);
     } catch (error) {
@@ -63,18 +63,22 @@ const UsersPage = () => {
     }
   };
 
-  // Fetch users when pagination changes
+  // Fetch users when pagination or search query changes
   useEffect(() => {
     fetchUsers();
-  }, [pagination.pageIndex, pagination.pageSize]);
+  }, [pagination.pageIndex, pagination.pageSize, searchQuery]);
 
   const handleRowClick = (user: User) => {
     navigate(`/admin/users/${user.id}`);
   };
 
-  // Updated to match the expected function signature
   const handlePaginationChange = (paginationValue: { pageIndex: number, pageSize: number }) => {
     setPagination(paginationValue);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setPagination({ ...pagination, pageIndex: 0 }); // Reset to first page when searching
   };
 
   return (
@@ -93,6 +97,7 @@ const UsersPage = () => {
         pageCount={pageCount}
         pagination={pagination}
         setPagination={handlePaginationChange}
+        onSearch={handleSearch}
       />
     </div>
   );

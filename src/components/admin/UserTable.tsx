@@ -45,6 +45,7 @@ interface UserTableProps {
     pageSize: number;
   };
   setPagination: (pagination: { pageIndex: number; pageSize: number }) => void;
+  onSearch?: (query: string) => void;
 }
 
 export function UserTable({
@@ -54,9 +55,21 @@ export function UserTable({
   pageCount,
   pagination,
   setPagination,
+  onSearch,
 }: UserTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
+
+  // Handle search input changes
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setGlobalFilter(value);
+    
+    // If external search handler is provided, use it
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
 
   // Define columns
   const columns: ColumnDef<User>[] = [
@@ -68,7 +81,7 @@ export function UserTable({
     {
       accessorKey: 'email',
       header: 'メールアドレス',
-      cell: ({ row }) => <div className="font-medium">{row.getValue('email')}</div>,
+      cell: ({ row }) => <div className="font-medium">{row.getValue('email') || '-'}</div>,
     },
     {
       accessorKey: 'full_name',
@@ -133,16 +146,17 @@ export function UserTable({
     state: {
       sorting,
       pagination,
-      globalFilter,
+      globalFilter: onSearch ? undefined : globalFilter, // Only use internal filtering if external search is not provided
     },
     pageCount,
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: onSearch ? undefined : setGlobalFilter, // Only use internal filtering if external search is not provided
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
+    manualFiltering: !!onSearch, // Use manual filtering when external search is provided
   });
 
   return (
@@ -154,7 +168,7 @@ export function UserTable({
             type="text"
             placeholder="名前、メール、IDで検索..."
             value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
+            onChange={handleSearchChange}
             className="pl-8"
           />
         </div>
@@ -245,7 +259,7 @@ export function UserTable({
 
       <div className="flex items-center justify-between p-4 border-t">
         <div className="text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length > 0 && (
+          {data.length > 0 && (
             <span>
               {pagination.pageIndex * pagination.pageSize + 1}-
               {Math.min((pagination.pageIndex + 1) * pagination.pageSize, pageCount * pagination.pageSize)} / 
