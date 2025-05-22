@@ -1,8 +1,14 @@
 
+/**
+ * Admin User Detail Page
+ * 
+ * Displays detailed information about a specific user and allows editing
+ * their role and other settings
+ */
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAdminGuard } from '@/hooks/useAdminGuard';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -13,158 +19,179 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { format } from 'date-fns';
-import { ja } from 'date-fns/locale';
 import { 
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, Award, Check, Clock, XCircle } from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
+import { ja } from 'date-fns/locale';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { getUserById, updateUser } from '@/data/users';
 
-type User = {
-  id: string;
-  email: string;
-  created_at: string;
-  name?: string;
-  role: 'admin' | 'user';
-};
+// Form schema for user editing
+const userFormSchema = z.object({
+  name: z.string().optional(),
+  role: z.enum(['admin', 'user']),
+});
 
-type Progress = {
+type UserFormValues = z.infer<typeof userFormSchema>;
+
+type UserProgress = {
   id: string;
   user_id: string;
-  lesson_id: string;
-  status: 'not_started' | 'in_progress' | 'completed';
+  module_id: string;
+  status: 'completed' | 'in-progress' | 'not-started';
   completed_at?: string;
   score?: number;
 };
 
-type Badge = {
+type UserBadge = {
   id: string;
   user_id: string;
   badge_id: string;
-  name: string;
-  icon: string;
-  earned_at: string;
+  awarded_at: string;
+  badge_name: string;
+  badge_description: string;
+};
+
+type UserDetails = {
+  id: string;
+  email: string;
+  name?: string;
+  role: 'admin' | 'user';
+  created_at: string;
 };
 
 const UserDetailPage = () => {
-  // Guards this page to admin-only access
   useAdminGuard();
   
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
+  const [user, setUser] = useState<UserDetails | null>(null);
+  const [progress, setProgress] = useState<UserProgress[]>([]);
+  const [badges, setBadges] = useState<UserBadge[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [progress, setProgress] = useState<Progress[]>([]);
-  const [badges, setBadges] = useState<Badge[]>([]);
   
-  const [formData, setFormData] = useState({
-    name: '',
-    role: 'user' as 'admin' | 'user', // Fixed: Added type assertion to restrict the role type
+  // Form setup
+  const form = useForm<UserFormValues>({
+    resolver: zodResolver(userFormSchema),
+    defaultValues: {
+      name: '',
+      role: 'user',
+    },
   });
   
-  const fetchUserDetails = async () => {
-    setIsLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/admin/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch user details');
-      }
-      
-      const data = await response.json();
-      
-      // Transform user data
-      const userData: User = {
-        id: data.user.auth.users.id,
-        email: data.user.auth.users.email,
-        created_at: data.user.auth.users.created_at,
-        name: data.user.profiles.name,
-        role: data.user.profiles.role,
-      };
-      
-      setUser(userData);
-      setFormData({
-        name: userData.name || '',
-        role: userData.role,
-      });
-      setProgress(data.progress || []);
-      setBadges(data.badges || []);
-    } catch (error) {
-      console.error('Error fetching user details:', error);
-      toast.error('ユーザー詳細の取得に失敗しました');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
+  // Fetch user data
   useEffect(() => {
-    if (id) {
-      fetchUserDetails();
-    }
-  }, [id]);
+    const fetchUserData = async () => {
+      if (!id) return;
+      
+      setIsLoading(true);
+      try {
+        // In a real implementation, this would be fetched from the admin API
+        const userData = await getUserById(id);
+        
+        // For demo purposes, we'll use mock data
+        setUser({
+          id: userData.id,
+          email: userData.email,
+          name: userData.full_name,
+          role: userData.role as 'admin' | 'user',
+          created_at: userData.created_at,
+        });
+        
+        // Set form values
+        form.reset({
+          name: userData.full_name,
+          role: userData.role as 'admin' | 'user',
+        });
+        
+        // Mock progress data
+        setProgress([
+          {
+            id: '1',
+            user_id: id,
+            module_id: 'budget-basics',
+            status: 'completed',
+            completed_at: '2023-01-15T00:00:00.000Z',
+            score: 85,
+          },
+          {
+            id: '2',
+            user_id: id,
+            module_id: 'investment-101',
+            status: 'in-progress',
+          },
+          {
+            id: '3',
+            user_id: id,
+            module_id: 'retirement-planning',
+            status: 'not-started',
+          },
+        ]);
+        
+        // Mock badges data
+        setBadges([
+          {
+            id: '1',
+            user_id: id,
+            badge_id: 'first-login',
+            awarded_at: '2023-01-01T00:00:00.000Z',
+            badge_name: '初ログイン',
+            badge_description: 'アプリに初めてログインしました',
+          },
+          {
+            id: '2',
+            user_id: id,
+            badge_id: 'budget-master',
+            awarded_at: '2023-01-15T00:00:00.000Z',
+            badge_name: '予算マスター',
+            badge_description: '予算管理モジュールを完了しました',
+          },
+        ]);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        toast.error('ユーザーデータの取得に失敗しました');
+        navigate('/admin/users');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchUserData();
+  }, [id, navigate, form]);
   
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-  
-  const handleRoleChange = (value: string) => {
-    // Fixed: Added type validation to ensure role is only 'admin' or 'user'
-    if (value === 'admin' || value === 'user') {
-      setFormData({
-        ...formData,
-        role: value,
-      });
-    }
-  };
-  
-  const handleSave = async () => {
-    if (!user) return;
+  // Handle form submission
+  const onSubmit = async (data: UserFormValues) => {
+    if (!id || !user) return;
     
     setIsSaving(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/admin/users/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          role: formData.role,
-        }),
+      // In a real implementation, this would be sent to the admin API
+      await updateUser(id, {
+        full_name: data.name,
+        role: data.role,
       });
       
-      if (!response.ok) {
-        throw new Error('Failed to update user');
-      }
-      
-      toast.success('ユーザー情報を更新しました');
-      
-      // Update local user data
+      // Update local state
       setUser({
         ...user,
-        name: formData.name,
-        role: formData.role,
+        name: data.name,
+        role: data.role,
       });
+      
+      toast.success('ユーザー情報を更新しました');
     } catch (error) {
       console.error('Error updating user:', error);
       toast.error('ユーザー情報の更新に失敗しました');
@@ -176,216 +203,202 @@ const UserDetailPage = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-500 hover:bg-green-600"><Check className="mr-1 h-3 w-3" /> 完了</Badge>;
-      case 'in_progress':
-        return <Badge variant="outline" className="border-brand-pink text-brand-pink"><Clock className="mr-1 h-3 w-3" /> 進行中</Badge>;
+        return <Badge className="bg-green-500">完了</Badge>;
+      case 'in-progress':
+        return <Badge className="bg-blue-500">進行中</Badge>;
+      case 'not-started':
+        return <Badge variant="outline">未開始</Badge>;
       default:
-        return <Badge variant="outline" className="border-gray-300 text-gray-500"><XCircle className="mr-1 h-3 w-3" /> 未開始</Badge>;
+        return <Badge variant="outline">{status}</Badge>;
     }
   };
   
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="icon" disabled>
-            <ArrowLeft className="h-5 w-5" />
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => navigate('/admin/users')}
+          >
+            ← ユーザー一覧に戻る
           </Button>
-          <Skeleton className="h-10 w-64" />
         </div>
         
-        <div className="grid gap-6">
-          <Card>
-            <CardHeader className="pb-4">
-              <Skeleton className="h-7 w-64 mb-2" />
-              <Skeleton className="h-4 w-full" />
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-7 w-72 mb-2" />
+            <Skeleton className="h-4 w-48" />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Skeleton className="h-5 w-32 mb-2" />
                 <Skeleton className="h-10 w-full" />
               </div>
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
+              <div>
+                <Skeleton className="h-5 w-32 mb-2" />
                 <Skeleton className="h-10 w-full" />
               </div>
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Skeleton className="h-10 w-24" />
-            </CardFooter>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-4">
-              <Skeleton className="h-7 w-48" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-48 w-full" />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-  
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <p className="text-lg text-muted-foreground">ユーザーが見つかりませんでした</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate('/admin/users')}>
-          ユーザー一覧に戻る
-        </Button>
+            </div>
+            <div>
+              <Skeleton className="h-10 w-32" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/admin/users')}>
-          <ArrowLeft className="h-5 w-5" />
+      <div className="flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="sm"
+          onClick={() => navigate('/admin/users')}
+        >
+          ← ユーザー一覧に戻る
         </Button>
-        <h1 className="text-2xl font-bold">{user.name || user.email}</h1>
       </div>
       
-      <div className="grid gap-6">
-        {/* User Information Card */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* User Information */}
         <Card className="rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle>ユーザー情報</CardTitle>
+            <CardTitle className="text-2xl">{user?.name || user?.email}</CardTitle>
             <CardDescription>
-              ユーザー情報の確認・編集
+              ユーザーID: {user?.id} •&nbsp;
+              {user?.created_at && (
+                <>
+                  登録日: {format(new Date(user.created_at), 'yyyy年MM月dd日')}
+                </>
+              )}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium" htmlFor="email">
-                メールアドレス
-              </label>
-              <Input
-                id="email"
-                value={user.email}
-                readOnly
-                disabled
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium" htmlFor="name">
-                名前
-              </label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium" htmlFor="role">
-                権限
-              </label>
-              <Select
-                value={formData.role}
-                onValueChange={handleRoleChange}
-              >
-                <SelectTrigger id="role">
-                  <SelectValue placeholder="権限を選択" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="user">一般ユーザー</SelectItem>
-                  <SelectItem value="admin">管理者</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <label className="text-sm font-medium">
-                登録日時
-              </label>
-              <p className="text-muted-foreground">
-                {format(new Date(user.created_at), 'PPP HH:mm', { locale: ja })}
-              </p>
-            </div>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>名前</FormLabel>
+                        <FormControl>
+                          <Input placeholder="名前" {...field} value={field.value || ''} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>権限</FormLabel>
+                        <FormControl>
+                          <Select 
+                            value={field.value} 
+                            onValueChange={(value) => field.onChange(value as 'admin' | 'user')}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="権限を選択" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="user">一般ユーザー</SelectItem>
+                              <SelectItem value="admin">管理者</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormDescription>
+                          管理者は全ての機能にアクセスできます
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                
+                <Button type="submit" disabled={isSaving}>
+                  {isSaving ? '保存中...' : '変更を保存'}
+                </Button>
+              </form>
+            </Form>
           </CardContent>
-          <CardFooter>
-            <Button onClick={handleSave} disabled={isSaving}>
-              {isSaving ? '保存中...' : '変更を保存'}
-            </Button>
-          </CardFooter>
         </Card>
         
-        {/* Badges */}
-        {badges.length > 0 && (
-          <Card className="rounded-2xl shadow-sm">
-            <CardHeader>
-              <CardTitle>獲得バッジ</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-4">
-                {badges.map((badge) => (
-                  <div 
-                    key={badge.id} 
-                    className="flex flex-col items-center justify-center gap-2 p-2 text-center"
-                  >
-                    <div className="bg-brand-light rounded-full p-3">
-                      <Award className="h-8 w-8 text-brand-pink" />
-                    </div>
-                    <span className="text-sm font-medium">{badge.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {format(new Date(badge.earned_at), 'PP', { locale: ja })}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* Progress Table */}
+        {/* Progress and Badges Tabs */}
         <Card className="rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle>学習進捗</CardTitle>
+            <CardTitle>ユーザーデータ</CardTitle>
+            <CardDescription>
+              学習進捗と獲得バッジ
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            {progress.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>レッスンID</TableHead>
-                    <TableHead>ステータス</TableHead>
-                    <TableHead>完了日時</TableHead>
-                    <TableHead>スコア</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {progress.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.lesson_id}</TableCell>
-                      <TableCell>{getStatusBadge(item.status)}</TableCell>
-                      <TableCell>
-                        {item.completed_at ? 
-                          format(new Date(item.completed_at), 'PPP', { locale: ja }) : 
-                          '-'
-                        }
-                      </TableCell>
-                      <TableCell>
-                        {item.score !== undefined ? `${item.score}点` : '-'}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            ) : (
-              <div className="text-center p-4 text-muted-foreground">
-                学習記録がありません
-              </div>
-            )}
+            <Tabs defaultValue="progress">
+              <TabsList className="mb-4">
+                <TabsTrigger value="progress">学習進捗</TabsTrigger>
+                <TabsTrigger value="badges">バッジ</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="progress">
+                {progress.length > 0 ? (
+                  <div className="space-y-4">
+                    {progress.map((item) => (
+                      <div key={item.id} className="border rounded-md p-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h4 className="font-medium">{item.module_id}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {item.completed_at && (
+                                <>
+                                  完了日: {format(new Date(item.completed_at), 'yyyy年MM月dd日')}
+                                </>
+                              )}
+                              {item.score && ` • スコア: ${item.score}点`}
+                            </p>
+                          </div>
+                          {getStatusBadge(item.status)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground">学習記録がありません</p>
+                )}
+              </TabsContent>
+              
+              <TabsContent value="badges">
+                {badges.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {badges.map((badge) => (
+                      <div key={badge.id} className="border rounded-md p-4 bg-muted/30">
+                        <div className="flex items-center gap-3">
+                          <div className="bg-brand-pink rounded-full w-10 h-10 flex items-center justify-center text-white">
+                            🏆
+                          </div>
+                          <div>
+                            <h4 className="font-medium">{badge.badge_name}</h4>
+                            <p className="text-sm text-muted-foreground">{badge.badge_description}</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              獲得日: {format(new Date(badge.awarded_at), 'yyyy年MM月dd日')}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground">バッジがありません</p>
+                )}
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </div>
