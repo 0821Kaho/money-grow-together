@@ -37,6 +37,16 @@ export const supabaseMock = {
         data: { ...data },
         error: null,
       })
+    }),
+    select: () => ({
+      eq: () => ({
+        data: null,
+        error: null,
+      }),
+      range: (start: number, end: number) => ({
+        data: mockUsers.slice(start, end + 1),
+        error: null,
+      })
     })
   }),
   auth: {
