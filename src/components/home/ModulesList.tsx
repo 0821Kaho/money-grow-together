@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import MascotCharacter from "../mascot/MascotCharacter";
 
 const modules = [
@@ -94,7 +94,7 @@ const ModulesList = () => {
         </Tabs>
       </div>
       
-      {/* Featured module with illustration - おすすめ badge removed */}
+      {/* Featured module with illustration */}
       <motion.div 
         className="mb-8 bg-gradient-to-br from-[#FFF5E6] to-[#FFEBEB] rounded-2xl p-5 shadow-sm relative overflow-hidden border border-amber-200/30"
         initial={{ scale: 0.95, opacity: 0 }}

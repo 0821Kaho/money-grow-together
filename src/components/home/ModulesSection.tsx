@@ -61,27 +61,43 @@ const ModulesSection = () => {
           <CarouselContent>
             {modules.map((module) => (
               <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3">
-                <Card className={`h-full ${module.color} border-none shadow-sm hover:shadow transition-all`}>
-                  <CardContent className="p-6">
-                    {module.illustration && (
-                      <motion.div 
-                        className="flex justify-center mb-4"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Card className={`h-full ${module.color} border-none shadow-sm hover:shadow transition-all`}>
+                    <CardContent className="p-6">
+                      {module.illustration && (
+                        <motion.div 
+                          className="flex justify-center mb-4"
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          whileInView={{ scale: 1, opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          <img
+                            src={module.illustration}
+                            alt={`${module.title}イラスト`}
+                            className="h-20 w-auto object-contain"
+                          />
+                        </motion.div>
+                      )}
+                      <h3 className="text-xl font-bold mb-2">{module.title}</h3>
+                      <p className="text-muted-foreground text-sm">{module.description}</p>
+                      
+                      <motion.button
+                        className="mt-4 px-3 py-1 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center gap-1 ml-auto"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                       >
-                        <img
-                          src={module.illustration}
-                          alt={`${module.title}イラスト`}
-                          className="h-20 w-auto object-contain"
-                        />
-                      </motion.div>
-                    )}
-                    <h3 className="text-xl font-bold mb-2">{module.title}</h3>
-                    <p className="text-muted-foreground text-sm">{module.description}</p>
-                  </CardContent>
-                </Card>
+                        詳しく見る
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </motion.button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </CarouselItem>
             ))}
           </CarouselContent>

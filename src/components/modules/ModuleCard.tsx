@@ -48,17 +48,30 @@ const ModuleCard = ({
     }
   };
 
+  // Calculate background gradient based on color
+  const getBgGradient = () => {
+    if (color === "#4DAA57") return "from-[#E8F5EA] to-[#F5F9F6]"; // Green
+    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#F5FAFC]"; // Blue 
+    if (color === "#FFD166") return "from-[#FFF5E6] to-[#FFFBF5]"; // Yellow
+    if (color === "#FF6B6B") return "from-[#FFEBEB] to-[#FFF5F5]"; // Red
+    if (color === "#4D96FF") return "from-[#EBF5FF] to-[#F5F9FF]"; // Blue
+    return "from-[#F5F5F5] to-[#FFFFFF]"; // Default
+  };
+
   return (
     <motion.div
       whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
       transition={{ duration: 0.2 }}
-      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer p-5 bg-white rounded-xl border shadow-sm hover:shadow-md transition-all duration-300`}
-      style={{ borderLeftColor: isLocked ? "#D1D5DB" : color, borderLeftWidth: "4px" }}
+      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer rounded-xl overflow-hidden border shadow-sm hover:shadow-md transition-all duration-300`}
       onClick={handleClick}
       layout
     >
+      {/* Background gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
+      
+      {/* Lock overlay */}
       {isLocked && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl z-20">
           <div className="rounded-full bg-white/90 p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,67 +91,87 @@ const ModuleCard = ({
         </div>
       )}
 
-      {illustration && (
-        <div className="mb-4 flex justify-center">
-          <motion.img
-            src={illustration}
-            alt={`${title}イラスト`}
-            className="h-24 w-auto object-contain rounded-lg"
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          />
-        </div>
-      )}
+      <div className="p-5 relative z-10">
+        {/* Module illustration */}
+        {illustration && (
+          <div className="mb-4 flex justify-center">
+            <motion.img
+              src={illustration}
+              alt={`${title}イラスト`}
+              className="h-24 w-auto object-contain rounded-lg"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            />
+          </div>
+        )}
 
-      <div className="mb-3 flex items-center gap-3">
-        <div
-          className="flex h-10 w-10 items-center justify-center rounded-full text-white"
-          style={{ backgroundColor: isLocked ? "#9CA3AF" : color }}
-        >
-          <div dangerouslySetInnerHTML={{ __html: icon }} />
+        <div className="mb-3 flex items-center gap-3">
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-full text-white"
+            style={{ backgroundColor: isLocked ? "#9CA3AF" : color }}
+          >
+            <div dangerouslySetInnerHTML={{ __html: icon }} />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">{title}</h3>
+            
+            {badge && (
+              <Badge 
+                variant={badge === "bronze" ? "default" : badge}
+                className="mt-1 flex items-center gap-1 text-xs"
+              >
+                <Trophy className="h-3 w-3" />
+                {getBadgeLabel(badge)}
+              </Badge>
+            )}
+          </div>
         </div>
-        <div>
-          <h3 className="text-lg font-semibold">{title}</h3>
-          
-          {badge && (
-            <Badge 
-              variant={badge === "bronze" ? "default" : badge}
-              className="mt-1 flex items-center gap-1 text-xs"
-            >
-              <Trophy className="h-3 w-3" />
-              {getBadgeLabel(badge)}
-            </Badge>
-          )}
-        </div>
-      </div>
 
-      <p className="mb-5 text-sm text-game-dark">{description}</p>
+        <p className="mb-5 text-sm text-game-dark">{description}</p>
 
-      <div className="mt-auto">
-        <div className="mb-2 flex justify-between">
-          <span className="text-xs font-medium">進捗</span>
-          <span className="text-xs font-medium">{progress}%</span>
-        </div>
-        <div className="progress-bar bg-gray-100 rounded-full h-2 overflow-hidden">
-          {progress === 100 ? (
-            <div
-              className="h-full bg-green-500"
-              style={{ width: `${progress}%` }}
-            ></div>
-          ) : (
-            <div
-              className="h-full"
-              style={{ width: `${progress}%`, backgroundColor: color }}
-            ></div>
-          )}
+        <div className="flex items-center justify-between">
+          <div className="w-full mr-4">
+            <div className="mb-2 flex justify-between">
+              <span className="text-xs font-medium">進捗</span>
+              <span className="text-xs font-medium">{progress}%</span>
+            </div>
+            <div className="progress-bar bg-gray-100 rounded-full h-2 overflow-hidden">
+              {progress === 100 ? (
+                <div
+                  className="h-full bg-green-500"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              ) : (
+                <div
+                  className="h-full"
+                  style={{ width: `${progress}%`, backgroundColor: color }}
+                ></div>
+              )}
+            </div>
+          </div>
+
+          <motion.button
+            className="px-3 py-1 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center gap-1 whitespace-nowrap"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClick();
+            }}
+          >
+            始める
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </motion.button>
         </div>
       </div>
       
       {/* Confetti animation for 100% progress */}
       {progress === 100 && (
         <motion.div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none z-30"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 0] }}
           transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
