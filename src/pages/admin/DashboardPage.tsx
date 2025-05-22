@@ -1,3 +1,4 @@
+
 /**
  * Admin Dashboard Home Page
  * 
@@ -11,7 +12,7 @@ import { Users, MessageSquare, BookOpen, Award, BarChart3, Settings } from 'luci
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import supabaseMock from '@/lib/supabaseClient';
+import { supabase } from '@/integrations/supabase/client';
 
 type DashboardStats = {
   totalUsers: number;
@@ -34,24 +35,33 @@ const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // Fetch actual stats from our mock data
+    // Fetch actual stats from Supabase
     const fetchStats = async () => {
       setIsLoading(true);
       try {
-        // Get user mock data
-        const mockUsers = supabaseMock.getMockUsers();
+        // Get total users count
+        const { count: totalUsers, error: totalError } = await supabase
+          .from('users')
+          .select('*', { count: 'exact', head: true });
         
-        // Calculate actual stats
-        const totalUsers = mockUsers.length;
-        const activeUsers = mockUsers.filter(user => user.status === 'active').length;
+        if (totalError) throw totalError;
         
-        // For modules and feedback we'll use mock data as these aren't in our current mock implementation
+        // Get active users count
+        const { count: activeUsers, error: activeError } = await supabase
+          .from('users')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'active');
+        
+        if (activeError) throw activeError;
+        
+        // For modules and feedback we'll continue using mock data
+        // as these tables aren't implemented yet
         const completedModules = 12453; // Mock value
         const unreadFeedback = 18;      // Mock value
         
         setStats({
-          totalUsers,
-          activeUsers,
+          totalUsers: totalUsers || 0,
+          activeUsers: activeUsers || 0,
           completedModules,
           unreadFeedback
         });

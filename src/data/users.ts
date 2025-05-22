@@ -5,7 +5,7 @@
  * This file contains functions for fetching and manipulating user data 
  * from the Supabase database.
  */
-import supabaseMock from '@/lib/supabaseClient';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface UserListParams {
   page?: number;
@@ -22,43 +22,27 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
     const offset = (page - 1) * pageSize;
     
     // Start base query
-    let userQuery = supabaseMock.from('users')
-      .select();
+    let userQuery = supabase.from('users')
+      .select('*', { count: 'exact' });
     
     // Apply search filter if provided
     if (query) {
-      // Modified: Using a more compatible approach for the mock
-      userQuery = {
-        ...userQuery,
-        range: (start: number, end: number) => {
-          // Use the getMockUsers from supabaseMock rather than directly referencing mockUsers
-          let filteredData = supabaseMock.getMockUsers().filter(user => 
-            user.email.toLowerCase().includes(query.toLowerCase()) || 
-            (user.full_name && user.full_name.toLowerCase().includes(query.toLowerCase()))
-          );
-          return {
-            data: filteredData.slice(start, end + 1),
-            error: null
-          };
-        }
-      };
+      userQuery = userQuery.or(`email.ilike.%${query}%,full_name.ilike.%${query}%`);
     }
     
     // Execute query with pagination
-    const { data: users, error } = await userQuery.range(offset, offset + pageSize - 1);
+    const { data: users, error, count } = await userQuery
+      .order('created_at', { ascending: false })
+      .range(offset, offset + pageSize - 1);
     
     if (error) {
       console.error('Error fetching users:', error);
       throw new Error('Failed to fetch users');
     }
     
-    // For a real implementation, we would also get the total count
-    // Here we'll just provide a mock total
-    const total = 35; // Mock total count
-    
     return { 
       users: users || [], 
-      total
+      total: count || 0
     };
   } catch (error) {
     console.error('Error in listUsers:', error);
@@ -71,12 +55,16 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
  */
 export async function getUserById(userId: string) {
   try {
-    // Modified: Fixed to match the mock implementation capabilities
-    const result = await supabaseMock.from('users')
-      .select()
-      .eq('id', userId);
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
     
-    const user = result.data && result.data.length > 0 ? result.data[0] : null;
+    if (error) {
+      console.error('Error fetching user:', error);
+      throw new Error('Failed to fetch user');
+    }
     
     if (!user) {
       throw new Error('User not found');
@@ -94,7 +82,8 @@ export async function getUserById(userId: string) {
  */
 export async function updateUser(userId: string, userData: { [key: string]: any }) {
   try {
-    const { data, error } = await supabaseMock.from('users')
+    const { data, error } = await supabase
+      .from('users')
       .update(userData)
       .eq('id', userId);
     

@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserTable } from '@/components/admin/UserTable';
 import { useAdminGuard } from '@/hooks/useAdminGuard';
 import { toast } from 'sonner';
-import supabaseMock from '@/lib/supabaseClient';
 import { listUsers } from '@/data/users';
 
 type User = {
@@ -42,7 +41,7 @@ const UsersPage = () => {
     pageSize: 20,
   });
   
-  // Fetch users data directly from our mock client
+  // Fetch users data from Supabase
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
