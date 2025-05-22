@@ -20,22 +20,15 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				// Updated font families
+				// Font families with unique keys
 				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'body': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'number': ['Inter', 'sans-serif'],
-				// Logo specific font
 				'logo': ['Poppins', 'Inter', 'sans-serif'],
-				// Keep the legacy font family presets for backward compatibility
-				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'display': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
-				'body': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'bubble': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'button': ['Inter', 'sans-serif'],
-				'num': ['Inter', 'sans-serif'],
-				// Keep new font family presets
 				'head': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
-				'display': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'num': ['Inter', 'sans-serif'],
 			},
 			fontWeight: {

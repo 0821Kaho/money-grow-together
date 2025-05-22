@@ -28,7 +28,20 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
     
     // Apply search filter if provided
     if (query) {
-      userQuery = userQuery.or(`email.ilike.%${query}%,full_name.ilike.%${query}%`);
+      // Modified: Using a more compatible approach for the mock
+      userQuery = {
+        ...userQuery,
+        range: (start: number, end: number) => {
+          let filteredData = mockUsers.filter(user => 
+            user.email.toLowerCase().includes(query.toLowerCase()) || 
+            (user.full_name && user.full_name.toLowerCase().includes(query.toLowerCase()))
+          );
+          return {
+            data: filteredData.slice(start, end + 1),
+            error: null
+          };
+        }
+      };
     }
     
     // Execute query with pagination
@@ -58,14 +71,15 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
  */
 export async function getUserById(userId: string) {
   try {
-    const { data: user, error } = await supabaseMock.from('users')
+    // Modified: Fixed to match the mock implementation capabilities
+    const result = await supabaseMock.from('users')
       .select('*')
-      .eq('id', userId)
-      .single();
+      .eq('id', userId);
     
-    if (error) {
-      console.error('Error fetching user:', error);
-      throw new Error('Failed to fetch user');
+    const user = result.data && result.data.length > 0 ? result.data[0] : null;
+    
+    if (!user) {
+      throw new Error('User not found');
     }
     
     return user;

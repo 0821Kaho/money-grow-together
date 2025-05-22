@@ -69,7 +69,7 @@ const UserDetailPage = () => {
   
   const [formData, setFormData] = useState({
     name: '',
-    role: 'user',
+    role: 'user' as 'admin' | 'user', // Fixed: Added type assertion to restrict the role type
   });
   
   const fetchUserDetails = async () => {
@@ -126,10 +126,13 @@ const UserDetailPage = () => {
   };
   
   const handleRoleChange = (value: string) => {
-    setFormData({
-      ...formData,
-      role: value as 'admin' | 'user',
-    });
+    // Fixed: Added type validation to ensure role is only 'admin' or 'user'
+    if (value === 'admin' || value === 'user') {
+      setFormData({
+        ...formData,
+        role: value,
+      });
+    }
   };
   
   const handleSave = async () => {
