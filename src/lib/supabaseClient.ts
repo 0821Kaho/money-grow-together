@@ -26,7 +26,7 @@ export const supabaseMock = {
         error: null,
       }),
       order: () => ({
-        range: () => ({
+        range: (start: number, end: number) => ({
           data: mockUsers,
           error: null,
         })
