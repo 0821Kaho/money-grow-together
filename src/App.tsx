@@ -11,6 +11,7 @@ import ModulePage from "./pages/ModulePage";
 import ModulesListPage from "./pages/ModulesListPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
 import ImpactPage from "./pages/ImpactPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
@@ -24,7 +25,7 @@ import AdminLayout from "./components/layout/AdminLayout";
 import WaitlistPage from "./pages/admin/WaitlistPage";
 import UsersPage from "./pages/admin/UsersPage";
 import DashboardPage from "./pages/admin/DashboardPage";
-import SettingsPage from "./pages/admin/SettingsPage";
+import SettingsPage as AdminSettingsPage from "./pages/admin/SettingsPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
@@ -66,6 +67,7 @@ function AppRoutes() {
           <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
           <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           
           {/* Admin routes */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
@@ -73,7 +75,7 @@ function AppRoutes() {
             <Route path="users" element={<UsersPage />} />
             <Route path="waitlist" element={<WaitlistPage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+            <Route path="settings" element={<AdminSettingsPage />} />
           </Route>
           
           {/* 404 route */}
