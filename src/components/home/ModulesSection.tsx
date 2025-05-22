@@ -81,9 +81,8 @@ const ModulesSection = () => {
       </div>
 
       <div className="relative px-4 py-4">
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4">
           <h3 className="text-lg font-bold">モジュールを選ぶ</h3>
-          <p className="text-sm text-muted-foreground">スワイプして全てを見る</p>
         </div>
         
         <Carousel
