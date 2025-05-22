@@ -73,8 +73,9 @@ const UsersPage = () => {
     navigate(`/admin/users/${user.id}`);
   };
 
-  const handlePaginationChange = (pageIndex: number, pageSize: number) => {
-    setPagination({ pageIndex, pageSize });
+  // Updated to match the expected function signature
+  const handlePaginationChange = (paginationValue: { pageIndex: number, pageSize: number }) => {
+    setPagination(paginationValue);
   };
 
   return (
