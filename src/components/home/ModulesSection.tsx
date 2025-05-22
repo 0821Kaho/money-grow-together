@@ -72,7 +72,7 @@ const ModulesSection = () => {
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
             transition={{ duration: 0.2 }}
           >
-            <Card className={`h-full border-2 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}70` }}>
+            <Card className={`h-full border-3 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}85` }}>
               <CardContent className="p-6 relative">
                 {/* Pigipe character in background */}
                 <motion.div
@@ -108,7 +108,7 @@ const ModulesSection = () => {
                   </motion.div>
                 )}
                 
-                <h3 className="text-lg font-bold mb-2">{module.title}</h3>
+                <h3 className="text-lg font-bold mb-2" style={{ color: module.iconColor }}>{module.title}</h3>
                 
                 <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
                 

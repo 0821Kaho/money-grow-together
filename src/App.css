@@ -47,6 +47,11 @@
   @apply rounded-lg bg-[#25B589] px-4 py-2 text-white hover:brightness-105 transition-all;
 }
 
+/* Border width class - for thicker borders */
+.border-3 {
+  border-width: 3px;
+}
+
 /* Hero Video Styling - Updated for more pink look */
 .hero-video-container {
   position: relative;

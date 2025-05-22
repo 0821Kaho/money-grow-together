@@ -70,7 +70,7 @@ const ModuleCard = ({
       <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
       
       {/* Border */}
-      <div className="absolute inset-0 border-2 rounded-xl z-0" style={{ borderColor: `${color}70` }}></div>
+      <div className="absolute inset-0 border-3 rounded-xl z-0" style={{ borderColor: `${color}85` }}></div>
       
       {/* Lock overlay */}
       {isLocked && (
@@ -111,7 +111,7 @@ const ModuleCard = ({
 
         <div className="mb-3">
           <div>
-            <h3 className="text-lg font-semibold">{title}</h3>
+            <h3 className="text-lg font-semibold" style={{ color: isLocked ? "#9CA3AF" : color }}>{title}</h3>
             
             {badge && (
               <Badge 
