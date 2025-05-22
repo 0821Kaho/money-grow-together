@@ -25,26 +25,20 @@ export const supabaseMock = {
         data: null,
         error: null,
       }),
-      order: () => ({
+      order: (column: string, { ascending = true } = {}) => ({
         range: (start: number, end: number) => ({
           data: mockUsers.slice(start, end + 1),
           error: null,
         })
+      }),
+      range: (start: number, end: number) => ({
+        data: mockUsers.slice(start, end + 1),
+        error: null,
       })
     }),
     update: (data: any) => ({
       eq: () => ({
         data: { ...data },
-        error: null,
-      })
-    }),
-    select: () => ({
-      eq: () => ({
-        data: null,
-        error: null,
-      }),
-      range: (start: number, end: number) => ({
-        data: mockUsers.slice(start, end + 1),
         error: null,
       })
     })
