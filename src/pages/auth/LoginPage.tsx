@@ -30,8 +30,10 @@ const LoginPage = () => {
       
       // 管理者ユーザーなら管理者ダッシュボードに遷移する
       if (userData.isAdmin) {
+        console.log("管理者としてログインしました。管理者ページへ遷移します。");
         navigate("/admin");
       } else {
+        console.log("一般ユーザーとしてログインしました。モジュールページへ遷移します。");
         navigate("/modules");
       }
     } catch (error) {
