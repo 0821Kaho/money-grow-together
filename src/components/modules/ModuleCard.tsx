@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
 import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
+// Removed any MascotImage imports if there were any
 
 interface ModuleCardProps {
   id: number;
@@ -149,9 +150,9 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Modified button - removed the > icon */}
+          {/* Button with fixed width and no text wrapping */}
           <motion.button
-            className="px-3 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center ml-auto"
+            className="px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto min-w-[96px] whitespace-nowrap"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
@@ -159,7 +160,7 @@ const ModuleCard = ({
               handleClick();
             }}
           >
-            <span className="inline-flex items-center whitespace-nowrap">
+            <span className="inline-flex items-center">
               開始
             </span>
           </motion.button>
