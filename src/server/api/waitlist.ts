@@ -44,34 +44,3 @@ export async function getWaitlistCount(req: Request, res: Response) {
     return res.status(500).json({ error: "Failed to fetch waitlist count" });
   }
 }
-
-// Get all waitlist entries
-export async function getAllWaitlistEntries(req: Request, res: Response) {
-  try {
-    // In a real implementation, this would check for admin authentication
-    // For demo purposes, we'll return mock data
-    const entries = [
-      { id: "1", email: "user1@example.com", createdAt: new Date("2025-05-01T10:30:00Z") },
-      { id: "2", email: "user2@example.com", createdAt: new Date("2025-05-02T08:45:00Z") },
-      { id: "3", email: "user3@example.com", createdAt: new Date("2025-05-02T14:20:00Z") },
-      { id: "4", email: "user4@example.com", createdAt: new Date("2025-05-03T09:15:00Z") },
-      { id: "5", email: "user5@example.com", createdAt: new Date("2025-05-03T16:30:00Z") },
-      { id: "6", email: "user6@example.com", createdAt: new Date("2025-05-04T11:10:00Z") },
-      { id: "7", email: "user7@example.com", createdAt: new Date("2025-05-04T19:05:00Z") },
-      { id: "8", email: "user8@example.com", createdAt: new Date("2025-05-05T07:40:00Z") },
-      { id: "9", email: "user9@example.com", createdAt: new Date("2025-05-05T13:25:00Z") },
-      { id: "10", email: "user10@example.com", createdAt: new Date("2025-05-06T10:00:00Z") },
-    ];
-    
-    return res.status(200).json({ entries });
-    
-    // In production with a real DB:
-    // const entries = await prisma.waitlist.findMany({
-    //   orderBy: { createdAt: "desc" }
-    // });
-    // return res.status(200).json({ entries });
-  } catch (error) {
-    console.error("Failed to fetch waitlist entries", error);
-    return res.status(500).json({ error: "Failed to fetch waitlist entries" });
-  }
-}
