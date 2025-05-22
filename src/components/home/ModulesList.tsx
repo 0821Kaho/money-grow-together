@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,6 +26,7 @@ const modules = [
     color: "#60B8D4",
     progress: 10,
     isLocked: false,
+    illustration: "/lovable-uploads/d4d69757-fa8b-4792-b80c-3a101f92b01b.png"
   },
   {
     id: 3,
@@ -34,6 +36,7 @@ const modules = [
     color: "#FFD166",
     progress: 0,
     isLocked: false,
+    illustration: "/lovable-uploads/9c9d440d-3eab-4a1e-913f-6152729a6ff8.png"
   },
   {
     id: 4,
@@ -43,7 +46,8 @@ const modules = [
     color: "#FF6B6B",
     progress: 10,
     isLocked: false,
-    badge: "bronze" as const
+    badge: "bronze" as const,
+    illustration: "/lovable-uploads/c02ccb40-c19f-48d7-a805-8c3e5ac584e6.png"
   },
   {
     id: 5,
@@ -53,6 +57,7 @@ const modules = [
     color: "#4D96FF",
     progress: 0,
     isLocked: false,
+    illustration: "/lovable-uploads/536dafe2-25ff-4564-9aab-e16afe5152f8.png"
   },
 ];
 
@@ -160,7 +165,8 @@ const ModulesList = () => {
         />
       </motion.div>
       
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {/* Module grid with illustrations */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {modules.filter(module => module.id !== 1).map((module) => (
           <ModuleCard
             key={module.id}
@@ -172,6 +178,7 @@ const ModulesList = () => {
             progress={module.progress}
             isLocked={module.isLocked}
             badge={module.badge}
+            illustration={module.illustration}
           />
         ))}
       </div>

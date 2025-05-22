@@ -78,9 +78,22 @@ const ModuleCard = ({
         </div>
       )}
 
-      <div className="mb-5 flex items-center gap-3">
+      {illustration && (
+        <div className="mb-4 flex justify-center">
+          <motion.img
+            src={illustration}
+            alt={`${title}イラスト`}
+            className="h-24 w-auto object-contain rounded-lg"
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          />
+        </div>
+      )}
+
+      <div className="mb-3 flex items-center gap-3">
         <div
-          className="flex h-12 w-12 items-center justify-center rounded-full text-white"
+          className="flex h-10 w-10 items-center justify-center rounded-full text-white"
           style={{ backgroundColor: isLocked ? "#9CA3AF" : color }}
         >
           <div dangerouslySetInnerHTML={{ __html: icon }} />
