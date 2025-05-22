@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,7 +39,7 @@ const modules = [
     id: 4,
     title: "ライフプラン",
     description: "人生の重要イベントに向けた長期的な資金計画を立てよう",
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h-2a2 2 0 00-2-2z" /></svg>',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>',
     color: "#FF6B6B",
     progress: 10,
     isLocked: false,
@@ -90,7 +89,7 @@ const ModulesList = () => {
         </Tabs>
       </div>
       
-      {/* Featured module with illustration */}
+      {/* Featured module with illustration - おすすめ badge removed */}
       <motion.div 
         className="mb-8 bg-gradient-to-br from-[#FFF5E6] to-[#FFEBEB] rounded-2xl p-5 shadow-sm relative overflow-hidden border border-amber-200/30"
         initial={{ scale: 0.95, opacity: 0 }}
@@ -99,18 +98,6 @@ const ModulesList = () => {
       >
         <div className="flex flex-col md:flex-row items-center gap-4 relative z-10">
           <div className="md:w-1/2 relative">
-            <motion.div
-              className="absolute -top-2 -left-2 bg-amber-100 rounded-full px-2 py-1 shadow-sm border border-amber-200"
-              initial={{ rotate: -5, y: -10 }}
-              animate={{ rotate: 0, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              <div className="text-xs font-semibold flex items-center gap-1 text-amber-800">
-                <Trophy className="h-3 w-3" />
-                おすすめ
-              </div>
-            </motion.div>
-            
             <img 
               src="/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png" 
               alt="家計管理イメージ" 
