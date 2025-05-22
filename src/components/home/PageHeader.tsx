@@ -26,6 +26,9 @@ const PageHeader = ({ className }: { className?: string }) => {
         <Link to="/impact" className="text-sm font-medium text-gray-600 hover:text-gray-900">
           社会的インパクト
         </Link>
+        <Link to="/admin/waitlist" className="text-sm font-medium text-gray-500 hover:text-gray-900 opacity-60">
+          管理者
+        </Link>
       </nav>
       
       {/* Auth buttons */}
