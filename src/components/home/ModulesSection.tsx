@@ -1,6 +1,7 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { 
   Carousel,
   CarouselContent,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 const modules = [
   { 
@@ -61,6 +63,22 @@ const modules = [
 
 const ModulesSection = () => {
   const navigate = useNavigate();
+  const [api, setApi] = useState<any>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
+  
+  // Auto-swiping functionality
+  useEffect(() => {
+    if (!api || !isInView) return;
+    
+    // Set up interval for auto-swiping
+    const autoSwipeInterval = setInterval(() => {
+      api.scrollNext();
+    }, 3000); // Change slide every 3 seconds
+    
+    // Clean up interval on component unmount or when carousel is not in view
+    return () => clearInterval(autoSwipeInterval);
+  }, [api, isInView]);
 
   const handleModuleClick = (id: string) => {
     navigate(`/module/${id}`);
@@ -79,25 +97,26 @@ const ModulesSection = () => {
         </div>
       </div>
 
-      <div className="relative px-4 py-4">
+      <div className="relative px-4 py-4" ref={carouselRef}>
         <Carousel
           opts={{
-            align: "start",
+            align: "center", // Changed from "start" to "center" to ensure full visibility
             loop: true,
             dragFree: true,
-            inViewThreshold: 0.5,
+            containScroll: "trimSnaps", // Ensures blocks are fully visible
             skipSnaps: false,
           }}
           className="w-full"
+          setApi={setApi}
         >
           <CarouselContent className="-ml-2 -mr-2">
             {modules.map((module) => (
-              <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3 pl-4 pr-4">
+              <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3 pl-4 pr-4 flex items-stretch">
                 <motion.div
                   whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
                   transition={{ duration: 0.2 }}
                   onClick={() => handleModuleClick(module.id)}
-                  className="cursor-pointer h-full"
+                  className="cursor-pointer h-full w-full"
                 >
                   <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} 
                         style={{ borderColor: `${module.iconColor}85` }}>
