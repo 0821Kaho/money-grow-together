@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,11 +27,18 @@ import Footer from "./components/layout/Footer";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   
   // Protected route component
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+  };
+
+  // Admin route component that checks if user is admin
+  const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+    return isAuthenticated && user?.isAdmin ? 
+      <>{children}</> : 
+      <Navigate to="/" replace />;
   };
 
   return (
@@ -63,7 +71,7 @@ function AppRoutes() {
         </Routes>
       </div>
       {/* Only show footer on non-admin routes */}
-      <Footer />
+      {!window.location.pathname.startsWith('/admin') && <Footer />}
     </div>
   );
 }
