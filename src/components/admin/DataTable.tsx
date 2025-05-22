@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   flexRender,
@@ -8,6 +7,7 @@ import {
   useReactTable,
   type ColumnDef,
   type SortingState,
+  type PaginationState,
 } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import {
@@ -75,8 +75,16 @@ export function DataTable<TData, TValue>({
     },
     pageCount,
     onSortingChange: setSorting,
-    onPaginationChange: setPagination => {
-      onPaginationChange(setPagination);
+    onPaginationChange: (updaterOrValue) => {
+      // Handle both function updater and direct value formats
+      if (typeof updaterOrValue === 'function') {
+        // If it's a function updater (old) => new, call it with current state to get new value
+        const newPagination = updaterOrValue(pagination as PaginationState);
+        onPaginationChange(newPagination);
+      } else {
+        // If it's a direct value, use it directly
+        onPaginationChange(updaterOrValue);
+      }
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
