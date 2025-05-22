@@ -114,7 +114,7 @@ const ModulesList = () => {
             transition={{ delay: 0.2 * module.id / 5 }}
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
             className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-2 bg-gradient-to-br ${getBgGradient(module.color)}`}
-            style={{ borderColor: `${module.color}40` }}
+            style={{ borderColor: `${module.color}70` }}
           >
             <div className="flex flex-col gap-4 relative z-10">
               <div className="relative">
@@ -126,15 +126,7 @@ const ModulesList = () => {
               </div>
               
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div
-                    className="flex h-8 w-8 items-center justify-center rounded-full text-white"
-                    style={{ backgroundColor: module.color }}
-                  >
-                    <div dangerouslySetInnerHTML={{ __html: module.icon }} className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-800">{module.title}</h3>
-                </div>
+                <h3 className="text-lg font-bold text-gray-800">{module.title}</h3>
                 
                 <p className="text-sm text-gray-600">
                   {module.description}

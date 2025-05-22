@@ -70,7 +70,7 @@ const ModuleCard = ({
       <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
       
       {/* Border */}
-      <div className="absolute inset-0 border-2 rounded-xl z-0" style={{ borderColor: `${color}40` }}></div>
+      <div className="absolute inset-0 border-2 rounded-xl z-0" style={{ borderColor: `${color}70` }}></div>
       
       {/* Lock overlay */}
       {isLocked && (
@@ -109,13 +109,7 @@ const ModuleCard = ({
           </div>
         )}
 
-        <div className="mb-3 flex items-center gap-3">
-          <div
-            className="flex h-10 w-10 items-center justify-center rounded-full text-white"
-            style={{ backgroundColor: isLocked ? "#9CA3AF" : color }}
-          >
-            <div dangerouslySetInnerHTML={{ __html: icon }} />
-          </div>
+        <div className="mb-3">
           <div>
             <h3 className="text-lg font-semibold">{title}</h3>
             

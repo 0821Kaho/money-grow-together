@@ -1,5 +1,4 @@
 
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion } from "framer-motion";
@@ -73,7 +72,7 @@ const ModulesSection = () => {
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
             transition={{ duration: 0.2 }}
           >
-            <Card className={`h-full border-2 shadow-sm hover:shadow transition-all border-${module.iconColor.replace('#', '')} bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}30` }}>
+            <Card className={`h-full border-2 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}70` }}>
               <CardContent className="p-6 relative">
                 {/* Pigipe character in background */}
                 <motion.div
@@ -109,17 +108,7 @@ const ModulesSection = () => {
                   </motion.div>
                 )}
                 
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className="flex h-7 w-7 items-center justify-center rounded-full text-white shrink-0"
-                    style={{ backgroundColor: module.iconColor }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-bold">{module.title}</h3>
-                </div>
+                <h3 className="text-lg font-bold mb-2">{module.title}</h3>
                 
                 <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
                 
