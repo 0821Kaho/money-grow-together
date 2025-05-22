@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge"; 
 import { motion } from "framer-motion";
@@ -157,8 +156,7 @@ const ModuleCard = ({
               handleClick();
             }}
           >
-            始める
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            始める<svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </motion.button>
