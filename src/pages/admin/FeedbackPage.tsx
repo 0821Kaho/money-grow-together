@@ -7,14 +7,14 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@/components/ui/badge';
 import { formatDistanceToNow } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
+// Updated type definition to match Supabase schema
 type Feedback = {
-  id: string;
+  id: number; // Changed from string to number to match the Supabase schema
   user_id: string;
   message: string;
   is_read: boolean;
@@ -142,8 +142,9 @@ const FeedbackPage = () => {
     }
   };
 
-  const handlePaginationChange = (pageIndex: number, pageSize: number) => {
-    setPagination({ pageIndex, pageSize });
+  // Fix the parameter types to match what DataTable component expects
+  const handlePaginationChange = (paginationConfig: { pageIndex: number, pageSize: number }) => {
+    setPagination(paginationConfig);
   };
 
   const handleUnreadFilterChange = (checked: boolean) => {
