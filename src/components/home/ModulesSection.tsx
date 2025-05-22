@@ -90,12 +90,15 @@ const ModulesSection = () => {
           opts={{
             align: "start",
             loop: true,
+            dragFree: true,
+            inViewThreshold: 0.5,
+            skipSnaps: false,
           }}
           className="w-full"
         >
-          <CarouselContent className="px-2">
+          <CarouselContent className="-ml-2 -mr-2">
             {modules.map((module) => (
-              <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-6">
+              <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3 pl-4 pr-4">
                 <motion.div
                   whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
                   transition={{ duration: 0.2 }}
@@ -147,7 +150,7 @@ const ModulesSection = () => {
           </div>
         </Carousel>
 
-        {/* Mobile scroll indicator */}
+        {/* Mobile scroll indicator with active state */}
         <div className="flex justify-center mt-4 md:hidden">
           <div className="flex space-x-1">
             {modules.map((_, index) => (
