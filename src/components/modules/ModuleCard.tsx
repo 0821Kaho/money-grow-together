@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge"; 
 import { motion } from "framer-motion";
@@ -126,11 +127,12 @@ const ModuleCard = ({
 
         <p className="mb-5 text-sm text-game-dark">{description}</p>
 
-        <div className="flex items-center justify-between">
-          <div className="w-full mr-4">
-            <div className="mb-2 flex justify-between">
-              <span className="text-xs font-medium">進捗</span>
-              <span className="text-xs font-medium">{progress}%</span>
+        <div className="flex items-center">
+          {/* Shortened progress section */}
+          <div className="w-28 mr-2">
+            <div className="flex justify-between text-xs mb-1">
+              <span className="font-medium">進捗</span>
+              <span className="font-medium">{progress}%</span>
             </div>
             <div className="progress-bar bg-gray-100 rounded-full h-2 overflow-hidden">
               {progress === 100 ? (
@@ -147,8 +149,9 @@ const ModuleCard = ({
             </div>
           </div>
 
+          {/* Button with no line break */}
           <motion.button
-            className="px-3 py-1 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center gap-1 whitespace-nowrap"
+            className="px-3 py-1 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center gap-1 whitespace-nowrap ml-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
