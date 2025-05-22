@@ -22,6 +22,7 @@ import SignupPage from "./pages/auth/SignupPage";
 import AuthLayout from "./components/layout/AuthLayout";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
+import WaitlistAdminPage from "./pages/admin/WaitlistAdminPage";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
@@ -33,34 +34,52 @@ function AppRoutes() {
   };
 
   return (
+    <Routes>
+      {/* Admin routes - no header/footer */}
+      <Route path="/admin/waitlist" element={<WaitlistAdminPage />} />
+      
+      {/* Public routes with standard layout */}
+      <Route element={<StandardLayout />}>
+        <Route path="/" element={<Index />} />
+        <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
+        <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
+        <Route path="/impact" element={<ImpactPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/about" element={<CompanyPage />} />
+        <Route path="/en/about" element={<EnCompanyPage />} />
+        <Route path="/company" element={<Navigate to="/about" replace />} />
+        
+        {/* Protected routes */}
+        <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
+        <Route path="/module/:id" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
+        <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
+        <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      </Route>
+
+      {/* 404 route */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
+
+// Standard layout with header and footer
+const StandardLayout = () => {
+  return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-grow">
         <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<AuthLayout><LoginPage /></AuthLayout>} />
-          <Route path="/signup" element={<AuthLayout><SignupPage /></AuthLayout>} />
-          <Route path="/impact" element={<ImpactPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/privacy" element={<PrivacyPolicyPage />} />
-          <Route path="/about" element={<CompanyPage />} />
-          <Route path="/en/about" element={<EnCompanyPage />} />
-          <Route path="/company" element={<Navigate to="/about" replace />} />
-          
-          {/* Protected routes */}
-          <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
-          <Route path="/module/:id" element={<ProtectedRoute><ModulePage /></ProtectedRoute>} />
-          <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
-          <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Outlet />} />
         </Routes>
       </div>
-      {/* Footer is now only included once here, at the App level */}
       <Footer />
     </div>
   );
-}
+};
+
+// Add Outlet to be used in the StandardLayout
+import { Outlet } from "react-router-dom";
 
 const App = () => {
   // Create QueryClient instance inside the component

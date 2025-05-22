@@ -44,3 +44,30 @@ export async function getWaitlistCount(req: Request, res: Response) {
     return res.status(500).json({ error: "Failed to fetch waitlist count" });
   }
 }
+
+// Get all waitlist entries - Admin only endpoint
+export async function getWaitlistEntries(req: Request, res: Response) {
+  try {
+    // Admin authorization check would go here in a production environment
+    // For this demo, we'll return mock data
+    
+    // Mock data for the preview
+    const mockEntries = [
+      { id: '1', email: 'user1@example.com', createdAt: new Date(2025, 4, 1).toISOString() },
+      { id: '2', email: 'user2@example.com', createdAt: new Date(2025, 4, 5).toISOString() },
+      { id: '3', email: 'user3@example.com', createdAt: new Date(2025, 4, 10).toISOString() },
+      { id: '4', email: 'user4@example.com', createdAt: new Date(2025, 4, 15).toISOString() },
+      { id: '5', email: 'user5@example.com', createdAt: new Date(2025, 4, 20).toISOString() },
+    ];
+    
+    // In production, this would fetch real data from the database
+    // const entries = await prisma.waitlist.findMany({
+    //   orderBy: { createdAt: 'desc' }
+    // });
+    
+    return res.status(200).json(mockEntries);
+  } catch (error) {
+    console.error("Failed to fetch waitlist entries", error);
+    return res.status(500).json({ error: "Failed to fetch waitlist entries" });
+  }
+}
