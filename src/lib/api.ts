@@ -58,4 +58,5 @@ export const authApi = {
 export const waitlistApi = {
   register: (email: string) => api.post('/waitlist', { email }),
   getCount: () => api.get('/waitlist/count'),
+  getAll: () => api.get('/waitlist/entries'),
 };

@@ -20,6 +20,8 @@ import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import AuthLayout from "./components/layout/AuthLayout";
+import AdminLayout from "./components/layout/AdminLayout";
+import WaitlistPage from "./pages/admin/WaitlistPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
 
@@ -53,6 +55,11 @@ function AppRoutes() {
           <Route path="/modules" element={<ProtectedRoute><ModulesListPage /></ProtectedRoute>} />
           <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminLayout><WaitlistPage /></AdminLayout>} />
+          
+          {/* 404 route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

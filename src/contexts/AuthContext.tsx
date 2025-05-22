@@ -6,6 +6,7 @@ type User = {
   id: string;
   email: string;
   displayName?: string;
+  isAdmin?: boolean;
 };
 
 type AuthContextType = {
@@ -39,7 +40,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (token) {
           // For now, we'll use a mock implementation
           // In a real implementation, we would validate the token with the server
-          setUser({ id: '1', email: 'user@example.com' });
+          const savedEmail = localStorage.getItem('userEmail') || 'user@example.com';
+          setUser({ 
+            id: '1', 
+            email: savedEmail,
+            isAdmin: savedEmail === 'kahosatoyoshi@gmail.com'
+          });
         }
       } catch (error) {
         console.error('Auth check failed:', error);
@@ -60,9 +66,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // For demo purposes
       const token = 'mock-token';
-      const userData = { id: '1', email };
+      const userData = { 
+        id: '1', 
+        email,
+        isAdmin: email === 'kahosatoyoshi@gmail.com'
+      };
       
       localStorage.setItem('token', token);
+      localStorage.setItem('userEmail', email); // Save email for demo purposes
       setUser(userData);
     } catch (error) {
       console.error('Login failed:', error);
@@ -78,9 +89,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // For demo purposes
       const token = 'mock-token';
-      const userData = { id: '1', email, displayName };
+      const userData = { 
+        id: '1', 
+        email, 
+        displayName,
+        isAdmin: email === 'kahosatoyoshi@gmail.com'
+      };
       
       localStorage.setItem('token', token);
+      localStorage.setItem('userEmail', email); // Save email for demo purposes
       setUser(userData);
     } catch (error) {
       console.error('Signup failed:', error);
@@ -90,6 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userEmail');
     setUser(null);
   };
 
