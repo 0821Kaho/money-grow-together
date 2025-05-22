@@ -22,6 +22,10 @@ import SignupPage from "./pages/auth/SignupPage";
 import AuthLayout from "./components/layout/AuthLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import WaitlistPage from "./pages/admin/WaitlistPage";
+import UsersPage from "./pages/admin/UsersPage";
+import DashboardPage from "./pages/admin/DashboardPage";
+import SettingsPage from "./pages/admin/SettingsPage";
+import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
 
@@ -64,7 +68,13 @@ function AppRoutes() {
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           
           {/* Admin routes */}
-          <Route path="/admin" element={<AdminLayout><WaitlistPage /></AdminLayout>} />
+          <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+            <Route index element={<DashboardPage />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="waitlist" element={<WaitlistPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
           
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
