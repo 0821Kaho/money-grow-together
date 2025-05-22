@@ -21,12 +21,19 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      const userData = await login(email, password);
+      
       toast({
         title: "ログイン成功",
         description: "Pigipeへようこそ！",
       });
-      navigate("/modules");
+      
+      // 管理者ユーザーなら管理者ダッシュボードに遷移する
+      if (userData.isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/modules");
+      }
     } catch (error) {
       toast({
         title: "ログイン失敗",

@@ -82,6 +82,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('token', token);
       localStorage.setItem('userEmail', email); // Save email for demo purposes
       setUser(userData);
+
+      return userData; // Return the user data for use in the login page
     } catch (error) {
       console.error('Login failed:', error);
       throw new Error('ログインに失敗しました');
