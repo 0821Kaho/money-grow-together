@@ -128,8 +128,8 @@ const ModuleCard = ({
         <p className="mb-5 text-sm text-game-dark">{description}</p>
 
         <div className="flex items-center">
-          {/* Shortened progress section */}
-          <div className="w-28 mr-2">
+          {/* Shorter progress section */}
+          <div className="w-24 mr-2">
             <div className="flex justify-between text-xs mb-1">
               <span className="font-medium">進捗</span>
               <span className="font-medium">{progress}%</span>
@@ -149,9 +149,9 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Button with no line break */}
+          {/* Improved button with no line break */}
           <motion.button
-            className="px-3 py-1 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center gap-1 whitespace-nowrap ml-auto"
+            className="px-3 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center gap-1 whitespace-nowrap ml-auto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
@@ -159,9 +159,11 @@ const ModuleCard = ({
               handleClick();
             }}
           >
-            始める<svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <span className="inline-flex items-center">
+              始める<svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
           </motion.button>
         </div>
       </div>
