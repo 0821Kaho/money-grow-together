@@ -29,6 +29,24 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
     });
   };
 
+  // Get encouraging phrase based on current module
+  const getEncouragingPhrase = () => {
+    switch(currentModule) {
+      case 1:
+        return "1か月乗り切ろうブー！";
+      case 2:
+        return "投資の世界へようこそブー！";
+      case 3:
+        return "リスクに備えるブー！";
+      case 4:
+        return "未来を計画するブー！";
+      case 5:
+        return "新しい収入源を見つけるブー！";
+      default:
+        return "一緒に学ぼうブー！";
+    }
+  };
+
   return (
     <motion.div
       className="min-h-screen bg-gradient-to-b from-game-light to-white pb-16"
@@ -133,6 +151,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
           size="large" 
           onClick={handleMascotClick}
           className="h-14 w-14 shadow-md" 
+          tooltip={getEncouragingPhrase()}
         />
       </div>
     </motion.div>

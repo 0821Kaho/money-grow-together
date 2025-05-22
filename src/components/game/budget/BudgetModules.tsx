@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 // This component acts as a container for all budget-related modules
 const BudgetModules = () => {
@@ -103,6 +104,21 @@ const BudgetModules = () => {
         variant: isCorrect ? "default" : "destructive"
       });
     }
+    
+    // Add bounce animation and show "Level up" notification
+    const bounceAudio = new Audio('/effects/level-up.mp3');
+    try {
+      bounceAudio.play();
+    } catch (error) {
+      console.log("Audio couldn't play automatically");
+    }
+  };
+  
+  // Progress visualization
+  const calculateProgress = () => {
+    const totalModules = Object.keys(completedModules).length;
+    const completedCount = Object.values(completedModules).filter(Boolean).length;
+    return Math.round((completedCount / totalModules) * 100);
   };
   
   // Section wrapper component
@@ -117,7 +133,7 @@ const BudgetModules = () => {
   }) => (
     <div className="mb-6">
       <div 
-        className="flex justify-between items-center p-4 bg-slate-50 rounded-lg mb-2 cursor-pointer"
+        className="flex justify-between items-center p-4 bg-slate-50 rounded-lg mb-2 cursor-pointer hover:bg-slate-100 transition-colors"
         onClick={() => toggleSection(id)}
       >
         <div className="flex items-center">
@@ -137,39 +153,122 @@ const BudgetModules = () => {
         </Button>
       </div>
       
-      {expandedSections[id] && children}
+      <AnimatePresence>
+        {expandedSections[id] && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+  
+  // Show Pigipe learning progress assistant on desktop
+  const PigipeLearningAssistant = () => (
+    <div className="hidden lg:block sticky top-4 bg-white rounded-xl shadow-sm p-4 border border-blue-100">
+      <div className="flex items-center mb-4">
+        <div className="rounded-full bg-blue-100 p-2 mr-3">
+          <motion.div
+            animate={{ 
+              rotate: [0, 10, -10, 10, 0],
+              y: [0, -2, 0, -2, 0]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 5,
+              repeatType: "loop"
+            }}
+          >
+            {/* Placeholder for Pigipe image */}
+            <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center">
+              <span className="font-bold text-blue-600">P</span>
+            </div>
+          </motion.div>
+        </div>
+        <div>
+          <h3 className="font-bold text-blue-700">Pigipe学習アシスタント</h3>
+          <div className="text-xs text-blue-600">
+            あと{7 - Object.values(completedModules).filter(Boolean).length}モジュールで完了ブー！
+          </div>
+        </div>
+      </div>
+      
+      <div className="py-2 px-3 bg-blue-50 rounded-md mb-3 text-sm relative">
+        <div className="absolute left-2 top-0 w-0 h-0 transform -translate-y-full" style={{
+          borderLeft: '6px solid transparent',
+          borderRight: '6px solid transparent',
+          borderBottom: '6px solid #EFF6FF'
+        }}></div>
+        <p className="text-blue-700">
+          {Object.values(completedModules).filter(Boolean).length === 0 
+            ? "まずは基礎知識から始めようブー！" 
+            : Object.values(completedModules).filter(Boolean).length >= 3
+            ? "すごい進捗だブー！あと少しだブー！" 
+            : "次のステップも頑張るブー！"}
+        </p>
+      </div>
+      
+      {/* Progress visualization */}
+      <div className="mb-3">
+        <div className="flex justify-between text-xs text-gray-600 mb-1">
+          <span>学習進捗</span>
+          <span>{calculateProgress()}%</span>
+        </div>
+        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-blue-500 rounded-full"
+            style={{ width: `${calculateProgress()}%` }}
+          ></div>
+        </div>
+      </div>
+      
+      <div className="text-sm text-gray-600 italic">
+        収支を把握して、黒字体質の家計を実現しましょう！
+      </div>
     </div>
   );
   
   return (
-    <div className="space-y-4">
-      <Section id="intro" title="家計管理の基本">
-        <IntroManga onComplete={() => handleModuleComplete("intro")} />
-      </Section>
+    <div className="lg:grid lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-4">
+        <Section id="intro" title="家計管理の基本">
+          <IntroManga onComplete={() => handleModuleComplete("intro")} />
+        </Section>
+        
+        <Section id="expenses" title="支出の把握">
+          <ExpenseCalculator onComplete={(balance) => handleModuleComplete("expenses", balance)} />
+        </Section>
+        
+        <Section id="budget" title="予算の立て方">
+          <BudgetPlanner onComplete={(success) => handleModuleComplete("budget", success)} />
+        </Section>
+        
+        <Section id="saving" title="貯蓄方法">
+          <DragDropSaving onComplete={(savedAmount) => handleModuleComplete("saving", savedAmount)} />
+        </Section>
+        
+        <Section id="credit" title="クレジットカードと借金管理">
+          <CreditCardEducation />
+        </Section>
+        
+        <Section id="loans" title="ローンの比較">
+          <LoanComparison onComplete={() => handleModuleComplete("loans")} />
+        </Section>
+        
+        <Section id="quiz" title="知識チェックテスト">
+          <BudgetQuiz onComplete={(isCorrect) => handleModuleComplete("quiz", isCorrect)} />
+        </Section>
+      </div>
       
-      <Section id="expenses" title="支出の把握">
-        <ExpenseCalculator onComplete={(balance) => handleModuleComplete("expenses", balance)} />
-      </Section>
-      
-      <Section id="budget" title="予算の立て方">
-        <BudgetPlanner onComplete={(success) => handleModuleComplete("budget", success)} />
-      </Section>
-      
-      <Section id="saving" title="貯蓄方法">
-        <DragDropSaving onComplete={(savedAmount) => handleModuleComplete("saving", savedAmount)} />
-      </Section>
-      
-      <Section id="credit" title="クレジットカードと借金管理">
-        <CreditCardEducation />
-      </Section>
-      
-      <Section id="loans" title="ローンの比較">
-        <LoanComparison onComplete={() => handleModuleComplete("loans")} />
-      </Section>
-      
-      <Section id="quiz" title="知識チェックテスト">
-        <BudgetQuiz onComplete={(isCorrect) => handleModuleComplete("quiz", isCorrect)} />
-      </Section>
+      <div className="col-span-1">
+        <PigipeLearningAssistant />
+      </div>
     </div>
   );
 };
