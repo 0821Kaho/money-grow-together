@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion } from "framer-motion";
@@ -81,10 +80,6 @@ const ModulesSection = () => {
       </div>
 
       <div className="relative px-4 py-4">
-        <div className="mb-4">
-          <h3 className="text-lg font-bold">モジュールを選ぶ</h3>
-        </div>
-        
         <Carousel
           opts={{
             align: "start",
