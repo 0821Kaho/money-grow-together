@@ -41,10 +41,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // For now, we'll use a mock implementation
           // In a real implementation, we would validate the token with the server
           const savedEmail = localStorage.getItem('userEmail') || 'user@example.com';
+          // Check if the email is the admin email
+          const isAdmin = savedEmail === 'kahosatoyoshi@gmail.com';
+          console.log('User authenticated:', { email: savedEmail, isAdmin });
+          
           setUser({ 
             id: '1', 
             email: savedEmail,
-            isAdmin: savedEmail === 'kahosatoyoshi@gmail.com'
+            isAdmin
           });
         }
       } catch (error) {
@@ -66,10 +70,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // For demo purposes
       const token = 'mock-token';
+      const isAdmin = email === 'kahosatoyoshi@gmail.com';
+      console.log('Logging in:', { email, isAdmin });
+      
       const userData = { 
         id: '1', 
         email,
-        isAdmin: email === 'kahosatoyoshi@gmail.com'
+        isAdmin
       };
       
       localStorage.setItem('token', token);
@@ -89,11 +96,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // For demo purposes
       const token = 'mock-token';
+      const isAdmin = email === 'kahosatoyoshi@gmail.com';
       const userData = { 
         id: '1', 
         email, 
         displayName,
-        isAdmin: email === 'kahosatoyoshi@gmail.com'
+        isAdmin
       };
       
       localStorage.setItem('token', token);

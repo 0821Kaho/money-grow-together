@@ -21,8 +21,8 @@ export const supabase = createClient<Database>(
 export const supabaseMock = {
   from: (table: string) => ({
     select: () => ({
-      eq: () => ({
-        data: null,
+      eq: (column: string, value: any) => ({
+        data: mockUsers.filter(user => user[column] === value),
         error: null,
       }),
       order: (column: string, { ascending = true } = {}) => ({
@@ -37,7 +37,7 @@ export const supabaseMock = {
       })
     }),
     update: (data: any) => ({
-      eq: () => ({
+      eq: (column: string, value: any) => ({
         data: { ...data },
         error: null,
       })

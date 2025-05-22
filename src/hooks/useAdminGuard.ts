@@ -16,6 +16,7 @@ export function useAdminGuard() {
     // Only redirect after authentication check is complete
     if (!isLoading) {
       const isAdmin = user?.isAdmin === true;
+      console.log('Admin check:', { user, isAdmin });
       
       if (!isAdmin) {
         toast.error("管理者権限が必要です");
