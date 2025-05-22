@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -35,11 +34,26 @@ import Footer from "./components/layout/Footer";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
   
-  // Protected route component
+  // Protected route component with improved logic
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      // Only redirect after auth check is complete and user is not authenticated
+      if (!isLoading && !isAuthenticated) {
+        // Store the current path to return after login
+        localStorage.setItem('returnPath', window.location.pathname);
+        navigate("/login");
+      }
+    }, [isLoading, isAuthenticated, navigate]);
+    
+    // Show nothing while checking auth status or navigating
+    if (isLoading || !isAuthenticated) return null;
+    
+    // Show children only when authenticated
+    return <>{children}</>;
   };
 
   // Admin route component that checks if user is admin

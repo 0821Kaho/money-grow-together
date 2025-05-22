@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,21 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Check if the user is already logged in
+  useEffect(() => {
+    if (user) {
+      // Get the return path from localStorage or default to modules
+      const returnPath = localStorage.getItem('returnPath') || '/modules';
+      // Clear the return path
+      localStorage.removeItem('returnPath');
+      // Redirect to the return path
+      navigate(returnPath);
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,13 +40,18 @@ const LoginPage = () => {
         description: "Pigipeへようこそ！",
       });
       
+      // Get the return path from localStorage or default to modules
+      const returnPath = localStorage.getItem('returnPath') || '/modules';
+      // Clear the return path
+      localStorage.removeItem('returnPath');
+      
       // 管理者ユーザーなら管理者ダッシュボードに遷移する
       if (userData.isAdmin) {
         console.log("管理者としてログインしました。管理者ページへ遷移します。");
         navigate("/admin");
       } else {
-        console.log("一般ユーザーとしてログインしました。モジュールページへ遷移します。");
-        navigate("/modules");
+        console.log(`一般ユーザーとしてログインしました。${returnPath}へ遷移します。`);
+        navigate(returnPath);
       }
     } catch (error) {
       toast({

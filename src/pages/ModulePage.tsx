@@ -76,6 +76,8 @@ const ModulePage = () => {
   const navigate = useNavigate();
   const [module, setModule] = useState<any>(null);
   const { user, isLoading } = useAuth();
+  // Add a flag to track if we've already tried to redirect
+  const [redirectAttempted, setRedirectAttempted] = useState(false);
   
   useEffect(() => {
     if (!id) return;
@@ -90,13 +92,21 @@ const ModulePage = () => {
     }
   }, [id, navigate]);
   
-  // Check if the user is authenticated or is admin
+  // Improved authentication check to prevent redirect loops
   useEffect(() => {
-    if (!isLoading && !user) {
+    // Only check auth status after loading is complete and we haven't already attempted redirect
+    if (!isLoading && !user && !redirectAttempted) {
+      console.log("User not authenticated, redirecting to login");
+      // Mark that we've attempted a redirect
+      setRedirectAttempted(true);
+      
+      // Store the current location to return after login
+      localStorage.setItem('returnPath', window.location.pathname);
+      
       // Redirect unauthenticated users to login
       navigate("/login");
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, navigate, redirectAttempted]);
   
   if (isLoading || !module) {
     return null;

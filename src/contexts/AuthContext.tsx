@@ -13,7 +13,7 @@ type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<User>; // Updated return type
+  login: (email: string, password: string) => Promise<User>; 
   signup: (email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => void;
 };
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
+    // Check if user is already logged in, with improved error handling
     const checkAuth = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -53,7 +53,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } catch (error) {
         console.error('Auth check failed:', error);
+        // Clear invalid tokens
         localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
       } finally {
         setIsLoading(false);
       }
