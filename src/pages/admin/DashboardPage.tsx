@@ -1,4 +1,3 @@
-
 /**
  * Admin Dashboard Home Page
  * 
@@ -12,6 +11,7 @@ import { Users, MessageSquare, BookOpen, Award, BarChart3, Settings } from 'luci
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import supabaseMock from '@/lib/supabaseClient';
 
 type DashboardStats = {
   totalUsers: number;
@@ -34,21 +34,28 @@ const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // In a real implementation, we would fetch actual stats from the admin API
-    // For now, we'll just simulate loading and set some mock data
+    // Fetch actual stats from our mock data
     const fetchStats = async () => {
       setIsLoading(true);
       try {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Get user mock data
+        const mockUsers = supabaseMock.getMockUsers();
         
-        // Mock data - would be replaced with actual API call
+        // Calculate actual stats
+        const totalUsers = mockUsers.length;
+        const activeUsers = mockUsers.filter(user => user.status === 'active').length;
+        
+        // For modules and feedback we'll use mock data as these aren't in our current mock implementation
+        const completedModules = 12453; // Mock value
+        const unreadFeedback = 18;      // Mock value
+        
         setStats({
-          totalUsers: 2832,
-          activeUsers: 1245,
-          completedModules: 12453,
-          unreadFeedback: 18
+          totalUsers,
+          activeUsers,
+          completedModules,
+          unreadFeedback
         });
+        
       } catch (error) {
         console.error('Error fetching dashboard stats:', error);
         toast.error('データの取得に失敗しました');

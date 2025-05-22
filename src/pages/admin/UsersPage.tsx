@@ -13,20 +13,20 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataTable } from '@/components/admin/DataTable';
+import { UserTable } from '@/components/admin/UserTable';
 import { useAdminGuard } from '@/hooks/useAdminGuard';
 import { toast } from 'sonner';
-import { ColumnDef } from '@tanstack/react-table';
-import { Badge } from '@/components/ui/badge';
-import { formatDistanceToNow } from 'date-fns';
-import { ja } from 'date-fns/locale';
+import supabaseMock from '@/lib/supabaseClient';
+import { listUsers } from '@/data/users';
 
 type User = {
   id: string;
   email: string;
+  full_name: string | null;
+  role: string;
+  plan: string;
+  status: string;
   created_at: string;
-  name?: string;
-  role: 'admin' | 'user';
 };
 
 const UsersPage = () => {
@@ -42,81 +42,20 @@ const UsersPage = () => {
     pageSize: 20,
   });
   
-  const columns: ColumnDef<User>[] = [
-    {
-      accessorKey: "id",
-      header: "ID",
-      cell: ({ row }) => <div className="text-xs text-muted-foreground">{row.getValue("id")}</div>,
-    },
-    {
-      accessorKey: "email",
-      header: "メールアドレス",
-      cell: ({ row }) => <div className="font-medium">{row.getValue("email")}</div>,
-    },
-    {
-      accessorKey: "name",
-      header: "名前",
-      cell: ({ row }) => <div>{row.getValue("name") || "-"}</div>,
-    },
-    {
-      accessorKey: "role",
-      header: "権限",
-      cell: ({ row }) => {
-        const role = row.getValue("role") as string;
-        return (
-          <Badge
-            variant={role === "admin" ? "default" : "outline"}
-            className={
-              role === "admin" ? "bg-brand-pink text-white" : "bg-transparent"
-            }
-          >
-            {role === "admin" ? "管理者" : "一般ユーザー"}
-          </Badge>
-        );
-      },
-    },
-    {
-      accessorKey: "created_at",
-      header: "登録日時",
-      cell: ({ row }) => {
-        const date = new Date(row.getValue("created_at") as string);
-        return (
-          <div className="text-sm text-muted-foreground whitespace-nowrap">
-            {formatDistanceToNow(date, { addSuffix: true, locale: ja })}
-          </div>
-        );
-      },
-    }
-  ];
-
-  // Fetch users data from our admin API
+  // Fetch users data directly from our mock client
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/admin/users?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-      
-      const data = await response.json();
-      
-      // Transform the data to match our User type
-      const formattedUsers = data.users.map(user => ({
-        id: user.auth.users.id,
-        email: user.auth.users.email,
-        created_at: user.auth.users.created_at,
-        name: user.profiles.name,
-        role: user.profiles.role,
-      }));
-      
-      setUsers(formattedUsers);
-      setPageCount(Math.ceil(data.total / pagination.pageSize) || 1);
+      // Use the listUsers function from our data layer
+      const { users: fetchedUsers, total } = await listUsers(
+        pagination.pageIndex + 1,
+        pagination.pageSize,
+        ''
+      );
+
+      console.log("Fetched users:", fetchedUsers);
+      setUsers(fetchedUsers);
+      setPageCount(Math.ceil(total / pagination.pageSize) || 1);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast.error('ユーザー情報の取得に失敗しました');
@@ -147,16 +86,13 @@ const UsersPage = () => {
         </p>
       </div>
 
-      <DataTable
-        columns={columns}
+      <UserTable
         data={users}
         onRowClick={handleRowClick}
         isLoading={isLoading}
         pageCount={pageCount}
         pagination={pagination}
-        onPaginationChange={handlePaginationChange}
-        searchPlaceholder="メールアドレスまたは名前で検索..."
-        searchColumn="email"
+        setPagination={handlePaginationChange}
       />
     </div>
   );

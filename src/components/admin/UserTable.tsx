@@ -24,7 +24,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ChevronDown, Search } from 'lucide-react';
-import type { User } from '@/types/database.types';
+
+type User = {
+  id: string;
+  email: string;
+  full_name: string | null;
+  role: string;
+  plan: string | null;
+  status: string;
+  created_at: string;
+};
 
 interface UserTableProps {
   data: User[];
