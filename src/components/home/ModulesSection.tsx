@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion, useInView } from "framer-motion";
@@ -147,8 +146,7 @@ const ModulesSection = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        始める
-                        <ArrowRight className="h-4 w-4" />
+                        始める<ArrowRight className="h-4 w-4" />
                       </motion.button>
                     </CardContent>
                   </Card>
