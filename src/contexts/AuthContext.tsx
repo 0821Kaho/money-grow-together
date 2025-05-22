@@ -13,7 +13,7 @@ type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>; // Updated return type
   signup: (email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => void;
 };
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     try {
       // Mock implementation - would be replaced with actual API call
       // const response = await api.post('/auth/login', { email, password });
