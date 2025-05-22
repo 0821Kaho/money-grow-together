@@ -1,52 +1,33 @@
 
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
-const PageHeader = ({ className }: { className?: string }) => {
+const PageHeader = () => {
   const { isAuthenticated } = useAuth();
 
+  const scrollToWaitlist = () => {
+    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <header className={cn("container mx-auto px-4 py-6 flex items-center justify-between", className)}>
-      {/* Logo/Title */}
-      <Link to="/" className="flex items-center gap-2">
-        <h1 className="text-2xl font-heading font-bold text-[#333333]">Pigipe</h1>
-      </Link>
-      
-      {/* Navigation */}
-      <nav className="hidden md:flex items-center gap-6">
-        <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900">
-          ホーム
-        </Link>
-        <Link to="/about" className="text-sm font-medium text-gray-600 hover:text-gray-900">
-          運営会社
-        </Link>
-        <Link to="/impact" className="text-sm font-medium text-gray-600 hover:text-gray-900">
-          社会的インパクト
-        </Link>
-        <Link to="/admin/waitlist" className="text-sm font-medium text-gray-500 hover:text-gray-900 opacity-60">
-          管理者
-        </Link>
-      </nav>
-      
-      {/* Auth buttons */}
-      <div className="flex items-center gap-2">
-        {isAuthenticated ? (
-          <Button asChild variant="outline" className="font-medium">
-            <Link to="/modules">アプリへ</Link>
-          </Button>
-        ) : (
-          <>
-            <Button asChild variant="ghost" className="font-medium">
-              <Link to="/login">ログイン</Link>
+    <header className="container mx-auto py-6 px-4">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Link to="/" className="text-2xl font-logo font-bold text-[#333333]">
+            <span className="font-extrabold">Pigipe</span>
+          </Link>
+        </div>
+        <div className="flex gap-4">
+          {!isAuthenticated && (
+            <Button 
+              variant="outline"
+              onClick={scrollToWaitlist}
+            >
+              事前登録する
             </Button>
-            <Button asChild className="font-medium">
-              <Link to="/signup">登録する</Link>
-            </Button>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </header>
   );

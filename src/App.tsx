@@ -22,7 +22,6 @@ import SignupPage from "./pages/auth/SignupPage";
 import AuthLayout from "./components/layout/AuthLayout";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
-import AdminWaitlistPage from "./pages/admin/AdminWaitlistPage";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
@@ -47,9 +46,6 @@ function AppRoutes() {
           <Route path="/about" element={<CompanyPage />} />
           <Route path="/en/about" element={<EnCompanyPage />} />
           <Route path="/company" element={<Navigate to="/about" replace />} />
-          
-          {/* Admin routes */}
-          <Route path="/admin/waitlist" element={<AdminWaitlistPage />} />
           
           {/* Protected routes */}
           <Route path="/onboarding" element={<ProtectedRoute><OnboardingCarousel /></ProtectedRoute>} />
