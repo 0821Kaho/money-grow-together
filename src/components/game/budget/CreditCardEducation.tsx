@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Radio, RadioGroup } from "@/components/ui/radio";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CreditCard, AlertCircle, CheckCircle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -322,7 +322,7 @@ const CreditCardEducation = ({ onComplete }: CreditCardEducationProps) => {
                         : "border-gray-200"
                     }`}
                   >
-                    <Radio
+                    <RadioGroupItem
                       id={`option-${index}`}
                       value={option}
                       className="text-primary"
