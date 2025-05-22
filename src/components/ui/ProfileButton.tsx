@@ -1,16 +1,27 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 const ProfileButton = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
 
   const handleNavigate = (path: string) => {
     navigate(path);
+    closeDropdown();
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success("ログアウトしました");
+    navigate("/");
     closeDropdown();
   };
 
@@ -43,9 +54,10 @@ const ProfileButton = () => {
               設定
             </button>
             <button
-              onClick={() => handleNavigate("/")}
-              className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+              onClick={handleLogout}
+              className="flex w-full items-center px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100"
             >
+              <LogOut className="mr-2 h-4 w-4" />
               ログアウト
             </button>
           </div>
