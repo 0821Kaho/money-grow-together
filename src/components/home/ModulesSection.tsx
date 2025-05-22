@@ -2,6 +2,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion } from "framer-motion";
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel";
+import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const modules = [
   { 
@@ -52,6 +61,12 @@ const modules = [
 ];
 
 const ModulesSection = () => {
+  const navigate = useNavigate();
+
+  const handleModuleClick = (id: string) => {
+    navigate(`/module/${id}`);
+  };
+
   return (
     <section className="container mx-auto px-4 py-16">
       <div className="max-w-4xl mx-auto text-center mb-12">
@@ -65,50 +80,84 @@ const ModulesSection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-        {modules.map((module) => (
-          <motion.div
-            key={module.id}
-            whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-            transition={{ duration: 0.2 }}
-          >
-            <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}85` }}>
-              <CardContent className="p-6 relative">
-                {/* Module illustration */}
-                {module.illustration && (
-                  <motion.div 
-                    className="flex justify-center mb-4"
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <img
-                      src={module.illustration}
-                      alt={`${module.title}イラスト`}
-                      className="h-20 w-auto object-contain"
-                    />
-                  </motion.div>
-                )}
-                
-                <h3 className="text-lg font-bold mb-2" style={{ color: module.iconColor }}>{module.title}</h3>
-                
-                <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
-                
-                <motion.button
-                  className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+      <div className="relative px-4 py-4">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-lg font-bold">モジュールを選ぶ</h3>
+          <p className="text-sm text-muted-foreground">スワイプして全てを見る</p>
+        </div>
+        
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="px-2">
+            {modules.map((module) => (
+              <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3 pl-2 pr-6">
+                <motion.div
+                  whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => handleModuleClick(module.id)}
+                  className="cursor-pointer h-full"
                 >
-                  始める
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </motion.button>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+                  <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} 
+                        style={{ borderColor: `${module.iconColor}85` }}>
+                    <CardContent className="p-6 relative">
+                      {/* Module illustration */}
+                      {module.illustration && (
+                        <motion.div 
+                          className="flex justify-center mb-4"
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          whileInView={{ scale: 1, opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5 }}
+                        >
+                          <img
+                            src={module.illustration}
+                            alt={`${module.title}イラスト`}
+                            className="h-20 w-auto object-contain"
+                          />
+                        </motion.div>
+                      )}
+                      
+                      <h3 className="text-lg font-bold mb-2" style={{ color: module.iconColor }}>{module.title}</h3>
+                      
+                      <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
+                      
+                      <motion.button
+                        className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        始める
+                        <ArrowRight className="h-4 w-4" />
+                      </motion.button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          
+          <div className="hidden md:block">
+            <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2" />
+            <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2" />
+          </div>
+        </Carousel>
+
+        {/* Mobile scroll indicator */}
+        <div className="flex justify-center mt-4 md:hidden">
+          <div className="flex space-x-1">
+            {modules.map((_, index) => (
+              <div 
+                key={index} 
+                className={`h-1 rounded-full w-4 bg-gray-300 ${index === 0 ? "bg-primary" : ""}`}
+              ></div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
