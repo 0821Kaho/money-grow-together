@@ -2,9 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge"; 
 import { motion } from "framer-motion";
-import { Trophy } from "lucide-react";
+import { Trophy, ArrowRight } from "lucide-react";
 import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
-// Removed any MascotImage imports if there were any
+// Removed any MascotImage imports
 
 interface ModuleCardProps {
   id: number;
@@ -150,9 +150,9 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Button with fixed width and no text wrapping */}
+          {/* Fixed-width button with no text wrapping */}
           <motion.button
-            className="px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto min-w-[96px] whitespace-nowrap"
+            className="px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
@@ -160,9 +160,8 @@ const ModuleCard = ({
               handleClick();
             }}
           >
-            <span className="inline-flex items-center">
-              開始
-            </span>
+            <span className="text-sm font-semibold">始める</span>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
           </motion.button>
         </div>
       </div>
@@ -200,6 +199,8 @@ const ModuleCard = ({
           ))}
         </motion.div>
       )}
+      
+      {/* Ghost Pigipe has been completely removed */}
     </motion.div>
   );
 };
