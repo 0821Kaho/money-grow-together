@@ -9,6 +9,7 @@ import LifePlanSimulation from "@/components/game/LifePlanSimulation";
 import StartupSideBusinessSimulation from "@/components/game/StartupSideBusinessSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
+import { useAuth } from "@/contexts/AuthContext";
 
 const modules = [
   {
@@ -74,6 +75,7 @@ const ModulePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [module, setModule] = useState<any>(null);
+  const { user, isLoading } = useAuth();
   
   useEffect(() => {
     if (!id) return;
@@ -88,7 +90,15 @@ const ModulePage = () => {
     }
   }, [id, navigate]);
   
-  if (!module) {
+  // Check if the user is authenticated or is admin
+  useEffect(() => {
+    if (!isLoading && !user) {
+      // Redirect unauthenticated users to login
+      navigate("/login");
+    }
+  }, [user, isLoading, navigate]);
+  
+  if (isLoading || !module) {
     return null;
   }
   
@@ -103,7 +113,7 @@ const ModulePage = () => {
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(user?.isAdmin ? "/admin" : "/")}
             className="flex items-center gap-1 text-sm font-body font-medium text-gray-500"
           >
             <svg
@@ -137,10 +147,10 @@ const ModulePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate(user?.isAdmin ? "/admin" : "/")}
               className="game-button font-number font-bold"
             >
-              ホームに戻る
+              {user?.isAdmin ? "管理画面" : "ホーム"}に戻る
             </button>
             <MascotCharacter size="small" />
           </div>
