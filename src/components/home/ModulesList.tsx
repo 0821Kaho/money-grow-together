@@ -109,15 +109,12 @@ const ModulesList = () => {
         {modules.map((module) => (
           <motion.div
             key={module.id}
-            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border border-${module.color}/30`}
-            style={{ 
-              background: `linear-gradient(to bottom right, var(--tw-gradient-from), var(--tw-gradient-to))`,
-            }}
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 * module.id / 5 }}
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-            className={`bg-gradient-to-br ${getBgGradient(module.color)}`}
+            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-2 bg-gradient-to-br ${getBgGradient(module.color)}`}
+            style={{ borderColor: `${module.color}40` }}
           >
             <div className="flex flex-col gap-4 relative z-10">
               <div className="relative">

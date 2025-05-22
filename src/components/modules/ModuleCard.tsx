@@ -62,12 +62,15 @@ const ModuleCard = ({
     <motion.div
       whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
       transition={{ duration: 0.2 }}
-      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer rounded-xl overflow-hidden border shadow-sm hover:shadow-md transition-all duration-300`}
+      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300`}
       onClick={handleClick}
       layout
     >
       {/* Background gradient */}
       <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
+      
+      {/* Border */}
+      <div className="absolute inset-0 border-2 rounded-xl z-0" style={{ borderColor: `${color}40` }}></div>
       
       {/* Lock overlay */}
       {isLocked && (
@@ -201,6 +204,23 @@ const ModuleCard = ({
           ))}
         </motion.div>
       )}
+
+      {/* Pigipe character */}
+      <motion.div 
+        className="absolute bottom-2 right-2 h-10 w-10 opacity-30 z-0"
+        animate={{ y: [0, -5, 0] }}
+        transition={{ 
+          repeat: Infinity, 
+          duration: 3,
+          ease: "easeInOut",
+        }}
+      >
+        <img 
+          src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png" 
+          alt="Pigipe" 
+          className="w-full h-full object-contain"
+        />
+      </motion.div>
     </motion.div>
   );
 };

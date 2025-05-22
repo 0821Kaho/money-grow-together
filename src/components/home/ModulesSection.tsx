@@ -66,86 +66,77 @@ const ModulesSection = () => {
         </div>
       </div>
 
-      <div className="overflow-hidden px-4">
-        <Carousel className="w-full max-w-4xl mx-auto">
-          <CarouselContent>
-            {modules.map((module) => (
-              <CarouselItem key={module.id} className="md:basis-1/2 lg:basis-1/3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+        {modules.map((module) => (
+          <motion.div
+            key={module.id}
+            whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className={`h-full border-2 shadow-sm hover:shadow transition-all border-${module.iconColor.replace('#', '')} bg-gradient-to-br ${module.background}`} style={{ borderColor: `${module.iconColor}30` }}>
+              <CardContent className="p-6 relative">
+                {/* Pigipe character in background */}
                 <motion.div
-                  whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-                  transition={{ duration: 0.2 }}
+                  className="absolute bottom-2 right-2 w-10 h-10 opacity-30"
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{ 
+                    repeat: Infinity,
+                    duration: 3,
+                    ease: "easeInOut" 
+                  }}
                 >
-                  <Card className={`h-full border-none shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`}>
-                    <CardContent className="p-6 relative">
-                      {/* Pigipe character in background */}
-                      <motion.div
-                        className="absolute bottom-2 right-2 w-10 h-10 opacity-30"
-                        animate={{ y: [0, -3, 0] }}
-                        transition={{ 
-                          repeat: Infinity,
-                          duration: 3,
-                          ease: "easeInOut" 
-                        }}
-                      >
-                        <img
-                          src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png"
-                          alt="Pigipe"
-                          className="w-full h-full object-contain"
-                        />
-                      </motion.div>
-                      
-                      {/* Module illustration */}
-                      {module.illustration && (
-                        <motion.div 
-                          className="flex justify-center mb-4"
-                          initial={{ scale: 0.9, opacity: 0 }}
-                          whileInView={{ scale: 1, opacity: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          <img
-                            src={module.illustration}
-                            alt={`${module.title}イラスト`}
-                            className="h-20 w-auto object-contain"
-                          />
-                        </motion.div>
-                      )}
-                      
-                      <div className="flex items-center gap-2 mb-2">
-                        <div
-                          className="flex h-7 w-7 items-center justify-center rounded-full text-white shrink-0"
-                          style={{ backgroundColor: module.iconColor }}
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                          </svg>
-                        </div>
-                        <h3 className="text-lg font-bold">{module.title}</h3>
-                      </div>
-                      
-                      <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
-                      
-                      <motion.button
-                        className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        始める
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </motion.button>
-                    </CardContent>
-                  </Card>
+                  <img
+                    src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png"
+                    alt="Pigipe"
+                    className="w-full h-full object-contain"
+                  />
                 </motion.div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="flex justify-center mt-6">
-            <CarouselPrevious className="static mx-2 translate-y-0" />
-            <CarouselNext className="static mx-2 translate-y-0" />
-          </div>
-        </Carousel>
+                
+                {/* Module illustration */}
+                {module.illustration && (
+                  <motion.div 
+                    className="flex justify-center mb-4"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <img
+                      src={module.illustration}
+                      alt={`${module.title}イラスト`}
+                      className="h-20 w-auto object-contain"
+                    />
+                  </motion.div>
+                )}
+                
+                <div className="flex items-center gap-2 mb-2">
+                  <div
+                    className="flex h-7 w-7 items-center justify-center rounded-full text-white shrink-0"
+                    style={{ backgroundColor: module.iconColor }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold">{module.title}</h3>
+                </div>
+                
+                <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
+                
+                <motion.button
+                  className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  始める
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </motion.button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
