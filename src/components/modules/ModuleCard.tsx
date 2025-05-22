@@ -149,7 +149,7 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Optimized button for no line breaks */}
+          {/* Modified button - removed the > icon */}
           <motion.button
             className="px-3 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center ml-auto"
             whileHover={{ scale: 1.05 }}
@@ -161,9 +161,6 @@ const ModuleCard = ({
           >
             <span className="inline-flex items-center whitespace-nowrap">
               開始
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 ml-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
             </span>
           </motion.button>
         </div>
