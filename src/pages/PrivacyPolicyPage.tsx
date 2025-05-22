@@ -105,9 +105,7 @@ const PrivacyPolicyPage = () => {
             <h2 id="contact" className="text-xl font-heading font-subheading mb-3">10. お問い合わせ</h2>
             <p className="mb-4">本ポリシーに関するお問い合わせは、下記までご連絡ください。</p>
             <p className="mb-4">
-              NextGens株式会社（NextGens Inc.）<br />
-              本社：〒176-0004 東京都練馬区北町2-29-10<br />
-              営業所：〒150-0001 東京都渋谷区神宮前6-23-4 桑野ビル2F<br />
+              株式会社NextGens（NextGens Inc.）<br />
               電話：03-6750-7041<br />
               メール：satoyoshi.kaho@outlook.jp
             </p>

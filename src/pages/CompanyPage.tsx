@@ -137,14 +137,6 @@ const CompanyPage = () => {
                     <TableCell>株式会社NextGens</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="font-medium">所在地</TableCell>
-                    <TableCell>〒176-0081 東京都練馬区北町2-29-10</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-medium">営業所</TableCell>
-                    <TableCell>〒150-0001 東京都渋谷区神宮前6-23-4 桑野ビル2階</TableCell>
-                  </TableRow>
-                  <TableRow>
                     <TableCell className="font-medium">電話</TableCell>
                     <TableCell>03-6750-7041</TableCell>
                   </TableRow>

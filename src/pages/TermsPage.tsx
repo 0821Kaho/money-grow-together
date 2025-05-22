@@ -25,7 +25,7 @@ const TermsPage = () => {
           
           <section className="mb-8">
             <h2 id="intro" className="text-xl font-heading font-subheading mb-3">1. はじめに</h2>
-            <p className="mb-4">本利用規約（以下「本規約」といいます。）は、Pigipe（以下「当社」）が提供する金融教育エデュテイメントアプリ「Pigipe」（以下「本サービス」）の利用条件を定めるものです。ユーザーは、本規約に同意したうえで本サービスを利用するものとします。</p>
+            <p className="mb-4">本利用規約（以下「本規約」といいます。）は、株式会社NextGens（以下「当社」）が提供する金融教育エデュテイメントアプリ「Pigipe」（以下「本サービス」）の利用条件を定めるものです。ユーザーは、本規約に同意したうえで本サービスを利用するものとします。</p>
           </section>
 
           <section className="mb-8">
@@ -102,7 +102,6 @@ const TermsPage = () => {
             <p className="mb-4">本サービスに関するお問い合わせは、下記までご連絡ください。</p>
             <p className="mb-4">
               社名: 株式会社NextGens<br />
-              所在地: 〒176-0081 東京都練馬区北町2-29-10<br />
               電話番号: 03-6750-7041<br />
               メールアドレス: satoyoshi.kaho@outlook.jp
             </p>
