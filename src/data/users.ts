@@ -31,7 +31,7 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
       userQuery = {
         ...userQuery,
         range: (start: number, end: number) => {
-          // Use the mockUsers from supabaseMock rather than directly referencing it
+          // Use the getMockUsers from supabaseMock rather than directly referencing mockUsers
           let filteredData = supabaseMock.getMockUsers().filter(user => 
             user.email.toLowerCase().includes(query.toLowerCase()) || 
             (user.full_name && user.full_name.toLowerCase().includes(query.toLowerCase()))
