@@ -1,9 +1,11 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { RedirectMiddleware } from "./middleware";
+import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
@@ -23,6 +25,8 @@ import AuthLayout from "./components/layout/AuthLayout";
 import AdminLayout from "./components/layout/AdminLayout";
 import WaitlistPage from "./pages/admin/WaitlistPage";
 import UsersPage from "./pages/admin/UsersPage";
+import UserDetailPage from "./pages/admin/UserDetailPage";
+import FeedbackPage from "./pages/admin/FeedbackPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import AdminSettingsPage from "./pages/admin/SettingsPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
@@ -72,6 +76,8 @@ function AppRoutes() {
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<DashboardPage />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="users/:id" element={<UserDetailPage />} />
+            <Route path="feedback" element={<FeedbackPage />} />
             <Route path="waitlist" element={<WaitlistPage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
             <Route path="settings" element={<AdminSettingsPage />} />
@@ -94,15 +100,17 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <RedirectMiddleware>
-              <AppRoutes />
-            </RedirectMiddleware>
-          </BrowserRouter>
-        </TooltipProvider>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <RedirectMiddleware>
+                <AppRoutes />
+              </RedirectMiddleware>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

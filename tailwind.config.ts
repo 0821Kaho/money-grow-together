@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -97,6 +98,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Add Pigipe brand colors
+				'brand': {
+					'pink': '#FF66A5',
+					'light': '#FFE8F1'
 				}
 			},
 			borderRadius: {

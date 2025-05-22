@@ -1,107 +1,97 @@
 
 /**
- * API wrapper for user management
- * Handles all interactions with the Supabase users table
+ * User data operations
+ * 
+ * This file contains functions for fetching and manipulating user data 
+ * from the Supabase database.
  */
-import supabase from '@/lib/supabaseClient';
-import { toast } from 'sonner';
-import type { User, UpdateUser } from '@/types/database.types';
+import supabaseMock from '@/lib/supabaseClient';
+
+export interface UserListParams {
+  page?: number;
+  pageSize?: number;
+  query?: string;
+}
 
 /**
- * Fetches the list of users with pagination
- * @param page Current page number (starting from 1)
- * @param pageSize Number of items per page
- * @returns Object containing users array and total count
+ * List users with pagination and optional filtering
  */
-export async function listUsers(page: number = 1, pageSize: number = 20) {
+export async function listUsers(page = 1, pageSize = 20, query = '') {
   try {
-    const start = (page - 1) * pageSize;
-    const end = start + pageSize - 1;
+    // Calculate offset for pagination
+    const offset = (page - 1) * pageSize;
     
-    const { data, error } = await supabase
-      .from('users')
-      .select()
-      .order('created_at', { ascending: false })
-      .range(start, end);
+    // Start base query
+    let userQuery = supabaseMock.from('users')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    // Apply search filter if provided
+    if (query) {
+      userQuery = userQuery.or(`email.ilike.%${query}%,full_name.ilike.%${query}%`);
+    }
+    
+    // Execute query with pagination
+    const { data: users, error } = await userQuery.range(offset, offset + pageSize - 1);
     
     if (error) {
-      handleError(error);
-      return { users: [], total: 0 };
+      console.error('Error fetching users:', error);
+      throw new Error('Failed to fetch users');
     }
+    
+    // For a real implementation, we would also get the total count
+    // Here we'll just provide a mock total
+    const total = 35; // Mock total count
     
     return { 
-      users: data as User[], 
-      total: data.length > 0 ? data.length + end : 0 // Estimate total for mock
+      users: users || [], 
+      total
     };
   } catch (error) {
-    console.error('Failed to list users:', error);
-    toast.error('ユーザー一覧の取得に失敗しました');
-    return { users: [], total: 0 };
+    console.error('Error in listUsers:', error);
+    throw error;
   }
 }
 
 /**
- * Updates a user's information
- * @param id User ID
- * @param data User data to update
- * @returns Updated user data or null on failure
+ * Get a single user by ID
  */
-export async function updateUser(id: string, data: UpdateUser) {
+export async function getUserById(userId: string) {
   try {
-    const { data: updatedUser, error } = await supabase
-      .from('users')
-      .update(data)
-      .eq('id', id);
+    const { data: user, error } = await supabaseMock.from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
     
     if (error) {
-      handleError(error);
-      return null;
+      console.error('Error fetching user:', error);
+      throw new Error('Failed to fetch user');
     }
     
-    toast.success('ユーザー情報を更新しました');
-    return updatedUser;
+    return user;
   } catch (error) {
-    console.error('Failed to update user:', error);
-    toast.error('ユーザー情報の更新に失敗しました');
-    return null;
+    console.error('Error in getUserById:', error);
+    throw error;
   }
 }
 
 /**
- * Gets a specific user by ID
- * @param id User ID
- * @returns User data or null if not found
+ * Update a user
  */
-export async function getUserById(id: string) {
+export async function updateUser(userId: string, userData: { [key: string]: any }) {
   try {
-    const { data, error } = await supabase
-      .from('users')
-      .select()
-      .eq('id', id);
+    const { data, error } = await supabaseMock.from('users')
+      .update(userData)
+      .eq('id', userId);
     
     if (error) {
-      handleError(error);
-      return null;
+      console.error('Error updating user:', error);
+      throw new Error('Failed to update user');
     }
     
-    return data?.[0] as User | null;
+    return data;
   } catch (error) {
-    console.error('Failed to get user:', error);
-    toast.error('ユーザー情報の取得に失敗しました');
-    return null;
-  }
-}
-
-/**
- * Handles error responses from Supabase
- */
-function handleError(error: any) {
-  console.error('Supabase error:', error);
-  
-  // Check if error is related to permissions
-  if (error.code === 'PGRST116' || error.message?.includes('permission')) {
-    toast.error('権限がありません');
-  } else {
-    toast.error(`エラーが発生しました: ${error.message || 'Unknown error'}`);
+    console.error('Error in updateUser:', error);
+    throw error;
   }
 }
