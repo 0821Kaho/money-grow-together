@@ -7,10 +7,10 @@ import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database.types';
 
 // In a real implementation, these would be environment variables
-const supabaseUrl = 'https://your-project.supabase.co';
-const supabaseAnonKey = 'your-anon-key';
+const supabaseUrl = 'https://xjvomyvnfyqlzvotvxyx.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhqdm9teXZuZnlxbHp2b3R2eHl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4ODc4NTEsImV4cCI6MjA2MzQ2Mzg1MX0.B571sVO0cnABbs7PhUujo-alIn5kM9hsGHXMuZLl1EA';
 
-// For the mock implementation, we'll use these values
+// Create the actual Supabase client
 export const supabase = createClient<Database>(
   supabaseUrl,
   supabaseAnonKey
