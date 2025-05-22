@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -63,7 +62,7 @@ function AppRoutes() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {/* Footer is now only included once here, at the App level */}
+      {/* Only show footer on non-admin routes */}
       <Footer />
     </div>
   );
