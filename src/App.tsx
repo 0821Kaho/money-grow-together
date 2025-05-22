@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,7 +24,7 @@ import AdminLayout from "./components/layout/AdminLayout";
 import WaitlistPage from "./pages/admin/WaitlistPage";
 import UsersPage from "./pages/admin/UsersPage";
 import DashboardPage from "./pages/admin/DashboardPage";
-import SettingsPage as AdminSettingsPage from "./pages/admin/SettingsPage";
+import AdminSettingsPage from "./pages/admin/SettingsPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
