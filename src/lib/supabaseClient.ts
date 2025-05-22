@@ -27,7 +27,7 @@ export const supabaseMock = {
       }),
       order: () => ({
         range: (start: number, end: number) => ({
-          data: mockUsers,
+          data: mockUsers.slice(start, end + 1),
           error: null,
         })
       })
