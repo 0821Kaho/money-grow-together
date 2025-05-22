@@ -1,9 +1,6 @@
-
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
 import MascotCharacter from "../mascot/MascotCharacter";
 
 const modules = [
@@ -82,10 +79,6 @@ const ModulesList = () => {
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="text-xl font-bold">学習モジュール</h2>
-          <Badge variant="outline" className="bg-primary/10 text-primary">
-            <Star className="h-3 w-3 mr-1" />
-            楽しく学ぼう
-          </Badge>
         </div>
         
         <Tabs defaultValue="grid" className="w-auto">
