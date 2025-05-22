@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge"; 
 import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
+import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
 
 interface ModuleCardProps {
   id: number;
@@ -13,6 +14,7 @@ interface ModuleCardProps {
   progress: number;
   isLocked?: boolean;
   badge?: "bronze" | "silver" | "gold" | null;
+  illustration?: string;
 }
 
 const ModuleCard = ({
@@ -24,21 +26,36 @@ const ModuleCard = ({
   progress,
   isLocked = false,
   badge = null,
+  illustration,
 }: ModuleCardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     if (!isLocked) {
+      // Play sound effect
+      TontonGameSoundEffect.playClick();
       navigate(`/module/${id}`);
+    }
+  };
+
+  // Get badge variant text
+  const getBadgeLabel = (variant: "bronze" | "silver" | "gold") => {
+    switch (variant) {
+      case "bronze": return "ブロンズ";
+      case "silver": return "シルバー";
+      case "gold": return "ゴールド";
+      default: return "";
     }
   };
 
   return (
     <motion.div
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer p-5 bg-white rounded-xl shadow-sm border-l-4`}
-      style={{ borderLeftColor: isLocked ? "#D1D5DB" : color }}
+      whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
+      transition={{ duration: 0.2 }}
+      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer p-5 bg-white rounded-xl border shadow-sm hover:shadow-md transition-all duration-300`}
+      style={{ borderLeftColor: isLocked ? "#D1D5DB" : color, borderLeftWidth: "4px" }}
       onClick={handleClick}
+      layout
     >
       {isLocked && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl">
@@ -77,7 +94,7 @@ const ModuleCard = ({
               className="mt-1 flex items-center gap-1 text-xs"
             >
               <Trophy className="h-3 w-3" />
-              {badge === "bronze" ? "ブロンズ" : badge === "silver" ? "シルバー" : "ゴールド"}
+              {getBadgeLabel(badge)}
             </Badge>
           )}
         </div>
@@ -104,6 +121,40 @@ const ModuleCard = ({
           )}
         </div>
       </div>
+      
+      {/* Confetti animation for 100% progress */}
+      {progress === 100 && (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
+        >
+          {Array.from({ length: 20 }).map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full"
+              style={{
+                backgroundColor: ['#FFD700', '#FF6347', '#4CAF50', '#2196F3'][Math.floor(Math.random() * 4)],
+                top: Math.random() * 100 + '%',
+                left: Math.random() * 100 + '%',
+              }}
+              initial={{ scale: 0 }}
+              animate={{
+                scale: [0, 1, 0],
+                y: [0, Math.random() * -20 - 10],
+                x: [0, (Math.random() - 0.5) * 40]
+              }}
+              transition={{
+                duration: 1,
+                delay: Math.random(),
+                repeat: Infinity,
+                repeatDelay: 5
+              }}
+            />
+          ))}
+        </motion.div>
+      )}
     </motion.div>
   );
 };

@@ -1,6 +1,10 @@
 
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Trophy, Star } from "lucide-react";
+import MascotCharacter from "../mascot/MascotCharacter";
 
 const modules = [
   {
@@ -11,7 +15,8 @@ const modules = [
     color: "#4DAA57",
     progress: 65,
     isLocked: false,
-    badge: "bronze" as const
+    badge: "bronze" as const,
+    illustration: "/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png"
   },
   {
     id: 2,
@@ -58,12 +63,118 @@ const ModulesList = () => {
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.6, duration: 0.5 }}
+      className="relative"
     >
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-bold">学習モジュール</h2>
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-bold">学習モジュール</h2>
+          <Badge variant="outline" className="bg-primary/10 text-primary">
+            <Star className="h-3 w-3 mr-1" />
+            楽しく学ぼう
+          </Badge>
+        </div>
+        
+        <Tabs defaultValue="grid" className="w-auto">
+          <TabsList className="h-8">
+            <TabsTrigger value="grid" className="text-xs px-2 h-7">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </TabsTrigger>
+            <TabsTrigger value="list" className="text-xs px-2 h-7">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
+      
+      {/* Featured module with illustration */}
+      <motion.div 
+        className="mb-8 bg-gradient-to-br from-[#FFF5E6] to-[#FFEBEB] rounded-2xl p-5 shadow-sm relative overflow-hidden border border-amber-200/30"
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <div className="flex flex-col md:flex-row items-center gap-4 relative z-10">
+          <div className="md:w-1/2 relative">
+            <motion.div
+              className="absolute -top-2 -left-2 bg-amber-100 rounded-full px-2 py-1 shadow-sm border border-amber-200"
+              initial={{ rotate: -5, y: -10 }}
+              animate={{ rotate: 0, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
+              <div className="text-xs font-semibold flex items-center gap-1 text-amber-800">
+                <Trophy className="h-3 w-3" />
+                おすすめ
+              </div>
+            </motion.div>
+            
+            <img 
+              src="/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png" 
+              alt="家計管理イメージ" 
+              className="rounded-xl h-36 md:h-48 w-full object-contain mx-auto"
+            />
+          </div>
+          
+          <div className="md:w-1/2 space-y-3">
+            <h3 className="text-xl font-bold text-primary">家計管理マスター</h3>
+            <p className="text-sm text-gray-600">
+              計算機とPigipeと一緒に、楽しく家計簿をつけながら節約のコツを学びましょう！毎月の収支をバランスよく管理する方法を身につけられます。
+            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-xs text-gray-500 mb-1">進捗</div>
+                <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-primary" style={{ width: '65%' }}></div>
+                </div>
+              </div>
+              <motion.button 
+                className="px-4 py-1.5 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = "/module/1"}
+              >
+                始める
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </motion.button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Background decoration */}
+        <motion.div 
+          className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-100/30 to-primary/10 rounded-full blur-2xl -z-0"
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.4, 0.3]
+          }}
+          transition={{ 
+            duration: 4,
+            repeat: Infinity,
+            repeatType: "reverse" 
+          }}
+        />
+        
+        <motion.div 
+          className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-100/30 to-blue-200/20 rounded-full blur-xl -z-0"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.3, 0.2]
+          }}
+          transition={{ 
+            duration: 5,
+            repeat: Infinity,
+            repeatType: "reverse" 
+          }}
+        />
+      </motion.div>
+      
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {modules.map((module) => (
+        {modules.filter(module => module.id !== 1).map((module) => (
           <ModuleCard
             key={module.id}
             id={module.id}
@@ -76,6 +187,17 @@ const ModulesList = () => {
             badge={module.badge}
           />
         ))}
+      </div>
+      
+      {/* Floating mascot character */}
+      <div className="hidden md:block fixed bottom-6 right-6 z-40">
+        <motion.div
+          initial={{ y: 10 }}
+          animate={{ y: [0, -10, 0] }}
+          transition={{ repeat: Infinity, duration: 3 }}
+        >
+          <MascotCharacter size="large" tooltip="モジュールを選んでね！お手伝いするブー！" />
+        </motion.div>
       </div>
     </motion.div>
   );

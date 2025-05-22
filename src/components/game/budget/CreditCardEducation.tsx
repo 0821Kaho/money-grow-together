@@ -1,303 +1,433 @@
 
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import { Radio, RadioGroup } from "@/components/ui/radio";
+import { CreditCard, AlertCircle, CheckCircle } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, DollarSign } from "lucide-react";
-import MascotCharacter from "@/components/mascot/MascotCharacter";
-import { motion, AnimatePresence } from "framer-motion";
+import TontonGameSoundEffect from "../TontonGameSoundEffect";
 
-const CreditCardEducation = () => {
-  // State for the purchase amount and payment settings
-  const [purchaseAmount, setPurchaseAmount] = useState<number>(50000);
-  const [monthlyPayment, setMonthlyPayment] = useState<number>(10000);
-  const [annualInterestRate, setAnnualInterestRate] = useState<number>(15);
-  const [showResults, setShowResults] = useState<boolean>(false);
-  const [showExplanation, setShowExplanation] = useState<boolean>(false);
-  const [animateAttention, setAnimateAttention] = useState<boolean>(false);
+interface CardInfo {
+  title: string;
+  icon: React.ReactNode;
+  description: string;
+  merits: string[];
+  cautions: string[];
+}
+
+interface CreditCardEducationProps {
+  onComplete?: () => void;
+}
+
+const CreditCardEducation = ({ onComplete }: CreditCardEducationProps) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [activeTab, setActiveTab] = useState<"info" | "quiz">("info");
+
+  // Card infographics
+  const cardTypes: CardInfo[] = [
+    {
+      title: "クレジットカード",
+      icon: <CreditCard className="text-blue-500" />,
+      description: "買い物をして、後で支払う仕組みのカード。ポイントが貯まる特典もあります。",
+      merits: [
+        "ポイントが貯まる",
+        "支払いが1ヶ月後（翌月）にできる",
+        "紛失・盗難時の保険がある"
+      ],
+      cautions: [
+        "使いすぎると返済が大変",
+        "リボ払いは金利が高い",
+        "支払い忘れは信用情報に傷がつく"
+      ]
+    },
+    {
+      title: "デビットカード",
+      icon: <CreditCard className="text-green-500" />,
+      description: "買い物すると、即座に銀行口座から引き落とされるカード。使いすぎ防止に。",
+      merits: [
+        "使った分だけ即引き落とし",
+        "使いすぎ防止になる", 
+        "審査不要で作れる"
+      ],
+      cautions: [
+        "口座残高以上は使えない", 
+        "ポイント還元が少ない場合が多い",
+        "海外や一部店舗で使えないことも"
+      ]
+    },
+    {
+      title: "プリペイドカード",
+      icon: <CreditCard className="text-amber-500" />,
+      description: "前もってチャージしておき、そのチャージ分だけ使えるカード。予算管理に便利。",
+      merits: [
+        "チャージした金額以上は使えない",
+        "審査なしで作れる",
+        "個人情報不要のものも多い"
+      ],
+      cautions: [
+        "チャージ残高の管理が必要",
+        "紛失時にチャージ金額を失う可能性",
+        "ポイント還元が少ない場合が多い"
+      ]
+    }
+  ];
   
-  // Calculated values
-  const [totalCost, setTotalCost] = useState<number>(0);
-  const [totalInterest, setTotalInterest] = useState<number>(0);
-  const [monthsToPayOff, setMonthsToPayOff] = useState<number>(0);
+  // Quiz questions
+  const quizQuestions = [
+    {
+      question: "クレジットカードの「リボ払い」の特徴として、最も正しいのはどれ？",
+      options: [
+        "毎月の支払額が一定で、金利がかからない",
+        "一括払いよりも毎月の支払負担は少ないが、金利が高い",
+        "必ず2か月以内に完済しなければならない", 
+        "ポイントが3倍貯まる特典がある"
+      ],
+      correctAnswer: "一括払いよりも毎月の支払負担は少ないが、金利が高い",
+      explanation: "リボ払いは毎月の支払額が一定で負担が少ない反面、金利（年率15%程度）がかかり、長期間返済すると総支払額が大きくなります。"
+    },
+    {
+      question: "予算管理が苦手な人におすすめのカードは？",
+      options: [
+        "ゴールドクレジットカード", 
+        "デビットカード", 
+        "提携カード（マイル付き）",
+        "リボ払い専用カード"
+      ],
+      correctAnswer: "デビットカード",
+      explanation: "デビットカードは使うとすぐに銀行口座から引き落とされるため、使いすぎを防ぎやすく、予算管理が苦手な人に向いています。"
+    },
+    {
+      question: "クレジットカードの支払いを遅延すると起こる可能性があるのは？",
+      options: [
+        "ポイントが2倍になる", 
+        "次回から利用限度額が上がる", 
+        "個人信用情報に記録され、ローンが組みにくくなる",
+        "特に何も起こらない"
+      ],
+      correctAnswer: "個人信用情報に記録され、ローンが組みにくくなる",
+      explanation: "支払遅延は個人信用情報機関に記録され、住宅ローンなど将来の借入れに影響することがあります。支払いは必ず期日までに行いましょう。"
+    }
+  ];
   
-  // Function to calculate the total repayment cost
-  const calculateRepayment = () => {
-    // Monthly interest rate
-    const monthlyInterestRate = annualInterestRate / 100 / 12;
-    let balance = purchaseAmount;
-    let months = 0;
-    let totalPaid = 0;
-    
-    while (balance > 0) {
-      // Calculate interest for this month
-      const interestThisMonth = balance * monthlyInterestRate;
+  const handleAnswerSelect = (answer: string) => {
+    const newAnswers = [...selectedAnswers];
+    newAnswers[currentQuestion] = answer;
+    setSelectedAnswers(newAnswers);
+    TontonGameSoundEffect.playClick();
+  };
+  
+  const handleNextQuestion = () => {
+    if (currentQuestion < quizQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      TontonGameSoundEffect.playClick();
+    } else {
+      setShowResults(true);
       
-      // Apply payment, but don't pay more than the remaining balance + interest
-      const paymentThisMonth = Math.min(monthlyPayment, balance + interestThisMonth);
+      // Play completion sound
+      TontonGameSoundEffect.playSuccess();
       
-      // Update balance: add interest, subtract payment
-      balance = balance + interestThisMonth - paymentThisMonth;
-      totalPaid += paymentThisMonth;
-      months++;
-      
-      // Safety check to prevent infinite loop
-      if (months > 300) {
-        break;
+      // Notify parent component
+      if (onComplete) {
+        onComplete();
       }
     }
-    
-    setTotalCost(Math.round(totalPaid));
-    setTotalInterest(Math.round(totalPaid - purchaseAmount));
-    setMonthsToPayOff(months);
-    setShowResults(true);
   };
   
-  // Effect to recalculate if inputs change while results are shown
-  useEffect(() => {
-    if (showResults) {
-      calculateRepayment();
-    }
-  }, [purchaseAmount, monthlyPayment, annualInterestRate, showResults]);
-  
-  // Format number as Japanese yen
-  const formatYen = (amount: number) => {
-    return new Intl.NumberFormat('ja-JP', {
-      style: 'currency',
-      currency: 'JPY',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
+  const handleTabChange = (tab: "info" | "quiz") => {
+    setActiveTab(tab);
+    TontonGameSoundEffect.playClick();
   };
   
-  // Handle animation for attention to the interest amount
-  const handleAnimateAttention = () => {
-    setAnimateAttention(true);
-    setTimeout(() => setAnimateAttention(false), 1000);
+  // Calculate score
+  const calculateScore = () => {
+    let correctCount = 0;
+    quizQuestions.forEach((q, index) => {
+      if (selectedAnswers[index] === q.correctAnswer) {
+        correctCount++;
+      }
+    });
+    return correctCount;
   };
   
   return (
-    <Card className="mb-6 bg-white shadow-sm">
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-primary" />
-            <CardTitle className="text-lg">クレジットカードの仕組みを学ぼう</CardTitle>
-          </div>
-          <Badge variant="outline" className="bg-amber-50">
-            借金管理
-          </Badge>
-        </div>
-        <CardDescription>
-          一括払いとリボ払いの違いを理解して、賢い選択をしましょう
-        </CardDescription>
-      </CardHeader>
+    <div className="space-y-6">
+      {/* Tab navigation */}
+      <div className="flex border-b">
+        <button
+          className={`px-4 py-2 font-medium text-sm border-b-2 ${
+            activeTab === "info" 
+              ? "border-primary text-primary" 
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+          onClick={() => handleTabChange("info")}
+        >
+          カードの基本知識
+        </button>
+        <button
+          className={`px-4 py-2 font-medium text-sm border-b-2 ${
+            activeTab === "quiz" 
+              ? "border-primary text-primary" 
+              : "border-transparent text-gray-500 hover:text-gray-700"
+          }`}
+          onClick={() => handleTabChange("quiz")}
+        >
+          クイズに挑戦
+        </button>
+      </div>
       
-      <CardContent className="space-y-6 pt-2">
-        <div className="bg-slate-50 p-4 rounded-lg">
-          <h3 className="text-sm font-medium mb-2">ケーススタディ：スマートフォン購入</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            欲しかったスマートフォンをクレジットカードで購入する場合、
-            支払い方法によって総支払額が大きく変わります。
-          </p>
+      {activeTab === "info" ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-6"
+        >
+          <div>
+            <h3 className="text-lg font-medium mb-2">支払いカードの種類</h3>
+            <p className="text-gray-600 text-sm mb-6">
+              用途や目的に合わせて、自分に合ったカードを選びましょう。それぞれの特徴を学んでおくことが大切です。
+            </p>
+          </div>
           
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium block mb-1">
-                商品金額
-              </label>
-              <div className="flex gap-2">
-                <Input 
-                  type="number" 
-                  value={purchaseAmount}
-                  onChange={(e) => setPurchaseAmount(Number(e.target.value))}
-                  className="w-full"
-                  min="1000"
-                  max="1000000"
-                />
-                <span className="flex items-center text-sm">円</span>
-              </div>
-            </div>
-            
-            <div>
-              <label className="text-sm font-medium block mb-1">
-                毎月の支払額
-              </label>
-              <div className="flex gap-2 items-center">
-                <Input 
-                  type="number" 
-                  value={monthlyPayment}
-                  onChange={(e) => setMonthlyPayment(Number(e.target.value))}
-                  className="w-full"
-                  min="1000"
-                  max={purchaseAmount}
-                />
-                <span className="flex items-center text-sm">円</span>
-              </div>
-              <Slider 
-                value={[monthlyPayment]} 
-                min={1000}
-                max={Math.max(purchaseAmount, 1000)}
-                step={1000}
-                className="mt-2"
-                onValueChange={(value) => setMonthlyPayment(value[0])}
-              />
-            </div>
-            
-            <div>
-              <label className="text-sm font-medium block mb-1">
-                年間金利
-              </label>
-              <div className="flex gap-2">
-                <Input 
-                  type="number" 
-                  value={annualInterestRate}
-                  onChange={(e) => setAnnualInterestRate(Number(e.target.value))}
-                  className="w-full"
-                  min="0"
-                  max="25"
-                  step="0.1"
-                />
-                <span className="flex items-center text-sm">%</span>
-              </div>
-              <Slider 
-                value={[annualInterestRate]} 
-                min={0}
-                max={25}
-                step={0.5}
-                className="mt-2"
-                onValueChange={(value) => setAnnualInterestRate(value[0])}
-              />
-            </div>
-            
-            {!showResults && (
-              <Button 
-                onClick={calculateRepayment}
-                className="w-full mt-2"
-              >
-                支払いをシミュレーションする
-              </Button>
-            )}
-          </div>
-        </div>
-        
-        {showResults && (
-          <AnimatePresence>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
+          {/* Card illustrations with pig character */}
+          <div className="relative mb-6">
+            <img
+              src="/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png"
+              alt="Pigipe with cards"
+              className="mx-auto h-40 object-contain"
+            />
+            <motion.div
+              className="absolute bottom-0 right-1/4 bg-white rounded-full p-1 shadow-md"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
             >
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1 bg-blue-50 p-4 rounded-lg border border-blue-100">
-                  <h4 className="text-sm font-medium mb-2">一括払いの場合</h4>
-                  <div className="text-xl font-bold">{formatYen(purchaseAmount)}</div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    総支払額 = 商品価格
-                  </p>
-                </div>
-                
-                <div className="flex-1 bg-amber-50 p-4 rounded-lg border border-amber-100">
-                  <h4 className="text-sm font-medium mb-2">リボ払いの場合</h4>
-                  <motion.div 
-                    className="text-xl font-bold"
-                    animate={animateAttention ? { scale: [1, 1.1, 1] } : {}}
-                  >
-                    {formatYen(totalCost)}
-                  </motion.div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    毎月{formatYen(monthlyPayment)}を{monthsToPayOff}ヶ月間支払う
-                  </p>
-                </div>
-              </div>
-              
-              <motion.div 
-                className="bg-red-50 p-4 rounded-lg border border-red-100"
-                animate={animateAttention ? { scale: [1, 1.05, 1] } : {}}
-              >
-                <h4 className="text-sm font-medium mb-2 flex items-center gap-1">
-                  <DollarSign className="h-4 w-4 text-red-500" />
-                  金利の影響
-                </h4>
-                <p className="text-sm">
-                  リボ払いでは、<span className="font-bold text-red-600">{formatYen(totalInterest)}</span> の金利が発生します！
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  これは商品価格の <span className="font-medium">{Math.round((totalInterest / purchaseAmount) * 100)}%</span> にもなります
-                </p>
-              </motion.div>
-              
-              <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg">
-                <MascotCharacter size="small" />
-                <div className="flex-1">
-                  <p className="text-sm font-medium">どうして金額が増えたのかな？</p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => {
-                      setShowExplanation(true);
-                      handleAnimateAttention();
-                    }}
-                    className="text-xs p-2 h-auto mt-1"
-                  >
-                    理由を確認する
-                  </Button>
-                </div>
-              </div>
-              
-              {showExplanation && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="bg-white p-4 rounded-lg border border-gray-200"
-                >
-                  <h4 className="text-sm font-medium mb-2">クレジットカードの仕組み</h4>
-                  <div className="space-y-3 text-sm">
-                    <p>
-                      <span className="font-medium">お金を借りると元本に利子をつけて返さなければなりません。</span> 
-                      クレジットカードの分割手数料も利息の一種です。
-                    </p>
-                    <p>
-                      リボ払いは、毎月の支払額が一定になる便利な仕組みですが、
-                      支払いが長期間に渡るため、その間ずっと金利が発生します。
-                    </p>
-                    <p>
-                      年利{annualInterestRate}%の場合、月々{formatYen(monthlyPayment)}の返済では
-                      完済までに{monthsToPayOff}ヶ月（約{Math.round(monthsToPayOff/12*10)/10}年）かかり、
-                      総額で{formatYen(totalInterest)}もの金利を支払うことになります。
-                    </p>
-                    <p className="font-medium text-primary">
-                      カードは便利ですが、一括払いが基本。分割やリボは金利が発生する「借金」と理解しましょう。
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-              
-              <Button 
-                onClick={() => {
-                  setShowResults(false);
-                  setShowExplanation(false);
-                }}
-                variant="outline"
-                className="w-full"
-              >
-                別のケースをシミュレーションする
-              </Button>
+              <CreditCard className="h-6 w-6 text-blue-500" />
             </motion.div>
-          </AnimatePresence>
-        )}
-      </CardContent>
-      
-      <CardFooter className="pt-0 pb-4">
-        <div className="w-full text-xs text-muted-foreground">
-          <span className="block">
-            ※このシミュレーションは簡易的な計算に基づいており、実際のクレジットカード会社の計算方法とは異なる場合があります。
-          </span>
-        </div>
-      </CardFooter>
-    </Card>
+            <motion.div
+              className="absolute bottom-5 left-1/4 bg-white rounded-full p-1 shadow-md"
+              animate={{ 
+                y: [0, -3, 0],
+                rotate: [0, 5, 0, -5, 0]
+              }}
+              transition={{ repeat: Infinity, duration: 3, delay: 0.5 }}
+            >
+              <CreditCard className="h-6 w-6 text-amber-500" />
+            </motion.div>
+          </div>
+          
+          <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3">
+            {cardTypes.map((card, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <Card className="h-full">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="mr-2 p-2 bg-slate-100 rounded-full">
+                          {card.icon}
+                        </div>
+                        <h3 className="font-medium">{card.title}</h3>
+                      </div>
+                      <Badge variant="outline" className="text-xs">Card {index + 1}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-2">
+                    <p className="text-sm text-gray-600 mb-3">{card.description}</p>
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <div className="flex items-center text-sm font-medium text-green-600 mb-2">
+                          <CheckCircle className="h-4 w-4 mr-1" />
+                          メリット
+                        </div>
+                        <ul className="text-xs space-y-1 pl-6 list-disc">
+                          {card.merits.map((merit, i) => (
+                            <li key={i}>{merit}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <Separator />
+                      
+                      <div>
+                        <div className="flex items-center text-sm font-medium text-amber-600 mb-2">
+                          <AlertCircle className="h-4 w-4 mr-1" />
+                          注意点
+                        </div>
+                        <ul className="text-xs space-y-1 pl-6 list-disc">
+                          {card.cautions.map((caution, i) => (
+                            <li key={i}>{caution}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          <div className="flex justify-center pt-4">
+            <Button onClick={() => handleTabChange("quiz")}>
+              クイズに進む
+            </Button>
+          </div>
+        </motion.div>
+      ) : (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-6"
+        >
+          {!showResults ? (
+            <div className="bg-white p-6 rounded-lg border">
+              {/* Progress indicator */}
+              <div className="mb-4 flex items-center">
+                <div className="text-sm text-gray-500">質問 {currentQuestion + 1}/{quizQuestions.length}</div>
+                <div className="ml-auto flex space-x-1">
+                  {quizQuestions.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`h-2 w-6 rounded-full ${
+                        index === currentQuestion ? "bg-primary" : 
+                        index < currentQuestion ? "bg-primary/50" : "bg-gray-200"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              <h3 className="text-lg font-medium mb-4">
+                {quizQuestions[currentQuestion].question}
+              </h3>
+              
+              <RadioGroup
+                value={selectedAnswers[currentQuestion] || ""}
+                onValueChange={handleAnswerSelect}
+                className="space-y-3"
+              >
+                {quizQuestions[currentQuestion].options.map((option, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center space-x-2 p-3 rounded-md border ${
+                      selectedAnswers[currentQuestion] === option 
+                        ? "border-primary bg-primary/5" 
+                        : "border-gray-200"
+                    }`}
+                  >
+                    <Radio
+                      id={`option-${index}`}
+                      value={option}
+                      className="text-primary"
+                    />
+                    <label htmlFor={`option-${index}`} className="text-sm w-full cursor-pointer">
+                      {option}
+                    </label>
+                  </div>
+                ))}
+              </RadioGroup>
+              
+              <div className="mt-6">
+                <Button 
+                  onClick={handleNextQuestion}
+                  disabled={!selectedAnswers[currentQuestion]}
+                  className="w-full"
+                >
+                  {currentQuestion === quizQuestions.length - 1 ? "結果を見る" : "次の問題へ"}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-white p-6 rounded-lg border"
+            >
+              <h3 className="text-xl font-medium text-center mb-4">
+                クイズ結果
+              </h3>
+              
+              <div className="flex justify-center mb-6">
+                <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary">{calculateScore()}</div>
+                    <div className="text-sm text-gray-500">/ {quizQuestions.length}点</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Pigipe reaction based on score */}
+              <div className="flex justify-center mb-6">
+                <div className="text-center">
+                  <motion.img
+                    src="/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png"
+                    alt="Pigipe reaction"
+                    className="h-24 mx-auto"
+                    animate={
+                      calculateScore() === quizQuestions.length 
+                        ? { y: [0, -10, 0], rotate: [0, 5, -5, 0] }
+                        : calculateScore() >= quizQuestions.length / 2
+                        ? { y: [0, -5, 0] }
+                        : { rotate: [0, -5, 0, 5, 0] }
+                    }
+                    transition={{ repeat: 2, duration: 1 }}
+                  />
+                  <div className="mt-2 text-sm font-medium">
+                    {calculateScore() === quizQuestions.length 
+                      ? "すごい！満点だブー！カードの知識バッチリだね！" 
+                      : calculateScore() >= quizQuestions.length / 2
+                      ? "よくがんばったブー！もう一度挑戦してみようブー！"
+                      : "もう少し勉強して、また挑戦してみようブー！"}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <h4 className="font-medium">解説：</h4>
+                {quizQuestions.map((q, index) => (
+                  <div 
+                    key={index}
+                    className={`p-4 rounded-lg ${
+                      selectedAnswers[index] === q.correctAnswer
+                        ? "bg-green-50 border border-green-200"
+                        : "bg-red-50 border border-red-200"
+                    }`}
+                  >
+                    <div className="flex items-start">
+                      <div className={`p-1 rounded-full mr-2 ${
+                        selectedAnswers[index] === q.correctAnswer
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}>
+                        {selectedAnswers[index] === q.correctAnswer ? (
+                          <CheckCircle className="h-4 w-4" />
+                        ) : (
+                          <AlertCircle className="h-4 w-4" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="font-medium text-sm">問題{index + 1}：{q.question}</div>
+                        <div className="text-xs mt-1">
+                          <span className="font-medium">正解：</span> {q.correctAnswer}
+                        </div>
+                        <div className="text-xs mt-2 text-gray-600">{q.explanation}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
+    </div>
   );
 };
 
