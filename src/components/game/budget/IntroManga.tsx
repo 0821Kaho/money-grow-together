@@ -15,7 +15,7 @@ const mangaPages = [
     text: "毎月の収入から固定費や変動費を引いて、どれだけ自由に使えるお金があるのかを確認しましょう。",
   },
   {
-    image: "📝",
+    image: "/lovable-uploads/fd1beb09-5194-4c92-9101-d421ec49545c.png",
     title: "予算を立てる大切さ",
     text: "計画的に支出をコントロールすれば、将来のために貯蓄することも、今を楽しむことも両立できます。",
   },
@@ -64,7 +64,7 @@ const IntroManga = ({ onComplete }: IntroMangaProps) => {
           className="rounded-lg bg-white p-6 shadow-md"
         >
           <div className="mb-4 flex justify-center">
-            {currentPage === 0 || currentPage === 1 ? (
+            {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
               <div className="h-32 w-32 flex items-center justify-center">
                 <img 
                   src={mangaPages[currentPage].image} 
