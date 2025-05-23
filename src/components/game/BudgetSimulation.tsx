@@ -525,21 +525,20 @@ const BudgetSimulation = () => {
         <>
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-xl">家計管理シミュレーション</h2>
-              {state.currentStage === "simulation" ? (
-                <p className="text-sm text-gray-600">
-                  {state.day}日目 (残り{30 - state.day}日)
-                </p>
-              ) : (
-                <p className="text-sm text-gray-600">
-                  {state.currentStage === "intro" && "イントロ"}
-                  {state.currentStage === "expenseCalculator" && "収支棚卸し"}
-                  {state.currentStage === "dragDropSaving" && "変動費カット"}
-                  {state.currentStage === "loanComparison" && "ローンについて学ぶ"}
-                  {state.currentStage === "budgetPlanner" && "予算立案"}
-                  {state.currentStage === "finalTest" && "まとめテスト"}
-                </p>
-              )}
+              <p className="text-sm text-gray-600">
+                {state.currentStage === "simulation" ? (
+                  <>{state.day}日目 (残り{30 - state.day}日)</>
+                ) : (
+                  <>
+                    {state.currentStage === "intro" && "イントロ"}
+                    {state.currentStage === "expenseCalculator" && "収支棚卸し"}
+                    {state.currentStage === "dragDropSaving" && "変動費カット"}
+                    {state.currentStage === "loanComparison" && "ローンについて学ぶ"}
+                    {state.currentStage === "budgetPlanner" && "予算立案"}
+                    {state.currentStage === "finalTest" && "まとめテスト"}
+                  </>
+                )}
+              </p>
             </div>
             
             {state.currentStage === "simulation" && (
