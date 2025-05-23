@@ -17,11 +17,11 @@ export function useAdminGuard() {
     if (!isLoading) {
       if (!user) {
         // User is not logged in
-        toast.error("ログインが必要です");
+        toast("ログインが必要です");
         navigate('/login');
       } else if (!user.isAdmin) {
         // User is logged in but not an admin
-        toast.error("管理者権限が必要です");
+        toast("管理者権限が必要です");
         navigate('/');
       }
       // If user is logged in and is an admin, do nothing (allow access)

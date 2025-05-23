@@ -34,8 +34,7 @@ const LoginPage = () => {
     try {
       await login(email);
       
-      toast({
-        title: "ログイン成功",
+      toast("ログイン成功", {
         description: "Pigipeへようこそ！",
       });
       
@@ -46,8 +45,7 @@ const LoginPage = () => {
       // Redirect to the return path
       navigate(returnPath);
     } catch (error) {
-      toast({
-        title: "ログイン失敗",
+      toast("ログイン失敗", {
         description: "メールアドレスまたはパスワードが正しくありません",
         variant: "destructive",
       });

@@ -3,11 +3,17 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
 
+// Extended user type to include additional properties needed throughout the app
+interface ExtendedUser extends User {
+  isAdmin?: boolean;
+  displayName?: string;
+}
+
 interface AuthContextType {
   session: Session | null;
-  user: User | null;
+  user: ExtendedUser | null;
   isLoading: boolean;
-  isAuthenticated: boolean; // Add isAuthenticated property
+  isAuthenticated: boolean;
   login: (email?: string) => Promise<any>;
   logout: () => Promise<void>;
   signup: (email: string, password: string, displayName?: string, age?: number) => Promise<any>;
@@ -17,7 +23,7 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
   isLoading: false,
-  isAuthenticated: false, // Add default value
+  isAuthenticated: false,
   login: async () => {},
   logout: async () => {},
   signup: async () => {},
@@ -29,7 +35,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -38,8 +44,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         setSession(currentSession);
-        setUser(currentSession?.user ?? null);
-        setIsAuthenticated(!!currentSession?.user);
+        if (currentSession?.user) {
+          // Add any custom properties to the user object here
+          const extendedUser: ExtendedUser = {
+            ...currentSession.user,
+            // For demonstration purposes, simulate isAdmin property
+            // In a real app, this would come from a database role check
+            isAdmin: currentSession.user.email?.endsWith('@admin.com') || false,
+            // Add displayName if needed from user metadata
+            displayName: currentSession.user.user_metadata?.displayName || ''
+          };
+          setUser(extendedUser);
+          setIsAuthenticated(true);
+        } else {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
         setIsLoading(false);
       }
     );
@@ -47,8 +67,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Then check for existing session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
-      setUser(currentSession?.user ?? null);
-      setIsAuthenticated(!!currentSession?.user);
+      if (currentSession?.user) {
+        // Add any custom properties to the user object here
+        const extendedUser: ExtendedUser = {
+          ...currentSession.user,
+          // For demonstration purposes, simulate isAdmin property
+          isAdmin: currentSession.user.email?.endsWith('@admin.com') || false,
+          // Add displayName if needed from user metadata
+          displayName: currentSession.user.user_metadata?.displayName || ''
+        };
+        setUser(extendedUser);
+        setIsAuthenticated(true);
+      }
       setIsLoading(false);
     });
 
