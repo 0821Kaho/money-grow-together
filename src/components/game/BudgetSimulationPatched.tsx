@@ -10,14 +10,14 @@ import MascotCharacter from "../mascot/MascotCharacter";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const BudgetSimulationPatched = () => {
-  const [activeTab, setActiveTab] = useState<string>("simulation");
+  const [activeTab, setActiveTab] = useState<string>("modules");
   const [mascotPosition, setMascotPosition] = useState<"left" | "right">("left");
   const [hasNewContent, setHasNewContent] = useState(true);
   const isMobile = useIsMobile();
 
   useEffect(() => {
     // Animate mascot when tab changes
-    setMascotPosition(activeTab === "simulation" ? "left" : "right");
+    setMascotPosition(activeTab === "simulation" ? "right" : "left");
     
     // Reset new content notification when visiting a tab
     if (activeTab === "modules") {
@@ -52,15 +52,9 @@ const BudgetSimulationPatched = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="simulation" className="w-full" onValueChange={setActiveTab}>
+        <Tabs defaultValue="modules" className="w-full" onValueChange={setActiveTab}>
           <div className="relative">
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="simulation" className="flex items-center gap-1 relative px-1 py-1.5">
-                <CalendarCheck2 className="h-4 w-4 flex-shrink-0" />
-                <span className={`${isMobile ? 'text-xs' : 'text-sm'} whitespace-normal text-center`}>
-                  １ヶ月サバイバル
-                </span>
-              </TabsTrigger>
               <TabsTrigger value="modules" className="flex items-center gap-1 relative px-1 py-1.5">
                 <Calendar className="h-4 w-4 flex-shrink-0" />
                 <span className={`${isMobile ? 'text-xs' : 'text-sm'} whitespace-normal text-center`}>
@@ -73,6 +67,12 @@ const BudgetSimulationPatched = () => {
                     <Bell className="h-2 w-2" />
                   </span>
                 )}
+              </TabsTrigger>
+              <TabsTrigger value="simulation" className="flex items-center gap-1 relative px-1 py-1.5">
+                <CalendarCheck2 className="h-4 w-4 flex-shrink-0" />
+                <span className={`${isMobile ? 'text-xs' : 'text-sm'} whitespace-normal text-center`}>
+                  １ヶ月サバイバル
+                </span>
               </TabsTrigger>
             </TabsList>
             
@@ -95,12 +95,12 @@ const BudgetSimulationPatched = () => {
             </AnimatePresence>
           </div>
           
-          <TabsContent value="simulation" className="mt-0">
-            <BudgetSimulation />
-          </TabsContent>
-          
           <TabsContent value="modules" className="mt-0">
             <BudgetModules />
+          </TabsContent>
+          
+          <TabsContent value="simulation" className="mt-0">
+            <BudgetSimulation />
           </TabsContent>
         </Tabs>
       </CardContent>
