@@ -1,26 +1,23 @@
+
 import { createContext, useContext, useState, useEffect } from 'react';
-import {
-  Session,
-  SupabaseClient,
-  useSession,
-  useSupabaseClient,
-} from '@supabase/auth-helpers-react';
+import { supabase } from '@/integrations/supabase/client';
+import { User, Session } from '@supabase/supabase-js';
 
 interface AuthContextType {
-  supabaseClient: SupabaseClient | null;
   session: Session | null;
-  user: any | null;
+  user: User | null;
   isLoading: boolean;
+  isAuthenticated: boolean; // Add isAuthenticated property
   login: (email?: string) => Promise<any>;
   logout: () => Promise<void>;
   signup: (email: string, password: string, displayName?: string, age?: number) => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  supabaseClient: null,
   session: null,
   user: null,
   isLoading: false,
+  isAuthenticated: false, // Add default value
   login: async () => {},
   logout: async () => {},
   signup: async () => {},
@@ -31,28 +28,38 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const supabaseClient = useSupabaseClient();
-  const session = useSession();
-  const [user, setUser] = useState<any | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      setIsLoading(true);
-      if (session?.user) {
-        setUser(session.user);
-      } else {
-        setUser(null);
+    // Set up auth state listener first
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, currentSession) => {
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
+        setIsAuthenticated(!!currentSession?.user);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    };
+    );
 
-    fetchUser();
-  }, [session]);
+    // Then check for existing session
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
+      setIsAuthenticated(!!currentSession?.user);
+      setIsLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const login = async (email?: string) => {
     try {
-      const { data, error } = await supabaseClient.auth.signInWithOtp({
+      const { data, error } = await supabase.auth.signInWithOtp({
         email,
         options: {
           shouldCreateUser: true,
@@ -72,8 +79,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      await supabaseClient.auth.signOut();
+      await supabase.auth.signOut();
       setUser(null);
+      setSession(null);
+      setIsAuthenticated(false);
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -87,7 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (displayName) metadata.displayName = displayName;
       if (age !== undefined) metadata.age = age;
 
-      const { data, error } = await supabaseClient.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -107,10 +116,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const value = {
-    supabaseClient,
     session,
     user,
     isLoading,
+    isAuthenticated,
     login,
     logout,
     signup,

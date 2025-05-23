@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +14,6 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login, user } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
   
   // Check if the user is already logged in
   useEffect(() => {
@@ -33,7 +32,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const userData = await login(email, password);
+      await login(email);
       
       toast({
         title: "ログイン成功",
@@ -44,15 +43,8 @@ const LoginPage = () => {
       const returnPath = localStorage.getItem('returnPath') || '/modules';
       // Clear the return path
       localStorage.removeItem('returnPath');
-      
-      // 管理者ユーザーなら管理者ダッシュボードに遷移する
-      if (userData.isAdmin) {
-        console.log("管理者としてログインしました。管理者ページへ遷移します。");
-        navigate("/admin");
-      } else {
-        console.log(`一般ユーザーとしてログインしました。${returnPath}へ遷移します。`);
-        navigate(returnPath);
-      }
+      // Redirect to the return path
+      navigate(returnPath);
     } catch (error) {
       toast({
         title: "ログイン失敗",
