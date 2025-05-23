@@ -18,6 +18,12 @@ const LoginPage = () => {
   // Check if the user is already logged in
   useEffect(() => {
     if (user) {
+      // Check if user is admin to redirect to admin panel
+      if (user.isAdmin) {
+        navigate('/admin');
+        return;
+      }
+      
       // Get the return path from localStorage or default to modules
       const returnPath = localStorage.getItem('returnPath') || '/modules';
       // Clear the return path
@@ -34,17 +40,11 @@ const LoginPage = () => {
     try {
       await login(email);
       
-      toast("ログイン成功", {
-        description: "Pigipeへようこそ！",
+      toast.success("ログイン確認用のメールを送信しました", {
+        description: "メールのリンクをクリックしてログインしてください",
       });
-      
-      // Get the return path from localStorage or default to modules
-      const returnPath = localStorage.getItem('returnPath') || '/modules';
-      // Clear the return path
-      localStorage.removeItem('returnPath');
-      // Redirect to the return path
-      navigate(returnPath);
     } catch (error) {
+      console.error("Login error:", error);
       toast.error("ログイン失敗", {
         description: "メールアドレスまたはパスワードが正しくありません",
       });

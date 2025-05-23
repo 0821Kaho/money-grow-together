@@ -60,9 +60,27 @@ function AppRoutes() {
 
   // Admin route component that checks if user is admin
   const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-    return isAuthenticated && user?.isAdmin ? 
-      <>{children}</> : 
-      <Navigate to="/" replace />;
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+      if (!isLoading) {
+        if (!isAuthenticated) {
+          // Store the current path to return after login
+          localStorage.setItem('returnPath', window.location.pathname);
+          navigate("/login");
+        } else if (!user?.isAdmin) {
+          // User is logged in but not an admin
+          toast("管理者権限が必要です");
+          navigate("/");
+        }
+      }
+    }, [isLoading, isAuthenticated, user, navigate]);
+    
+    // Show nothing while checking auth status or navigating
+    if (isLoading || !isAuthenticated || !user?.isAdmin) return null;
+    
+    // Show children only when authenticated and admin
+    return <>{children}</>;
   };
 
   return (
@@ -88,7 +106,7 @@ function AppRoutes() {
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           
-          {/* Admin routes */}
+          {/* Admin routes - using AdminRoute component */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<DashboardPage />} />
             <Route path="users" element={<UsersPage />} />

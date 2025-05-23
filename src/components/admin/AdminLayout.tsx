@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 const AdminLayout = () => {
   const { pathname } = useLocation();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -31,6 +31,14 @@ const AdminLayout = () => {
       console.error("Logout error:", error);
     }
   };
+
+  // If for some reason a non-admin user got here, redirect them
+  React.useEffect(() => {
+    if (user && !user.isAdmin) {
+      toast("管理者権限が必要です");
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const navItems = [
     {

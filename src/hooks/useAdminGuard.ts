@@ -28,5 +28,6 @@ export function useAdminGuard() {
     }
   }, [user, isLoading, navigate]);
 
+  // Return isAdmin status to component so it can use it for UI decisions
   return { isAdmin: user?.isAdmin === true, isLoading };
 }
