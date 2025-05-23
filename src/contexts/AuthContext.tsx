@@ -48,9 +48,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           // Add any custom properties to the user object here
           const extendedUser: ExtendedUser = {
             ...currentSession.user,
-            // For demonstration purposes, simulate isAdmin property
-            // In a real app, this would come from a database role check
-            isAdmin: currentSession.user.email?.endsWith('@admin.com') || false,
+            // 特定の管理者メールアドレスを追加（kahosatoyoshi@gmail.comを含む）
+            isAdmin: currentSession.user.email === 'kahosatoyoshi@gmail.com' || 
+                    currentSession.user.email?.endsWith('@admin.com') || false,
             // Add displayName if needed from user metadata
             displayName: currentSession.user.user_metadata?.displayName || ''
           };
@@ -71,8 +71,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Add any custom properties to the user object here
         const extendedUser: ExtendedUser = {
           ...currentSession.user,
-          // For demonstration purposes, simulate isAdmin property
-          isAdmin: currentSession.user.email?.endsWith('@admin.com') || false,
+          // 特定の管理者メールアドレスを追加（kahosatoyoshi@gmail.comを含む）
+          isAdmin: currentSession.user.email === 'kahosatoyoshi@gmail.com' || 
+                  currentSession.user.email?.endsWith('@admin.com') || false,
           // Add displayName if needed from user metadata
           displayName: currentSession.user.user_metadata?.displayName || ''
         };
