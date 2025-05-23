@@ -1,6 +1,6 @@
 
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster as Sonner, toast } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
@@ -70,7 +70,7 @@ function AppRoutes() {
           navigate("/login");
         } else if (!user?.isAdmin) {
           // User is logged in but not an admin
-          toast("管理者権限が必要です");
+          toast.error("管理者権限が必要です");
           navigate("/");
         }
       }

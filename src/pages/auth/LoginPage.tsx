@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,14 +17,19 @@ const LoginPage = () => {
   // Check if the user is already logged in
   useEffect(() => {
     if (user) {
+      console.log("User is logged in:", user);
+      
       // Check if user is admin to redirect to admin panel
       if (user.isAdmin) {
+        console.log("User is admin, redirecting to /admin");
         navigate('/admin');
         return;
       }
       
       // Get the return path from localStorage or default to modules
       const returnPath = localStorage.getItem('returnPath') || '/modules';
+      console.log("Redirecting to return path:", returnPath);
+      
       // Clear the return path
       localStorage.removeItem('returnPath');
       // Redirect to the return path

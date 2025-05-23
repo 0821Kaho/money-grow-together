@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Users,
@@ -14,12 +13,15 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useAdminGuard } from "@/hooks/useAdminGuard";
 
 const AdminLayout = () => {
   const { pathname } = useLocation();
   const { logout, user } = useAuth();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  // Use the admin guard hook to ensure only admins can access
+  const { isAdmin } = useAdminGuard();
 
   const handleLogout = async () => {
     try {
@@ -32,13 +34,16 @@ const AdminLayout = () => {
     }
   };
 
-  // If for some reason a non-admin user got here, redirect them
-  React.useEffect(() => {
+  // If for some reason user state changes while on this page
+  useEffect(() => {
     if (user && !user.isAdmin) {
-      toast("管理者権限が必要です");
+      toast.error("管理者権限が必要です");
       navigate("/");
     }
   }, [user, navigate]);
+
+  // Don't render anything until we confirm the user is an admin
+  if (!isAdmin) return null;
 
   const navItems = [
     {
