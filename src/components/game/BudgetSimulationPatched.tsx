@@ -29,20 +29,6 @@ const BudgetSimulationPatched = () => {
     <Card>
       <CardContent className="pt-6">
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold">家計管理サバイバル</h2>
-            
-            {/* Encouraging phrase from Pigipe */}
-            <div className="flex items-center">
-              <MascotCharacter 
-                size="small" 
-                className="mr-2 h-8 w-8"
-              />
-              <span className="text-sm text-game-primary font-semibold italic">
-                1か月乗り切ろうブー！
-              </span>
-            </div>
-          </div>
           <p className="text-gray-600 break-words whitespace-normal leading-relaxed">
             一ヶ月を乗り切る<span className="text-game-primary font-medium">家計管理チャレンジ</span>に挑戦しましょう！
             <span className="text-game-accent font-medium">給料</span>から<span className="text-game-secondary font-medium">生活費</span>をやりくりし、
