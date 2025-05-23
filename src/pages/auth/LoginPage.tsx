@@ -18,9 +18,14 @@ const LoginPage = () => {
   useEffect(() => {
     if (user) {
       console.log("User is logged in:", user);
+      console.log("User email:", user.email);
+      console.log("Is admin:", user.isAdmin);
+      
+      // Special check for kahosatoyoshi@gmail.com
+      const isAdminEmail = user.email === 'kahosatoyoshi@gmail.com' || user.email?.endsWith('@admin.com');
       
       // Check if user is admin to redirect to admin panel
-      if (user.isAdmin) {
+      if (user.isAdmin || isAdminEmail) {
         console.log("User is admin, redirecting to /admin");
         navigate('/admin');
         return;
