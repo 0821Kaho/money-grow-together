@@ -6,7 +6,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 const mangaPages = [
   {
     image: "/lovable-uploads/baee6be4-6d46-4b16-bdcf-f8f2c76d55ae.png",
-    title: "お金の見える化から始めよう",
+    title: "お金の見える化しよう",
     text: "家計管理の第一歩は、自分のお金がどこから来て、どこに使われているのかを把握すること。",
   },
   {
