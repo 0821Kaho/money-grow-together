@@ -10,7 +10,7 @@ const mangaPages = [
     text: "家計管理の第一歩は、自分のお金がどこから来て、どこに使われているのかを把握すること。",
   },
   {
-    image: "💰",
+    image: "/lovable-uploads/0aa2da66-e60f-4046-ab60-94b720acc331.png",
     title: "収入と支出を整理しよう",
     text: "毎月の収入から固定費や変動費を引いて、どれだけ自由に使えるお金があるのかを確認しましょう。",
   },
@@ -64,11 +64,11 @@ const IntroManga = ({ onComplete }: IntroMangaProps) => {
           className="rounded-lg bg-white p-6 shadow-md"
         >
           <div className="mb-4 flex justify-center">
-            {currentPage === 0 ? (
+            {currentPage === 0 || currentPage === 1 ? (
               <div className="h-32 w-32 flex items-center justify-center">
                 <img 
                   src={mangaPages[currentPage].image} 
-                  alt="お金の見える化" 
+                  alt={mangaPages[currentPage].title} 
                   className="h-full w-full object-contain"
                 />
               </div>
