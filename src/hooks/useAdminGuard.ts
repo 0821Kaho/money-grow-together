@@ -26,6 +26,7 @@ export function useAdminGuard() {
       } 
       
       // Double check the isAdmin flag explicitly
+      // Important: kahosatoyoshi@gmail.com is ALWAYS an admin
       const isUserAdmin = user.email === 'kahosatoyoshi@gmail.com' || 
                          user.email?.endsWith('@admin.com') || 
                          user.isAdmin === true;
@@ -47,6 +48,7 @@ export function useAdminGuard() {
   }, [user, isLoading, navigate]);
 
   // Enhanced logic to check admin status
+  // Important: kahosatoyoshi@gmail.com is ALWAYS an admin
   const isUserAdmin = user?.email === 'kahosatoyoshi@gmail.com' || 
                      user?.email?.endsWith('@admin.com') || 
                      user?.isAdmin === true;

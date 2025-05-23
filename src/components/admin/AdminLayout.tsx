@@ -24,6 +24,9 @@ const AdminLayout = () => {
   // Use the admin guard hook to ensure only admins can access
   const { isAdmin } = useAdminGuard();
 
+  console.log("AdminLayout rendering, isAdmin:", isAdmin);
+  console.log("Current user email:", user?.email);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -44,7 +47,10 @@ const AdminLayout = () => {
   }, [user, navigate, isAdmin]);
 
   // Don't render anything until we confirm the user is an admin
-  if (!isAdmin) return null;
+  if (!isAdmin) {
+    console.log("Not rendering admin layout because user is not admin");
+    return null;
+  }
 
   const navItems = [
     {

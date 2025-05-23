@@ -20,7 +20,6 @@ const LoginPage = () => {
     if (user) {
       console.log("User is logged in:", user);
       console.log("User email:", user.email);
-      console.log("Is admin:", user.isAdmin);
       
       // Special check for kahosatoyoshi@gmail.com
       const isAdminEmail = user.email === 'kahosatoyoshi@gmail.com' || user.email?.endsWith('@admin.com');
