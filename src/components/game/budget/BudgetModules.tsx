@@ -236,7 +236,7 @@ const BudgetModules = () => {
         <div>
           <h3 className="font-bold text-blue-700">Pigipe学習アシスタント</h3>
           <div className="text-xs text-blue-600">
-            あと{7 - Object.values(completedModules).filter(Boolean).length}モジュールで完了ブー！
+            あと{7 - Object.values(completedModules).filter(Boolean).length}モジュールで完了！
           </div>
         </div>
       </div>
@@ -249,10 +249,10 @@ const BudgetModules = () => {
         }}></div>
         <p className="text-blue-700">
           {Object.values(completedModules).filter(Boolean).length === 0 
-            ? "まずは基礎知識から始めようブー！カードをクリックしてね！" 
+            ? "まずは基礎知識から始めましょう！カードをクリックしてね！" 
             : Object.values(completedModules).filter(Boolean).length >= 3
-            ? "すごい進捗だブー！あと少しだブー！" 
-            : "次のステップも頑張るブー！応援してるよ！"}
+            ? "すごい進捗！あと少しです！" 
+            : "次のステップも頑張りましょう！応援しています！"}
         </p>
       </div>
       
