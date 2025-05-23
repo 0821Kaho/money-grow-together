@@ -172,8 +172,8 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
           </div>
         </div>
         
-        <div className="mb-3 flex gap-2">
-          <label className="flex items-center">
+        <div className="mb-3 flex flex-wrap items-center gap-4 text-sm">
+          <label className="inline-flex items-center">
             <input
               type="radio"
               name="category"
@@ -183,7 +183,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
             />
             <span>収入</span>
           </label>
-          <label className="flex items-center">
+          <label className="inline-flex items-center">
             <input
               type="radio"
               name="category"
@@ -193,7 +193,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
             />
             <span>固定費</span>
           </label>
-          <label className="flex items-center">
+          <label className="inline-flex items-center">
             <input
               type="radio"
               name="category"
