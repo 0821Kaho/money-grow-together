@@ -1,22 +1,17 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import HeroVideoSection from "@/components/home/HeroVideoSection";
-import Countdown from "@/components/prelaunch/Countdown";
-import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
 
-interface HeroSectionProps {
-  launchDate: string;
-}
-
-const HeroSection = ({ launchDate }: HeroSectionProps) => {
+const HeroSection = () => {
   const arrowRef = useRef<HTMLDivElement>(null);
   
-  // Function to handle scrolling to the waitlist form
-  const scrollToForm = () => {
-    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Function to scroll to the signup form
+  const scrollToRegister = () => {
+    document.getElementById("register-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Function to occasionally bounce the arrow
@@ -63,7 +58,7 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
         
         {/* CTA Button */}
         <motion.div
-          className="flex justify-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ 
@@ -73,12 +68,22 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
             delay: 0.5
           }}
         >
+          <Link to="/signup">
+            <Button 
+              size="lg" 
+              className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
+            >
+              今すぐ登録する
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
           <Button 
-            onClick={scrollToForm} 
+            onClick={scrollToRegister} 
             size="lg" 
-            className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
+            variant="outline"
+            className="rounded-full shadow-sm"
           >
-            事前登録する
+            詳しく見る
           </Button>
         </motion.div>
         
@@ -86,7 +91,7 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
         <motion.div 
           ref={arrowRef}
           className="text-muted-foreground mt-2 cursor-pointer"
-          onClick={scrollToForm}
+          onClick={scrollToRegister}
         >
           <ArrowDown className="mx-auto h-6 w-6" />
         </motion.div>
@@ -107,14 +112,6 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
               ¥
             </div>
           ))}
-        </div>
-        
-        {/* Countdown */}
-        <Countdown targetDate={launchDate} className="w-full mt-8" />
-        
-        {/* Pre-register form */}
-        <div id="waitlist-form" className="w-full max-w-md mx-auto pt-8">
-          <PreRegisterForm className="w-full" />
         </div>
       </motion.div>
     </section>

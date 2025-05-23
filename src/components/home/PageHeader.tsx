@@ -6,10 +6,6 @@ import { Link } from "react-router-dom";
 const PageHeader = () => {
   const { isAuthenticated } = useAuth();
 
-  const scrollToWaitlist = () => {
-    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   return (
     <header className="container mx-auto py-6 px-4">
       <div className="flex justify-between items-center">
@@ -19,13 +15,25 @@ const PageHeader = () => {
           </Link>
         </div>
         <div className="flex gap-4">
-          {!isAuthenticated && (
-            <Button 
-              variant="outline"
-              onClick={scrollToWaitlist}
-            >
-              事前登録する
-            </Button>
+          {!isAuthenticated ? (
+            <>
+              <Link to="/login">
+                <Button variant="outline">
+                  ログイン
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button>
+                  登録する
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <Link to="/modules">
+              <Button>
+                マイページ
+              </Button>
+            </Link>
           )}
         </div>
       </div>
