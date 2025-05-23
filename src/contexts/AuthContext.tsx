@@ -1,138 +1,120 @@
+import { createContext, useContext, useState, useEffect } from 'react';
+import {
+  Session,
+  SupabaseClient,
+  useSession,
+  useSupabaseClient,
+} from '@supabase/auth-helpers-react';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { api } from '@/lib/api';
-
-type User = {
-  id: string;
-  email: string;
-  displayName?: string;
-  isAdmin?: boolean;
-};
-
-type AuthContextType = {
-  user: User | null;
-  isAuthenticated: boolean;
+interface AuthContextType {
+  supabaseClient: SupabaseClient | null;
+  session: Session | null;
+  user: any | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<User>; 
-  signup: (email: string, password: string, displayName?: string) => Promise<void>;
-  logout: () => void;
-};
+  login: (email?: string) => Promise<any>;
+  logout: () => Promise<void>;
+  signup: (email: string, password: string, displayName?: string, age?: number) => Promise<any>;
+}
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType>({
+  supabaseClient: null,
+  session: null,
+  user: null,
+  isLoading: false,
+  login: async () => {},
+  logout: async () => {},
+  signup: async () => {},
+});
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  return useContext(AuthContext);
 };
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const supabaseClient = useSupabaseClient();
+  const session = useSession();
+  const [user, setUser] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in, with improved error handling
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          // For now, we'll use a mock implementation
-          // In a real implementation, we would validate the token with the server
-          const savedEmail = localStorage.getItem('userEmail') || 'user@example.com';
-          // Check if the email is the admin email
-          const isAdmin = savedEmail === 'kahosatoyoshi@gmail.com';
-          console.log('User authenticated:', { email: savedEmail, isAdmin });
-          
-          setUser({ 
-            id: '1', 
-            email: savedEmail,
-            isAdmin
-          });
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        // Clear invalid tokens
-        localStorage.removeItem('token');
-        localStorage.removeItem('userEmail');
-      } finally {
-        setIsLoading(false);
+    const fetchUser = async () => {
+      setIsLoading(true);
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        setUser(null);
       }
+      setIsLoading(false);
     };
 
-    checkAuth();
-  }, []);
+    fetchUser();
+  }, [session]);
 
-  const login = async (email: string, password: string): Promise<User> => {
+  const login = async (email?: string) => {
     try {
-      // Mock implementation - would be replaced with actual API call
-      // const response = await api.post('/auth/login', { email, password });
-      // const { token, user } = response.data;
-      
-      // For demo purposes
-      const token = 'mock-token';
-      const isAdmin = email === 'kahosatoyoshi@gmail.com';
-      console.log('Logging in:', { email, isAdmin });
-      
-      const userData = { 
-        id: '1', 
+      const { data, error } = await supabaseClient.auth.signInWithOtp({
         email,
-        isAdmin
-      };
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('userEmail', email); // Save email for demo purposes
-      setUser(userData);
-
-      return userData; // Return the user data for use in the login page
+        options: {
+          shouldCreateUser: true,
+          // emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) {
+        throw error;
+      }
+      console.log('Check your email for the magic link to sign in.');
+      return data;
     } catch (error) {
-      console.error('Login failed:', error);
-      throw new Error('ログインに失敗しました');
+      console.error('Error logging in:', error);
+      throw error;
     }
   };
 
-  const signup = async (email: string, password: string, displayName?: string) => {
+  const logout = async () => {
     try {
-      // Mock implementation - would be replaced with actual API call
-      // const response = await api.post('/auth/signup', { email, password, displayName });
-      // const { token, user } = response.data;
-      
-      // For demo purposes
-      const token = 'mock-token';
-      const isAdmin = email === 'kahosatoyoshi@gmail.com';
-      const userData = { 
-        id: '1', 
-        email, 
-        displayName,
-        isAdmin
-      };
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('userEmail', email); // Save email for demo purposes
-      setUser(userData);
+      await supabaseClient.auth.signOut();
+      setUser(null);
     } catch (error) {
-      console.error('Signup failed:', error);
-      throw new Error('アカウント作成に失敗しました');
+      console.error('Error logging out:', error);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userEmail');
-    setUser(null);
+  // Modify the signup function to accept the age parameter
+  const signup = async (email: string, password: string, displayName?: string, age?: number) => {
+    try {
+      // Prepare metadata to include displayName and age if provided
+      const metadata: Record<string, any> = {};
+      if (displayName) metadata.displayName = displayName;
+      if (age !== undefined) metadata.age = age;
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+      
+      return data;
+    } catch (error) {
+      console.error('Error signing up:', error);
+      throw error;
+    }
   };
 
-  return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated: !!user, 
-      isLoading, 
-      login, 
-      signup, 
-      logout 
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = {
+    supabaseClient,
+    session,
+    user,
+    isLoading,
+    login,
+    logout,
+    signup,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
