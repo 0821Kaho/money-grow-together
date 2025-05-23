@@ -219,7 +219,7 @@ const InvestmentResults = ({
               ) : (
                 <>
                   <Button className="w-full" onClick={handleContinue}>
-                    <span>毎月{formatCurrency(monthlyAmount)}で続ける</span>
+                    <span>毎月3万で続ける</span>
                   </Button>
                   <Button variant="outline" className="w-full" onClick={() => {
                     if (onGoalAmountChange) {
