@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PiggyBank } from "lucide-react";
@@ -172,8 +171,8 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
           </div>
         </div>
         
-        <div className="mb-3 flex flex-wrap items-center gap-4 text-sm">
-          <label className="inline-flex items-center">
+        <div className="mb-3 flex flex-wrap items-center text-xs">
+          <label className="mr-4 inline-flex items-center">
             <input
               type="radio"
               name="category"
@@ -183,7 +182,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
             />
             <span>収入</span>
           </label>
-          <label className="inline-flex items-center">
+          <label className="mr-4 inline-flex items-center">
             <input
               type="radio"
               name="category"

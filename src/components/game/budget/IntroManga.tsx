@@ -5,7 +5,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 
 const mangaPages = [
   {
-    image: "📊",
+    image: "/lovable-uploads/baee6be4-6d46-4b16-bdcf-f8f2c76d55ae.png",
     title: "お金の見える化から始めよう",
     text: "家計管理の第一歩は、自分のお金がどこから来て、どこに使われているのかを把握すること。",
   },
@@ -64,9 +64,19 @@ const IntroManga = ({ onComplete }: IntroMangaProps) => {
           className="rounded-lg bg-white p-6 shadow-md"
         >
           <div className="mb-4 flex justify-center">
-            <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#F7F7F7] text-5xl">
-              {mangaPages[currentPage].image}
-            </div>
+            {currentPage === 0 ? (
+              <div className="h-32 w-32 flex items-center justify-center">
+                <img 
+                  src={mangaPages[currentPage].image} 
+                  alt="お金の見える化" 
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            ) : (
+              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#F7F7F7] text-5xl">
+                {mangaPages[currentPage].image}
+              </div>
+            )}
           </div>
           <h3 className="mb-2 text-center text-lg font-bold break-words whitespace-normal">
             {mangaPages[currentPage].title}
