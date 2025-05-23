@@ -13,10 +13,12 @@ import { ChevronDown, ChevronUp, BookOpen, CreditCard, DollarSign, Calculator, P
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import TontonGameSoundEffect from "../TontonGameSoundEffect";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // This component acts as a container for all budget-related modules
 const BudgetModules = () => {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   
   // State to track which sections are expanded/collapsed
   const [expandedSections, setExpandedSections] = useState({
@@ -341,8 +343,8 @@ const BudgetModules = () => {
   );
   
   return (
-    <div className="lg:grid lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2 space-y-4">
+    <div className={`${isMobile ? 'space-y-6' : 'lg:grid lg:grid-cols-3 gap-6'}`}>
+      <div className={`${isMobile ? '' : 'lg:col-span-2'} space-y-4`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -407,9 +409,16 @@ const BudgetModules = () => {
         </motion.div>
       </div>
       
-      <div className="hidden lg:block">
-        <PigipeLearningAssistant />
-      </div>
+      {/* 学習アシスタント - モバイル表示時は下部に表示 */}
+      {isMobile ? (
+        <div className="mt-8">
+          <PigipeLearningAssistant />
+        </div>
+      ) : (
+        <div className="hidden lg:block">
+          <PigipeLearningAssistant />
+        </div>
+      )}
     </div>
   );
 };

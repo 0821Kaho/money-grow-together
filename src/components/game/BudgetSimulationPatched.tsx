@@ -7,11 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, CalendarCheck2, Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MascotCharacter from "../mascot/MascotCharacter";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const BudgetSimulationPatched = () => {
   const [activeTab, setActiveTab] = useState<string>("simulation");
   const [mascotPosition, setMascotPosition] = useState<"left" | "right">("left");
   const [hasNewContent, setHasNewContent] = useState(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Animate mascot when tab changes

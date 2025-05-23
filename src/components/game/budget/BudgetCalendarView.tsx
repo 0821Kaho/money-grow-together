@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, DollarSign, Star } from "lucide-react";
 import { getBudgetEvents } from "@/lib/budget-events";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const monthStart = new Date(2023, 0, 1); // 1月1日
 const monthEnd = new Date(2023, 0, 31); // 1月31日
@@ -24,6 +25,7 @@ const BudgetCalendarView = ({
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date(2023, 0, currentDay)
   );
+  const isMobile = useIsMobile();
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date) return;
@@ -44,7 +46,7 @@ const BudgetCalendarView = ({
         </Badge>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
         <div>
           <Calendar
             mode="single"
