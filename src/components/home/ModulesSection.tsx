@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion, useInView } from "framer-motion";
@@ -141,13 +142,14 @@ const ModulesSection = () => {
                       
                       <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
                       
-                      {/* Fixed-width button with no text wrapping and arrow icon */}
+                      {/* Updated button with fixed width and arrow icon */}
                       <motion.button
-                        className="mt-2 px-4 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1 ml-auto w-[104px] h-9 whitespace-nowrap"
+                        className="mt-2 w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        始める<ArrowRight className="h-4 w-4" />
+                        始める
+                        <ArrowRight className="h-4 w-4" />
                       </motion.button>
                     </CardContent>
                   </Card>

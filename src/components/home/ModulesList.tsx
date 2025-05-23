@@ -1,7 +1,9 @@
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MascotCharacter from "../mascot/MascotCharacter";
+import { ArrowRight } from "lucide-react";
 
 const modules = [
   {
@@ -142,16 +144,15 @@ const ModulesList = () => {
                     </div>
                   </div>
                   
+                  {/* Updated button design */}
                   <motion.button 
-                    className="px-4 py-1.5 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm font-medium flex items-center gap-1"
+                    className="w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 whitespace-nowrap"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => window.location.href = `/module/${module.id}`}
                   >
                     始める
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                   </motion.button>
                 </div>
               </div>
