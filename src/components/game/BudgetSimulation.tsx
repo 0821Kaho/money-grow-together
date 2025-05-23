@@ -594,7 +594,10 @@ const BudgetSimulation = () => {
           )}
           
           {state.currentStage === "budgetPlanner" && (
-            <BudgetPlanner onComplete={handleBudgetPlannerComplete} />
+            <BudgetPlanner
+              initialBalance={state.money}
+              onComplete={handleBudgetPlannerComplete}
+            />
           )}
           
           {state.currentStage === "finalTest" && (

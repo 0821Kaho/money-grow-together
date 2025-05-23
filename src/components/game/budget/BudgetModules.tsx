@@ -38,6 +38,10 @@ const BudgetModules = () => {
     setCurrentModule(Module.INTEREST_RATE);
   };
 
+  const handleBudgetPlannerComplete = (success: boolean) => {
+    setCurrentModule(Module.DRAG_DROP_SAVING);
+  };
+
   return (
     <div className="mx-auto max-w-2xl p-6">
       <h2 className="mb-6 text-center text-2xl font-bold">家計管理の基本</h2>
@@ -62,7 +66,7 @@ const BudgetModules = () => {
       {currentModule === Module.BUDGET_PLANNER && (
         <BudgetPlanner
           initialBalance={balance}
-          onComplete={() => handleModuleComplete(Module.DRAG_DROP_SAVING)}
+          onComplete={handleBudgetPlannerComplete}
         />
       )}
 
