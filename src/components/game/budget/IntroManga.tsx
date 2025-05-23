@@ -25,7 +25,7 @@ const mangaPages = [
     text: "お金を借りる時も貸す時も重要な「金利」。複利の力を味方につければ、お金が自然に増えていきます。",
   },
   {
-    image: "⚠️",
+    image: "/lovable-uploads/c751bfdb-2a92-43b3-8dfc-687a375bebef.png",
     title: "高金利ローンに注意",
     text: "一時的に便利でも、返済時の金利負担が重く、長期的な家計を圧迫することがあります。",
   },
@@ -67,6 +67,28 @@ const IntroManga = ({ onComplete, onInterestRateEducation }: IntroMangaProps) =>
     }
   };
 
+  const renderImage = () => {
+    const image = mangaPages[currentPage].image;
+    
+    // Check if the image is a URL (starts with / or http)
+    if (typeof image === 'string' && (image.startsWith('/') || image.startsWith('http'))) {
+      return (
+        <img 
+          src={image} 
+          alt={mangaPages[currentPage].title} 
+          className="h-full w-full object-contain"
+        />
+      );
+    } else {
+      // Render emoji or other content
+      return (
+        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#F7F7F7] text-5xl">
+          {image}
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="w-full max-w-sm">
@@ -79,19 +101,9 @@ const IntroManga = ({ onComplete, onInterestRateEducation }: IntroMangaProps) =>
           className="rounded-lg bg-white p-6 shadow-md"
         >
           <div className="mb-4 flex justify-center">
-            {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
-              <div className="h-32 w-32 flex items-center justify-center">
-                <img 
-                  src={mangaPages[currentPage].image} 
-                  alt={mangaPages[currentPage].title} 
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            ) : (
-              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-[#F7F7F7] text-5xl">
-                {mangaPages[currentPage].image}
-              </div>
-            )}
+            <div className="h-32 w-32 flex items-center justify-center">
+              {renderImage()}
+            </div>
           </div>
           <h3 className="mb-2 text-center text-lg font-bold break-words whitespace-normal">
             {mangaPages[currentPage].title}

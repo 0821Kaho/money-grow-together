@@ -61,7 +61,7 @@ const BudgetModules = () => {
 
       {currentModule === Module.BUDGET_PLANNER && (
         <BudgetPlanner
-          initialBalance={balance}
+          balance={balance}
           onComplete={() => handleModuleComplete(Module.DRAG_DROP_SAVING)}
         />
       )}
