@@ -38,7 +38,7 @@ const BudgetCalendarView = ({
   return (
     <div className="rounded-lg bg-white p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-bold">１ヶ月サバイバル</h3>
+        <h3 className="text-lg">１ヶ月サバイバル</h3>
         <Badge variant="outline" className="bg-[#25B589] text-white">
           {currentDay}/30日目
         </Badge>
@@ -46,7 +46,7 @@ const BudgetCalendarView = ({
 
       <Card>
         <CardContent className="p-4">
-          <h4 className="mb-2 text-base font-bold">
+          <h4 className="mb-2 text-base">
             {currentDay}日目のイベント
           </h4>
           

@@ -525,7 +525,7 @@ const BudgetSimulation = () => {
         <>
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-bold">家計管理シミュレーション</h2>
+              <h2 className="text-xl">家計管理シミュレーション</h2>
               {state.currentStage === "simulation" ? (
                 <p className="text-sm text-gray-600">
                   {state.day}日目 (残り{30 - state.day}日)
