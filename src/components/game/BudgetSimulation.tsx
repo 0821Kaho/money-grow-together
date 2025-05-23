@@ -164,9 +164,8 @@ const BudgetSimulation = () => {
     return (
       <BudgetCalendarView
         onSelectDay={(day) => {
-          // カレンダー上の日付をクリックした時の処理
+          // When a past day number is clicked
           if (day <= state.day) {
-            // その日のイベントを表示するだけ（既に過ぎた日）
             const pastEvent = dayEvents.find(e => e.day === day);
             if (pastEvent) {
               toast({
