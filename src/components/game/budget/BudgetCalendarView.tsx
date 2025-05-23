@@ -4,9 +4,10 @@ import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, DollarSign, Star } from "lucide-react";
+import { CalendarDays, DollarSign, Star, ArrowRight } from "lucide-react";
 import { getBudgetEvents } from "@/lib/budget-events";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
 
 const dayEvents = getBudgetEvents();
 
@@ -14,10 +15,12 @@ const BudgetCalendarView = ({
   onSelectDay,
   currentDay,
   completedDays,
+  onNextDay,
 }: {
   onSelectDay: (day: number) => void;
   currentDay: number;
   completedDays: number[];
+  onNextDay?: () => void;
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date(2023, 0, currentDay)
@@ -41,6 +44,17 @@ const BudgetCalendarView = ({
         <Badge variant="outline" className="bg-[#25B589] text-white">
           {currentDay}/30日目
         </Badge>
+        
+        {/* Add a prominent Next Day button when onNextDay is provided */}
+        {onNextDay && currentDay < 30 && (
+          <Button 
+            onClick={onNextDay}
+            className="bg-game-primary text-white hover:bg-game-primary/90 flex items-center gap-2"
+          >
+            次の日へ進む
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        )}
       </div>
 
       <Card>
@@ -141,6 +155,20 @@ const BudgetCalendarView = ({
                   </span>
                 </div>
               )}
+            </div>
+          )}
+          
+          {/* Add a prominent Next Day button at the bottom when onNextDay is provided */}
+          {onNextDay && currentDay < 30 && (
+            <div className="mt-6 flex justify-center">
+              <Button 
+                onClick={onNextDay}
+                size="lg"
+                className="bg-game-primary text-white hover:bg-game-primary/90 flex items-center gap-2 w-full sm:w-auto"
+              >
+                次の日へ進む
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
           )}
         </CardContent>

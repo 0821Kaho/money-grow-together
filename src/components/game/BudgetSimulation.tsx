@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -177,6 +178,7 @@ const BudgetSimulation = () => {
         }}
         currentDay={state.day}
         completedDays={state.completedEvents}
+        onNextDay={!currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && state.day < 30 ? handleNextDay : undefined}
       />
     );
   };
