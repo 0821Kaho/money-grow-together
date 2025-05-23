@@ -45,9 +45,8 @@ const LoginPage = () => {
       // Redirect to the return path
       navigate(returnPath);
     } catch (error) {
-      toast("ログイン失敗", {
+      toast.error("ログイン失敗", {
         description: "メールアドレスまたはパスワードが正しくありません",
-        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
