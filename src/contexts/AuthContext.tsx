@@ -44,15 +44,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       (event, currentSession) => {
         setSession(currentSession);
         if (currentSession?.user) {
+          console.log("Auth state changed, user email:", currentSession.user.email);
+          
           // Add any custom properties to the user object here
           const extendedUser: ExtendedUser = {
             ...currentSession.user,
-            // 特定の管理者メールアドレスを追加（kahosatoyoshi@gmail.comを含む）
+            // Make sure kahosatoyoshi@gmail.com is definitely recognized as admin
             isAdmin: currentSession.user.email === 'kahosatoyoshi@gmail.com' || 
                     currentSession.user.email?.endsWith('@admin.com') || false,
             // Add displayName if needed from user metadata
             displayName: currentSession.user.user_metadata?.displayName || ''
           };
+          
+          console.log("User admin status:", extendedUser.isAdmin);
           setUser(extendedUser);
           setIsAuthenticated(true);
         } else {
@@ -67,15 +71,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       setSession(currentSession);
       if (currentSession?.user) {
+        console.log("Initial session check, user email:", currentSession.user.email);
+        
         // Add any custom properties to the user object here
         const extendedUser: ExtendedUser = {
           ...currentSession.user,
-          // 特定の管理者メールアドレスを追加（kahosatoyoshi@gmail.comを含む）
+          // Make sure kahosatoyoshi@gmail.com is definitely recognized as admin
           isAdmin: currentSession.user.email === 'kahosatoyoshi@gmail.com' || 
                   currentSession.user.email?.endsWith('@admin.com') || false,
           // Add displayName if needed from user metadata
           displayName: currentSession.user.user_metadata?.displayName || ''
         };
+        
+        console.log("User admin status:", extendedUser.isAdmin);
         setUser(extendedUser);
         setIsAuthenticated(true);
       }

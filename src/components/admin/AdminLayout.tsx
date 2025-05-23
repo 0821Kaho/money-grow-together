@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -36,11 +37,11 @@ const AdminLayout = () => {
 
   // If for some reason user state changes while on this page
   useEffect(() => {
-    if (user && !user.isAdmin) {
+    if (user && !isAdmin) {
       toast.error("管理者権限が必要です");
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [user, navigate, isAdmin]);
 
   // Don't render anything until we confirm the user is an admin
   if (!isAdmin) return null;
