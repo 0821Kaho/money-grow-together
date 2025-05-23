@@ -40,7 +40,7 @@ const BudgetCalendarView = ({
   return (
     <div className="rounded-lg bg-white p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-lg font-bold">家計カレンダー</h3>
+        <h3 className="text-lg font-bold">１ヶ月サバイバル</h3>
         <Badge variant="outline" className="bg-[#25B589] text-white">
           {currentDay}/30日目
         </Badge>

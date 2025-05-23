@@ -58,7 +58,7 @@ const BudgetSimulationPatched = () => {
               <TabsTrigger value="simulation" className="flex items-center gap-1 relative px-1 py-1.5">
                 <CalendarCheck2 className="h-4 w-4 flex-shrink-0" />
                 <span className={`${isMobile ? 'text-xs' : 'text-sm'} whitespace-normal text-center`}>
-                  カレンダーシミュレーション
+                  １ヶ月サバイバル
                 </span>
               </TabsTrigger>
               <TabsTrigger value="modules" className="flex items-center gap-1 relative px-1 py-1.5">
