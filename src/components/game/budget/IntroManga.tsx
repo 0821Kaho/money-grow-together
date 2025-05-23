@@ -20,6 +20,11 @@ const mangaPages = [
     text: "計画的に支出をコントロールすれば、将来のために貯蓄することも、今を楽しむことも両立できます。",
   },
   {
+    image: "🔢",
+    title: "金利の仕組みを理解しよう",
+    text: "お金を借りる時も貸す時も重要な「金利」。複利の力を味方につければ、お金が自然に増えていきます。",
+  },
+  {
     image: "⚠️",
     title: "高金利ローンに注意",
     text: "一時的に便利でも、返済時の金利負担が重く、長期的な家計を圧迫することがあります。",
@@ -33,9 +38,10 @@ const mangaPages = [
 
 interface IntroMangaProps {
   onComplete: () => void;
+  onInterestRateEducation?: () => void;
 }
 
-const IntroManga = ({ onComplete }: IntroMangaProps) => {
+const IntroManga = ({ onComplete, onInterestRateEducation }: IntroMangaProps) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const nextPage = () => {
@@ -49,6 +55,15 @@ const IntroManga = ({ onComplete }: IntroMangaProps) => {
   const prevPage = () => {
     if (currentPage > 0) {
       setCurrentPage(prev => prev - 1);
+    }
+  };
+
+  const handlePageAction = () => {
+    // 金利の説明ページで、金利教育モードに切り替え
+    if (currentPage === 3 && onInterestRateEducation) {
+      onInterestRateEducation();
+    } else {
+      nextPage();
     }
   };
 
@@ -84,6 +99,15 @@ const IntroManga = ({ onComplete }: IntroMangaProps) => {
           <p className="text-center text-gray-700 break-words whitespace-normal">
             {mangaPages[currentPage].text}
           </p>
+          
+          {currentPage === 3 && onInterestRateEducation && (
+            <button 
+              onClick={onInterestRateEducation}
+              className="mt-4 w-full rounded-md bg-blue-100 px-3 py-2 text-sm text-blue-700 hover:bg-blue-200"
+            >
+              金利についてもっと詳しく学ぶ →
+            </button>
+          )}
         </motion.div>
 
         <div className="mt-6 flex items-center justify-between">
@@ -110,7 +134,7 @@ const IntroManga = ({ onComplete }: IntroMangaProps) => {
           </div>
 
           <button
-            onClick={nextPage}
+            onClick={handlePageAction}
             className="flex items-center rounded-lg p-2 text-game-primary"
           >
             <span className="mr-1">
