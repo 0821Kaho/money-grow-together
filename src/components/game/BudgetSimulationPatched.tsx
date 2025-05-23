@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import BudgetModules from "./budget/BudgetModules";
-import BudgetSimulation from "./BudgetSimulation";
+import BudgetSimulation from "./budget/BudgetSimulation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, CalendarCheck2, Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
