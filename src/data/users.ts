@@ -1,122 +1,114 @@
 
-/**
- * User data operations
- * 
- * This file contains functions for fetching and manipulating user data 
- * from the Supabase database.
- */
 import { supabase } from '@/integrations/supabase/client';
 
-export interface UserListParams {
-  page?: number;
-  pageSize?: number;
-  query?: string;
-}
+export type User = {
+  id: string;
+  email: string;
+  full_name: string | null;
+  role: string;
+  plan: string;
+  status: string;
+  created_at: string;
+};
 
-/**
- * List users with pagination and optional filtering
- */
-export async function listUsers(page = 1, pageSize = 20, query = '') {
+export type UpdateUser = {
+  full_name?: string;
+  role?: string;
+  status?: string;
+};
+
+export async function listUsers(
+  page: number = 1,
+  pageSize: number = 20,
+  searchQuery: string = ''
+): Promise<{ users: User[]; total: number }> {
   try {
-    // Calculate offset for pagination
-    const offset = (page - 1) * pageSize;
-    
-    // Start base query - use profiles table which references auth.users
-    let userQuery = supabase.from('profiles')
-      .select('id, name, role, created_at', { count: 'exact' });
-    
-    // Apply search filter if provided
-    if (query) {
-      userQuery = userQuery.or(`name.ilike.%${query}%`);
-    }
-    
-    // Execute query with pagination
-    const { data: users, error, count } = await userQuery
-      .order('created_at', { ascending: false })
-      .range(offset, offset + pageSize - 1);
-    
-    if (error) {
-      console.error('Error fetching users:', error);
+    const token = localStorage.getItem('token');
+    const response = await fetch(
+      `/api/admin/users?page=${page}&limit=${pageSize}&q=${encodeURIComponent(searchQuery)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
       throw new Error('Failed to fetch users');
     }
+
+    const data = await response.json();
     
-    // Transform the data to match the expected User type
-    const transformedUsers = users?.map(profile => ({
-      id: profile.id,
-      email: '', // We don't have access to email from profiles table
-      full_name: profile.name || '',
-      role: profile.role,
-      plan: 'free', // Default plan value
-      status: 'active', // Default status value
-      created_at: profile.created_at
-    })) || [];
-    
-    return { 
-      users: transformedUsers, 
-      total: count || 0
+    // Map the response data to the User type
+    const users: User[] = data.users.map((user: any) => ({
+      id: user.id,
+      email: user.email,
+      full_name: user.full_name || null,
+      role: user.role || 'user',
+      plan: user.plan || 'free',
+      status: user.status || 'active',
+      created_at: user.created_at,
+    }));
+
+    return {
+      users,
+      total: data.total,
     };
   } catch (error) {
-    console.error('Error in listUsers:', error);
+    console.error('Error fetching users:', error);
     throw error;
   }
 }
 
-/**
- * Get a single user by ID
- */
-export async function getUserById(userId: string) {
+export async function getUserById(id: string): Promise<User> {
   try {
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    
-    if (error) {
-      console.error('Error fetching user:', error);
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/admin/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
       throw new Error('Failed to fetch user');
     }
+
+    const data = await response.json();
     
-    if (!profile) {
-      throw new Error('User not found');
-    }
-    
-    // Transform to match expected User type
-    const user = {
-      id: profile.id,
-      email: '', // We don't have access to email from profiles table
-      full_name: profile.name || '',
-      role: profile.role,
-      plan: 'free', // Default plan value
-      status: 'active', // Default status value
-      created_at: profile.created_at
+    return {
+      id: data.user.id,
+      email: data.user.email,
+      full_name: data.user.full_name || null,
+      role: data.user.role || 'user',
+      plan: data.user.plan || 'free',
+      status: data.user.status || 'active',
+      created_at: data.user.created_at,
     };
-    
-    return user;
   } catch (error) {
-    console.error('Error in getUserById:', error);
+    console.error('Error fetching user:', error);
     throw error;
   }
 }
 
-/**
- * Update a user
- */
-export async function updateUser(userId: string, userData: { [key: string]: any }) {
+export async function updateUser(id: string, updates: UpdateUser): Promise<boolean> {
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .update(userData)
-      .eq('id', userId);
-    
-    if (error) {
-      console.error('Error updating user:', error);
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/admin/users/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updates),
+    });
+
+    if (!response.ok) {
       throw new Error('Failed to update user');
     }
-    
-    return data;
+
+    return true;
   } catch (error) {
-    console.error('Error in updateUser:', error);
+    console.error('Error updating user:', error);
     throw error;
   }
 }

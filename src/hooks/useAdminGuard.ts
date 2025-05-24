@@ -1,33 +1,51 @@
 
-/**
- * Hook that checks if the current user has admin role
- * and redirects to login page if not
- */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 export function useAdminGuard() {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
-  const isAdmin = user?.app_metadata?.isAdmin === true;
 
   useEffect(() => {
-    // Only redirect after authentication check is complete
-    if (!isLoading) {
+    // Only check admin status after authentication loading completes
+    const checkAdminRole = async () => {
+      if (isLoading) return;
+
       if (!user) {
         // User is not logged in
         toast.error("ログインが必要です");
         navigate('/login');
-      } else if (!isAdmin) {
-        // User is logged in but not an admin
-        toast.error("管理者権限が必要です");
+        return;
+      }
+
+      try {
+        // Query profiles table to check admin role
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+
+        if (error) throw error;
+
+        // Check if user has admin role
+        if (!data || data.role !== 'admin') {
+          toast.error("管理者権限が必要です");
+          navigate('/');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking admin role:', error);
+        toast.error("権限の確認に失敗しました");
         navigate('/');
       }
-      // If user is logged in and is an admin, do nothing (allow access)
-    }
-  }, [user, isLoading, navigate, isAdmin]);
+    };
 
-  return { isAdmin, isLoading };
+    checkAdminRole();
+  }, [user, isLoading, navigate]);
+
+  return { isAdmin: user && !isLoading, isLoading };
 }

@@ -1,24 +1,32 @@
 
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    nodePolyfills({
+      // Whether to polyfill specific globals.
+      globals: {
+        Buffer: true,
+      },
+      include: ["buffer", "stream", "util"],
+    }),
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   server: {
-    port: 8080,
+    port: 3000,
     proxy: {
-      // Proxy API requests to our admin API server
-      '/api/admin': {
+      '/api': {
         target: 'http://localhost:9000',
         changeOrigin: true,
       },
     },
   },
-})
+});
