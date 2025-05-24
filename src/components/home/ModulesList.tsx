@@ -14,7 +14,7 @@ const modules = [
     progress: 65,
     isLocked: false,
     badge: "bronze" as const,
-    illustration: "/lovable-uploads/02036250-9f6b-47b6-8d10-2cbea7453b52.png"
+    illustration: "/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png"
   },
   {
     id: 2,
