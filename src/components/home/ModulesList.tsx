@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -190,7 +191,7 @@ const ModulesList = () => {
               }}
             />
             
-            {/* Pigipe character on each card - replaced with static decoration */}
+            {/* Personal Finance Pigipe on each card - updated image */}
             <motion.div 
               className="absolute bottom-3 right-3 h-12 w-12 opacity-40 z-0"
               animate={{ y: [0, -5, 0] }}
@@ -201,8 +202,8 @@ const ModulesList = () => {
               }}
             >
               <img 
-                src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png" 
-                alt="Pigipe" 
+                src="/lovable-uploads/91011487-9ada-4811-a1de-12d382d21661.png" 
+                alt="Personal Finance Pigipe" 
                 className="w-full h-full object-contain"
               />
             </motion.div>
