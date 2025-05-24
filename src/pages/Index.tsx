@@ -10,22 +10,22 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import AcademicSection from "@/components/home/AcademicSection";
 
 const Index = () => {
-  const launchDate = "2025-05-23T20:00:00+09:00"; // Updated to May 23, 2025, 20:00 JST
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
       {/* Header */}
       <PageHeader />
 
       {/* Hero Section */}
-      <HeroSection launchDate={launchDate} />
+      <HeroSection />
       
       <hr className="border-t border-dashed border-gray-200 my-12 max-w-4xl mx-auto" />
 
-      {/* Modules Section - Moved above KPI Banner */}
-      <ModulesSection />
+      {/* Modules Section - With ID for scrolling */}
+      <section id="modules-section">
+        <ModulesSection />
+      </section>
 
-      {/* KPI Banner - Now appears after Modules Section */}
+      {/* KPI Banner */}
       <section className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <KPIBanner />

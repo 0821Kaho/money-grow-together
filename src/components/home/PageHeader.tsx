@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 const PageHeader = () => {
   const { isAuthenticated } = useAuth();
 
-  const scrollToWaitlist = () => {
-    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const scrollToModules = () => {
+    document.getElementById("modules-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -19,13 +19,33 @@ const PageHeader = () => {
           </Link>
         </div>
         <div className="flex gap-4">
-          {!isAuthenticated && (
-            <Button 
-              variant="outline"
-              onClick={scrollToWaitlist}
-            >
-              事前登録する
-            </Button>
+          {!isAuthenticated ? (
+            <>
+              <Link to="/login">
+                <Button variant="outline">
+                  ログイン
+                </Button>
+              </Link>
+              <Link to="/signup" className="hidden sm:block">
+                <Button>
+                  アカウント登録
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button 
+                variant="outline"
+                onClick={scrollToModules}
+              >
+                学習を始める
+              </Button>
+              <Link to="/modules" className="hidden sm:block">
+                <Button>
+                  マイページ
+                </Button>
+              </Link>
+            </>
           )}
         </div>
       </div>
