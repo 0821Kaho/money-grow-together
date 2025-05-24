@@ -20,7 +20,7 @@ const mangaPages = [
     text: "計画的に支出をコントロールすれば、将来のために貯蓄することも、今を楽しむことも両立できます。",
   },
   {
-    image: "🔢",
+    image: "/lovable-uploads/8b3d1556-0f8f-4926-906d-84e9f922fb4b.png",
     title: "金利の仕組みを理解しよう",
     text: "お金を借りる時も貸す時も重要な「金利」。複利の力を味方につければ、お金が自然に増えていきます。",
   },
@@ -117,7 +117,7 @@ const IntroManga = ({ onComplete, onInterestRateEducation }: IntroMangaProps) =>
               onClick={onInterestRateEducation}
               className="mt-4 w-full rounded-md bg-blue-100 px-3 py-2 text-sm text-blue-700 hover:bg-blue-200"
             >
-              金利についてもっと詳しく学ぶ →
+              金利とは？
             </button>
           )}
         </motion.div>
