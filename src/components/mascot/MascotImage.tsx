@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 
 interface MascotImageProps {
@@ -20,11 +21,11 @@ const MascotImage = ({
   alt = "トントン"
 }: MascotImageProps) => {
   
-  const sizeClasses = {
-    small: "w-16 h-16",
-    medium: "w-24 h-24",
-    large: "w-32 h-32",
-    xl: "w-48 h-48"
+  sizeClasses = {
+    small: "w-20 h-20",
+    medium: "w-28 h-28",
+    large: "w-36 h-36",
+    xl: "w-56 h-56"
   };
   
   // Map variant to image path

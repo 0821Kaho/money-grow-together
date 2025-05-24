@@ -24,9 +24,9 @@ const MascotCharacter = ({
   const [isSpinning, setIsSpinning] = useState(false);
   
   const sizeClasses = {
-    small: "w-12 h-12",
-    medium: "w-16 h-16",
-    large: "w-14 h-14" // 56px (14rem)
+    small: "w-16 h-16",
+    medium: "w-20 h-20",
+    large: "w-24 h-24" 
   };
   
   const handleClick = () => {

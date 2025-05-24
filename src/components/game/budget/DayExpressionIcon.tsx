@@ -28,9 +28,9 @@ const DayExpressionIcon = ({ day, hasEvent }: DayExpressionIconProps) => {
       initial={{ scale: 0.9 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.3, type: "spring" }}
-      className="w-16 h-16 flex items-center justify-center rounded-full bg-[#FFF5F8] border border-[#FFCCE0]"
+      className="w-20 h-20 flex items-center justify-center rounded-full bg-[#FFF5F8] border border-[#FFCCE0]"
     >
-      <div className="relative w-12 h-12">
+      <div className="relative w-16 h-16">
         <img 
           src={getPigipeImage()} 
           alt="ピギペ" 

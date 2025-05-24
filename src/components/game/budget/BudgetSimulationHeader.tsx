@@ -47,7 +47,7 @@ const BudgetSimulationHeader = ({
     <div className="sticky top-0 z-10 bg-white border-b shadow-sm px-4 py-2">
       <div className="flex items-center justify-between max-w-3xl mx-auto">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-game-light text-game-primary">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-game-light text-game-primary">
             <span className="text-sm font-medium">{day}/30</span>
           </div>
           <div className="text-sm text-gray-600">
@@ -71,12 +71,12 @@ const BudgetSimulationHeader = ({
             <motion.div
               animate={money >= 0 ? { rotate: [0, 10, 0] } : { scale: [1, 0.9, 1] }}
               transition={{ repeat: Infinity, duration: 3, repeatDelay: 1 }}
-              className="h-5 w-5"
+              className="h-6 w-6"
             >
               <img 
                 src={getPigipeCoinImage()} 
                 alt="ピギペ" 
-                className="h-5 w-5"
+                className="h-6 w-6"
               />
             </motion.div>
             <p className={`font-medium ${getBalanceTextColor()}`}>
@@ -95,7 +95,7 @@ const BudgetSimulationHeader = ({
                 <img 
                   src="/lovable-uploads/f0e25a98-4e04-4ed2-866f-8abdef33b4e0.png" 
                   alt="ピギペ" 
-                  className="h-4 w-4"
+                  className="h-5 w-5"
                 />
                 ローン: {loanAmount.toLocaleString()}円
               </div>
@@ -105,7 +105,7 @@ const BudgetSimulationHeader = ({
                 <img 
                   src="/lovable-uploads/949c6920-36ad-423e-8ee0-43a69ede9051.png" 
                   alt="ピギペ" 
-                  className="h-4 w-4"
+                  className="h-5 w-5"
                 />
                 イノシシローン: {wildBoarLoanAmount.toLocaleString()}円 ({Math.round(wildBoarInterestRate * 100)}% 金利)
               </div>

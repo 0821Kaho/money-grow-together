@@ -34,7 +34,7 @@ const PastEventsAccordion = ({ currentDay, completedEvents }: PastEventsAccordio
           <img 
             src="/lovable-uploads/0f40b560-edb0-4c33-a846-e6e5544011ea.png" 
             alt="ピギペ" 
-            className="w-5 h-5"
+            className="w-7 h-7"
           />
           <span className="font-medium">過去のイベントを見る</span>
         </div>
@@ -53,11 +53,11 @@ const PastEventsAccordion = ({ currentDay, completedEvents }: PastEventsAccordio
               <div className="space-y-4">
                 {events.map((event) => (
                   <div key={event.id} className="relative pl-6 border-l-2 border-gray-200">
-                    <div className="absolute left-[-14px] top-0 w-7 h-7 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center overflow-hidden">
+                    <div className="absolute left-[-14px] top-0 w-8 h-8 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center overflow-hidden">
                       <img 
                         src={getEventImage(event.type || "default", event.day)} 
                         alt="ピギペ" 
-                        className="w-5 h-5 object-contain"
+                        className="w-6 h-6 object-contain"
                       />
                     </div>
                     <div className="mb-1">

@@ -16,7 +16,7 @@ const SwipeHint = () => {
         <motion.img 
           src="/lovable-uploads/78916889-a5e5-4f16-9558-6f378af5bae4.png"
           alt="ピギペ"
-          className="h-4 w-4 inline-block"
+          className="h-6 w-6 inline-block" 
           animate={{ x: [0, 4, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         />
