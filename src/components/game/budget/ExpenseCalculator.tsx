@@ -1,7 +1,10 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { PiggyBank } from "lucide-react";
+import { PiggyBank, DollarSign, Percent } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import ExpenseGuideBox from "./ExpenseGuideBox";
 
 interface ExpenseItem {
   id: string;
@@ -30,6 +33,20 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
     amount: 0,
     category: "variableExpense",
   });
+  
+  const [showTutorial, setShowTutorial] = useState(false);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (!localStorage.getItem('pigipe.budget.tutorial.done')) {
+      setShowTutorial(true);
+    }
+  }, []);
+
+  const closeTutorial = () => {
+    setShowTutorial(false);
+    localStorage.setItem('pigipe.budget.tutorial.done', 'true');
+  };
 
   const addItem = () => {
     if (!newItem.name || !newItem.amount) return;
@@ -75,7 +92,12 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       animate={{ opacity: 1 }}
       className="rounded-lg bg-white p-6"
     >
-      <h3 className="mb-4 text-xl font-bold">収支の棚卸しをしよう</h3>
+      <h3 className="mb-5 text-xl font-medium">
+        <span className="font-bold text-game-primary">STEP 1</span> 家計を"自分色"に塗り替えよう
+      </h3>
+      
+      {/* Add the new guide box at the top */}
+      <ExpenseGuideBox />
       
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
@@ -156,12 +178,14 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
             type="text"
             value={newItem.name}
             onChange={e => setNewItem({ ...newItem, name: e.target.value })}
-            placeholder="項目名"
+            placeholder="例：推し活・サブスク"
+            autoFocus
             className="flex-1 rounded-md border border-gray-300 p-2"
           />
           <div className="flex flex-1 items-center rounded-md border border-gray-300 px-2">
             <input
               type="number"
+              inputMode="numeric"
               value={newItem.amount || ""}
               onChange={e => setNewItem({ ...newItem, amount: parseInt(e.target.value) || 0 })}
               placeholder="金額"
@@ -207,21 +231,21 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
         <button
           onClick={addItem}
           disabled={!newItem.name || !newItem.amount}
-          className={`w-full rounded-md p-2 text-white ${
+          className={`w-full min-w-[96px] whitespace-nowrap justify-center rounded-md p-2 text-white ${
             !newItem.name || !newItem.amount ? "bg-gray-400" : "bg-[#25B589]"
           }`}
         >
-          追加する
+          ＋追加する
         </button>
       </div>
       
       <div className="mb-6 rounded-lg bg-[#F7F7F7] p-4">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">収入合計</span>
+          <span className="font-medium">今の残高</span>
           <span className="font-medium">{totalIncome.toLocaleString()}円</span>
         </div>
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">支出合計</span>
+          <span className="font-medium">ここまで使った分</span>
           <span className="font-medium">{(totalFixedExpenses + totalVariableExpenses).toLocaleString()}円</span>
         </div>
         <div className="flex items-center justify-between">
@@ -232,7 +256,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
         </div>
       </div>
       
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-6 flex items-center gap-2">
         <PiggyBank className="h-5 w-5 text-game-primary" />
         <div className="flex-1">
           <div className="mb-1 flex items-center justify-between">
@@ -249,10 +273,44 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <button
         onClick={() => onComplete(balance)}
-        className="w-full rounded-xl bg-game-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105"
+        className="w-full rounded-xl bg-game-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105 min-w-[96px] whitespace-nowrap justify-center"
       >
         収支の確認を完了する
       </button>
+      
+      {/* Tutorial Modal */}
+      {showTutorial && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative max-w-md rounded-lg bg-white p-6">
+            <button 
+              className="absolute right-2 top-2 text-gray-500"
+              onClick={closeTutorial}
+            >
+              ✕
+            </button>
+            <h3 className="mb-4 text-lg font-bold">収支の棚卸しの使い方</h3>
+            <div className="mb-4 flex justify-center">
+              <img 
+                src="/lovable-uploads/5f45fe44-5e1b-4d66-81d9-1171ab40e98a.png" 
+                alt="収入の管理" 
+                className="h-48 object-contain"
+              />
+            </div>
+            <p className="mb-4 text-sm">
+              Pigipeと一緒に、あなた専用の家計簿を作りましょう！
+              サンプルの項目を削除して、実際のあなたの収支を入力してみてください。
+            </p>
+            <div className="text-center">
+              <button 
+                onClick={closeTutorial}
+                className="rounded-lg bg-game-primary px-4 py-2 font-medium text-white"
+              >
+                使ってみる
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 };
