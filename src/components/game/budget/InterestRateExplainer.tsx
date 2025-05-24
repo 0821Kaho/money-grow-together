@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, TrendingUp, Coins, AlertCircle } from "lucide-react";
@@ -166,8 +167,8 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
                 元金にのみ金利がつく方式。
                 利息は最初の預け入れ額（元金）のみに対して計算されます。
               </p>
-              <div className="flex justify-center">
-                <div className="text-center text-xs p-2 border border-dashed border-gray-300 rounded-lg">
+              <div className="flex">
+                <div className="text-left text-xs p-2 border border-dashed border-gray-300 rounded-lg">
                   <div>例：100万円を年利3%で5年間</div>
                   <div className="font-bold text-blue-600">利息 = 100万円 × 3% × 5年 = 15万円</div>
                 </div>
@@ -184,8 +185,8 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
                 元金だけでなく、すでについた利息にも金利がつく方式。
                 時間とともに加速度的に増えていきます。
               </p>
-              <div className="flex justify-center">
-                <div className="text-center text-xs p-2 border border-dashed border-gray-300 rounded-lg">
+              <div className="flex">
+                <div className="text-left text-xs p-2 border border-dashed border-gray-300 rounded-lg">
                   <div>例：100万円を年利3%で5年間</div>
                   <div className="font-bold text-green-600">元利合計 = 100万円 × (1+3%)^5 = 約116万円</div>
                 </div>
