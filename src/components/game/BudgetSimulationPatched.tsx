@@ -30,6 +30,9 @@ const BudgetSimulationPatched = () => {
       <CardContent className="pt-6">
         {activeTab === "simulation" && (
           <div className="mb-6">
+            <p className="text-gray-600 break-words whitespace-normal leading-relaxed mb-2">
+              <span className="font-medium">カレンダー形式で1か月のサバイバルチャレンジを体験！</span>
+            </p>
             <p className="text-gray-600 break-words whitespace-normal leading-relaxed">
               一ヶ月を乗り切る<span className="text-game-primary font-medium">家計管理チャレンジ</span>に挑戦しましょう！
               <span className="text-game-accent font-medium">給料</span>から<span className="text-game-secondary font-medium">生活費</span>をやりくりし、
