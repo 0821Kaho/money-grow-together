@@ -28,15 +28,17 @@ const BudgetSimulationPatched = () => {
   return (
     <Card>
       <CardContent className="pt-6">
-        <div className="mb-6">
-          <p className="text-gray-600 break-words whitespace-normal leading-relaxed">
-            一ヶ月を乗り切る<span className="text-game-primary font-medium">家計管理チャレンジ</span>に挑戦しましょう！
-            <span className="text-game-accent font-medium">給料</span>から<span className="text-game-secondary font-medium">生活費</span>をやりくりし、
-            <span className="text-game-danger font-medium">借金</span>せずに月末までサバイバルできれば成功です。
-            日々のイベントに対して賢い選択をして所持金を管理し、もしもの時に誘惑してくる高金利ローンを回避しましょう。
-            計画的な<span className="text-[#25B589] font-medium">家計管理</span>で「家計サバイバー」バッジを目指せ！
-          </p>
-        </div>
+        {activeTab === "simulation" && (
+          <div className="mb-6">
+            <p className="text-gray-600 break-words whitespace-normal leading-relaxed">
+              一ヶ月を乗り切る<span className="text-game-primary font-medium">家計管理チャレンジ</span>に挑戦しましょう！
+              <span className="text-game-accent font-medium">給料</span>から<span className="text-game-secondary font-medium">生活費</span>をやりくりし、
+              <span className="text-game-danger font-medium">借金</span>せずに月末までサバイバルできれば成功です。
+              日々のイベントに対して賢い選択をして所持金を管理し、もしもの時に誘惑してくる高金利ローンを回避しましょう。
+              計画的な<span className="text-[#25B589] font-medium">家計管理</span>で「家計サバイバー」バッジを目指せ！
+            </p>
+          </div>
+        )}
 
         <Tabs defaultValue="modules" className="w-full" onValueChange={setActiveTab}>
           <div className="relative">
