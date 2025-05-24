@@ -148,7 +148,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                               {item.category === "waste" ? (
                                 <span className="text-game-danger">浪費</span>
                               ) : item.category === "optional" ? (
-                                <span className="text-[#FFB547]">選択的</span>
+                                <span className="text-[#FFB547]">オプション</span>
                               ) : (
                                 <span className="text-[#25B589]">必要</span>
                               )}
