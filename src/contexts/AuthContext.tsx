@@ -1,167 +1,138 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { User, Session } from '@supabase/supabase-js';
 
-// Extended user type to include additional properties needed throughout the app
-interface ExtendedUser extends User {
-  isAdmin?: boolean;
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { api } from '@/lib/api';
+
+type User = {
+  id: string;
+  email: string;
   displayName?: string;
-}
-
-interface AuthContextType {
-  session: Session | null;
-  user: ExtendedUser | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  login: (email?: string) => Promise<any>;
-  logout: () => Promise<void>;
-  signup: (email: string, password: string, displayName?: string, age?: number) => Promise<any>;
-}
-
-const AuthContext = createContext<AuthContextType>({
-  session: null,
-  user: null,
-  isLoading: false,
-  isAuthenticated: false,
-  login: async () => {},
-  logout: async () => {},
-  signup: async () => {},
-});
-
-export const useAuth = () => {
-  return useContext(AuthContext);
+  isAdmin?: boolean;
 };
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<ExtendedUser | null>(null);
+type AuthContextType = {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<User>; 
+  signup: (email: string, password: string, displayName?: string) => Promise<void>;
+  logout: () => void;
+};
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Set up auth state listener first
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, currentSession) => {
-        setSession(currentSession);
-        if (currentSession?.user) {
-          console.log("Auth state changed, user email:", currentSession.user.email);
+    // Check if user is already logged in, with improved error handling
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          // For now, we'll use a mock implementation
+          // In a real implementation, we would validate the token with the server
+          const savedEmail = localStorage.getItem('userEmail') || 'user@example.com';
+          // Check if the email is the admin email
+          const isAdmin = savedEmail === 'kahosatoyoshi@gmail.com';
+          console.log('User authenticated:', { email: savedEmail, isAdmin });
           
-          // Add any custom properties to the user object here
-          const extendedUser: ExtendedUser = {
-            ...currentSession.user,
-            // Make sure kahosatoyoshi@gmail.com is definitely recognized as admin
-            isAdmin: currentSession.user.email === 'kahosatoyoshi@gmail.com' || 
-                    currentSession.user.email?.endsWith('@admin.com') || false,
-            // Add displayName if needed from user metadata
-            displayName: currentSession.user.user_metadata?.displayName || ''
-          };
-          
-          console.log("User admin status:", extendedUser.isAdmin);
-          setUser(extendedUser);
-          setIsAuthenticated(true);
-        } else {
-          setUser(null);
-          setIsAuthenticated(false);
+          setUser({ 
+            id: '1', 
+            email: savedEmail,
+            isAdmin
+          });
         }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        // Clear invalid tokens
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+      } finally {
         setIsLoading(false);
       }
-    );
-
-    // Then check for existing session
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      setSession(currentSession);
-      if (currentSession?.user) {
-        console.log("Initial session check, user email:", currentSession.user.email);
-        
-        // Add any custom properties to the user object here
-        const extendedUser: ExtendedUser = {
-          ...currentSession.user,
-          // Make sure kahosatoyoshi@gmail.com is definitely recognized as admin
-          isAdmin: currentSession.user.email === 'kahosatoyoshi@gmail.com' || 
-                  currentSession.user.email?.endsWith('@admin.com') || false,
-          // Add displayName if needed from user metadata
-          displayName: currentSession.user.user_metadata?.displayName || ''
-        };
-        
-        console.log("User admin status:", extendedUser.isAdmin);
-        setUser(extendedUser);
-        setIsAuthenticated(true);
-      }
-      setIsLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
     };
+
+    checkAuth();
   }, []);
 
-  const login = async (email?: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     try {
-      const { data, error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: true,
-          // emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-      if (error) {
-        throw error;
-      }
-      console.log('Check your email for the magic link to sign in.');
-      return data;
-    } catch (error) {
-      console.error('Error logging in:', error);
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await supabase.auth.signOut();
-      setUser(null);
-      setSession(null);
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
-
-  // Modify the signup function to accept the age parameter
-  const signup = async (email: string, password: string, displayName?: string, age?: number) => {
-    try {
-      // Prepare metadata to include displayName and age if provided
-      const metadata: Record<string, any> = {};
-      if (displayName) metadata.displayName = displayName;
-      if (age !== undefined) metadata.age = age;
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: metadata
-        }
-      });
-
-      if (error) {
-        throw error;
-      }
+      // Mock implementation - would be replaced with actual API call
+      // const response = await api.post('/auth/login', { email, password });
+      // const { token, user } = response.data;
       
-      return data;
+      // For demo purposes
+      const token = 'mock-token';
+      const isAdmin = email === 'kahosatoyoshi@gmail.com';
+      console.log('Logging in:', { email, isAdmin });
+      
+      const userData = { 
+        id: '1', 
+        email,
+        isAdmin
+      };
+      
+      localStorage.setItem('token', token);
+      localStorage.setItem('userEmail', email); // Save email for demo purposes
+      setUser(userData);
+
+      return userData; // Return the user data for use in the login page
     } catch (error) {
-      console.error('Error signing up:', error);
-      throw error;
+      console.error('Login failed:', error);
+      throw new Error('ログインに失敗しました');
     }
   };
 
-  const value = {
-    session,
-    user,
-    isLoading,
-    isAuthenticated,
-    login,
-    logout,
-    signup,
+  const signup = async (email: string, password: string, displayName?: string) => {
+    try {
+      // Mock implementation - would be replaced with actual API call
+      // const response = await api.post('/auth/signup', { email, password, displayName });
+      // const { token, user } = response.data;
+      
+      // For demo purposes
+      const token = 'mock-token';
+      const isAdmin = email === 'kahosatoyoshi@gmail.com';
+      const userData = { 
+        id: '1', 
+        email, 
+        displayName,
+        isAdmin
+      };
+      
+      localStorage.setItem('token', token);
+      localStorage.setItem('userEmail', email); // Save email for demo purposes
+      setUser(userData);
+    } catch (error) {
+      console.error('Signup failed:', error);
+      throw new Error('アカウント作成に失敗しました');
+    }
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userEmail');
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated: !!user, 
+      isLoading, 
+      login, 
+      signup, 
+      logout 
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

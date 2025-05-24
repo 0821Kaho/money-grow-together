@@ -12,7 +12,6 @@ import { toast } from "sonner";
 const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [age, setAge] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -42,19 +41,11 @@ const SignupPage = () => {
       toast.error("利用規約に同意してください");
       return;
     }
-
-    // Validate age is a number
-    const ageNumber = parseInt(age);
-    if (isNaN(ageNumber) || ageNumber < 0) {
-      toast.error("有効な年齢を入力してください");
-      return;
-    }
     
     setIsLoading(true);
 
     try {
-      // Pass age in the metadata for the user
-      await signup(email, password, displayName, ageNumber);
+      await signup(email, password, displayName);
       toast.success("登録成功", {
         description: "Pigipeへようこそ！",
       });
@@ -97,18 +88,6 @@ const SignupPage = () => {
               placeholder="ニックネーム"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="age">年齢</Label>
-            <Input
-              id="age"
-              type="number"
-              min="0"
-              placeholder="年齢"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              required
             />
           </div>
           <div className="space-y-2">

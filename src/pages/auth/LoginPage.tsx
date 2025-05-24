@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,27 +14,13 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login, user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   // Check if the user is already logged in
   useEffect(() => {
     if (user) {
-      console.log("User is logged in:", user);
-      console.log("User email:", user.email);
-      
-      // Special check for kahosatoyoshi@gmail.com
-      const isAdminEmail = user.email === 'kahosatoyoshi@gmail.com' || user.email?.endsWith('@admin.com');
-      
-      // Check if user is admin to redirect to admin panel
-      if (user.isAdmin || isAdminEmail) {
-        console.log("User is admin, redirecting to /admin");
-        navigate('/admin');
-        return;
-      }
-      
       // Get the return path from localStorage or default to modules
       const returnPath = localStorage.getItem('returnPath') || '/modules';
-      console.log("Redirecting to return path:", returnPath);
-      
       // Clear the return path
       localStorage.removeItem('returnPath');
       // Redirect to the return path
@@ -47,15 +33,31 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      await login(email);
+      const userData = await login(email, password);
       
-      toast.success("ログイン確認用のメールを送信しました", {
-        description: "メールのリンクをクリックしてログインしてください",
+      toast({
+        title: "ログイン成功",
+        description: "Pigipeへようこそ！",
       });
+      
+      // Get the return path from localStorage or default to modules
+      const returnPath = localStorage.getItem('returnPath') || '/modules';
+      // Clear the return path
+      localStorage.removeItem('returnPath');
+      
+      // 管理者ユーザーなら管理者ダッシュボードに遷移する
+      if (userData.isAdmin) {
+        console.log("管理者としてログインしました。管理者ページへ遷移します。");
+        navigate("/admin");
+      } else {
+        console.log(`一般ユーザーとしてログインしました。${returnPath}へ遷移します。`);
+        navigate(returnPath);
+      }
     } catch (error) {
-      console.error("Login error:", error);
-      toast.error("ログイン失敗", {
+      toast({
+        title: "ログイン失敗",
         description: "メールアドレスまたはパスワードが正しくありません",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);

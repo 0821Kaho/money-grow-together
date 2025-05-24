@@ -1,6 +1,6 @@
 
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner, toast } from "@/components/ui/sonner";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
@@ -60,39 +60,9 @@ function AppRoutes() {
 
   // Admin route component that checks if user is admin
   const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-      if (!isLoading) {
-        if (!isAuthenticated) {
-          // Store the current path to return after login
-          localStorage.setItem('returnPath', window.location.pathname);
-          navigate("/login");
-        } else {
-          // Check admin status directly here as well
-          const isAdmin = user?.email === 'kahosatoyoshi@gmail.com' || 
-                         user?.email?.endsWith('@admin.com') || 
-                         user?.isAdmin === true;
-                         
-          if (!isAdmin) {
-            // User is logged in but not an admin
-            toast.error("管理者権限が必要です");
-            navigate("/");
-          }
-        }
-      }
-    }, [isLoading, isAuthenticated, user, navigate]);
-    
-    // Check admin status directly to avoid rendering issues
-    const isAdmin = user?.email === 'kahosatoyoshi@gmail.com' || 
-                   user?.email?.endsWith('@admin.com') || 
-                   user?.isAdmin === true;
-    
-    // Show nothing while checking auth status or navigating
-    if (isLoading || !isAuthenticated || !isAdmin) return null;
-    
-    // Show children only when authenticated and admin
-    return <>{children}</>;
+    return isAuthenticated && user?.isAdmin ? 
+      <>{children}</> : 
+      <Navigate to="/" replace />;
   };
 
   return (
@@ -118,7 +88,7 @@ function AppRoutes() {
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           
-          {/* Admin routes - using AdminRoute component */}
+          {/* Admin routes */}
           <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<DashboardPage />} />
             <Route path="users" element={<UsersPage />} />

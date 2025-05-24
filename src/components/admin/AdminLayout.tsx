@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Users,
@@ -14,18 +14,12 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useAdminGuard } from "@/hooks/useAdminGuard";
 
 const AdminLayout = () => {
   const { pathname } = useLocation();
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  // Use the admin guard hook to ensure only admins can access
-  const { isAdmin } = useAdminGuard();
-
-  console.log("AdminLayout rendering, isAdmin:", isAdmin);
-  console.log("Current user email:", user?.email);
 
   const handleLogout = async () => {
     try {
@@ -37,20 +31,6 @@ const AdminLayout = () => {
       console.error("Logout error:", error);
     }
   };
-
-  // If for some reason user state changes while on this page
-  useEffect(() => {
-    if (user && !isAdmin) {
-      toast.error("管理者権限が必要です");
-      navigate("/");
-    }
-  }, [user, navigate, isAdmin]);
-
-  // Don't render anything until we confirm the user is an admin
-  if (!isAdmin) {
-    console.log("Not rendering admin layout because user is not admin");
-    return null;
-  }
 
   const navItems = [
     {
