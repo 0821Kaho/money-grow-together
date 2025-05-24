@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, TrendingUp, Coins, AlertCircle } from "lucide-react";
@@ -269,13 +268,13 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
           <div className="flex gap-3">
             <button
               onClick={prevStep}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-1.5 text-sm hover:bg-gray-50"
             >
               戻る
             </button>
             <button
               onClick={nextStep}
-              className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
+              className="flex-1 rounded-lg bg-game-primary px-4 py-1.5 text-sm hover:brightness-105 text-white"
             >
               次へ
             </button>
@@ -407,13 +406,13 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
           <div className="flex gap-3">
             <button
               onClick={prevStep}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-1.5 text-sm hover:bg-gray-50"
             >
               戻る
             </button>
             <button
               onClick={onComplete}
-              className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
+              className="flex-1 rounded-lg bg-game-primary px-4 py-1.5 text-sm hover:brightness-105 text-white"
             >
               理解した
             </button>
