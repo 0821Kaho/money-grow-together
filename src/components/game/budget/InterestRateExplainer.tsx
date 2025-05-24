@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, TrendingUp, Coins, AlertCircle } from "lucide-react";
@@ -145,7 +146,7 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
 
           <button
             onClick={nextStep}
-            className="w-full rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
+            className="w-full rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105 text-sm"
           >
             次へ：単利と複利
           </button>
