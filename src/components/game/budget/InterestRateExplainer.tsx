@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, TrendingUp, Coins, AlertCircle } from "lucide-react";
@@ -92,9 +91,13 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
                     repeat: Infinity,
                     repeatType: "loop",
                   }}
-                  className="text-[80px]"
+                  className="w-32 h-32"
                 >
-                  💴
+                  <img 
+                    src="/lovable-uploads/d5ca595a-44cb-4a30-a00d-6e9ba2394360.png" 
+                    alt="金利の説明" 
+                    className="w-full h-full object-contain"
+                  />
                 </motion.div>
               </div>
               <motion.div
