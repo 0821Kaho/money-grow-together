@@ -7,7 +7,7 @@ import LeafVisual from "@/components/ui/LeafVisual";
 
 const WelcomeSection = () => {
   const welcomeMessages = [
-    "ようこそ、マネゴローへ！お金について楽しく学びましょう！",
+    "ようこそ！お金について楽しく学びましょう！",
     "トントンがお待ちかね🐽 予算を入力しよう！",
     "毎日少しずつ学習して、お金の知識を身につけましょう！"
   ];
