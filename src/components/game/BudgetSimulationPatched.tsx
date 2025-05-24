@@ -4,13 +4,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import BudgetModules from "./budget/BudgetModules";
 import BudgetSimulation from "./BudgetSimulation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, CalendarCheck2, Bell } from "lucide-react";
+import { Calendar, CalendarCheck2, Bell, BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MascotCharacter from "../mascot/MascotCharacter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/hooks/use-toast";
 
 const STORAGE_KEY = "budget_simulation_state";
+const BUDGET_MODULE_PROGRESS_KEY = "budget_module_progress";
 
 interface SimulationState {
   activeTab: string;
@@ -18,11 +19,17 @@ interface SimulationState {
   hasSeenIntro: boolean;
 }
 
+interface ModuleProgress {
+  currentModule: string;
+  balance: number;
+}
+
 const BudgetSimulationPatched = () => {
   const [activeTab, setActiveTab] = useState<string>("modules");
   const [mascotPosition, setMascotPosition] = useState<"left" | "right">("left");
   const [hasNewContent, setHasNewContent] = useState(true);
   const [hasSeenIntro, setHasSeenIntro] = useState(false);
+  const [hasCompletedLearningModules, setHasCompletedLearningModules] = useState(false);
   const isMobile = useIsMobile();
 
   // Load saved state on component mount
@@ -43,6 +50,13 @@ const BudgetSimulationPatched = () => {
             duration: 3000,
           });
         }
+      }
+      
+      // 学習モジュールの完了状態を確認
+      const moduleProgress = localStorage.getItem(BUDGET_MODULE_PROGRESS_KEY);
+      if (moduleProgress) {
+        const progress: ModuleProgress = JSON.parse(moduleProgress);
+        setHasCompletedLearningModules(progress.currentModule === "completed");
       }
     } catch (error) {
       console.error("Error loading saved state:", error);
@@ -110,7 +124,7 @@ const BudgetSimulationPatched = () => {
           <div className="relative">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="modules" className="flex items-center gap-1 relative px-1 py-1.5">
-                <Calendar className="h-4 w-4 flex-shrink-0" />
+                <BookOpen className="h-4 w-4 flex-shrink-0" />
                 <span className={`${isMobile ? 'text-xs' : 'text-sm'} whitespace-normal text-center`}>
                   学習モジュール
                 </span>
@@ -169,7 +183,8 @@ const BudgetSimulationPatched = () => {
           </TabsContent>
           
           <TabsContent value="simulation" className="mt-0">
-            <BudgetSimulation />
+            {/* 学習モジュールの完了状態に応じて、初期状態を設定 */}
+            <BudgetSimulation skipLearningPhase={hasCompletedLearningModules} />
           </TabsContent>
         </Tabs>
       </CardContent>

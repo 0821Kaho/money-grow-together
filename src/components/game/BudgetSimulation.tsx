@@ -19,6 +19,10 @@ import BudgetCalendarView from "./budget/BudgetCalendarView";
 // dayEventsを定義
 const dayEvents = getBudgetEvents();
 
+interface BudgetSimulationProps {
+  skipLearningPhase?: boolean;
+}
+
 interface BudgetState {
   money: number;
   happiness: number;
@@ -58,8 +62,21 @@ const initialState: BudgetState = {
 // シミュレーションの進捗を保存するためのキー
 const SIMULATION_PROGRESS_KEY = "budget_simulation_progress";
 
-const BudgetSimulation = () => {
-  const [state, setState] = useState<BudgetState>(initialState);
+const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) => {
+  // 学習フェーズをスキップする場合は初期状態を調整
+  const getInitialState = (): BudgetState => {
+    if (skipLearningPhase) {
+      return {
+        ...initialState,
+        currentStage: "simulation",
+        money: 150000 + 10000, // 学習フェーズで得られる平均的なボーナスを追加
+        achievedBadges: ["学習マスター"],
+      };
+    }
+    return initialState;
+  };
+
+  const [state, setState] = useState<BudgetState>(getInitialState());
   const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [showLoanOffer, setShowLoanOffer] = useState(false);
   const [showWildBoarLoanOffer, setShowWildBoarLoanOffer] = useState(false);
@@ -89,11 +106,18 @@ const BudgetSimulation = () => {
         setProgressLoaded(true);
         
         console.log("Budget simulation progress loaded:", parsedState);
+      } else if (skipLearningPhase) {
+        // 保存された進捗がなく、学習フェーズをスキップする場合
+        setProgressLoaded(true);
+        toast({
+          title: "学習モジュール完了済み", 
+          description: "既に学習モジュールを完了しているため、シミュレーションから開始します",
+        });
       }
     } catch (error) {
       console.error("Error loading budget simulation progress:", error);
     }
-  }, []);
+  }, [skipLearningPhase]);
   
   // ステートが変更されるたびに進捗を保存する
   useEffect(() => {
