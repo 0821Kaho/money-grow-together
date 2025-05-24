@@ -21,7 +21,7 @@ const MascotImage = ({
   alt = "トントン"
 }: MascotImageProps) => {
   
-  sizeClasses = {
+  const sizeClasses = {
     small: "w-20 h-20",
     medium: "w-28 h-28",
     large: "w-36 h-36",
