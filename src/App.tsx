@@ -1,6 +1,5 @@
-
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster as Sonner, toast } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
@@ -33,6 +32,7 @@ import AdminSettingsPage from "./pages/admin/SettingsPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
+import { supabase } from "./integrations/supabase/client";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
@@ -61,20 +61,46 @@ function AppRoutes() {
   // Admin route component that checks if user is admin
   const AdminRoute = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
-    const isAdmin = user?.app_metadata?.isAdmin === true;
     
     useEffect(() => {
-      if (!isLoading && !isAuthenticated) {
-        localStorage.setItem('returnPath', window.location.pathname);
-        navigate("/login");
-      } else if (!isLoading && !isAdmin) {
-        navigate("/");
-      }
-    }, [isLoading, isAuthenticated, isAdmin, navigate]);
+      const checkAdminRole = async () => {
+        if (isLoading) return;
+        
+        if (!isAuthenticated) {
+          localStorage.setItem('returnPath', window.location.pathname);
+          navigate("/login");
+          return;
+        }
+        
+        try {
+          // Query profiles table to check admin role
+          if (user) {
+            const { data, error } = await supabase
+              .from('profiles')
+              .select('role')
+              .eq('id', user.id)
+              .single();
+
+            if (error || !data || data.role !== 'admin') {
+              toast.error("管理者権限が必要です");
+              navigate('/');
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('Error checking admin role:', error);
+          toast.error("権限の確認に失敗しました");
+          navigate('/');
+        }
+      };
+      
+      checkAdminRole();
+    }, [isLoading, isAuthenticated, user, navigate]);
     
     // Show nothing while checking status
-    if (isLoading || !isAuthenticated || !isAdmin) return null;
+    if (isLoading || !isAuthenticated) return null;
     
+    // Show children only when admin
     return <>{children}</>;
   };
 
