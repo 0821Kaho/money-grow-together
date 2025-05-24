@@ -13,6 +13,7 @@ const BudgetSimulationPatched = () => {
   const [activeTab, setActiveTab] = useState<string>("modules");
   const [mascotPosition, setMascotPosition] = useState<"left" | "right">("left");
   const [hasNewContent, setHasNewContent] = useState(true);
+  const [hasSeenIntro, setHasSeenIntro] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -23,12 +24,17 @@ const BudgetSimulationPatched = () => {
     if (activeTab === "modules") {
       setHasNewContent(false);
     }
+    
+    // Mark intro as seen when user switches to simulation tab
+    if (activeTab === "simulation") {
+      setHasSeenIntro(true);
+    }
   }, [activeTab]);
 
   return (
     <Card>
       <CardContent className="pt-6">
-        {activeTab === "simulation" && (
+        {activeTab === "simulation" && !hasSeenIntro && (
           <div className="mb-6">
             <p className="text-gray-600 break-words whitespace-normal leading-relaxed mb-2">
               <span className="font-medium">カレンダー形式で1か月のサバイバルチャレンジを体験！</span>
