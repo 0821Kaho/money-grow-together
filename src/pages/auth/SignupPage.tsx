@@ -16,8 +16,15 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { signup } = useAuth();
+  const { signup, user } = useAuth();
   const navigate = useNavigate();
+
+  // Check if the user is already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/modules');
+    }
+  }, [user, navigate]);
 
   // Get pre-registered email from localStorage if available
   useEffect(() => {
@@ -49,10 +56,12 @@ const SignupPage = () => {
       toast.success("登録成功", {
         description: "Pigipeへようこそ！",
       });
+      // Onboarding is the next step after signup
       navigate("/onboarding");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Signup error:", error);
       toast.error("登録失敗", {
-        description: "アカウントの作成に失敗しました",
+        description: error.message || "アカウントの作成に失敗しました",
       });
     } finally {
       setIsLoading(false);

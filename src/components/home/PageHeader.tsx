@@ -2,6 +2,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ProfileButton from "../ui/ProfileButton";
 
 const PageHeader = () => {
   const { isAuthenticated } = useAuth();
@@ -18,7 +19,7 @@ const PageHeader = () => {
             <span className="font-extrabold">Pigipe</span>
           </Link>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           {!isAuthenticated ? (
             <>
               <Link to="/login">
@@ -45,6 +46,7 @@ const PageHeader = () => {
                   マイページ
                 </Button>
               </Link>
+              <ProfileButton />
             </>
           )}
         </div>

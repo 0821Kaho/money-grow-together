@@ -60,9 +60,21 @@ function AppRoutes() {
 
   // Admin route component that checks if user is admin
   const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-    return isAuthenticated && user?.isAdmin ? 
-      <>{children}</> : 
-      <Navigate to="/" replace />;
+    const isAdmin = user?.app_metadata?.isAdmin === true;
+    
+    useEffect(() => {
+      if (!isLoading && !isAuthenticated) {
+        localStorage.setItem('returnPath', window.location.pathname);
+        navigate("/login");
+      } else if (!isLoading && !isAdmin) {
+        navigate("/");
+      }
+    }, [isLoading, isAuthenticated, isAdmin]);
+    
+    // Show nothing while checking status
+    if (isLoading || !isAuthenticated || !isAdmin) return null;
+    
+    return <>{children}</>;
   };
 
   return (
@@ -89,14 +101,14 @@ function AppRoutes() {
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           
           {/* Admin routes */}
-          <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-            <Route index element={<DashboardPage />} />
-            <Route path="users" element={<UsersPage />} />
-            <Route path="users/:id" element={<UserDetailPage />} />
-            <Route path="feedback" element={<FeedbackPage />} />
-            <Route path="waitlist" element={<WaitlistPage />} />
-            <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="settings" element={<AdminSettingsPage />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminRoute><DashboardPage /></AdminRoute>} />
+            <Route path="users" element={<AdminRoute><UsersPage /></AdminRoute>} />
+            <Route path="users/:id" element={<AdminRoute><UserDetailPage /></AdminRoute>} />
+            <Route path="feedback" element={<AdminRoute><FeedbackPage /></AdminRoute>} />
+            <Route path="waitlist" element={<AdminRoute><WaitlistPage /></AdminRoute>} />
+            <Route path="analytics" element={<AdminRoute><AnalyticsPage /></AdminRoute>} />
+            <Route path="settings" element={<AdminRoute><AdminSettingsPage /></AdminRoute>} />
           </Route>
           
           {/* 404 route */}

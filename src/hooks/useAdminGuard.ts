@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 export function useAdminGuard() {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+  const isAdmin = user?.app_metadata?.isAdmin === true;
 
   useEffect(() => {
     // Only redirect after authentication check is complete
@@ -19,14 +20,14 @@ export function useAdminGuard() {
         // User is not logged in
         toast.error("ログインが必要です");
         navigate('/login');
-      } else if (!user.isAdmin) {
+      } else if (!isAdmin) {
         // User is logged in but not an admin
         toast.error("管理者権限が必要です");
         navigate('/');
       }
       // If user is logged in and is an admin, do nothing (allow access)
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, navigate, isAdmin]);
 
-  return { isAdmin: user?.isAdmin === true, isLoading };
+  return { isAdmin, isLoading };
 }

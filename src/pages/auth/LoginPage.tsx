@@ -23,6 +23,7 @@ const LoginPage = () => {
       const returnPath = localStorage.getItem('returnPath') || '/modules';
       // Clear the return path
       localStorage.removeItem('returnPath');
+      
       // Redirect to the return path
       navigate(returnPath);
     }
@@ -46,7 +47,7 @@ const LoginPage = () => {
       localStorage.removeItem('returnPath');
       
       // 管理者ユーザーなら管理者ダッシュボードに遷移する
-      if (userData.isAdmin) {
+      if (userData.app_metadata?.isAdmin) {
         console.log("管理者としてログインしました。管理者ページへ遷移します。");
         navigate("/admin");
       } else {
@@ -54,6 +55,7 @@ const LoginPage = () => {
         navigate(returnPath);
       }
     } catch (error) {
+      console.error("Login error:", error);
       toast({
         title: "ログイン失敗",
         description: "メールアドレスまたはパスワードが正しくありません",

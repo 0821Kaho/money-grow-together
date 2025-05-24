@@ -8,7 +8,7 @@ import { toast } from "sonner";
 const ProfileButton = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
@@ -18,11 +18,27 @@ const ProfileButton = () => {
     closeDropdown();
   };
 
-  const handleLogout = () => {
-    logout();
-    toast.success("ログアウトしました");
-    navigate("/");
-    closeDropdown();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("ログアウトしました");
+      navigate("/");
+      closeDropdown();
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("ログアウトに失敗しました");
+    }
+  };
+
+  // Get the first initial of user's email or display name for the avatar
+  const getInitial = () => {
+    if (user?.user_metadata?.displayName) {
+      return user.user_metadata.displayName.charAt(0);
+    }
+    if (user?.email) {
+      return user.email.charAt(0).toUpperCase();
+    }
+    return "ユ"; // Default if no user info is available
   };
 
   return (
@@ -31,7 +47,7 @@ const ProfileButton = () => {
         onClick={toggleDropdown}
         className="flex h-10 w-10 items-center justify-center rounded-full bg-game-primary text-white"
       >
-        <span className="font-bold">ユ</span>
+        <span className="font-bold">{getInitial()}</span>
       </button>
 
       {isOpen && (

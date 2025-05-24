@@ -1,11 +1,18 @@
 
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 import MascotTooltip from "../mascot/MascotTooltip";
 import MascotImage from "../mascot/MascotImage";
 import MoneyVisual from "@/components/ui/MoneyVisual";
-import LeafVisual from "@/components/ui/LeafVisual";
 
 const WelcomeSection = () => {
+  const { user } = useAuth();
+  
+  // Get display name from user metadata or email, or fallback to generic
+  const displayName = user
+    ? user.user_metadata?.displayName || user.email?.split('@')[0] || "ユーザー"
+    : "ユーザー";
+  
   const welcomeMessages = [
     "ようこそ！お金について楽しく学びましょう！",
     "トントンがお待ちかね🐽 予算を入力しよう！",
@@ -47,7 +54,7 @@ const WelcomeSection = () => {
 
       <div className="flex items-center justify-between relative z-10">
         <div className="flex-1">
-          <h1 className="mb-2 text-2xl font-heading font-bold">ようこそ、ユーザーさん！</h1>
+          <h1 className="mb-2 text-2xl font-heading font-bold">ようこそ、{displayName}さん！</h1>
           <p className="text-white/90 font-body">
             お金について学びながら楽しく実践的なスキルを身につけましょう。
           </p>
