@@ -1,5 +1,5 @@
 
-import { PiggyBank } from "lucide-react";
+import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 
 interface BudgetSimulationHeaderProps {
@@ -36,6 +36,13 @@ const BudgetSimulationHeader = ({
     return "bg-gradient-to-r from-green-400 to-emerald-500";
   };
 
+  // Helper to get appropriate Pigipe coin image
+  const getPigipeCoinImage = () => {
+    if (money < 0) return "/lovable-uploads/f0e25a98-4e04-4ed2-866f-8abdef33b4e0.png"; // Sad face
+    if (money > 50000) return "/lovable-uploads/84e9fd66-764d-47c0-8879-5aaa03852460.png"; // Very happy
+    return "/lovable-uploads/1658a1ba-66f2-4a8d-9da6-baaa0ee8ea80.png"; // Normal happy with coin
+  };
+
   return (
     <div className="sticky top-0 z-10 bg-white border-b shadow-sm px-4 py-2">
       <div className="flex items-center justify-between max-w-3xl mx-auto">
@@ -61,7 +68,17 @@ const BudgetSimulationHeader = ({
           </div>
 
           <div className="flex items-center gap-1">
-            <PiggyBank className="h-4 w-4 text-game-primary" />
+            <motion.div
+              animate={money >= 0 ? { rotate: [0, 10, 0] } : { scale: [1, 0.9, 1] }}
+              transition={{ repeat: Infinity, duration: 3, repeatDelay: 1 }}
+              className="h-5 w-5"
+            >
+              <img 
+                src={getPigipeCoinImage()} 
+                alt="ピギペ" 
+                className="h-5 w-5"
+              />
+            </motion.div>
             <p className={`font-medium ${getBalanceTextColor()}`}>
               {money.toLocaleString()}円
             </p>
@@ -74,12 +91,22 @@ const BudgetSimulationHeader = ({
         <div className="flex justify-end max-w-3xl mx-auto mt-1 text-xs">
           <div className="space-y-1">
             {hasLoan && (
-              <div className="text-game-danger">
+              <div className="text-game-danger flex items-center gap-1">
+                <img 
+                  src="/lovable-uploads/f0e25a98-4e04-4ed2-866f-8abdef33b4e0.png" 
+                  alt="ピギペ" 
+                  className="h-4 w-4"
+                />
                 ローン: {loanAmount.toLocaleString()}円
               </div>
             )}
             {hasWildBoarLoan && (
-              <div className="text-game-danger font-semibold">
+              <div className="text-game-danger font-semibold flex items-center gap-1">
+                <img 
+                  src="/lovable-uploads/949c6920-36ad-423e-8ee0-43a69ede9051.png" 
+                  alt="ピギペ" 
+                  className="h-4 w-4"
+                />
                 イノシシローン: {wildBoarLoanAmount.toLocaleString()}円 ({Math.round(wildBoarInterestRate * 100)}% 金利)
               </div>
             )}
