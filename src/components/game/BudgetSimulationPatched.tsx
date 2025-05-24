@@ -8,6 +8,7 @@ import { Calendar, CalendarCheck2, Bell } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MascotCharacter from "../mascot/MascotCharacter";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { toast } from "@/hooks/use-toast";
 
 const STORAGE_KEY = "budget_simulation_state";
 
@@ -33,6 +34,15 @@ const BudgetSimulationPatched = () => {
         setActiveTab(state.activeTab);
         setHasNewContent(state.hasNewContent);
         setHasSeenIntro(state.hasSeenIntro);
+        
+        // 進捗状態の復元を通知
+        if (state.activeTab === "simulation") {
+          toast({
+            title: "シミュレーション再開",
+            description: "前回のサバイバルシミュレーションから再開します",
+            duration: 3000,
+          });
+        }
       }
     } catch (error) {
       console.error("Error loading saved state:", error);
@@ -67,6 +77,16 @@ const BudgetSimulationPatched = () => {
       setHasSeenIntro(true);
     }
   }, [activeTab]);
+
+  // リセット機能
+  const resetSimulation = () => {
+    localStorage.removeItem("budget_simulation_progress");
+    toast({
+      title: "リセット完了",
+      description: "サバイバルシミュレーションをリセットしました",
+      duration: 3000,
+    });
+  };
 
   return (
     <Card>
@@ -107,6 +127,21 @@ const BudgetSimulationPatched = () => {
                 <span className={`${isMobile ? 'text-xs' : 'text-sm'} whitespace-normal text-center`}>
                   １ヶ月サバイバル
                 </span>
+                {activeTab === "simulation" && (
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (window.confirm('シミュレーションをリセットしますか？進捗は失われます。')) {
+                        resetSimulation();
+                        window.location.reload();
+                      }
+                    }}
+                    className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-[10px] text-gray-700"
+                    title="シミュレーションをリセット"
+                  >
+                    ↺
+                  </button>
+                )}
               </TabsTrigger>
             </TabsList>
             

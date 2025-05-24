@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -56,6 +55,9 @@ const initialState: BudgetState = {
   currentStage: "intro", // 最初のステージ
 };
 
+// シミュレーションの進捗を保存するためのキー
+const SIMULATION_PROGRESS_KEY = "budget_simulation_progress";
+
 const BudgetSimulation = () => {
   const [state, setState] = useState<BudgetState>(initialState);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
@@ -67,6 +69,44 @@ const BudgetSimulation = () => {
   const { toast } = useToast();
   // 星の数を追跡するための状態変数
   const [starCount, setStarCount] = useState(0);
+  // 進捗がロードされたかを追跡
+  const [progressLoaded, setProgressLoaded] = useState(false);
+  
+  // コンポーネントのマウント時に保存された進捗をロードする
+  useEffect(() => {
+    try {
+      const savedProgress = localStorage.getItem(SIMULATION_PROGRESS_KEY);
+      if (savedProgress) {
+        const parsedState = JSON.parse(savedProgress);
+        setState(parsedState);
+        
+        // 結果画面の表示状態も復元
+        if (parsedState.day >= 30) {
+          showFinalResults(parsedState);
+        }
+        
+        // 進捗がロードされたことをマーク
+        setProgressLoaded(true);
+        
+        console.log("Budget simulation progress loaded:", parsedState);
+      }
+    } catch (error) {
+      console.error("Error loading budget simulation progress:", error);
+    }
+  }, []);
+  
+  // ステートが変更されるたびに進捗を保存する
+  useEffect(() => {
+    // 初回のロードが完了した後だけ保存する
+    if (progressLoaded) {
+      try {
+        localStorage.setItem(SIMULATION_PROGRESS_KEY, JSON.stringify(state));
+        console.log("Budget simulation progress saved:", state);
+      } catch (error) {
+        console.error("Error saving budget simulation progress:", error);
+      }
+    }
+  }, [state, progressLoaded]);
   
   // 日付が変わった時のイベント処理
   useEffect(() => {
@@ -197,6 +237,23 @@ const BudgetSimulation = () => {
     }));
   };
   
+  // シミュレーション進行状態のリセット
+  const resetSimulation = () => {
+    localStorage.removeItem(SIMULATION_PROGRESS_KEY);
+    setState(initialState);
+    setShowResult(false);
+    setCurrentEvent(null);
+    setShowLoanOffer(false);
+    setShowWildBoarLoanOffer(false);
+    setShowQuiz(false);
+    setProgressLoaded(true); // リセット後も保存できるようにする
+    
+    toast({
+      title: "シミュレーションリセット",
+      description: "1ヶ月サバイバルシミュレーションをリセットしました",
+    });
+  };
+  
   // イベントの選択肢を選んだ時の処理
   const handleOption = (option: any) => {
     const newMoney = state.money - option.cost + option.reward;
@@ -325,16 +382,16 @@ const BudgetSimulation = () => {
   };
   
   // 最終結果表示
-  const showFinalResults = () => {
+  const showFinalResults = (finalState = state) => {
     let result = "";
     let newStarCount = 0;
     
     // イノシシローンの有無で結果を調整
-    if (state.hasWildBoarLoan) {
-      if (state.money >= 30000) {
+    if (finalState.hasWildBoarLoan) {
+      if (finalState.money >= 30000) {
         result = "イノシシのローンを利用しましたが、なんとか資金を管理できました！";
         newStarCount = 2;
-      } else if (state.money >= 0) {
+      } else if (finalState.money >= 0) {
         result = "イノシシのローンの高金利に苦しみましたが、どうにか破産は免れました。";
         newStarCount = 1;
       } else {
@@ -343,13 +400,13 @@ const BudgetSimulation = () => {
       }
     } else {
       // 通常の結果判定
-      if (state.money >= 50000) {
+      if (finalState.money >= 50000) {
         result = "素晴らしい！賢明な家計管理ができました！";
         newStarCount = 3;
-      } else if (state.money >= 10000) {
+      } else if (finalState.money >= 10000) {
         result = "良くできました！月末まで上手に予算管理ができました。";
         newStarCount = 2;
-      } else if (state.money >= 0) {
+      } else if (finalState.money >= 0) {
         result = "なんとか借金せずに月末を迎えることができました。";
         newStarCount = 1;
       } else {
@@ -363,7 +420,7 @@ const BudgetSimulation = () => {
     setStarCount(newStarCount);
     
     // 達成バッジの付与
-    if (state.money >= 0 && !state.achievedBadges.includes("家計サバイバー")) {
+    if (finalState.money >= 0 && !finalState.achievedBadges.includes("家計サバイバー")) {
       setState((prev) => ({
         ...prev,
         achievedBadges: [...prev.achievedBadges, "家計サバイバー"],
@@ -371,7 +428,7 @@ const BudgetSimulation = () => {
     }
     
     // イノシシローンを完済できた場合の特別バッジ
-    if (state.hasWildBoarLoan && state.money >= 0 && state.missedPayments === 0) {
+    if (finalState.hasWildBoarLoan && finalState.money >= 0 && finalState.missedPayments === 0) {
       setState((prev) => ({
         ...prev,
         achievedBadges: [...prev.achievedBadges, "危険な橋を渡り切った猛者"],
@@ -516,12 +573,29 @@ const BudgetSimulation = () => {
             </div>
           )}
           
-          <button
-            onClick={() => window.location.reload()}
-            className="game-button"
-          >
-            もう一度プレイ
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={resetSimulation}
+              className="game-button"
+            >
+              もう一度プレイ
+            </button>
+            
+            <button
+              onClick={() => {
+                const achievements = JSON.parse(localStorage.getItem("user_achievements") || "{}");
+                achievements.budgetCompleted = true;
+                localStorage.setItem("user_achievements", JSON.stringify(achievements));
+                toast({
+                  title: "実績を獲得しました",
+                  description: "「家計管理マスター」の実績を獲得しました！",
+                });
+              }}
+              className="game-button bg-[#25B589]"
+            >
+              実績を記録する
+            </button>
+          </div>
         </div>
       ) : (
         <>
@@ -714,6 +788,21 @@ const BudgetSimulation = () => {
             </>
           )}
         </>
+      )}
+      {/* シミュレーション中はリセットボタンを表示 */}
+      {state.currentStage !== "intro" && !showResult && (
+        <div className="mt-4 text-center">
+          <button 
+            onClick={() => {
+              if (window.confirm('シミュレーションをリセットしますか？進捗は失われます。')) {
+                resetSimulation();
+              }
+            }}
+            className="text-xs text-gray-500 underline"
+          >
+            シミュレーションをリセット
+          </button>
+        </div>
       )}
     </div>
   );
