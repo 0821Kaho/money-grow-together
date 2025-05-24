@@ -9,12 +9,49 @@ import { motion, AnimatePresence } from "framer-motion";
 import MascotCharacter from "../mascot/MascotCharacter";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+const STORAGE_KEY = "budget_simulation_state";
+
+interface SimulationState {
+  activeTab: string;
+  hasNewContent: boolean;
+  hasSeenIntro: boolean;
+}
+
 const BudgetSimulationPatched = () => {
   const [activeTab, setActiveTab] = useState<string>("modules");
   const [mascotPosition, setMascotPosition] = useState<"left" | "right">("left");
   const [hasNewContent, setHasNewContent] = useState(true);
   const [hasSeenIntro, setHasSeenIntro] = useState(false);
   const isMobile = useIsMobile();
+
+  // Load saved state on component mount
+  useEffect(() => {
+    try {
+      const savedState = localStorage.getItem(STORAGE_KEY);
+      if (savedState) {
+        const state: SimulationState = JSON.parse(savedState);
+        setActiveTab(state.activeTab);
+        setHasNewContent(state.hasNewContent);
+        setHasSeenIntro(state.hasSeenIntro);
+      }
+    } catch (error) {
+      console.error("Error loading saved state:", error);
+    }
+  }, []);
+
+  // Save state whenever it changes
+  useEffect(() => {
+    try {
+      const state: SimulationState = {
+        activeTab,
+        hasNewContent,
+        hasSeenIntro,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.error("Error saving state:", error);
+    }
+  }, [activeTab, hasNewContent, hasSeenIntro]);
 
   useEffect(() => {
     // Animate mascot when tab changes
@@ -49,7 +86,7 @@ const BudgetSimulationPatched = () => {
           </div>
         )}
 
-        <Tabs defaultValue="modules" className="w-full" onValueChange={setActiveTab}>
+        <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab} value={activeTab}>
           <div className="relative">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="modules" className="flex items-center gap-1 relative px-1 py-1.5">
