@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -54,12 +53,16 @@ const SettingsPage = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("account");
 
+  // Get user display name from metadata
+  const userDisplayName = user?.user_metadata?.displayName || '';
+  const userEmail = user?.email || '';
+
   // Account Form
   const accountForm = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
     defaultValues: {
-      name: user?.displayName || "",
-      email: user?.email || "",
+      name: userDisplayName,
+      email: userEmail,
     },
   });
 

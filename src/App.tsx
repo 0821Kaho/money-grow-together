@@ -60,6 +60,7 @@ function AppRoutes() {
 
   // Admin route component that checks if user is admin
   const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+    const navigate = useNavigate();
     const isAdmin = user?.app_metadata?.isAdmin === true;
     
     useEffect(() => {
@@ -69,7 +70,7 @@ function AppRoutes() {
       } else if (!isLoading && !isAdmin) {
         navigate("/");
       }
-    }, [isLoading, isAuthenticated, isAdmin]);
+    }, [isLoading, isAuthenticated, isAdmin, navigate]);
     
     // Show nothing while checking status
     if (isLoading || !isAuthenticated || !isAdmin) return null;
