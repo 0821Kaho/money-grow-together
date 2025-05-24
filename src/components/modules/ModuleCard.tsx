@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Trophy, ArrowRight } from "lucide-react";
 import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
-// Removed any MascotImage imports
 
 interface ModuleCardProps {
   id: number;
@@ -52,7 +51,7 @@ const ModuleCard = ({
   // Calculate background gradient based on color
   const getBgGradient = () => {
     if (color === "#4DAA57") return "from-[#E8F5EA] to-[#F5F9F6]"; // Green
-    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#F5FAFC]"; // Blue 
+    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#FFFBF5]"; // Blue 
     if (color === "#FFD166") return "from-[#FFF5E6] to-[#FFFBF5]"; // Yellow
     if (color === "#FF6B6B") return "from-[#FFEBEB] to-[#FFF5F5]"; // Red
     if (color === "#4D96FF") return "from-[#EBF5FF] to-[#F5F9FF]"; // Blue
@@ -129,7 +128,7 @@ const ModuleCard = ({
         <p className="mb-5 text-sm text-game-dark">{description}</p>
 
         <div className="flex items-center">
-          {/* Further shortened progress bar */}
+          {/* Progress bar */}
           <div className="w-20 mr-2">
             <div className="flex justify-between text-xs mb-1">
               <span className="font-medium">進捗</span>
@@ -199,8 +198,6 @@ const ModuleCard = ({
           ))}
         </motion.div>
       )}
-      
-      {/* Ghost Pigipe has been completely removed */}
     </motion.div>
   );
 };
