@@ -95,7 +95,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
         <span className="font-bold text-game-primary">STEP 1</span> <span className="text-sm">家計を"自分色"に塗り替えよう</span>
       </h3>
       
-      {/* Add the new guide box at the top */}
+      {/* Add the guide box at the top */}
       <ExpenseGuideBox />
       
       <div className="mb-6">
@@ -171,7 +171,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       </div>
       
       <div className="mb-6 rounded-lg border border-dashed border-gray-300 p-3">
-        <h4 className="mb-2 font-medium text-sm">新しい項目を追加</h4>
+        <h4 className="mb-2 font-medium text-xs">新しい項目を追加</h4>
         <div className="mb-2 flex flex-col gap-2 sm:flex-row">
           <input
             type="text"
@@ -179,7 +179,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
             onChange={e => setNewItem({ ...newItem, name: e.target.value })}
             placeholder="例：推し活・サブスク"
             autoFocus
-            className="flex-1 rounded-md border border-gray-300 p-2"
+            className="flex-1 rounded-md border border-gray-300 p-2 text-xs"
           />
           <div className="flex flex-1 items-center rounded-md border border-gray-300 px-2">
             <input
@@ -188,9 +188,9 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
               value={newItem.amount || ""}
               onChange={e => setNewItem({ ...newItem, amount: parseInt(e.target.value) || 0 })}
               placeholder="金額"
-              className="w-full border-none p-2 focus:outline-none"
+              className="w-full border-none p-2 focus:outline-none text-xs"
             />
-            <span className="text-gray-500">円</span>
+            <span className="text-gray-500 text-xs">円</span>
           </div>
         </div>
         
@@ -230,7 +230,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
         <button
           onClick={addItem}
           disabled={!newItem.name || !newItem.amount}
-          className={`w-full min-w-[96px] whitespace-nowrap justify-center rounded-md p-2 text-white ${
+          className={`w-full min-w-[96px] whitespace-nowrap justify-center rounded-md p-2 text-white text-xs ${
             !newItem.name || !newItem.amount ? "bg-gray-400" : "bg-[#25B589]"
           }`}
         >
@@ -240,16 +240,16 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <div className="mb-6 rounded-lg bg-[#F7F7F7] p-4">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">今の残高</span>
-          <span className="font-medium">{totalIncome.toLocaleString()}円</span>
+          <span className="font-medium text-xs">今の残高</span>
+          <span className="font-medium text-xs">{totalIncome.toLocaleString()}円</span>
         </div>
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">ここまで使った分</span>
-          <span className="font-medium">{(totalFixedExpenses + totalVariableExpenses).toLocaleString()}円</span>
+          <span className="font-medium text-xs">ここまで使った分</span>
+          <span className="font-medium text-xs">{(totalFixedExpenses + totalVariableExpenses).toLocaleString()}円</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="font-bold">残高</span>
-          <span className={`font-bold ${balance >= 0 ? "text-[#25B589]" : "text-game-danger"}`}>
+          <span className="font-bold text-xs">残高</span>
+          <span className={`font-bold text-xs ${balance >= 0 ? "text-[#25B589]" : "text-game-danger"}`}>
             {balance.toLocaleString()}円
           </span>
         </div>
@@ -272,7 +272,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <button
         onClick={() => onComplete(balance)}
-        className="w-full rounded-xl bg-game-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105 min-w-[96px] whitespace-nowrap justify-center"
+        className="w-full rounded-xl bg-game-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105 min-w-[96px] whitespace-nowrap justify-center text-xs"
       >
         収支の確認を完了する
       </button>
