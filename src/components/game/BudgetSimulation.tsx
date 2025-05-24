@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
-import { BadgeCheck, Info, PiggyBank, Star } from "lucide-react";
+import { BadgeCheck, Info, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import BudgetQuiz from "./budget/BudgetQuiz";
@@ -15,6 +15,10 @@ import BudgetPlanner from "./budget/BudgetPlanner";
 import FinalTest from "./budget/FinalTest";
 import { getEventForDay, getBudgetEvents } from "@/lib/budget-events";
 import BudgetCalendarView from "./budget/BudgetCalendarView";
+import BudgetSimulationHeader from "./budget/BudgetSimulationHeader";
+import DayExpressionIcon from "./budget/DayExpressionIcon";
+import SwipeHint from "./budget/SwipeHint";
+import PastEventsAccordion from "./budget/PastEventsAccordion";
 
 // dayEventsを定義
 const dayEvents = getBudgetEvents();
@@ -88,6 +92,11 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
   const [starCount, setStarCount] = useState(0);
   // 進捗がロードされたかを追跡
   const [progressLoaded, setProgressLoaded] = useState(false);
+  // スワイプ機能のための状態
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  // コンテンツ領域への参照
+  const contentRef = useRef<HTMLDivElement>(null);
   
   // コンポーネントのマウント時に保存された進捗をロードする
   useEffect(() => {
@@ -224,27 +233,23 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
     }
   }, [state.day, state.hasLoan, state.hasWildBoarLoan, state.currentStage]);
   
-  // カレンダービューを表示するための関数
-  const renderCalendarView = () => {
-    return (
-      <BudgetCalendarView
-        onSelectDay={(day) => {
-          // When a past day number is clicked
-          if (day <= state.day) {
-            const pastEvent = dayEvents.find(e => e.day === day);
-            if (pastEvent) {
-              toast({
-                title: `${day}日目のイベント`,
-                description: pastEvent.title,
-              });
-            }
-          }
-        }}
-        currentDay={state.day}
-        completedDays={state.completedEvents}
-        onNextDay={!currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && state.day < 30 ? handleNextDay : undefined}
-      />
-    );
+  // スワイプ機能の実装
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 100 && !currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && state.day < 30) {
+      // Swipe left - go to next day
+      handleNextDay();
+    }
+    // Reset values
+    setTouchStart(0);
+    setTouchEnd(0);
   };
   
   // 次の日へ進む
@@ -259,6 +264,11 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
       day: prev.day + 1,
       weeklyQuizCompleted: [7, 14, 21, 28].includes(prev.day + 1) ? false : prev.weeklyQuizCompleted,
     }));
+
+    // Scroll to top after day changes
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
   
   // シミュレーション進行状態のリセット
@@ -277,6 +287,9 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
       description: "1ヶ月サバイバルシミュレーションをリセットしました",
     });
   };
+  
+  // 現在のステージがシミュレーションで、進行可能かどうかを判定
+  const canNavigateDay = state.currentStage === "simulation" && !currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && state.day < 30;
   
   // イベントの選択肢を選んだ時の処理
   const handleOption = (option: any) => {
@@ -558,277 +571,260 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
   
   // 画面の条件分岐レンダリング
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
-      {showResult ? (
-        <div className="flex flex-col items-center justify-center py-8">
-          <div className="mb-4 text-4xl">
-            {state.money >= 50000 ? "🏆" : state.money >= 10000 ? "🎉" : state.money >= 0 ? "😌" : "😓"}
-          </div>
-          <h2 className="mb-4 text-xl font-bold">1ヶ月のシミュレーション終了</h2>
-          <p className="mb-4 text-center">{resultMessage}</p>
-          
-          <div className="mb-6 flex">
-            {[...Array(3)].map((_, i) => (
-              <Star 
-                key={i} 
-                className={`h-8 w-8 ${i < starCount ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-300'}`} 
-              />
-            ))}
-          </div>
-          
-          <p className="mb-6 text-center">
-            <span className="font-medium">最終残高: </span>
-            <span className={state.money >= 0 ? "text-game-primary font-bold" : "text-game-danger font-bold"}>
-              {state.money.toLocaleString()}円
-            </span>
-          </p>
-          
-          {state.achievedBadges.length > 0 && (
-            <div className="mb-6">
-              <h3 className="mb-2 text-center font-medium">獲得したバッジ</h3>
-              <div className="flex flex-wrap justify-center gap-2">
-                {state.achievedBadges.map((badge, index) => (
-                  <Badge key={index} variant="outline" className="flex items-center gap-1 bg-[#25B589] text-white">
-                    <BadgeCheck className="h-4 w-4" />
-                    {badge}
-                  </Badge>
-                ))}
-              </div>
+    <>
+      {/* Fixed status bar outside the card */}
+      {state.currentStage === "simulation" && (
+        <BudgetSimulationHeader
+          money={state.money}
+          happiness={state.happiness}
+          day={state.day}
+          hasLoan={state.hasLoan}
+          loanAmount={state.loanAmount}
+          hasWildBoarLoan={state.hasWildBoarLoan}
+          wildBoarLoanAmount={state.wildBoarLoanAmount}
+          wildBoarInterestRate={state.wildBoarInterestRate}
+        />
+      )}
+    
+      <div 
+        className="rounded-2xl bg-white p-6 shadow-sm h-[90vh] overflow-y-auto overflow-x-hidden"
+        ref={contentRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{ scrollbarWidth: 'thin', scrollbarColor: '#E0E0E0 transparent' }}
+      >
+        {showResult ? (
+          <div className="flex flex-col items-center justify-center py-8">
+            <div className="mb-4 text-4xl">
+              {state.money >= 50000 ? "🏆" : state.money >= 10000 ? "🎉" : state.money >= 0 ? "😌" : "😓"}
             </div>
-          )}
-          
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={resetSimulation}
-              className="game-button"
-            >
-              もう一度プレイ
-            </button>
+            <h2 className="mb-4 text-xl font-bold">1ヶ月のシミュレーション終了</h2>
+            <p className="mb-4 text-center leading-relaxed">{resultMessage}</p>
             
-            <button
-              onClick={() => {
-                const achievements = JSON.parse(localStorage.getItem("user_achievements") || "{}");
-                achievements.budgetCompleted = true;
-                localStorage.setItem("user_achievements", JSON.stringify(achievements));
-                toast({
-                  title: "実績を獲得しました",
-                  description: "「家計管理マスター」の実績を獲得しました！",
-                });
-              }}
-              className="game-button bg-[#25B589]"
-            >
-              実績を記録する
-            </button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">
-                {state.currentStage === "simulation" ? (
-                  <>{state.day}日目 (残り{30 - state.day}日)</>
-                ) : (
-                  <>
-                    {state.currentStage === "intro" && "イントロ"}
-                    {state.currentStage === "expenseCalculator" && "収支棚卸し"}
-                    {state.currentStage === "dragDropSaving" && "変動費カット"}
-                    {state.currentStage === "loanComparison" && "ローンについて学ぶ"}
-                    {state.currentStage === "budgetPlanner" && "予算立案"}
-                    {state.currentStage === "finalTest" && "まとめテスト"}
-                  </>
-                )}
-              </p>
+            <div className="mb-6 flex">
+              {[...Array(3)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className={`h-8 w-8 ${i < starCount ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-300'}`} 
+                />
+              ))}
             </div>
             
-            {state.currentStage === "simulation" && (
-              <div className="text-right">
-                <div className="flex items-center justify-end gap-1">
-                  <PiggyBank className="h-5 w-5 text-game-primary" />
-                  <p className="font-medium text-game-primary">
-                    {state.money.toLocaleString()}円
-                  </p>
+            <p className="mb-6 text-center leading-relaxed">
+              <span className="font-medium">最終残高: </span>
+              <span className={state.money >= 0 ? "text-[#FF8A8A] font-bold" : "text-[#FF5555] font-bold"}>
+                {state.money.toLocaleString()}円
+              </span>
+            </p>
+            
+            {state.achievedBadges.length > 0 && (
+              <div className="mb-6">
+                <h3 className="mb-2 text-center font-medium">獲得したバッジ</h3>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {state.achievedBadges.map((badge, index) => (
+                    <Badge key={index} variant="outline" className="flex items-center gap-1 bg-[#25B589] text-white">
+                      <BadgeCheck className="h-4 w-4" />
+                      {badge}
+                    </Badge>
+                  ))}
                 </div>
-                
-                <div className="mt-1 flex items-center gap-1">
-                  <span className="text-sm">満足度:</span>
-                  <Progress 
-                    value={state.happiness} 
-                    className="h-2 w-24" 
-                    indicatorClassName={state.happiness < 30 ? "bg-game-danger" : "bg-game-primary"}
-                  />
-                </div>
-                
-                {state.hasLoan && (
-                  <div className="mt-1 text-xs text-game-danger">
-                    ローン: {state.loanAmount.toLocaleString()}円
-                  </div>
-                )}
-                
-                {state.hasWildBoarLoan && (
-                  <div className="mt-1 text-xs text-game-danger font-semibold">
-                    イノシシローン: {state.wildBoarLoanAmount.toLocaleString()}円 ({Math.round(state.wildBoarInterestRate * 100)}% 金利)
-                  </div>
-                )}
               </div>
             )}
+            
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={resetSimulation}
+                className="game-button"
+              >
+                もう一度プレイ
+              </button>
+              
+              <button
+                onClick={() => {
+                  const achievements = JSON.parse(localStorage.getItem("user_achievements") || "{}");
+                  achievements.budgetCompleted = true;
+                  localStorage.setItem("user_achievements", JSON.stringify(achievements));
+                  toast({
+                    title: "実績を獲得しました",
+                    description: "「家計管理マスター」の実績を獲得しました！",
+                  });
+                }}
+                className="game-button bg-[#25B589]"
+              >
+                実績を記録する
+              </button>
+            </div>
           </div>
-          
-          {/* 各ステージのコンテンツをレンダリング */}
-          {state.currentStage === "intro" && (
-            <IntroManga onComplete={handleIntroMangaComplete} />
-          )}
-          
-          {state.currentStage === "expenseCalculator" && (
-            <ExpenseCalculator onComplete={handleExpenseCalculatorComplete} />
-          )}
-          
-          {state.currentStage === "dragDropSaving" && (
-            <DragDropSaving onComplete={handleDragDropSavingComplete} />
-          )}
-          
-          {state.currentStage === "loanComparison" && (
-            <LoanComparison onComplete={handleLoanComparisonComplete} />
-          )}
-          
-          {state.currentStage === "budgetPlanner" && (
-            <BudgetPlanner
-              initialBalance={state.money}
-              onComplete={handleBudgetPlannerComplete}
-            />
-          )}
-          
-          {state.currentStage === "finalTest" && (
-            <FinalTest onComplete={handleFinalTestComplete} />
-          )}
-          
-          {state.currentStage === "simulation" && (
-            <>
-              {/* カレンダービューを表示 */}
-              {renderCalendarView()}
-              
-              {showWildBoarLoanOffer && (
-                <WildBoarLoanOffer 
-                  onDecision={handleWildBoarLoanDecision} 
-                  amount={20000} 
-                  interestRate={Math.round(state.wildBoarInterestRate * 100)}
-                />
-              )}
-              
-              {showLoanOffer && !showWildBoarLoanOffer && (
-                <LoanOffer 
-                  onDecision={handleLoanDecision} 
-                  amount={30000} 
-                  interestRate={state.interestRate * 100}
-                />
-              )}
-              
-              {showQuiz && !showLoanOffer && !showWildBoarLoanOffer && (
-                <BudgetQuiz onComplete={handleQuizComplete} />
-              )}
-              
-              {currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="rounded-lg border border-gray-200 p-5"
-                >
-                  <div className="mb-2 flex items-center gap-2">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F7F7F7] text-game-primary">
-                      <span className="text-lg font-bold">{state.day}</span>
+        ) : (
+          <>
+            {/* 各ステージのコンテンツをレンダリング */}
+            {state.currentStage === "intro" && (
+              <IntroManga onComplete={handleIntroMangaComplete} />
+            )}
+            
+            {state.currentStage === "expenseCalculator" && (
+              <ExpenseCalculator onComplete={handleExpenseCalculatorComplete} />
+            )}
+            
+            {state.currentStage === "dragDropSaving" && (
+              <DragDropSaving onComplete={handleDragDropSavingComplete} />
+            )}
+            
+            {state.currentStage === "loanComparison" && (
+              <LoanComparison onComplete={handleLoanComparisonComplete} />
+            )}
+            
+            {state.currentStage === "budgetPlanner" && (
+              <BudgetPlanner
+                initialBalance={state.money}
+                onComplete={handleBudgetPlannerComplete}
+              />
+            )}
+            
+            {state.currentStage === "finalTest" && (
+              <FinalTest onComplete={handleFinalTestComplete} />
+            )}
+            
+            {state.currentStage === "simulation" && (
+              <>
+                <div className="mb-6 text-sm text-gray-600">
+                  <p>1ヶ月サバイバル:<span className="font-medium"> {state.day}日目</span></p>
+                </div>
+                
+                {showWildBoarLoanOffer && (
+                  <WildBoarLoanOffer 
+                    onDecision={handleWildBoarLoanDecision} 
+                    amount={20000} 
+                    interestRate={Math.round(state.wildBoarInterestRate * 100)}
+                  />
+                )}
+                
+                {showLoanOffer && !showWildBoarLoanOffer && (
+                  <LoanOffer 
+                    onDecision={handleLoanDecision} 
+                    amount={30000} 
+                    interestRate={state.interestRate * 100}
+                  />
+                )}
+                
+                {showQuiz && !showLoanOffer && !showWildBoarLoanOffer && (
+                  <BudgetQuiz onComplete={handleQuizComplete} />
+                )}
+                
+                {currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-lg border border-gray-200 p-5"
+                  >
+                    <div className="flex items-center gap-4 mb-4">
+                      <DayExpressionIcon day={state.day} hasEvent={true} />
+                      <h3 className="text-lg font-bold break-words whitespace-normal leading-relaxed">{currentEvent.title}</h3>
                     </div>
-                    <h3 className="text-lg font-bold break-words whitespace-normal">{currentEvent.title}</h3>
-                  </div>
-                  <p className="mb-5 text-gray-700 break-words whitespace-normal">{currentEvent.description}</p>
-                  <div className="flex flex-col gap-3">
-                    {currentEvent.options.map((option: any, index: number) => (
-                      <button
-                        key={index}
-                        onClick={() => handleOption(option)}
-                        className="flex flex-col rounded-lg border border-gray-200 p-4 text-left hover:bg-gray-50"
-                      >
-                        <div className="flex items-center justify-between flex-wrap">
-                          <span className="font-medium break-words whitespace-normal">{option.text}</span>
-                          <div className="flex items-center gap-1 ml-2 mt-1">
-                            {option.cost > 0 && (
-                              <span className="text-game-danger whitespace-nowrap">
-                                -{option.cost.toLocaleString()}円
-                              </span>
-                            )}
-                            {option.reward > 0 && (
-                              <span className="text-[#25B589] whitespace-nowrap">
-                                +{option.reward.toLocaleString()}円
-                              </span>
-                            )}
+                    <p className="mb-5 text-gray-700 break-words whitespace-normal leading-relaxed">{currentEvent.description}</p>
+                    <div className="flex flex-col gap-3">
+                      {currentEvent.options.map((option: any, index: number) => (
+                        <button
+                          key={index}
+                          onClick={() => handleOption(option)}
+                          className="flex flex-col rounded-lg border border-gray-200 p-4 text-left hover:bg-gray-50"
+                        >
+                          <div className="flex items-center justify-between flex-wrap">
+                            <span className="font-medium break-words whitespace-normal leading-relaxed">{option.text}</span>
+                            <div className="flex items-center gap-1 ml-2 mt-1">
+                              {option.cost > 0 && (
+                                <span className="text-[#FF5555] whitespace-nowrap">
+                                  -{option.cost.toLocaleString()}円
+                                </span>
+                              )}
+                              {option.reward > 0 && (
+                                <span className="text-[#25B589] whitespace-nowrap">
+                                  +{option.reward.toLocaleString()}円
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                        {option.happiness !== 0 && (
-                          <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
-                            <span>満足度:</span>
-                            <span className={option.happiness > 0 ? "text-[#25B589]" : "text-game-danger"}>
-                              {option.happiness > 0 ? `+${option.happiness}` : option.happiness}
-                            </span>
-                          </div>
-                        )}
-                      </button>
-                    ))}
+                          {option.happiness !== 0 && (
+                            <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                              <span>満足度:</span>
+                              <span className={option.happiness > 0 ? "text-[#25B589]" : "text-[#FF5555]"}>
+                                {option.happiness > 0 ? `+${option.happiness}` : option.happiness}
+                              </span>
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+                
+                {!currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
+                  <div className="flex flex-col items-center p-8">
+                    <DayExpressionIcon day={state.day} hasEvent={false} />
+                    <p className="my-6 text-center leading-relaxed">
+                      {state.day}日目：今日は特別なイベントはありません。
+                    </p>
+                    
+                    <button 
+                      onClick={handleNextDay} 
+                      className="game-button py-3 px-6 rounded-xl shadow-lg"
+                    >
+                      次の日へ
+                    </button>
+                    
+                    <SwipeHint />
                   </div>
-                </motion.div>
-              )}
-              
-              {!currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
-                <div className="flex flex-col items-center p-8">
-                  <div className="mb-4 text-5xl">{state.day % 5 === 0 ? "💼" : "📆"}</div>
-                  <p className="mb-6 text-center">
-                    {state.day}日目：今日は特別なイベントはありません。
-                  </p>
-                  <button onClick={handleNextDay} className="game-button">
-                    次の日へ
-                  </button>
-                </div>
-              )}
-              
-              {/* 日付インジケーター */}
-              <div className="mt-6">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-xs font-medium">1日</span>
-                  <span className="text-xs font-medium">30日</span>
-                </div>
-                <Progress 
-                  value={(state.day / 30) * 100} 
-                  className="h-2" 
+                )}
+                
+                {/* 過去のイベントアコーディオン */}
+                <PastEventsAccordion 
+                  currentDay={state.day} 
+                  completedEvents={state.completedEvents}
                 />
-              </div>
-              
-              {/* ヒント表示 */}
-              <div className="mt-4 flex items-start gap-2 rounded-lg bg-[#F7F7F7] p-3 text-sm">
-                <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-500" />
-                <p className="text-gray-600 break-words whitespace-normal">
-                  {state.hasWildBoarLoan 
-                    ? "イノシシのローン屋からの高金利ローンは毎週金曜日に返済が必要です。返済を怠ると厳しいペナルティが発生します！" 
-                    : "計画的な支出を心がけ、余裕を持って月末を迎えましょう。所持金が少なくなるとローンの誘惑があるかもしれませんが、高金利に注意！"}
-                </p>
-              </div>
-            </>
-          )}
-        </>
-      )}
-      {/* シミュレーション中はリセットボタンを表示 */}
+                
+                {/* ヒント表示 */}
+                <div className="mt-6 flex items-start gap-2 rounded-lg bg-[#F7F7F7] p-3 text-sm">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-500" />
+                  <p className="text-gray-600 break-words whitespace-normal leading-relaxed">
+                    {state.hasWildBoarLoan 
+                      ? "イノシシのローン屋からの高金利ローンは毎週金曜日に返済が必要です。返済を怠ると厳しいペナルティが発生します！" 
+                      : "計画的な支出を心がけ、余裕を持って月末を迎えましょう。所持金が少なくなるとローンの誘惑があるかもしれませんが、高金利に注意！"}
+                  </p>
+                </div>
+              </>
+            )}
+          </>
+        )}
+      </div>
+      
+      {/* 固定フッター */}
       {state.currentStage !== "intro" && !showResult && (
-        <div className="mt-4 text-center">
+        <div className="mt-4 sticky bottom-0 bg-white border-t py-2 px-4 flex justify-between items-center">
+          {state.currentStage === "simulation" && canNavigateDay ? (
+            <button 
+              onClick={handleNextDay}
+              className="game-button py-3 px-6 rounded-xl shadow-lg"
+            >
+              次の日へ
+            </button>
+          ) : (
+            <div></div> // Placeholder to maintain layout
+          )}
+          
           <button 
             onClick={() => {
               if (window.confirm('シミュレーションをリセットしますか？進捗は失われます。')) {
                 resetSimulation();
               }
             }}
-            className="text-xs text-gray-500 underline"
+            className="text-xs border border-red-400 text-red-500 rounded-lg px-3 py-2 hover:bg-red-50"
           >
-            シミュレーションをリセット
+            リセット
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

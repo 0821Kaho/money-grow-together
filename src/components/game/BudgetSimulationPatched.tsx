@@ -103,10 +103,10 @@ const BudgetSimulationPatched = () => {
   };
 
   return (
-    <Card>
-      <CardContent className="pt-6">
+    <Card className="overflow-visible">
+      <CardContent className="pt-6 px-0 sm:px-6">
         {activeTab === "simulation" && !hasSeenIntro && (
-          <div className="mb-6">
+          <div className="mb-6 px-6">
             <p className="text-gray-600 break-words whitespace-normal leading-relaxed mb-2">
               <span className="font-medium">カレンダー形式で1か月のサバイバルチャレンジを体験！</span>
             </p>
@@ -121,7 +121,7 @@ const BudgetSimulationPatched = () => {
         )}
 
         <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab} value={activeTab}>
-          <div className="relative">
+          <div className="relative px-6">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="modules" className="flex items-center gap-1 relative px-1 py-1.5">
                 <BookOpen className="h-4 w-4 flex-shrink-0" />
@@ -178,11 +178,11 @@ const BudgetSimulationPatched = () => {
             </AnimatePresence>
           </div>
           
-          <TabsContent value="modules" className="mt-0">
+          <TabsContent value="modules" className="mt-0 px-6">
             <BudgetModules />
           </TabsContent>
           
-          <TabsContent value="simulation" className="mt-0">
+          <TabsContent value="simulation" className="mt-0 p-0">
             {/* 学習モジュールの完了状態に応じて、初期状態を設定 */}
             <BudgetSimulation skipLearningPhase={hasCompletedLearningModules} />
           </TabsContent>
