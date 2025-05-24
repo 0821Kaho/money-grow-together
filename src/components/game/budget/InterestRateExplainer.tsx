@@ -277,7 +277,7 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
               onClick={nextStep}
               className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
             >
-              次へ：シミュレーター
+              次へ
             </button>
           </div>
         </div>
