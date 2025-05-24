@@ -1,11 +1,13 @@
 
-import MascotImage from "@/components/mascot/MascotImage";
-
 const ExpenseGuideBox = () => {
   return (
     <aside className="relative mt-4 mb-6 rounded-lg bg-pink-50 px-4 py-4 pt-5 text-sm text-brown-700 leading-relaxed border-2 border-pink-100">
-      <div className="absolute -top-6 -left-4">
-        <MascotImage variant="happy" size="small" mood="wink" />
+      <div className="absolute top-2 right-2">
+        <img 
+          src="/lovable-uploads/fa943deb-3b99-43d6-914a-ff6d94bb0897.png" 
+          alt="ピギペ" 
+          className="h-16 w-16 object-contain"
+        />
       </div>
       <p className="font-bold">🐷💭「ここにある例はあくまで <u>サンプル</u>。全部あなた専用のお財布に入れ替えてね！」</p>
       <ol className="mt-2 space-y-1 list-decimal list-inside">

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PiggyBank, DollarSign, Percent } from "lucide-react";
@@ -92,8 +91,8 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       animate={{ opacity: 1 }}
       className="rounded-lg bg-white p-6"
     >
-      <h3 className="mb-5 text-xl font-medium">
-        <span className="font-bold text-game-primary">STEP 1</span> 家計を"自分色"に塗り替えよう
+      <h3 className="mb-5 text-lg font-medium">
+        <span className="font-bold text-game-primary">STEP 1</span> <span className="text-sm">家計を"自分色"に塗り替えよう</span>
       </h3>
       
       {/* Add the new guide box at the top */}
@@ -101,17 +100,17 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">収入</span>
-          <span className="font-medium">{totalIncome.toLocaleString()}円</span>
+          <span className="font-medium text-sm">収入</span>
+          <span className="font-medium text-sm">{totalIncome.toLocaleString()}円</span>
         </div>
         
         {items
           .filter(item => item.category === "income")
           .map(item => (
-            <div key={item.id} className="mb-1 flex items-center justify-between rounded-md bg-[#F7F7F7] p-2">
-              <span>{item.name}</span>
+            <div key={item.id} className="mb-1 flex items-center justify-between rounded-md bg-[#F7F7F7] p-1.5">
+              <span className="text-xs">{item.name}</span>
               <div className="flex items-center">
-                <span>{item.amount.toLocaleString()}円</span>
+                <span className="text-xs">{item.amount.toLocaleString()}円</span>
                 <button
                   onClick={() => deleteItem(item.id)}
                   className="ml-2 text-gray-500 hover:text-game-danger"
@@ -125,17 +124,17 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">固定費</span>
-          <span className="font-medium">{totalFixedExpenses.toLocaleString()}円</span>
+          <span className="font-medium text-sm">固定費</span>
+          <span className="font-medium text-sm">{totalFixedExpenses.toLocaleString()}円</span>
         </div>
         
         {items
           .filter(item => item.category === "fixedExpense")
           .map(item => (
-            <div key={item.id} className="mb-1 flex items-center justify-between rounded-md bg-[#F7F7F7] p-2">
-              <span>{item.name}</span>
+            <div key={item.id} className="mb-1 flex items-center justify-between rounded-md bg-[#F7F7F7] p-1.5">
+              <span className="text-xs">{item.name}</span>
               <div className="flex items-center">
-                <span>{item.amount.toLocaleString()}円</span>
+                <span className="text-xs">{item.amount.toLocaleString()}円</span>
                 <button
                   onClick={() => deleteItem(item.id)}
                   className="ml-2 text-gray-500 hover:text-game-danger"
@@ -149,17 +148,17 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-medium">変動費</span>
-          <span className="font-medium">{totalVariableExpenses.toLocaleString()}円</span>
+          <span className="font-medium text-sm">変動費</span>
+          <span className="font-medium text-sm">{totalVariableExpenses.toLocaleString()}円</span>
         </div>
         
         {items
           .filter(item => item.category === "variableExpense")
           .map(item => (
-            <div key={item.id} className="mb-1 flex items-center justify-between rounded-md bg-[#F7F7F7] p-2">
-              <span>{item.name}</span>
+            <div key={item.id} className="mb-1 flex items-center justify-between rounded-md bg-[#F7F7F7] p-1.5">
+              <span className="text-xs">{item.name}</span>
               <div className="flex items-center">
-                <span>{item.amount.toLocaleString()}円</span>
+                <span className="text-xs">{item.amount.toLocaleString()}円</span>
                 <button
                   onClick={() => deleteItem(item.id)}
                   className="ml-2 text-gray-500 hover:text-game-danger"
@@ -171,8 +170,8 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
           ))}
       </div>
       
-      <div className="mb-6 rounded-lg border border-dashed border-gray-300 p-4">
-        <h4 className="mb-3 font-medium">新しい項目を追加</h4>
+      <div className="mb-6 rounded-lg border border-dashed border-gray-300 p-3">
+        <h4 className="mb-2 font-medium text-sm">新しい項目を追加</h4>
         <div className="mb-2 flex flex-col gap-2 sm:flex-row">
           <input
             type="text"
