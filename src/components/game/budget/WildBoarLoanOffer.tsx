@@ -41,10 +41,19 @@ const WildBoarLoanOffer = ({ onDecision, amount, interestRate }: WildBoarLoanOff
                 <p className="font-medium text-game-danger">{interestRate}%</p>
               </div>
             </div>
-            <div>
+            <div className="relative">
               <p className="text-xs text-gray-500">返済方法</p>
               <p className="text-xs">毎週金曜日に利息の支払いが必要</p>
               <p className="mt-1 text-xs text-game-danger">※返済を怠ると追加ペナルティが発生します</p>
+              
+              {/* Inserted loan warning image */}
+              <div className="mt-3 flex justify-center">
+                <img 
+                  src="/lovable-uploads/85cbe6fd-2d0c-4b82-8966-c93d0fd957bf.png" 
+                  alt="法外な金利と厳しいペナルティにご注意！" 
+                  className="h-28 object-contain"
+                />
+              </div>
             </div>
           </div>
           
