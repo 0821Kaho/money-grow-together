@@ -100,7 +100,7 @@ const OnboardingCarousel = () => {
             
             <button
               onClick={nextStep}
-              className="game-button px-5 py-2"
+              className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-5 py-2 transition-colors shadow-lg"
             >
               {currentStep === onboardingSteps.length - 1 ? "はじめる" : "次へ"}
             </button>

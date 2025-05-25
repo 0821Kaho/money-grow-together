@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 interface BudgetPlannerProps {
@@ -34,7 +35,7 @@ const BudgetPlanner = ({ initialBalance, onComplete }: BudgetPlannerProps) => {
       <div className="mb-4">
         <button
           onClick={calculateWeeklyBudget}
-          className="rounded-md bg-blue-100 px-3 py-2 text-sm text-blue-700 hover:bg-blue-200"
+          className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-4 py-2 transition-colors shadow-lg"
         >
           予算を計算する
         </button>
@@ -59,7 +60,7 @@ const BudgetPlanner = ({ initialBalance, onComplete }: BudgetPlannerProps) => {
 
       <button
         onClick={checkBudgetSuccess}
-        className="rounded-md bg-green-100 px-3 py-2 text-sm text-green-700 hover:bg-green-200"
+        className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-4 py-2 transition-colors shadow-lg"
       >
         結果を確認する
       </button>

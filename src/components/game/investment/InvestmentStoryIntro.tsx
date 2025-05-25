@@ -243,13 +243,13 @@ const InvestmentStoryIntro = ({
       )}
       
       <div className="flex justify-center">
-        <Button 
+        <button 
           onClick={handleNextStep} 
-          className="game-button flex items-center gap-2"
+          className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg flex items-center gap-2"
         >
           {step < 3 ? "次へ" : "始める"}
           <ArrowRight className="h-4 w-4" />
-        </Button>
+        </button>
       </div>
     </motion.div>
   );
