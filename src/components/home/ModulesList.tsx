@@ -144,15 +144,15 @@ const ModulesList = () => {
                     </div>
                   </div>
                   
-                  {/* Updated button to match ModuleCard styling */}
+                  {/* Smaller button with no line breaks */}
                   <motion.button 
-                    className="px-4 py-2 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto transition-colors shadow-lg"
+                    className="px-3 py-1.5 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-md text-xs font-medium flex items-center justify-center gap-1 ml-auto transition-colors shadow-lg whitespace-nowrap flex-shrink-0"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => window.location.href = `/module/${module.id}`}
                   >
                     始める
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-3 w-3" />
                   </motion.button>
                 </div>
               </div>
