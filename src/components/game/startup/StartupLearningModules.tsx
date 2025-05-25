@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -285,9 +284,12 @@ const ModuleContent = ({
             あなたも「得意なこと」や「好きなこと」から一歩踏み出してみませんか？
           </p>
           {!isCompleted && (
-            <Button className="w-full mt-4" onClick={onComplete}>
+            <button 
+              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              onClick={onComplete}
+            >
               このステップを完了する
-            </Button>
+            </button>
           )}
         </div>
       );
@@ -336,9 +338,12 @@ const ModuleContent = ({
             ※金額はあくまで目安です。個人の状況やライフスタイルによって大きく変わります。
           </p>
           {!isCompleted && (
-            <Button className="w-full mt-4" onClick={onComplete}>
+            <button 
+              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              onClick={onComplete}
+            >
               このステップを完了する
-            </Button>
+            </button>
           )}
         </div>
       );
@@ -377,9 +382,12 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <Button className="w-full mt-4" onClick={onComplete}>
+            <button 
+              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              onClick={onComplete}
+            >
               このステップを完了する
-            </Button>
+            </button>
           )}
         </div>
       );
@@ -415,9 +423,12 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <Button className="w-full mt-4" onClick={onComplete}>
+            <button 
+              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              onClick={onComplete}
+            >
               このステップを完了する
-            </Button>
+            </button>
           )}
         </div>
       );
@@ -462,9 +473,12 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <Button className="w-full mt-4" onClick={onComplete}>
+            <button 
+              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              onClick={onComplete}
+            >
               このステップを完了する
-            </Button>
+            </button>
           )}
         </div>
       );
@@ -510,9 +524,12 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <Button className="w-full mt-4" onClick={onComplete}>
+            <button 
+              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              onClick={onComplete}
+            >
               このステップを完了する
-            </Button>
+            </button>
           )}
         </div>
       );

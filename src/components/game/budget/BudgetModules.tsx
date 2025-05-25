@@ -183,7 +183,7 @@ const BudgetModules = () => {
           </p>
           <button 
             onClick={resetProgress}
-            className="text-sm text-green-600 hover:text-green-700 border border-green-600 hover:border-green-700 rounded-lg px-4 py-2"
+            className="text-sm rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-4 py-2 transition-colors shadow-lg"
           >
             コースをリセットする
           </button>

@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion, useInView } from "framer-motion";
@@ -142,9 +141,9 @@ const ModulesSection = () => {
                       
                       <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
                       
-                      {/* Updated button with fixed width and arrow icon */}
+                      {/* Updated button with new green styling */}
                       <motion.button
-                        className="mt-2 w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap"
+                        className="mt-2 w-[104px] px-0 py-1.5 bg-[#25B589] hover:bg-[#1E9A73] text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap transition-colors shadow-lg"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
