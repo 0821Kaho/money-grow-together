@@ -635,7 +635,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={resetSimulation}
-                className="game-button"
+                className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg"
               >
                 もう一度プレイ
               </button>
@@ -650,7 +650,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
                     description: "「家計管理マスター」の実績を獲得しました！",
                   });
                 }}
-                className="game-button bg-[#25B589]"
+                className="rounded-xl bg-[#FF8A8A] hover:bg-[#FF7575] text-white font-medium px-6 py-3 transition-colors shadow-lg"
               >
                 実績を記録する
               </button>
@@ -768,7 +768,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
                     
                     <button 
                       onClick={handleNextDay} 
-                      className="game-button py-3 px-6 rounded-xl shadow-lg"
+                      className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg"
                     >
                       次の日へ
                     </button>
@@ -804,7 +804,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
           {state.currentStage === "simulation" && canNavigateDay ? (
             <button 
               onClick={handleNextDay}
-              className="game-button py-3 px-6 rounded-xl shadow-lg"
+              className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg"
             >
               次の日へ
             </button>
