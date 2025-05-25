@@ -768,9 +768,9 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
                     
                     <button 
                       onClick={handleNextDay} 
-                      className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg"
+                      className="px-8 py-4 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white font-bold text-lg rounded-xl transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
                     >
-                      次の日へ
+                      次の日へ →
                     </button>
                     
                     <SwipeHint />
@@ -804,9 +804,9 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
           {state.currentStage === "simulation" && canNavigateDay ? (
             <button 
               onClick={handleNextDay}
-              className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg"
+              className="px-8 py-4 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white font-bold text-lg rounded-xl transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
             >
-              次の日へ
+              次の日へ →
             </button>
           ) : (
             <div></div> // Placeholder to maintain layout
