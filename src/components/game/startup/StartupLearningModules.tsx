@@ -247,7 +247,7 @@ const StartupLearningModules = () => {
           <div className="mt-6 flex justify-center">
             <button 
               onClick={resetProgress}
-              className="text-sm text-primary hover:text-primary/90 border border-primary hover:border-primary/90 rounded-lg px-4 py-2"
+              className="text-sm rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-4 py-2 transition-colors shadow-lg"
             >
               コースをリセットする
             </button>
@@ -285,7 +285,7 @@ const ModuleContent = ({
           </p>
           {!isCompleted && (
             <button 
-              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
               onClick={onComplete}
             >
               このステップを完了する
@@ -339,7 +339,7 @@ const ModuleContent = ({
           </p>
           {!isCompleted && (
             <button 
-              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
               onClick={onComplete}
             >
               このステップを完了する
@@ -383,7 +383,7 @@ const ModuleContent = ({
           
           {!isCompleted && (
             <button 
-              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
               onClick={onComplete}
             >
               このステップを完了する
@@ -424,7 +424,7 @@ const ModuleContent = ({
           
           {!isCompleted && (
             <button 
-              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
               onClick={onComplete}
             >
               このステップを完了する
@@ -474,7 +474,7 @@ const ModuleContent = ({
           
           {!isCompleted && (
             <button 
-              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
               onClick={onComplete}
             >
               このステップを完了する
@@ -525,7 +525,7 @@ const ModuleContent = ({
           
           {!isCompleted && (
             <button 
-              className="w-full mt-4 rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg" 
+              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
               onClick={onComplete}
             >
               このステップを完了する

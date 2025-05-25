@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -135,18 +134,16 @@ const LearningCard = ({
             <p className="text-xs text-muted-foreground mt-1">{description}</p>
             
             {!isRevealed ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="mt-2 text-xs"
+              <button
+                className="mt-2 text-xs rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-3 py-1.5 transition-colors shadow-lg flex items-center"
                 onClick={handleClose}
               >
                 <span>読んだよ！</span>
                 <div className="ml-1 flex items-center">
-                  <Coins className="h-3.5 w-3.5 mr-0.5 text-amber-500" />
+                  <Coins className="h-3.5 w-3.5 mr-0.5 text-white" />
                   <span>+{coinReward}</span>
                 </div>
-              </Button>
+              </button>
             ) : (
               <div className="mt-2 text-xs flex items-center text-amber-500 font-medium">
                 <Coins className="h-3.5 w-3.5 mr-0.5" />
