@@ -10,33 +10,46 @@ export function useAdminGuard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Only check admin status after authentication loading completes
     const checkAdminRole = async () => {
-      if (isLoading) return;
+      console.log('Admin guard checking...', { user: user?.email, isLoading });
+      
+      if (isLoading) {
+        console.log('Still loading authentication...');
+        return;
+      }
 
       if (!user) {
-        // User is not logged in
+        console.log('No user found, redirecting to login');
         toast.error("ログインが必要です");
         navigate('/login');
         return;
       }
 
       try {
-        // Query profiles table to check admin role
+        console.log('Checking admin role for user:', user.id);
         const { data, error } = await supabase
           .from('profiles')
           .select('role')
           .eq('id', user.id)
           .single();
 
-        if (error) throw error;
+        console.log('Profile query result:', { data, error });
 
-        // Check if user has admin role
+        if (error) {
+          console.error('Error fetching profile:', error);
+          toast.error("権限の確認に失敗しました");
+          navigate('/');
+          return;
+        }
+
         if (!data || data.role !== 'admin') {
+          console.log('User is not admin:', data);
           toast.error("管理者権限が必要です");
           navigate('/');
           return;
         }
+
+        console.log('User confirmed as admin');
       } catch (error) {
         console.error('Error checking admin role:', error);
         toast.error("権限の確認に失敗しました");
@@ -47,5 +60,9 @@ export function useAdminGuard() {
     checkAdminRole();
   }, [user, isLoading, navigate]);
 
-  return { isAdmin: user && !isLoading, isLoading };
+  return { 
+    isAdmin: user && !isLoading, 
+    isLoading,
+    user 
+  };
 }
