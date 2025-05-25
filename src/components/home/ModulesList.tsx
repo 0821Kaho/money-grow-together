@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -107,10 +108,10 @@ const ModulesList = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 * module.id / 5 }}
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-4 bg-gradient-to-br ${getBgGradient(module.color)}`}
+            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-4 bg-gradient-to-br ${getBgGradient(module.color)} flex flex-col h-full`}
             style={{ borderColor: `${module.color}85` }}
           >
-            <div className="flex flex-col gap-4 relative z-10">
+            <div className="flex flex-col gap-4 relative z-10 h-full">
               <div className="relative">
                 <img 
                   src={module.illustration} 
@@ -119,14 +120,14 @@ const ModulesList = () => {
                 />
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-3 flex-grow">
                 <h3 className="text-lg font-bold" style={{ color: module.color }}>{module.title}</h3>
                 
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 flex-grow">
                   {module.description}
                 </p>
                 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                   <div className="w-full mr-3">
                     <div className="mb-1 flex justify-between">
                       <span className="text-xs font-medium">進捗</span>
@@ -143,15 +144,15 @@ const ModulesList = () => {
                     </div>
                   </div>
                   
-                  {/* Updated button design with primary pink color */}
+                  {/* Updated button to match ModuleCard styling */}
                   <motion.button 
-                    className="w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 whitespace-nowrap"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="px-4 py-2 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto transition-colors shadow-lg"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => window.location.href = `/module/${module.id}`}
                   >
                     始める
-                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+                    <ArrowRight className="h-4 w-4" />
                   </motion.button>
                 </div>
               </div>
