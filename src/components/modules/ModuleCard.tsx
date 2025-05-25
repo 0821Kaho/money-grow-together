@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge"; 
 import { motion } from "framer-motion";
@@ -93,7 +94,7 @@ const ModuleCard = ({
         </div>
       )}
 
-      <div className="p-5 relative z-10">
+      <div className="p-5 relative z-10 flex flex-col h-full">
         {/* Module illustration */}
         {illustration && (
           <div className="mb-4 flex justify-center">
@@ -124,9 +125,9 @@ const ModuleCard = ({
           </div>
         </div>
 
-        <p className="mb-5 text-sm text-game-dark">{description}</p>
+        <p className="mb-5 text-sm text-game-dark flex-grow">{description}</p>
 
-        <div className="flex items-center">
+        <div className="flex items-center mt-auto">
           {/* Progress bar */}
           <div className="w-20 mr-2">
             <div className="flex justify-between text-xs mb-1">
@@ -148,18 +149,18 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Updated button with primary pink styling */}
+          {/* Updated button with primary pink styling to match ModulesSection */}
           <motion.button
-            className="px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap transition-colors shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="px-4 py-2 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto transition-colors shadow-lg"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={(e) => {
               e.stopPropagation();
               handleClick();
             }}
           >
-            <span className="text-sm font-semibold">始める</span>
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+            始める
+            <ArrowRight className="h-4 w-4" />
           </motion.button>
         </div>
       </div>
