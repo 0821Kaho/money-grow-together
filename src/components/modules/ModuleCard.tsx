@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge"; 
 import { motion } from "framer-motion";
@@ -149,9 +148,9 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Updated button with new green styling */}
+          {/* Updated button with primary pink styling */}
           <motion.button
-            className="px-0 py-1.5 bg-[#25B589] hover:bg-[#1E9A73] text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap transition-colors shadow-lg"
+            className="px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap transition-colors shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {

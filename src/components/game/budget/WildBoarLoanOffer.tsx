@@ -66,7 +66,7 @@ const WildBoarLoanOffer = ({ onDecision, amount, interestRate }: WildBoarLoanOff
             </button>
             <button
               onClick={() => onDecision(false)}
-              className="flex-1 rounded-lg bg-[#25B589] px-4 py-2 text-xs text-white hover:brightness-105"
+              className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-xs text-white hover:bg-game-primary/90"
             >
               断る（安全策）
             </button>

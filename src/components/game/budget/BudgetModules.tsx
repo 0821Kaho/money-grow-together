@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import IntroManga from "./IntroManga";
 import ExpenseCalculator from "./ExpenseCalculator";
@@ -183,7 +182,7 @@ const BudgetModules = () => {
           </p>
           <button 
             onClick={resetProgress}
-            className="text-sm rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-4 py-2 transition-colors shadow-lg"
+            className="text-sm rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-4 py-2 transition-colors shadow-lg"
           >
             コースをリセットする
           </button>

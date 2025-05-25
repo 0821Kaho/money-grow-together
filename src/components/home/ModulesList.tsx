@@ -143,7 +143,7 @@ const ModulesList = () => {
                     </div>
                   </div>
                   
-                  {/* Updated button design */}
+                  {/* Updated button design with primary pink color */}
                   <motion.button 
                     className="w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 whitespace-nowrap"
                     whileHover={{ scale: 1.05 }}
@@ -189,8 +189,6 @@ const ModulesList = () => {
                 background: `linear-gradient(to top right, ${module.color}05, ${module.color}20)`,
               }}
             />
-            
-            {/* Remove the ghost Pigipe - fix the double rendering issue */}
           </motion.div>
         ))}
       </div>

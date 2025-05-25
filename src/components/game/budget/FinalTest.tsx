@@ -191,7 +191,7 @@ const FinalTest = ({ onComplete }: FinalTestProps) => {
           
           <button
             onClick={() => onComplete(score)}
-            className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-6 py-3 transition-colors shadow-lg"
+            className="rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg"
           >
             結果を確定する
           </button>

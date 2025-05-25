@@ -35,7 +35,7 @@ const BudgetPlanner = ({ initialBalance, onComplete }: BudgetPlannerProps) => {
       <div className="mb-4">
         <button
           onClick={calculateWeeklyBudget}
-          className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-4 py-2 transition-colors shadow-lg"
+          className="rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-4 py-2 transition-colors shadow-lg"
         >
           予算を計算する
         </button>
@@ -60,7 +60,7 @@ const BudgetPlanner = ({ initialBalance, onComplete }: BudgetPlannerProps) => {
 
       <button
         onClick={checkBudgetSuccess}
-        className="rounded-xl bg-[#25B589] hover:bg-[#1E9A73] text-white font-medium px-4 py-2 transition-colors shadow-lg"
+        className="rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-4 py-2 transition-colors shadow-lg"
       >
         結果を確認する
       </button>

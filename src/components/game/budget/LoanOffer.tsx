@@ -52,7 +52,7 @@ const LoanOffer = ({ onDecision, amount, interestRate }: LoanOfferProps) => {
             </button>
             <button
               onClick={() => onDecision(false)}
-              className="flex-1 rounded-lg bg-[#25B589] px-4 py-2 text-white hover:brightness-105"
+              className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-white hover:bg-game-primary/90"
             >
               他の方法を考える
             </button>
