@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import TontonGameVisuals from "@/components/game/TontonGameVisuals";
 import { motion, useInView } from "framer-motion";
@@ -119,7 +120,7 @@ const ModulesSection = () => {
                 >
                   <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} 
                         style={{ borderColor: `${module.iconColor}85` }}>
-                    <CardContent className="p-6 relative">
+                    <CardContent className="p-6 relative flex flex-col h-full">
                       {/* Module illustration */}
                       {module.illustration && (
                         <motion.div 
@@ -139,17 +140,19 @@ const ModulesSection = () => {
                       
                       <h3 className="text-lg font-bold mb-2" style={{ color: module.iconColor }}>{module.title}</h3>
                       
-                      <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
+                      <p className="text-muted-foreground text-sm mb-4 flex-grow">{module.description}</p>
                       
-                      {/* Updated button with primary pink styling */}
-                      <motion.button
-                        className="mt-2 w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap transition-colors shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        始める
-                        <ArrowRight className="h-4 w-4" />
-                      </motion.button>
+                      {/* Button positioned consistently at bottom */}
+                      <div className="mt-auto">
+                        <motion.button
+                          className="w-full px-4 py-2 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors shadow-lg"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          始める
+                          <ArrowRight className="h-4 w-4" />
+                        </motion.button>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
