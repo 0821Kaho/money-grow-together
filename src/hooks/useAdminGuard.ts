@@ -24,52 +24,52 @@ export function useAdminGuard() {
         console.log('No user found, redirecting to login');
         toast.error("ログインが必要です");
         navigate('/login');
+        setIsCheckingAdmin(false);
         return;
       }
 
       try {
         console.log('Checking admin role for user:', user.id);
         
-        // First check if profile exists
+        // Check if profile exists and get role
         const { data: profile, error } = await supabase
           .from('profiles')
           .select('role')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         console.log('Profile query result:', { profile, error });
 
         if (error) {
           console.error('Error fetching profile:', error);
-          
-          // If profile doesn't exist, create one with user role
-          if (error.code === 'PGRST116') {
-            console.log('Profile not found, creating default profile...');
-            const { error: insertError } = await supabase
-              .from('profiles')
-              .insert({ id: user.id, role: 'user' });
-            
-            if (insertError) {
-              console.error('Error creating profile:', insertError);
-              toast.error("プロフィールの作成に失敗しました");
-              navigate('/');
-              return;
-            }
-            
-            toast.error("管理者権限が必要です");
-            navigate('/');
-            return;
-          }
-          
           toast.error("権限の確認に失敗しました");
           navigate('/');
+          setIsCheckingAdmin(false);
           return;
         }
 
-        if (!profile || profile.role !== 'admin') {
+        if (!profile) {
+          console.log('Profile not found, creating default profile...');
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: user.id, role: 'user' });
+          
+          if (insertError) {
+            console.error('Error creating profile:', insertError);
+            toast.error("プロフィールの作成に失敗しました");
+          } else {
+            toast.error("管理者権限が必要です");
+          }
+          navigate('/');
+          setIsCheckingAdmin(false);
+          return;
+        }
+
+        if (profile.role !== 'admin') {
           console.log('User is not admin:', profile);
           toast.error("管理者権限が必要です");
           navigate('/');
+          setIsCheckingAdmin(false);
           return;
         }
 
