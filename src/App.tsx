@@ -33,7 +33,6 @@ import AdminSettingsPage from "./pages/admin/SettingsPage";
 import AnalyticsPage from "./pages/admin/AnalyticsPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Footer from "./components/layout/Footer";
-import { supabase } from "./integrations/supabase/client";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
@@ -56,52 +55,6 @@ function AppRoutes() {
     if (isLoading || !isAuthenticated) return null;
     
     // Show children only when authenticated
-    return <>{children}</>;
-  };
-
-  // Admin route component that checks if user is admin
-  const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-      const checkAdminRole = async () => {
-        if (isLoading) return;
-        
-        if (!isAuthenticated) {
-          localStorage.setItem('returnPath', window.location.pathname);
-          navigate("/login");
-          return;
-        }
-        
-        try {
-          // Query profiles table to check admin role
-          if (user) {
-            const { data, error } = await supabase
-              .from('profiles')
-              .select('role')
-              .eq('id', user.id)
-              .single();
-
-            if (error || !data || data.role !== 'admin') {
-              toast.error("管理者権限が必要です");
-              navigate('/');
-              return;
-            }
-          }
-        } catch (error) {
-          console.error('Error checking admin role:', error);
-          toast.error("権限の確認に失敗しました");
-          navigate('/');
-        }
-      };
-      
-      checkAdminRole();
-    }, [isLoading, isAuthenticated, user, navigate]);
-    
-    // Show nothing while checking status
-    if (isLoading || !isAuthenticated) return null;
-    
-    // Show children only when admin
     return <>{children}</>;
   };
 
@@ -128,15 +81,15 @@ function AppRoutes() {
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           
-          {/* Admin routes */}
+          {/* Admin routes - using AdminLayout which handles admin guard internally */}
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminRoute><DashboardPage /></AdminRoute>} />
-            <Route path="users" element={<AdminRoute><UsersPage /></AdminRoute>} />
-            <Route path="users/:id" element={<AdminRoute><UserDetailPage /></AdminRoute>} />
-            <Route path="feedback" element={<AdminRoute><FeedbackPage /></AdminRoute>} />
-            <Route path="waitlist" element={<AdminRoute><WaitlistPage /></AdminRoute>} />
-            <Route path="analytics" element={<AdminRoute><AnalyticsPage /></AdminRoute>} />
-            <Route path="settings" element={<AdminRoute><AdminSettingsPage /></AdminRoute>} />
+            <Route index element={<DashboardPage />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="users/:id" element={<UserDetailPage />} />
+            <Route path="feedback" element={<FeedbackPage />} />
+            <Route path="waitlist" element={<WaitlistPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+            <Route path="settings" element={<AdminSettingsPage />} />
           </Route>
           
           {/* 404 route */}

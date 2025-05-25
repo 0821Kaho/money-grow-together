@@ -12,7 +12,9 @@ import {
   BookOpen
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAdminGuard } from "@/hooks/useAdminGuard";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
 const AdminLayout = () => {
@@ -20,6 +22,7 @@ const AdminLayout = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isAdmin, isLoading } = useAdminGuard();
 
   const handleLogout = async () => {
     try {
@@ -31,6 +34,39 @@ const AdminLayout = () => {
       console.error("Logout error:", error);
     }
   };
+
+  // Show loading while checking admin status
+  if (isLoading) {
+    return (
+      <div className="flex h-screen bg-gray-50">
+        <div className="w-64 bg-white border-r">
+          <div className="p-4 border-b">
+            <Skeleton className="h-6 w-32" />
+          </div>
+          <div className="p-3">
+            {Array(7).fill(null).map((_, i) => (
+              <div key={i} className="mb-2">
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex-1 p-6">
+          <Skeleton className="h-8 w-48 mb-4" />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {Array(4).fill(null).map((_, i) => (
+              <Skeleton key={i} className="h-32 w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If not admin, this will have been handled by useAdminGuard (redirect)
+  if (!isAdmin) {
+    return null;
+  }
 
   const navItems = [
     {
