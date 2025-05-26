@@ -41,41 +41,47 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .from('profiles')
         .select('id, name, role, created_at')
         .eq('id', userId)
-        .maybeSingle();
+        .single();
       
       console.log('Profile fetch result:', { profileData, error });
       
       if (error) {
         console.error('Error fetching profile:', error);
+        
+        // プロフィールが存在しない場合は作成を試みる
+        if (error.code === 'PGRST116') {
+          console.log('No profile found, creating one...');
+          const { data: newProfile, error: createError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: userId,
+                role: 'user'
+              }
+            ])
+            .select('id, name, role, created_at')
+            .single();
+          
+          if (createError) {
+            console.error('Error creating profile:', createError);
+            return null;
+          }
+          
+          console.log('Created new profile:', newProfile);
+          return {
+            ...newProfile,
+            role: newProfile.role as 'user' | 'admin'
+          } as Profile;
+        }
         return null;
       }
       
       if (!profileData) {
-        console.log('No profile found, creating one...');
-        // If no profile exists, create one with default role
-        const { data: newProfile, error: createError } = await supabase
-          .from('profiles')
-          .insert([
-            {
-              id: userId,
-              role: 'user'
-            }
-          ])
-          .select('id, name, role, created_at')
-          .single();
-        
-        if (createError) {
-          console.error('Error creating profile:', createError);
-          return null;
-        }
-        
-        console.log('Created new profile:', newProfile);
-        return {
-          ...newProfile,
-          role: newProfile.role as 'user' | 'admin'
-        } as Profile;
+        console.log('No profile data returned');
+        return null;
       }
       
+      console.log('Successfully fetched profile:', profileData);
       return {
         ...profileData,
         role: profileData.role as 'user' | 'admin'
@@ -98,10 +104,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (session?.user) {
           setTimeout(async () => {
             const profileData = await fetchProfile(session.user.id);
+            console.log('Setting profile data:', profileData);
             setProfile(profileData);
             setIsLoading(false);
           }, 0);
         } else {
+          console.log('No session, clearing profile');
           setProfile(null);
           setIsLoading(false);
         }

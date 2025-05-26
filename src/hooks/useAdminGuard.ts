@@ -19,7 +19,12 @@ export function useAdminGuard(): AdminGuardReturn {
 
   useEffect(() => {
     const checkAdminRole = () => {
-      console.log('Admin guard checking...', { user: user?.email, profile, isLoading });
+      console.log('Admin guard checking...', { 
+        user: user?.email, 
+        profile, 
+        isLoading,
+        profileRole: profile?.role 
+      });
       
       if (isLoading) {
         console.log('Still loading authentication...');
@@ -40,6 +45,10 @@ export function useAdminGuard(): AdminGuardReturn {
         return;
       }
 
+      console.log('Profile loaded:', profile);
+      console.log('Profile role:', profile.role);
+      console.log('Is admin?', profile.role === 'admin');
+
       if (profile.role !== 'admin') {
         console.log('User is not admin:', profile);
         toast.error("管理者権限が必要です");
@@ -55,9 +64,18 @@ export function useAdminGuard(): AdminGuardReturn {
     checkAdminRole();
   }, [user, profile, isLoading, navigate]);
 
+  const isAdmin = profile?.role === 'admin' && user && !isLoading;
+  const totalLoading = isLoading || isCheckingAdmin;
+  
+  console.log('useAdminGuard return:', { 
+    isAdmin, 
+    isLoading: totalLoading, 
+    profileRole: profile?.role 
+  });
+
   return { 
-    isAdmin: profile?.role === 'admin' && user && !isLoading, 
-    isLoading: isLoading || isCheckingAdmin,
+    isAdmin, 
+    isLoading: totalLoading,
     user,
     profile
   };
