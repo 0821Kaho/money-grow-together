@@ -223,7 +223,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
       <div className="mt-6">
         <button
           onClick={() => onComplete(totalSaved)}
-          className="w-full rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-4 text-white font-bold text-lg transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+          className="w-full rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-5 py-2.5 text-white font-semibold transition-colors shadow-md border border-[#F37B83] hover:border-[#F37B83]/90"
         >
           節約プランを確定する
         </button>

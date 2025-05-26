@@ -272,7 +272,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <button
         onClick={() => onComplete(balance)}
-        className="w-full rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-4 text-white font-bold text-lg transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+        className="w-full rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-5 py-2.5 text-white font-semibold transition-colors shadow-md border border-[#F37B83] hover:border-[#F37B83]/90"
       >
         収支の確認を完了する
       </button>
@@ -302,7 +302,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
             <div className="text-center">
               <button 
                 onClick={closeTutorial}
-                className="rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-3 text-white font-bold transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+                className="rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-5 py-2.5 text-white font-semibold transition-colors shadow-md border border-[#F37B83] hover:border-[#F37B83]/90"
               >
                 使ってみる
               </button>
