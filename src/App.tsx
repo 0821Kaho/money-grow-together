@@ -36,7 +36,7 @@ import Footer from "./components/layout/Footer";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const { isAuthenticated, user, profile, isLoading } = useAuth();
   
   // Protected route component with improved logic
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {

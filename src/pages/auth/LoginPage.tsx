@@ -16,21 +16,21 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Check if the user is already logged in
+  // Check if the user is already logged in and redirect based on role
   useEffect(() => {
     if (user && profile) {
-      // Get the return path from localStorage or default to modules
-      const returnPath = localStorage.getItem('returnPath') || '/modules';
+      // Get the return path from localStorage or default based on role
+      const returnPath = localStorage.getItem('returnPath');
       // Clear the return path
       localStorage.removeItem('returnPath');
       
-      // 管理者ユーザーなら管理者ダッシュボードに遷移する
+      // Admin users go to admin dashboard, regular users go to modules
       if (profile.role === 'admin') {
         console.log("管理者としてログインしました。管理者ページへ遷移します。");
-        navigate("/admin");
+        navigate(returnPath && returnPath.startsWith('/admin') ? returnPath : "/admin");
       } else {
-        console.log(`一般ユーザーとしてログインしました。${returnPath}へ遷移します。`);
-        navigate(returnPath);
+        console.log("一般ユーザーとしてログインしました。学習ページへ遷移します。");
+        navigate(returnPath && !returnPath.startsWith('/admin') ? returnPath : "/modules");
       }
     }
   }, [user, profile, navigate]);
