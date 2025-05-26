@@ -100,6 +100,7 @@ const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
   const [currentQuestionId, setCurrentQuestionId] = useState<number>(-1);
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
   // 過去に出題した問題のIDをlocalStorageから取得
   useEffect(() => {
@@ -127,12 +128,15 @@ const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
     setSelectedOption(index);
     setShowAnswer(true);
     
-    // 3秒後に結果を表示して次に進む
-    setTimeout(() => {
-      if (currentQuestion) {
-        onComplete(index === currentQuestion.correctIndex);
-      }
-    }, 3000);
+    if (currentQuestion) {
+      const correct = index === currentQuestion.correctIndex;
+      setIsCorrect(correct);
+      
+      // 4秒後に結果を表示して次に進む
+      setTimeout(() => {
+        onComplete(correct);
+      }, 4000);
+    }
   };
 
   if (!currentQuestion) {
@@ -195,14 +199,46 @@ const BudgetQuiz = ({ onComplete }: BudgetQuizProps) => {
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
-          className="mt-4 rounded-lg bg-[#F7F7F7] p-3"
+          className="mt-6 space-y-4"
         >
-          <p className="text-sm font-medium break-words whitespace-normal">
-            {selectedOption === currentQuestion.correctIndex
-              ? "正解です！"
-              : `正解は「${currentQuestion.options[currentQuestion.correctIndex]}」です。`}
-          </p>
-          <p className="mt-1 text-sm text-gray-600 break-words whitespace-normal">{currentQuestion.explanation}</p>
+          {/* 正解・不正解の表示 */}
+          <div className={`rounded-lg p-4 ${
+            isCorrect ? "bg-[#E8F5E9] border border-[#25B589]" : "bg-[#FFEBEE] border border-game-danger"
+          }`}>
+            <div className="flex items-center gap-2 mb-2">
+              {isCorrect ? (
+                <Check className="h-5 w-5 text-[#25B589]" />
+              ) : (
+                <X className="h-5 w-5 text-game-danger" />
+              )}
+              <span className={`font-bold text-lg ${
+                isCorrect ? "text-[#25B589]" : "text-game-danger"
+              }`}>
+                {isCorrect ? "正解！" : "不正解"}
+              </span>
+            </div>
+            
+            {!isCorrect && (
+              <p className="text-sm text-gray-700 mb-2">
+                正解は「{currentQuestion.options[currentQuestion.correctIndex]}」です。
+              </p>
+            )}
+          </div>
+          
+          {/* 解説 */}
+          <div className="rounded-lg bg-[#F7F7F7] p-4">
+            <p className="text-sm font-medium mb-2">解説：</p>
+            <p className="text-sm text-gray-600 break-words whitespace-normal">
+              {currentQuestion.explanation}
+            </p>
+          </div>
+          
+          {/* 次に進むまでの表示 */}
+          <div className="text-center">
+            <p className="text-sm text-gray-500">
+              まもなく次のモジュールに進みます...
+            </p>
+          </div>
         </motion.div>
       )}
     </motion.div>
