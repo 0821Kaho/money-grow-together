@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,8 +55,8 @@ const SignupPage = () => {
       toast.success("登録成功", {
         description: "Pigipeへようこそ！",
       });
-      // Modules page is the next step after signup for regular users
-      navigate("/modules");
+      // Onboarding is the next step after signup
+      navigate("/onboarding");
     } catch (error: any) {
       console.error("Signup error:", error);
       toast.error("登録失敗", {
