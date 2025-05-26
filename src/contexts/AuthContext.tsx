@@ -33,6 +33,59 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
+  const fetchProfile = async (userId: string) => {
+    try {
+      console.log('Fetching profile for user:', userId);
+      
+      const { data: profileData, error } = await supabase
+        .from('profiles')
+        .select('id, name, role, created_at')
+        .eq('id', userId)
+        .maybeSingle();
+      
+      console.log('Profile fetch result:', { profileData, error });
+      
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return null;
+      }
+      
+      if (!profileData) {
+        console.log('No profile found, creating one...');
+        // If no profile exists, create one with default role
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              id: userId,
+              role: 'user'
+            }
+          ])
+          .select('id, name, role, created_at')
+          .single();
+        
+        if (createError) {
+          console.error('Error creating profile:', createError);
+          return null;
+        }
+        
+        console.log('Created new profile:', newProfile);
+        return {
+          ...newProfile,
+          role: newProfile.role as 'user' | 'admin'
+        } as Profile;
+      }
+      
+      return {
+        ...profileData,
+        role: profileData.role as 'user' | 'admin'
+      } as Profile;
+    } catch (error) {
+      console.error('Profile fetch error:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -43,26 +96,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         // Fetch profile when user logs in
         if (session?.user) {
-          try {
-            const { data: profileData, error } = await supabase
-              .from('profiles')
-              .select('id, name, role, created_at')
-              .eq('id', session.user.id)
-              .maybeSingle();
-            
-            if (error) {
-              console.error('Error fetching profile:', error);
-            } else if (profileData) {
-              // Type-safe casting of the role field
-              const typedProfile: Profile = {
-                ...profileData,
-                role: profileData.role as 'user' | 'admin'
-              };
-              setProfile(typedProfile);
-            }
-          } catch (error) {
-            console.error('Profile fetch error:', error);
-          }
+          const profileData = await fetchProfile(session.user.id);
+          setProfile(profileData);
         } else {
           setProfile(null);
         }
@@ -73,6 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session check:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       if (!session) {
