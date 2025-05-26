@@ -6,9 +6,10 @@ const achievements = [
   {
     id: 1,
     title: "予算達成",
-    icon: "🏆",
+    icon: "/lovable-uploads/30d54ea7-18d3-4ce6-a80b-5e311b3de9f7.png",
     description: "初めての予算管理を達成！",
     unlocked: true,
+    isImage: true,
   },
   {
     id: 2,
@@ -103,9 +104,19 @@ const AchievementsPage = () => {
                 }`}
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
-                  <span className="text-2xl">
-                    {achievement.unlocked ? achievement.icon : "🔒"}
-                  </span>
+                  {achievement.unlocked ? (
+                    achievement.isImage ? (
+                      <img 
+                        src={achievement.icon} 
+                        alt={achievement.title}
+                        className="w-10 h-10 object-contain"
+                      />
+                    ) : (
+                      <span className="text-2xl">{achievement.icon}</span>
+                    )
+                  ) : (
+                    <span className="text-2xl">🔒</span>
+                  )}
                 </div>
               </div>
               <h3 className="mb-1 text-center font-medium">
