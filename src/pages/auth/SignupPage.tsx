@@ -56,8 +56,8 @@ const SignupPage = () => {
       toast.success("登録成功", {
         description: "Pigipeへようこそ！",
       });
-      // Onboarding is the next step after signup
-      navigate("/onboarding");
+      // Modules page is the next step after signup for regular users
+      navigate("/modules");
     } catch (error: any) {
       console.error("Signup error:", error);
       toast.error("登録失敗", {
