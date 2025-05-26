@@ -3,8 +3,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import type { Profile } from '@/types/profile';
 
-export function useAdminGuard() {
+interface AdminGuardReturn {
+  isAdmin: boolean;
+  isLoading: boolean;
+  user: ReturnType<typeof useAuth>['user'];
+  profile: Profile | null;
+}
+
+export function useAdminGuard(): AdminGuardReturn {
   const { user, profile, isLoading } = useAuth();
   const navigate = useNavigate();
   const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);

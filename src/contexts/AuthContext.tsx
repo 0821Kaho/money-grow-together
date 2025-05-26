@@ -3,13 +3,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-
-type Profile = {
-  id: string;
-  name: string | null;
-  role: string;
-  created_at?: string;
-};
+import type { Profile } from '@/types/profile';
 
 type AuthContextType = {
   user: User | null;
