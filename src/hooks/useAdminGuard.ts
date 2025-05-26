@@ -31,7 +31,15 @@ export function useAdminGuard() {
       try {
         console.log('Checking admin role for user:', user.id);
         
-        // Check if profile exists and get role
+        // まずapp_metadataから管理者権限をチェック
+        if (user.app_metadata?.isAdmin) {
+          console.log('User is admin via app_metadata');
+          setIsAdmin(true);
+          setIsCheckingAdmin(false);
+          return;
+        }
+
+        // profilesテーブルからroleを確認（無限再帰を避けるため慎重に）
         const { data: profile, error } = await supabase
           .from('profiles')
           .select('role')
@@ -42,25 +50,46 @@ export function useAdminGuard() {
 
         if (error) {
           console.error('Error fetching profile:', error);
-          toast.error("権限の確認に失敗しました");
-          navigate('/');
+          // profilesテーブルにエラーがある場合、特定の管理者ユーザーのみ許可
+          const adminEmails = ['kahosatoyoshi@gmail.com'];
+          if (adminEmails.includes(user.email || '')) {
+            console.log('User is admin via hardcoded email list');
+            setIsAdmin(true);
+          } else {
+            toast.error("権限の確認に失敗しました");
+            navigate('/');
+          }
           setIsCheckingAdmin(false);
           return;
         }
 
         if (!profile) {
-          console.log('Profile not found, creating default profile...');
-          const { error: insertError } = await supabase
-            .from('profiles')
-            .insert({ id: user.id, role: 'user' });
-          
-          if (insertError) {
-            console.error('Error creating profile:', insertError);
-            toast.error("プロフィールの作成に失敗しました");
+          console.log('Profile not found, checking if user should be admin');
+          // 特定のメールアドレスの場合は管理者として扱う
+          const adminEmails = ['kahosatoyoshi@gmail.com'];
+          if (adminEmails.includes(user.email || '')) {
+            console.log('Creating admin profile for privileged user');
+            // 管理者プロファイルを作成
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({ id: user.id, name: user.email?.split('@')[0] || 'Admin', role: 'admin' });
+            
+            if (insertError) {
+              console.error('Error creating admin profile:', insertError);
+            }
+            setIsAdmin(true);
           } else {
+            console.log('Creating default user profile');
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({ id: user.id, name: user.email?.split('@')[0] || 'User', role: 'user' });
+            
+            if (insertError) {
+              console.error('Error creating profile:', insertError);
+            }
             toast.error("管理者権限が必要です");
+            navigate('/');
           }
-          navigate('/');
           setIsCheckingAdmin(false);
           return;
         }
