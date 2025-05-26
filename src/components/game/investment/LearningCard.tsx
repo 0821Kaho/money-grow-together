@@ -134,21 +134,12 @@ const LearningCard = ({
             </div>
             <p className="text-xs text-muted-foreground mt-1">{description}</p>
             
-            {!isRevealed ? (
-              <button
-                className="mt-2 text-xs rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-3 py-1.5 transition-colors shadow-lg flex items-center"
-                onClick={handleClose}
-              >
-                <span>読んだよ！</span>
-                <div className="ml-1 flex items-center">
-                  <span>+{coinReward}</span>
-                </div>
-              </button>
-            ) : (
-              <div className="mt-2 text-xs flex items-center text-amber-500 font-medium">
-                <span>+{coinReward} コイン獲得！</span>
-              </div>
-            )}
+            <button
+              className="mt-2 text-xs rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-3 py-1.5 transition-colors shadow-lg"
+              onClick={handleClose}
+            >
+              読んだよ！
+            </button>
           </div>
         </div>
       </CardContent>
