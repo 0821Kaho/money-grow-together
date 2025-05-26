@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -218,6 +217,7 @@ const CreditCardEducation = ({ onComplete }: CreditCardEducationProps) => {
             </motion.div>
           </div>
           
+          {/* Card types grid */}
           <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-3">
             {cardTypes.map((card, index) => (
               <motion.div
@@ -275,9 +275,12 @@ const CreditCardEducation = ({ onComplete }: CreditCardEducationProps) => {
           </div>
           
           <div className="flex justify-center pt-4">
-            <Button onClick={() => handleTabChange("quiz")}>
+            <button
+              onClick={() => handleTabChange("quiz")}
+              className="rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-3 text-white font-bold transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+            >
               クイズに進む
-            </Button>
+            </button>
           </div>
         </motion.div>
       ) : (
@@ -335,13 +338,13 @@ const CreditCardEducation = ({ onComplete }: CreditCardEducationProps) => {
               </RadioGroup>
               
               <div className="mt-6">
-                <Button 
+                <button
                   onClick={handleNextQuestion}
                   disabled={!selectedAnswers[currentQuestion]}
-                  className="w-full"
+                  className="w-full rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-3 text-white font-bold transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {currentQuestion === quizQuestions.length - 1 ? "結果を見る" : "次の問題へ"}
-                </Button>
+                </button>
               </div>
             </div>
           ) : (
