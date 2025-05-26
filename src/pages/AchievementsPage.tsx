@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import GameLayout from "@/components/layout/GameLayout";
 
@@ -7,7 +6,7 @@ const achievements = [
     id: 1,
     title: "予算達成",
     icon: "/lovable-uploads/30d54ea7-18d3-4ce6-a80b-5e311b3de9f7.png",
-    description: "初めての予算管理を達成！",
+    description: "",
     unlocked: true,
     isImage: true,
   },
@@ -99,8 +98,8 @@ const AchievementsPage = () => {
               <div
                 className={`mb-3 flex h-16 w-16 items-center justify-center rounded-full ${
                   achievement.unlocked
-                    ? "bg-game-secondary" // Consistent green for all unlocked badges
-                    : "bg-[#E0E0E0]" // Gray for locked badges (high contrast)
+                    ? "bg-game-secondary"
+                    : "bg-[#E0E0E0]"
                 }`}
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
@@ -109,7 +108,7 @@ const AchievementsPage = () => {
                       <img 
                         src={achievement.icon} 
                         alt={achievement.title}
-                        className="w-10 h-10 object-contain"
+                        className="w-12 h-12 object-contain"
                       />
                     ) : (
                       <span className="text-2xl">{achievement.icon}</span>
@@ -122,9 +121,11 @@ const AchievementsPage = () => {
               <h3 className="mb-1 text-center font-medium">
                 {achievement.title}
               </h3>
-              <p className="text-center text-xs text-[#5F5F5F]">
-                {achievement.description}
-              </p>
+              {achievement.description && (
+                <p className="text-center text-xs text-[#5F5F5F]">
+                  {achievement.description}
+                </p>
+              )}
             </motion.div>
           ))}
         </div>
