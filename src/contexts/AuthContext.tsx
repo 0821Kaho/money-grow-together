@@ -52,8 +52,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             
             if (error) {
               console.error('Error fetching profile:', error);
-            } else {
-              setProfile(profileData);
+            } else if (profileData) {
+              // Type-safe casting of the role field
+              const typedProfile: Profile = {
+                ...profileData,
+                role: profileData.role as 'user' | 'admin'
+              };
+              setProfile(typedProfile);
             }
           } catch (error) {
             console.error('Profile fetch error:', error);
