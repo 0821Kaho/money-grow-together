@@ -14,7 +14,7 @@ const onboardingSteps = [
   {
     title: "学習モジュールで実践力を身につけよう",
     description: "家計管理、投資、リスク管理など実用的な金融スキルを段階的に学べます。",
-    image: "📚"
+    image: "learning-pigipe" // Special identifier for the learning Pigipe
   },
   {
     title: "実績を獲得し、習慣を身につけよう",
@@ -53,6 +53,17 @@ const OnboardingCarousel = () => {
           <div className="absolute bottom-40 right-1/4 w-7 h-7 bg-yellow-400 rounded-full opacity-20 animate-float" style={{animationDelay: '1.5s'}}></div>
         </div>
       )}
+
+      {/* Floating books background for learning page */}
+      {currentStep === 1 && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-16 left-12 text-2xl opacity-20 animate-float" style={{animationDelay: '0s'}}>📚</div>
+          <div className="absolute top-40 right-20 text-xl opacity-15 animate-float" style={{animationDelay: '1.5s'}}>📖</div>
+          <div className="absolute bottom-32 left-1/4 text-lg opacity-25 animate-float" style={{animationDelay: '0.8s'}}>✨</div>
+          <div className="absolute top-1/3 right-1/4 text-xl opacity-20 animate-float" style={{animationDelay: '2s'}}>💡</div>
+          <div className="absolute bottom-40 right-12 text-lg opacity-15 animate-float" style={{animationDelay: '1.2s'}}>🌟</div>
+        </div>
+      )}
       
       <div className="container mx-auto flex flex-1 flex-col items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
@@ -86,6 +97,27 @@ const OnboardingCarousel = () => {
                     <div className="absolute -bottom-1 -left-2 text-pink-400 text-xl animate-pulse" style={{animationDelay: '0.5s'}}>💫</div>
                     <div className="absolute top-1/4 -right-4 text-yellow-300 text-lg animate-pulse" style={{animationDelay: '1s'}}>⭐</div>
                   </motion.div>
+                ) : onboardingSteps[currentStep].image === "learning-pigipe" ? (
+                  <motion.div 
+                    className="relative"
+                    initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
+                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    <img 
+                      src="/lovable-uploads/55b95951-e220-40e9-a0bf-a8940a60a4fb.png" 
+                      alt="学習するピギペ"
+                      className="h-40 w-40"
+                      style={{
+                        filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.1))'
+                      }}
+                    />
+                    {/* Learning sparkle effects */}
+                    <div className="absolute -top-3 -right-1 text-yellow-400 text-2xl animate-pulse">💡</div>
+                    <div className="absolute -bottom-2 -left-3 text-green-400 text-xl animate-pulse" style={{animationDelay: '0.7s'}}>📚</div>
+                    <div className="absolute top-1/3 -right-5 text-blue-400 text-lg animate-pulse" style={{animationDelay: '1.2s'}}>🌟</div>
+                    <div className="absolute bottom-1/4 -left-4 text-purple-400 text-sm animate-pulse" style={{animationDelay: '1.8s'}}>✨</div>
+                  </motion.div>
                 ) : currentStep === 0 ? (
                   <MascotCharacter size="large" className="h-32 w-32" />
                 ) : (
@@ -97,7 +129,9 @@ const OnboardingCarousel = () => {
               
               <motion.h1 
                 className={`mb-4 text-center font-bold text-game-dark ${
-                  currentStep === 0 ? "text-3xl bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent" : "text-2xl"
+                  currentStep === 0 ? "text-3xl bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent" : 
+                  currentStep === 1 ? "text-2xl bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent" :
+                  "text-2xl"
                 }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -108,7 +142,9 @@ const OnboardingCarousel = () => {
               
               <motion.p 
                 className={`text-center ${
-                  currentStep === 0 ? "text-gray-700 text-lg leading-relaxed" : "text-gray-600"
+                  currentStep === 0 ? "text-gray-700 text-lg leading-relaxed" : 
+                  currentStep === 1 ? "text-gray-700 text-lg leading-relaxed" :
+                  "text-gray-600"
                 } mb-8`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
