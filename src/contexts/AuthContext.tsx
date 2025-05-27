@@ -50,12 +50,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         if (error.code === 'PGRST116') {
           console.log('No profile found, creating one...');
+          
+          // Determine role based on email
+          const { data: userData } = await supabase.auth.getUser();
+          const isAdmin = userData.user?.email === 'kahosatoyoshi@gmail.com';
+          
           const { data: newProfile, error: createError } = await supabase
             .from('profiles')
             .insert([
               {
                 id: userId,
-                role: 'user'
+                role: isAdmin ? 'admin' : 'user',
+                name: isAdmin ? 'Kaho Satoyoshi' : null
               }
             ])
             .select('id, name, role, created_at')
