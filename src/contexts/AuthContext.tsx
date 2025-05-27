@@ -104,7 +104,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
+        console.log('=== Auth State Change ===');
+        console.log('Event:', event);
+        console.log('Session:', session);
+        console.log('User email:', session?.user?.email);
+        console.log('========================');
+        
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -113,6 +118,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // プロファイル取得を非同期で実行し、取得完了後にローディングを終了
           fetchProfile(session.user.id, session.user.email).then(profileData => {
             console.log('Setting profile data:', profileData);
+            console.log('Profile role:', profileData?.role);
             setProfile(profileData);
             setIsLoading(false);
           });
@@ -134,6 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(session);
         setUser(session.user);
         const profileData = await fetchProfile(session.user.id, session.user.email);
+        console.log('Initial profile data:', profileData);
         setProfile(profileData);
       }
       
