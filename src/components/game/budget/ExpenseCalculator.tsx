@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PiggyBank, DollarSign, Percent } from "lucide-react";
@@ -272,7 +273,7 @@ const ExpenseCalculator = ({ onComplete }: ExpenseCalculatorProps) => {
       
       <button
         onClick={() => onComplete(balance)}
-        className="w-full rounded-lg bg-game-primary hover:bg-game-primary/90 px-5 py-3 text-white font-bold transition-colors shadow-lg border-2 border-game-primary hover:border-game-primary/90 text-sm"
+        className="w-full rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-5 py-3 text-white font-bold transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90 text-sm"
       >
         収支の確認を完了する
       </button>
