@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -18,13 +19,12 @@ export function useAdminGuard(): AdminGuardReturn {
 
   useEffect(() => {
     const checkAdminRole = () => {
-      console.log('Admin guard checking...', { 
-        user: user?.email, 
-        profile, 
-        isLoading,
-        profileRole: profile?.role,
-        timestamp: new Date().toISOString()
-      });
+      console.log('=== Admin Guard Check ===');
+      console.log('User:', user?.email);
+      console.log('Profile:', profile);
+      console.log('Auth loading:', isLoading);
+      console.log('Profile role:', profile?.role);
+      console.log('========================');
       
       if (isLoading) {
         console.log('Still loading authentication...');

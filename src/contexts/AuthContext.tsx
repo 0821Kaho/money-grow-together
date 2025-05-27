@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -47,37 +46,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) {
         console.error('Error fetching profile:', error);
-        
-        if (error.code === 'PGRST116') {
-          console.log('No profile found, creating one...');
-          
-          // Determine role based on email
-          const { data: userData } = await supabase.auth.getUser();
-          const isAdmin = userData.user?.email === 'kahosatoyoshi@gmail.com';
-          
-          const { data: newProfile, error: createError } = await supabase
-            .from('profiles')
-            .insert([
-              {
-                id: userId,
-                role: isAdmin ? 'admin' : 'user',
-                name: isAdmin ? 'Kaho Satoyoshi' : null
-              }
-            ])
-            .select('id, name, role, created_at')
-            .single();
-          
-          if (createError) {
-            console.error('Error creating profile:', createError);
-            return null;
-          }
-          
-          console.log('Created new profile:', newProfile);
-          return {
-            ...newProfile,
-            role: newProfile.role as 'user' | 'admin'
-          } as Profile;
-        }
         return null;
       }
       
