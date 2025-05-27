@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, X, Info, Shield, TrendingUp, ChartPie } from "lucide-react";
+import { GraduationCap, X, Coins, Info, Shield, TrendingUp, ChartPie } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 
@@ -62,7 +62,7 @@ const LearningCard = ({
         };
       case "tax":
         return {
-          icon: icon || <TrendingUp className="h-5 w-5" />,
+          icon: icon || <Coins className="h-5 w-5" />,
           bgColor: "bg-green-100",
           textColor: "text-green-700",
           tooltipText: "支払う税金を減らして、手元に残るお金を増やします"
@@ -83,7 +83,7 @@ const LearningCard = ({
         };
       case "fees":
         return {
-          icon: icon || <TrendingUp className="h-5 w-5" />,
+          icon: icon || <Coins className="h-5 w-5" />,
           bgColor: "bg-red-100",
           textColor: "text-red-700",
           tooltipText: "小さな手数料の差も、長期では大きな金額になります"
@@ -134,12 +134,25 @@ const LearningCard = ({
             </div>
             <p className="text-xs text-muted-foreground mt-1">{description}</p>
             
-            <button
-              className="mt-2 text-xs rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-3 py-1.5 transition-colors shadow-lg"
-              onClick={handleClose}
-            >
-              読んだよ！
-            </button>
+            {!isRevealed ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 text-xs"
+                onClick={handleClose}
+              >
+                <span>読んだよ！</span>
+                <div className="ml-1 flex items-center">
+                  <Coins className="h-3.5 w-3.5 mr-0.5 text-amber-500" />
+                  <span>+{coinReward}</span>
+                </div>
+              </Button>
+            ) : (
+              <div className="mt-2 text-xs flex items-center text-amber-500 font-medium">
+                <Coins className="h-3.5 w-3.5 mr-0.5" />
+                <span>+{coinReward} コイン獲得！</span>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>

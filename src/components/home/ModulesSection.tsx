@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 
 const modules = [
   { 
-    id: "1", // budgetから1に変更
+    id: "budget", 
     title: "家計管理マスター", 
     description: "お金の使い方を見直し、貯金体質になるための基礎を学びます", 
     color: "bg-primary/10",
@@ -24,7 +24,7 @@ const modules = [
     illustration: "/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png"
   },
   { 
-    id: "2", // investmentから2に変更
+    id: "investment", 
     title: "投資マスター", 
     description: "長期的な資産形成のための投資の基本を学びます", 
     color: "bg-secondary/10",
@@ -33,7 +33,7 @@ const modules = [
     illustration: "/lovable-uploads/d4d69757-fa8b-4792-b80c-3a101f92b01b.png"
   },
   { 
-    id: "3", // riskから3に変更
+    id: "risk", 
     title: "リスク管理マスター", 
     description: "お金のリスクを理解し、適切に対策する方法を学びます", 
     color: "bg-accent/10",
@@ -42,7 +42,7 @@ const modules = [
     illustration: "/lovable-uploads/9c9d440d-3eab-4a1e-913f-6152729a6ff8.png"
   },
   { 
-    id: "4", // lifeplanから4に変更
+    id: "lifeplan", 
     title: "ライフプランマスター", 
     description: "将来の人生設計と必要な資金計画について学びます", 
     color: "bg-primary/10",
@@ -51,7 +51,7 @@ const modules = [
     illustration: "/lovable-uploads/c02ccb40-c19f-48d7-a805-8c3e5ac584e6.png"
   },
   { 
-    id: "5", // startupから5に変更
+    id: "startup", 
     title: "副業・起業マスター", 
     description: "小さな一歩から始める副業や起業の考え方を学びます", 
     color: "bg-secondary/10",
@@ -120,7 +120,7 @@ const ModulesSection = () => {
                 >
                   <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${module.background}`} 
                         style={{ borderColor: `${module.iconColor}85` }}>
-                    <CardContent className="p-6 relative flex flex-col h-full">
+                    <CardContent className="p-6 relative">
                       {/* Module illustration */}
                       {module.illustration && (
                         <motion.div 
@@ -140,19 +140,17 @@ const ModulesSection = () => {
                       
                       <h3 className="text-lg font-bold mb-2" style={{ color: module.iconColor }}>{module.title}</h3>
                       
-                      <p className="text-muted-foreground text-sm mb-4 flex-grow">{module.description}</p>
+                      <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
                       
-                      {/* Button positioned consistently at bottom */}
-                      <div className="mt-auto">
-                        <motion.button
-                          className="w-full px-4 py-2 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 transition-colors shadow-lg"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          始める
-                          <ArrowRight className="h-4 w-4" />
-                        </motion.button>
-                      </div>
+                      {/* Updated button with fixed width and arrow icon */}
+                      <motion.button
+                        className="mt-2 w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        始める
+                        <ArrowRight className="h-4 w-4" />
+                      </motion.button>
                     </CardContent>
                   </Card>
                 </motion.div>

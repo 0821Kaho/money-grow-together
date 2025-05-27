@@ -16,22 +16,8 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { signup, user, profile, isLoading: authLoading } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
-
-  // Check if the user is already logged in
-  useEffect(() => {
-    console.log('SignupPage useEffect:', { authLoading, user: user?.email, profile });
-    
-    if (!authLoading && user && profile) {
-      // User is already authenticated, redirect based on role
-      if (profile.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/modules');
-      }
-    }
-  }, [user, profile, authLoading, navigate]);
 
   // Get pre-registered email from localStorage if available
   useEffect(() => {
@@ -59,31 +45,19 @@ const SignupPage = () => {
     setIsLoading(true);
 
     try {
-      console.log("新規登録試行中:", email);
       await signup(email, password, displayName);
       toast.success("登録成功", {
         description: "Pigipeへようこそ！",
       });
-      // Onboarding is the next step after signup
       navigate("/onboarding");
-    } catch (error: any) {
-      console.error("Signup error:", error);
+    } catch (error) {
       toast.error("登録失敗", {
-        description: error.message || "アカウントの作成に失敗しました",
+        description: "アカウントの作成に失敗しました",
       });
     } finally {
       setIsLoading(false);
     }
   };
-
-  // Show loading if auth is still loading
-  if (authLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">認証確認中...</div>
-      </div>
-    );
-  }
 
   return (
     <Card className="shadow-lg border-[#F5F5F5]">

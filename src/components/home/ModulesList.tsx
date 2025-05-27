@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -108,10 +107,10 @@ const ModulesList = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 * module.id / 5 }}
             whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-4 bg-gradient-to-br ${getBgGradient(module.color)} flex flex-col h-full`}
+            className={`rounded-2xl p-5 shadow-sm relative overflow-hidden border-4 bg-gradient-to-br ${getBgGradient(module.color)}`}
             style={{ borderColor: `${module.color}85` }}
           >
-            <div className="flex flex-col gap-4 relative z-10 h-full">
+            <div className="flex flex-col gap-4 relative z-10">
               <div className="relative">
                 <img 
                   src={module.illustration} 
@@ -120,14 +119,14 @@ const ModulesList = () => {
                 />
               </div>
               
-              <div className="space-y-3 flex-grow">
+              <div className="space-y-3">
                 <h3 className="text-lg font-bold" style={{ color: module.color }}>{module.title}</h3>
                 
-                <p className="text-sm text-gray-600 flex-grow">
+                <p className="text-sm text-gray-600">
                   {module.description}
                 </p>
                 
-                <div className="flex items-center justify-between mt-auto">
+                <div className="flex items-center justify-between">
                   <div className="w-full mr-3">
                     <div className="mb-1 flex justify-between">
                       <span className="text-xs font-medium">進捗</span>
@@ -144,15 +143,15 @@ const ModulesList = () => {
                     </div>
                   </div>
                   
-                  {/* Smaller button with no line breaks */}
+                  {/* Updated button design */}
                   <motion.button 
-                    className="px-3 py-1.5 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-md text-xs font-medium flex items-center justify-center gap-1 ml-auto transition-colors shadow-lg whitespace-nowrap flex-shrink-0"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    className="w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 whitespace-nowrap"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => window.location.href = `/module/${module.id}`}
                   >
                     始める
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                   </motion.button>
                 </div>
               </div>
@@ -190,6 +189,23 @@ const ModulesList = () => {
                 background: `linear-gradient(to top right, ${module.color}05, ${module.color}20)`,
               }}
             />
+            
+            {/* Pigipe character on each card - replaced with static decoration */}
+            <motion.div 
+              className="absolute bottom-3 right-3 h-12 w-12 opacity-40 z-0"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 3,
+                ease: "easeInOut",
+              }}
+            >
+              <img 
+                src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png" 
+                alt="Pigipe" 
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
           </motion.div>
         ))}
       </div>

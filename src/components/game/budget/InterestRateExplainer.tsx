@@ -92,13 +92,9 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
                     repeat: Infinity,
                     repeatType: "loop",
                   }}
-                  className="w-32 h-32"
+                  className="text-[80px]"
                 >
-                  <img 
-                    src="/lovable-uploads/d5ca595a-44cb-4a30-a00d-6e9ba2394360.png" 
-                    alt="金利の説明" 
-                    className="w-full h-full object-contain"
-                  />
+                  💴
                 </motion.div>
               </div>
               <motion.div
@@ -146,7 +142,7 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
 
           <button
             onClick={nextStep}
-            className="w-full rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-3 text-white font-bold transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+            className="w-full rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
           >
             次へ：単利と複利
           </button>
@@ -167,8 +163,8 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
                 元金にのみ金利がつく方式。
                 利息は最初の預け入れ額（元金）のみに対して計算されます。
               </p>
-              <div className="flex">
-                <div className="text-left text-xs p-2 border border-dashed border-gray-300 rounded-lg">
+              <div className="flex justify-center">
+                <div className="text-center text-xs p-2 border border-dashed border-gray-300 rounded-lg">
                   <div>例：100万円を年利3%で5年間</div>
                   <div className="font-bold text-blue-600">利息 = 100万円 × 3% × 5年 = 15万円</div>
                 </div>
@@ -185,8 +181,8 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
                 元金だけでなく、すでについた利息にも金利がつく方式。
                 時間とともに加速度的に増えていきます。
               </p>
-              <div className="flex">
-                <div className="text-left text-xs p-2 border border-dashed border-gray-300 rounded-lg">
+              <div className="flex justify-center">
+                <div className="text-center text-xs p-2 border border-dashed border-gray-300 rounded-lg">
                   <div>例：100万円を年利3%で5年間</div>
                   <div className="font-bold text-green-600">元利合計 = 100万円 × (1+3%)^5 = 約116万円</div>
                 </div>
@@ -269,15 +265,15 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
           <div className="flex gap-3">
             <button
               onClick={prevStep}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-1.5 text-xs hover:bg-gray-50"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
             >
               戻る
             </button>
             <button
               onClick={nextStep}
-              className="flex-1 rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-4 py-2 font-bold text-white transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+              className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
             >
-              次へ
+              次へ：シミュレーター
             </button>
           </div>
         </div>
@@ -407,13 +403,13 @@ const InterestRateExplainer = ({ onComplete }: InterestRateExplainerProps) => {
           <div className="flex gap-3">
             <button
               onClick={prevStep}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-1.5 text-xs hover:bg-gray-50"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
             >
               戻る
             </button>
             <button
               onClick={onComplete}
-              className="flex-1 rounded-xl bg-[#F37B83] hover:bg-[#F37B83]/90 px-4 py-2 font-bold text-white transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
+              className="flex-1 rounded-lg bg-game-primary px-4 py-2 text-white hover:brightness-105"
             >
               理解した
             </button>

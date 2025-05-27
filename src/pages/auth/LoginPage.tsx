@@ -12,59 +12,48 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login, user, profile, isLoading: authLoading } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // Check if the user is already logged in and redirect based on role
+  // Check if the user is already logged in
   useEffect(() => {
-    console.log('LoginPage useEffect - Auth state:', { 
-      authLoading, 
-      user: user?.email, 
-      profile,
-      profileRole: profile?.role 
-    });
-    
-    // Wait for auth loading to complete and ensure we have both user and profile
-    if (!authLoading && user && profile) {
-      // Get the return path from localStorage or default based on role
-      const returnPath = localStorage.getItem('returnPath');
+    if (user) {
+      // Get the return path from localStorage or default to modules
+      const returnPath = localStorage.getItem('returnPath') || '/modules';
       // Clear the return path
       localStorage.removeItem('returnPath');
-      
-      console.log("ユーザー情報:", { user: user.email, role: profile.role, profile });
-      
-      // Admin users go to admin dashboard, regular users go to modules
-      if (profile.role === 'admin') {
-        console.log("管理者としてログインしました。管理者ダッシュボードへ遷移します。");
-        const targetPath = returnPath && returnPath.startsWith('/admin') ? returnPath : "/admin";
-        console.log("遷移先:", targetPath);
-        navigate(targetPath, { replace: true });
-      } else {
-        console.log("一般ユーザーとしてログインしました。学習モジュール一覧へ遷移します。");
-        const targetPath = returnPath && !returnPath.startsWith('/admin') ? returnPath : "/modules";
-        console.log("遷移先:", targetPath);
-        navigate(targetPath, { replace: true });
-      }
+      // Redirect to the return path
+      navigate(returnPath);
     }
-  }, [user, profile, authLoading, navigate]);
+  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      console.log("ログイン試行中:", email);
-      await login(email, password);
+      const userData = await login(email, password);
       
       toast({
         title: "ログイン成功",
         description: "Pigipeへようこそ！",
       });
       
-      // Navigation will be handled by the useEffect above when user and profile are updated
+      // Get the return path from localStorage or default to modules
+      const returnPath = localStorage.getItem('returnPath') || '/modules';
+      // Clear the return path
+      localStorage.removeItem('returnPath');
+      
+      // 管理者ユーザーなら管理者ダッシュボードに遷移する
+      if (userData.isAdmin) {
+        console.log("管理者としてログインしました。管理者ページへ遷移します。");
+        navigate("/admin");
+      } else {
+        console.log(`一般ユーザーとしてログインしました。${returnPath}へ遷移します。`);
+        navigate(returnPath);
+      }
     } catch (error) {
-      console.error("ログインエラー:", error);
       toast({
         title: "ログイン失敗",
         description: "メールアドレスまたはパスワードが正しくありません",
@@ -74,15 +63,6 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
-
-  // Show loading if auth is still loading
-  if (authLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">認証確認中...</div>
-      </div>
-    );
-  }
 
   return (
     <Card className="shadow-lg border-[#F5F5F5]">

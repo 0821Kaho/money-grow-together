@@ -91,21 +91,21 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
       animate={{ opacity: 1 }}
       className="rounded-lg bg-white p-6"
     >
-      <h3 className="mb-4 text-lg font-bold">変動費カットに挑戦！</h3>
-      <p className="mb-6 text-sm text-gray-700 break-words whitespace-normal">
+      <h3 className="mb-4 text-xl font-bold">変動費カットに挑戦！</h3>
+      <p className="mb-6 text-gray-700 break-words whitespace-normal">
         節約できそうな支出項目を「削減リスト」にドラッグしてください。
         どの支出を減らせば効果的に貯金できるか考えてみましょう。
       </p>
       
       <div className="mb-4 rounded-lg bg-[#F7F7F7] p-4 text-center">
-        <p className="text-xs text-gray-600">現在の節約額</p>
-        <p className="text-xl font-bold text-[#25B589]">{totalSaved.toLocaleString()}円</p>
+        <p className="text-sm text-gray-600">現在の節約額</p>
+        <p className="text-2xl font-bold text-[#25B589]">{totalSaved.toLocaleString()}円</p>
       </div>
       
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <h4 className="mb-3 text-sm font-medium">支出リスト</h4>
+            <h4 className="mb-3 font-medium">支出リスト</h4>
             <Droppable droppableId="expenses">
               {(provided) => (
                 <div
@@ -114,7 +114,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                   className="min-h-[200px] rounded-lg border border-dashed border-gray-300 p-3"
                 >
                   {expenses.length === 0 ? (
-                    <div className="flex h-full items-center justify-center p-4 text-center text-xs text-gray-500">
+                    <div className="flex h-full items-center justify-center p-4 text-center text-gray-500">
                       すべての項目が削減リストに移動されました
                     </div>
                   ) : (
@@ -125,7 +125,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className={`mb-2 flex items-center justify-between rounded-md p-2.5 break-words whitespace-normal
+                            className={`mb-2 flex items-center justify-between rounded-md p-3 break-words whitespace-normal
                               ${
                                 item.category === "waste"
                                   ? "bg-[#FFEBEE]"
@@ -136,19 +136,19 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                             `}
                           >
                             <div className="flex items-center">
-                              <span className="mr-2 text-base">{item.icon}</span>
+                              <span className="mr-2 text-xl">{item.icon}</span>
                               <div>
-                                <p className="text-xs font-medium">{item.name}</p>
-                                <p className="text-xs text-gray-700">
+                                <p className="font-medium">{item.name}</p>
+                                <p className="text-sm text-gray-700">
                                   {item.amount.toLocaleString()}円
                                 </p>
                               </div>
                             </div>
-                            <div className="ml-2 rounded-full px-1.5 py-0.5 text-[10px]">
+                            <div className="ml-2 rounded-full px-2 py-1 text-xs">
                               {item.category === "waste" ? (
                                 <span className="text-game-danger">浪費</span>
                               ) : item.category === "optional" ? (
-                                <span className="text-[#FFB547]">オプション</span>
+                                <span className="text-[#FFB547]">選択的</span>
                               ) : (
                                 <span className="text-[#25B589]">必要</span>
                               )}
@@ -165,7 +165,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
           </div>
           
           <div>
-            <h4 className="mb-3 text-sm font-medium">削減リスト</h4>
+            <h4 className="mb-3 font-medium">削減リスト</h4>
             <Droppable droppableId="selected">
               {(provided) => (
                 <div
@@ -174,7 +174,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                   className="min-h-[200px] rounded-lg border-2 border-dashed border-[#25B589] bg-[#F7FFF9] p-3"
                 >
                   {selectedExpenses.length === 0 ? (
-                    <div className="flex h-full items-center justify-center p-4 text-center text-xs text-gray-500">
+                    <div className="flex h-full items-center justify-center p-4 text-center text-gray-500">
                       削減したい項目をここにドラッグしてください
                     </div>
                   ) : (
@@ -185,7 +185,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className={`mb-2 flex items-center justify-between rounded-md p-2.5 break-words whitespace-normal
+                            className={`mb-2 flex items-center justify-between rounded-md p-3 break-words whitespace-normal
                               ${
                                 item.category === "waste"
                                   ? "bg-[#FFEBEE]"
@@ -196,15 +196,15 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
                             `}
                           >
                             <div className="flex items-center">
-                              <span className="mr-2 text-base">{item.icon}</span>
+                              <span className="mr-2 text-xl">{item.icon}</span>
                               <div>
-                                <p className="text-xs font-medium">{item.name}</p>
-                                <p className="text-xs text-gray-700">
+                                <p className="font-medium">{item.name}</p>
+                                <p className="text-sm text-gray-700">
                                   {item.amount.toLocaleString()}円
                                 </p>
                               </div>
                             </div>
-                            <div className="ml-2 rounded-full bg-[#25B589] px-1.5 py-0.5 text-[10px] text-white">
+                            <div className="ml-2 rounded-full bg-[#25B589] px-2 py-1 text-xs text-white">
                               節約
                             </div>
                           </div>
@@ -223,7 +223,7 @@ const DragDropSaving = ({ onComplete }: DragDropSavingProps) => {
       <div className="mt-6">
         <button
           onClick={() => onComplete(totalSaved)}
-          className="w-full rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-5 py-2.5 text-white font-semibold transition-colors shadow-md border border-[#F37B83] hover:border-[#F37B83]/90"
+          className="w-full rounded-xl bg-game-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105"
         >
           節約プランを確定する
         </button>

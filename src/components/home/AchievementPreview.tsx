@@ -6,9 +6,8 @@ const achievements = [
   { 
     id: 1, 
     title: "予算達成", 
-    icon: "/lovable-uploads/30d54ea7-18d3-4ce6-a80b-5e311b3de9f7.png", 
-    description: "",
-    isImage: true,
+    icon: "🏆", 
+    description: "初めての予算管理を達成！"
   },
   { 
     id: 2, 
@@ -52,15 +51,7 @@ const AchievementPreview = () => {
           >
             <div className="achievement-badge mb-2 bg-game-secondary">
               <div className="achievement-badge-inner">
-                {achievement.isImage ? (
-                  <img 
-                    src={achievement.icon} 
-                    alt={achievement.title}
-                    className="w-12 h-12 object-contain"
-                  />
-                ) : (
-                  <span className="text-2xl">{achievement.icon}</span>
-                )}
+                <span className="text-2xl">{achievement.icon}</span>
               </div>
             </div>
             <p className="text-center text-xs font-medium">{achievement.title}</p>

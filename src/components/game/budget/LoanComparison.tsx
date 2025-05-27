@@ -184,7 +184,7 @@ const LoanComparison = ({ onComplete }: LoanComparisonProps) => {
           
           <button
             onClick={onComplete}
-            className="w-full rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-6 py-3 text-white font-semibold transition-colors shadow-md border border-[#F37B83] hover:border-[#F37B83]/90"
+            className="w-full rounded-xl bg-game-primary px-6 py-3 font-medium text-white transition-all hover:brightness-105"
           >
             理解して次へ進む
           </button>
@@ -330,7 +330,7 @@ const LoanComparison = ({ onComplete }: LoanComparisonProps) => {
               </button>
               <button
                 onClick={onComplete}
-                className="flex-1 rounded-lg bg-[#F37B83] hover:bg-[#F37B83]/90 px-4 py-2 text-white font-semibold transition-colors shadow-md border border-[#F37B83] hover:border-[#F37B83]/90"
+                className="flex-1 rounded-md bg-game-primary px-4 py-2 text-white"
               >
                 理解して次へ
               </button>

@@ -199,7 +199,7 @@ const StartupSimulation = () => {
                           <Button 
                             size="sm" 
                             onClick={() => completeTask(task.id)}
-                            className="rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium transition-colors shadow-lg"
+                            className="game-button"
                           >
                             完了
                           </Button>

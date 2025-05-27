@@ -114,9 +114,6 @@ const ModulePage = () => {
   
   const ModuleComponent = module.component;
   
-  // Check if user has admin role in app_metadata
-  const isUserAdmin = user?.app_metadata?.isAdmin === true;
-  
   return (
     <GameLayout currentModule={module.id}>
       <div className="mb-6">
@@ -126,7 +123,7 @@ const ModulePage = () => {
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
           <button
-            onClick={() => navigate(isUserAdmin ? "/admin" : "/")}
+            onClick={() => navigate(user?.isAdmin ? "/admin" : "/")}
             className="flex items-center gap-1 text-sm font-body font-medium text-gray-500"
           >
             <svg
@@ -160,10 +157,10 @@ const ModulePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button
-              onClick={() => navigate(isUserAdmin ? "/admin" : "/")}
+              onClick={() => navigate(user?.isAdmin ? "/admin" : "/")}
               className="game-button font-number font-bold"
             >
-              {isUserAdmin ? "管理画面" : "ホーム"}に戻る
+              {user?.isAdmin ? "管理画面" : "ホーム"}に戻る
             </button>
             <MascotCharacter size="small" />
           </div>

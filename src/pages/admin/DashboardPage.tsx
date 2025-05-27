@@ -1,4 +1,9 @@
-
+/**
+ * Admin Dashboard Home Page
+ * 
+ * A simple overview dashboard that serves as the home page for the admin area.
+ * Displays key metrics and navigation cards.
+ */
 import React, { useState, useEffect } from 'react';
 import { useAdminGuard } from '@/hooks/useAdminGuard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +21,8 @@ type DashboardStats = {
 };
 
 const DashboardPage = () => {
-  const { isAdmin, isLoading, user } = useAdminGuard();
+  // Guards this page to admin-only access
+  useAdminGuard();
   
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
@@ -25,60 +31,33 @@ const DashboardPage = () => {
     unreadFeedback: 0
   });
   
-  const [statsLoading, setStatsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    if (!isLoading && isAdmin) {
-      const fetchStats = async () => {
-        setStatsLoading(true);
-        try {
-          const dashboardStats = await getDashboardStats();
-          setStats({
-            totalUsers: dashboardStats.totalUsers,
-            activeUsers: dashboardStats.activeUsers,
-            completedModules: dashboardStats.completedModules,
-            unreadFeedback: dashboardStats.unreadFeedback
-          });
-        } catch (error) {
-          console.error('Error fetching dashboard stats:', error);
-          toast.error('データの取得に失敗しました');
-        } finally {
-          setStatsLoading(false);
-        }
-      };
-      
-      fetchStats();
-    }
-  }, [isLoading, isAdmin]);
+    // Fetch actual stats from Supabase
+    const fetchStats = async () => {
+      setIsLoading(true);
+      try {
+        const dashboardStats = await getDashboardStats();
+        
+        setStats({
+          totalUsers: dashboardStats.totalUsers,
+          activeUsers: dashboardStats.activeUsers,
+          completedModules: dashboardStats.completedModules,
+          unreadFeedback: dashboardStats.unreadFeedback
+        });
+      } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+        toast.error('データの取得に失敗しました');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchStats();
+  }, []);
   
-  // Show loading while checking authentication
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Array(4).fill(null).map((_, i) => (
-            <Card key={i} className="rounded-2xl shadow-sm">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <Skeleton className="h-5 w-20" />
-                <Skeleton className="h-4 w-4 rounded-full" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-7 w-20 mb-1" />
-                <Skeleton className="h-4 w-16" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  // If not loading and not admin, this component shouldn't render
-  // (user should be redirected by useAdminGuard)
-  if (!isAdmin) {
-    return null;
-  }
-  
+  // Stats cards with icons and links
   const statCards = [
     {
       title: 'ユーザー数',
@@ -118,6 +97,7 @@ const DashboardPage = () => {
     }
   ];
   
+  // Feature cards for quick navigation
   const featureCards = [
     {
       title: 'ユーザー管理',
@@ -158,13 +138,14 @@ const DashboardPage = () => {
       <div>
         <h1 className="text-2xl font-bold mb-2">管理者ダッシュボード</h1>
         <p className="text-muted-foreground">
-          ようこそ、{user?.email}さん。Pigipe 管理者向けダッシュボードです。
+          Pigipe 管理者向けダッシュボードへようこそ。主要なメトリクスと管理機能にアクセスできます。
         </p>
       </div>
       
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {statsLoading ? (
+        {isLoading ? (
+          // Loading skeleton
           Array(4).fill(null).map((_, i) => (
             <Card key={i} className="rounded-2xl shadow-sm">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -178,6 +159,7 @@ const DashboardPage = () => {
             </Card>
           ))
         ) : (
+          // Actual stats cards
           statCards.map((stat) => (
             <Link to={stat.path} key={stat.title}>
               <Card className="rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
@@ -221,36 +203,32 @@ const DashboardPage = () => {
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle>システム状況</CardTitle>
+            <CardTitle>実装されている機能</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span>認証システム</span>
-                <span className="text-green-600">正常</span>
-              </div>
-              <div className="flex justify-between">
-                <span>データベース</span>
-                <span className="text-green-600">正常</span>
-              </div>
-              <div className="flex justify-between">
-                <span>管理者権限</span>
-                <span className="text-green-600">有効</span>
-              </div>
-            </div>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>管理者認証 (useAdminGuard)</li>
+              <li>レスポンシブサイドバー (デスクトップ/モバイル)</li>
+              <li>ユーザー一覧表示と検索機能</li>
+              <li>ユーザー情報編集 (名前、権限)</li>
+              <li>フィードバック管理</li>
+              <li>システム設定</li>
+              <li>ダークモード/ライトモードの切り替え</li>
+            </ul>
           </CardContent>
         </Card>
         
         <Card className="rounded-2xl shadow-sm">
           <CardHeader>
-            <CardTitle>利用可能な機能</CardTitle>
+            <CardTitle>今後の開発予定</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>ユーザー管理・編集</li>
-              <li>フィードバック確認</li>
-              <li>学習分析</li>
-              <li>システム設定</li>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>詳細な分析機能 (ユーザー活動・モジュール完了率)</li>
+              <li>バッチ処理 (定期的なデータ集計や通知)</li>
+              <li>ユーザー作成機能</li>
+              <li>コンテンツ管理システム</li>
+              <li>ダッシュボードのカスタマイズ</li>
             </ul>
           </CardContent>
         </Card>

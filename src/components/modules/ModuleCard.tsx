@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Trophy, ArrowRight } from "lucide-react";
 import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
+// Removed any MascotImage imports
 
 interface ModuleCardProps {
   id: number;
@@ -51,7 +52,7 @@ const ModuleCard = ({
   // Calculate background gradient based on color
   const getBgGradient = () => {
     if (color === "#4DAA57") return "from-[#E8F5EA] to-[#F5F9F6]"; // Green
-    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#FFFBF5]"; // Blue 
+    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#F5FAFC]"; // Blue 
     if (color === "#FFD166") return "from-[#FFF5E6] to-[#FFFBF5]"; // Yellow
     if (color === "#FF6B6B") return "from-[#FFEBEB] to-[#FFF5F5]"; // Red
     if (color === "#4D96FF") return "from-[#EBF5FF] to-[#F5F9FF]"; // Blue
@@ -94,7 +95,7 @@ const ModuleCard = ({
         </div>
       )}
 
-      <div className="p-5 relative z-10 flex flex-col h-full">
+      <div className="p-5 relative z-10">
         {/* Module illustration */}
         {illustration && (
           <div className="mb-4 flex justify-center">
@@ -125,10 +126,10 @@ const ModuleCard = ({
           </div>
         </div>
 
-        <p className="mb-5 text-sm text-game-dark flex-grow">{description}</p>
+        <p className="mb-5 text-sm text-game-dark">{description}</p>
 
-        <div className="flex items-center mt-auto">
-          {/* Progress bar */}
+        <div className="flex items-center">
+          {/* Further shortened progress bar */}
           <div className="w-20 mr-2">
             <div className="flex justify-between text-xs mb-1">
               <span className="font-medium">進捗</span>
@@ -149,18 +150,18 @@ const ModuleCard = ({
             </div>
           </div>
 
-          {/* Updated button with primary pink styling to match ModulesSection */}
+          {/* Fixed-width button with no text wrapping */}
           <motion.button
-            className="px-4 py-2 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto transition-colors shadow-lg"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            className="px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={(e) => {
               e.stopPropagation();
               handleClick();
             }}
           >
-            始める
-            <ArrowRight className="h-4 w-4" />
+            <span className="text-sm font-semibold">始める</span>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
           </motion.button>
         </div>
       </div>
@@ -198,6 +199,8 @@ const ModuleCard = ({
           ))}
         </motion.div>
       )}
+      
+      {/* Ghost Pigipe has been completely removed */}
     </motion.div>
   );
 };

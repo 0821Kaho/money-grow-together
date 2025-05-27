@@ -3,15 +3,20 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import { useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import HeroVideoSection from "@/components/home/HeroVideoSection";
+import Countdown from "@/components/prelaunch/Countdown";
+import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  launchDate: string;
+}
+
+const HeroSection = ({ launchDate }: HeroSectionProps) => {
   const arrowRef = useRef<HTMLDivElement>(null);
   
-  // Function to handle scrolling to modules section
-  const scrollToModules = () => {
-    document.getElementById("modules-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Function to handle scrolling to the waitlist form
+  const scrollToForm = () => {
+    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Function to occasionally bounce the arrow
@@ -56,9 +61,9 @@ const HeroSection = () => {
           <HeroVideoSection className="w-full max-w-md" />
         </div>
         
-        {/* CTA Buttons - Now with Sign Up and Login */}
+        {/* CTA Button */}
         <motion.div
-          className="flex flex-col sm:flex-row justify-center gap-4"
+          className="flex justify-center"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ 
@@ -68,30 +73,20 @@ const HeroSection = () => {
             delay: 0.5
           }}
         >
-          <Link to="/signup">
-            <Button 
-              size="lg" 
-              className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
-            >
-              アカウント登録
-            </Button>
-          </Link>
-          <Link to="/login">
-            <Button 
-              variant="outline"
-              size="lg" 
-              className="rounded-full shadow-sm"
-            >
-              ログイン
-            </Button>
-          </Link>
+          <Button 
+            onClick={scrollToForm} 
+            size="lg" 
+            className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
+          >
+            事前登録する
+          </Button>
         </motion.div>
         
-        {/* Scroll indicator - Now points to modules section */}
+        {/* Scroll indicator */}
         <motion.div 
           ref={arrowRef}
           className="text-muted-foreground mt-2 cursor-pointer"
-          onClick={scrollToModules}
+          onClick={scrollToForm}
         >
           <ArrowDown className="mx-auto h-6 w-6" />
         </motion.div>
@@ -112,6 +107,14 @@ const HeroSection = () => {
               ¥
             </div>
           ))}
+        </div>
+        
+        {/* Countdown */}
+        <Countdown targetDate={launchDate} className="w-full mt-8" />
+        
+        {/* Pre-register form */}
+        <div id="waitlist-form" className="w-full max-w-md mx-auto pt-8">
+          <PreRegisterForm className="w-full" />
         </div>
       </motion.div>
     </section>

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,8 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Trophy, ArrowRight, CheckCircle, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-const STORAGE_KEY = "startup_module_progress";
 
 const modules = [
   {
@@ -48,55 +47,11 @@ const modules = [
   },
 ];
 
-interface ModuleProgress {
-  activeModuleId: number;
-  completedModules: number[];
-  earnedBadge: boolean;
-}
-
 const StartupLearningModules = () => {
   const [activeModuleId, setActiveModuleId] = useState(1);
   const [completedModules, setCompletedModules] = useState<number[]>([]);
   const [earnedBadge, setEarnedBadge] = useState(false);
   const { toast } = useToast();
-
-  // Load saved progress on component mount
-  useEffect(() => {
-    try {
-      const savedProgress = localStorage.getItem(STORAGE_KEY);
-      if (savedProgress) {
-        const progress: ModuleProgress = JSON.parse(savedProgress);
-        setActiveModuleId(progress.activeModuleId);
-        setCompletedModules(progress.completedModules);
-        setEarnedBadge(progress.earnedBadge);
-        
-        // Show a toast notification when resuming progress
-        if (progress.completedModules.length > 0 && progress.completedModules.length < modules.length) {
-          toast({
-            title: "学習再開",
-            description: "前回の続きから再開します",
-            duration: 3000,
-          });
-        }
-      }
-    } catch (error) {
-      console.error("Error loading saved progress:", error);
-    }
-  }, []);
-
-  // Save progress whenever relevant state changes
-  useEffect(() => {
-    try {
-      const progress: ModuleProgress = {
-        activeModuleId,
-        completedModules,
-        earnedBadge,
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-    } catch (error) {
-      console.error("Error saving progress:", error);
-    }
-  }, [activeModuleId, completedModules, earnedBadge]);
 
   const progress = Math.round((completedModules.length / modules.length) * 100);
 
@@ -128,19 +83,6 @@ const StartupLearningModules = () => {
     }
   };
 
-  // Reset progress function
-  const resetProgress = () => {
-    localStorage.removeItem(STORAGE_KEY);
-    setActiveModuleId(1);
-    setCompletedModules([]);
-    setEarnedBadge(false);
-    toast({
-      title: "学習リセット",
-      description: "最初から始めます",
-      duration: 3000,
-    });
-  };
-
   const isModuleCompleted = (moduleId: number) => completedModules.includes(moduleId);
   const isModuleAccessible = (moduleId: number) => {
     // 最初のモジュールは常にアクセス可能
@@ -154,20 +96,7 @@ const StartupLearningModules = () => {
       <div className="bg-white rounded-xl p-6 shadow-sm">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold">学習の進捗状況</h3>
-              {completedModules.length > 0 && completedModules.length < modules.length && (
-                <button 
-                  onClick={resetProgress}
-                  className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1 ml-2"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
-                  </svg>
-                  リセット
-                </button>
-              )}
-            </div>
+            <h3 className="text-lg font-bold">学習の進捗状況</h3>
             <div className="text-sm font-medium">{progress}%</div>
           </div>
           <Progress value={progress} className="h-2" />
@@ -242,17 +171,6 @@ const StartupLearningModules = () => {
             );
           })}
         </div>
-
-        {earnedBadge && (
-          <div className="mt-6 flex justify-center">
-            <button 
-              onClick={resetProgress}
-              className="text-sm rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-4 py-2 transition-colors shadow-lg"
-            >
-              コースをリセットする
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -284,12 +202,9 @@ const ModuleContent = ({
             あなたも「得意なこと」や「好きなこと」から一歩踏み出してみませんか？
           </p>
           {!isCompleted && (
-            <button 
-              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
-              onClick={onComplete}
-            >
+            <Button className="w-full mt-4" onClick={onComplete}>
               このステップを完了する
-            </button>
+            </Button>
           )}
         </div>
       );
@@ -338,12 +253,9 @@ const ModuleContent = ({
             ※金額はあくまで目安です。個人の状況やライフスタイルによって大きく変わります。
           </p>
           {!isCompleted && (
-            <button 
-              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
-              onClick={onComplete}
-            >
+            <Button className="w-full mt-4" onClick={onComplete}>
               このステップを完了する
-            </button>
+            </Button>
           )}
         </div>
       );
@@ -382,12 +294,9 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <button 
-              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
-              onClick={onComplete}
-            >
+            <Button className="w-full mt-4" onClick={onComplete}>
               このステップを完了する
-            </button>
+            </Button>
           )}
         </div>
       );
@@ -423,12 +332,9 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <button 
-              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
-              onClick={onComplete}
-            >
+            <Button className="w-full mt-4" onClick={onComplete}>
               このステップを完了する
-            </button>
+            </Button>
           )}
         </div>
       );
@@ -473,12 +379,9 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <button 
-              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
-              onClick={onComplete}
-            >
+            <Button className="w-full mt-4" onClick={onComplete}>
               このステップを完了する
-            </button>
+            </Button>
           )}
         </div>
       );
@@ -524,12 +427,9 @@ const ModuleContent = ({
           </div>
           
           {!isCompleted && (
-            <button 
-              className="w-full mt-4 rounded-xl bg-game-primary hover:bg-game-primary/90 text-white font-medium px-6 py-3 transition-colors shadow-lg" 
-              onClick={onComplete}
-            >
+            <Button className="w-full mt-4" onClick={onComplete}>
               このステップを完了する
-            </button>
+            </Button>
           )}
         </div>
       );

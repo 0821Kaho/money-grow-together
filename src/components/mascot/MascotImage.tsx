@@ -3,52 +3,31 @@ import { motion } from "framer-motion";
 
 interface MascotImageProps {
   variant?: "default" | "coin" | "running" | "calculator" | "question" | "thumbsUp" | "happy" | "reading" | "sad" | "sleeping";
-  mood?: "default" | "happy" | "sad" | "wink" | "surprised" | "thinking";
   size?: "small" | "medium" | "large" | "xl";
   animate?: boolean;
   className?: string;
   onClick?: () => void;
-  alt?: string;
+  alt?: string; // Added alt prop to the interface
 }
 
 const MascotImage = ({ 
   variant = "default", 
-  mood = "default",
   size = "medium", 
   animate = true,
   className = "",
   onClick,
-  alt = "トントン"
+  alt = "トントン" // Default alt text
 }: MascotImageProps) => {
   
   const sizeClasses = {
-    small: "w-20 h-20",
-    medium: "w-28 h-28",
-    large: "w-36 h-36",
-    xl: "w-56 h-56"
+    small: "w-16 h-16",
+    medium: "w-24 h-24",
+    large: "w-32 h-32",
+    xl: "w-48 h-48"
   };
   
   // Map variant to image path
   const getImagePath = () => {
-    // If mood is specified and not default, use the mood variant
-    if (mood !== "default") {
-      switch (mood) {
-        case "happy":
-          return "/lovable-uploads/8aff52e1-ba14-419a-af93-b24378b413a9.png";
-        case "sad":
-          return "/lovable-uploads/83a22f24-e955-4cc4-b48e-fc524dc7be8f.png";
-        case "wink":
-          return "/lovable-uploads/8aff52e1-ba14-419a-af93-b24378b413a9.png"; // Using happy as wink for now
-        case "surprised":
-          return "/lovable-uploads/8c10f8c4-3405-4e28-966f-c327d24c0a4f.png"; // Using question as surprised for now
-        case "thinking":
-          return "/lovable-uploads/730fe578-30b1-4cb2-a941-b7cbd6b9cb41.png"; // Using reading as thinking for now
-        default:
-          return "/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png";
-      }
-    }
-    
-    // Otherwise use the regular variant
     switch (variant) {
       case "coin":
         return "/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png";
@@ -74,41 +53,10 @@ const MascotImage = ({
     }
   };
   
-  // Different animation based on variant and mood
+  // Different animation based on variant
   const getAnimation = () => {
     if (!animate) return undefined;
     
-    // If mood is specified, use mood-based animations
-    if (mood !== "default") {
-      switch (mood) {
-        case "happy":
-          return { 
-            y: [0, -8, 0],
-            rotate: [0, 5, -5, 0]
-          };
-        case "sad":
-          return { 
-            y: [0, -3, 0],
-            rotate: [0, -3, 0, -3, 0]
-          };
-        case "wink":
-          return { 
-            scale: [1, 1.05, 1],
-            rotate: [0, 0, 5, 0]
-          };
-        case "surprised":
-          return { 
-            scale: [1, 1.1, 1],
-            y: [0, -5, 0]
-          };
-        case "thinking":
-          return { 
-            rotate: [0, 3, 0, -3, 0]
-          };
-      }
-    }
-    
-    // Otherwise use variant-based animations
     switch (variant) {
       case "happy":
         return { 
@@ -150,7 +98,7 @@ const MascotImage = ({
     >
       <img 
         src={getImagePath()} 
-        alt={alt}
+        alt={alt} // Use the alt prop here
         className="w-full h-full object-contain" 
       />
     </motion.div>

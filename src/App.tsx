@@ -1,6 +1,6 @@
 
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner, toast } from "@/components/ui/sonner";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
@@ -36,7 +36,7 @@ import Footer from "./components/layout/Footer";
 
 // Protected route component - moved inside the app to avoid React hooks outside components
 function AppRoutes() {
-  const { isAuthenticated, user, profile, isLoading } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
   
   // Protected route component with improved logic
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -56,6 +56,13 @@ function AppRoutes() {
     
     // Show children only when authenticated
     return <>{children}</>;
+  };
+
+  // Admin route component that checks if user is admin
+  const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+    return isAuthenticated && user?.isAdmin ? 
+      <>{children}</> : 
+      <Navigate to="/" replace />;
   };
 
   return (
@@ -81,8 +88,8 @@ function AppRoutes() {
           <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
           
-          {/* Admin routes - using AdminLayout which handles admin guard internally */}
-          <Route path="/admin" element={<AdminLayout />}>
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
             <Route index element={<DashboardPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="users/:id" element={<UserDetailPage />} />

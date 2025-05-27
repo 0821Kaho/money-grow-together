@@ -21,7 +21,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { updateUser } from '@/data/users';
 import { Loader2 } from 'lucide-react';
-import type { User, UpdateUser } from '@/data/users';
+import type { User, UpdateUser } from '@/types/database.types';
 
 interface UserDrawerProps {
   user: User | null;
@@ -38,8 +38,8 @@ export function UserDrawer({ user, isOpen, onClose, onUserUpdated }: UserDrawerP
   // Reset form when user changes
   React.useEffect(() => {
     if (user) {
-      setRole(user.role as 'admin' | 'user' || 'user');
-      setStatus(user.status as 'active' | 'paused' | 'deleted' || 'active');
+      setRole(user.role || 'user');
+      setStatus(user.status || 'active');
     }
   }, [user]);
 
