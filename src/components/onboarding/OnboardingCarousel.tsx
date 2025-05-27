@@ -74,7 +74,7 @@ const OnboardingCarousel = () => {
                     transition={{ duration: 0.5, delay: 0.2 }}
                   >
                     <img 
-                      src="/lovable-uploads/b068b58c-1603-4077-9728-857a069ed47a.png" 
+                      src="/lovable-uploads/c797724e-aa32-4e6a-905c-d829f0829736.png" 
                       alt="ピギペ"
                       className="h-40 w-40 animate-bounce-in"
                       style={{
