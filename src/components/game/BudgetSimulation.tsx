@@ -57,7 +57,7 @@ const initialState: BudgetState = {
   completedEvents: [],
   achievedBadges: [],
   weeklyQuizCompleted: false,
-  currentStage: "intro", // 最初のステージ
+  currentStage: "simulation", // 直接シミュレーションから開始
 };
 
 // シミュレーションの進捗を保存するためのキー
@@ -71,6 +71,7 @@ const BudgetSimulation = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [resultMessage, setResultMessage] = useState("");
+  const [showCalendarView, setShowCalendarView] = useState(true);
   const { toast } = useToast();
   // 星の数を追跡するための状態変数
   const [starCount, setStarCount] = useState(0);
@@ -123,12 +124,10 @@ const BudgetSimulation = () => {
   
   // 日付が変わった時のイベント処理
   useEffect(() => {
-    // 各ステージが完了している場合はイベント処理を行わない
-    if (state.currentStage !== "simulation") return;
-    
     // 週末のクイズチェック (7日、14日、21日、28日)
     if ([7, 14, 21, 28].includes(state.day) && !state.weeklyQuizCompleted) {
       setShowQuiz(true);
+      setShowCalendarView(false);
       return;
     }
     
@@ -197,12 +196,14 @@ const BudgetSimulation = () => {
     // 所持金チェック - 通常ローン (5000円未満)
     if (state.money < 5000 && !state.hasLoan && state.day < 28) {
       setShowLoanOffer(true);
+      setShowCalendarView(false);
       return;
     }
     
     // 所持金チェック - イノシシのローン (2000円未満でさらに追い詰められている)
     if (state.money < 2000 && !state.hasWildBoarLoan && !state.hasLoan && state.day < 28) {
       setShowWildBoarLoanOffer(true);
+      setShowCalendarView(false);
       return;
     }
     
@@ -210,8 +211,11 @@ const BudgetSimulation = () => {
     const todaysEvent = getEventForDay(state.day);
     if (todaysEvent) {
       setCurrentEvent(todaysEvent);
+      setShowCalendarView(false);
+    } else {
+      setShowCalendarView(true);
     }
-  }, [state.day, state.hasLoan, state.hasWildBoarLoan, state.currentStage]);
+  }, [state.day, state.hasLoan, state.hasWildBoarLoan]);
   
   // スワイプ機能の実装
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -260,6 +264,7 @@ const BudgetSimulation = () => {
     setShowLoanOffer(false);
     setShowWildBoarLoanOffer(false);
     setShowQuiz(false);
+    setShowCalendarView(true);
     setProgressLoaded(true); // リセット後も保存できるようにする
     
     toast({
@@ -269,7 +274,7 @@ const BudgetSimulation = () => {
   };
   
   // 現在のステージがシミュレーションで、進行可能かどうかを判定
-  const canNavigateDay = state.currentStage === "simulation" && !currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && state.day < 30;
+  const canNavigateDay = !currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && state.day < 30;
   
   // イベントの選択肢を選んだ時の処理
   const handleOption = (option: any) => {
@@ -302,11 +307,13 @@ const BudgetSimulation = () => {
     });
     
     setCurrentEvent(null);
+    setShowCalendarView(true);
   };
   
   // クイズに回答した時の処理
   const handleQuizComplete = (isCorrect: boolean) => {
     setShowQuiz(false);
+    setShowCalendarView(true);
     
     if (isCorrect) {
       const bonus = 5000;
@@ -336,6 +343,7 @@ const BudgetSimulation = () => {
   // ローン申し込み処理
   const handleLoanDecision = (accepted: boolean) => {
     setShowLoanOffer(false);
+    setShowCalendarView(true);
     
     if (accepted) {
       const loanAmount = 30000; // 3万円の少額ローン
@@ -368,6 +376,7 @@ const BudgetSimulation = () => {
   // イノシシローン申し込み処理
   const handleWildBoarLoanDecision = (accepted: boolean) => {
     setShowWildBoarLoanOffer(false);
+    setShowCalendarView(true);
     
     if (accepted) {
       const loanAmount = 20000; // 2万円の少額ローン
@@ -453,118 +462,20 @@ const BudgetSimulation = () => {
     }
   };
   
-  // 収支棚卸し完了時の処理
-  const handleExpenseCalculatorComplete = (balance: number) => {
-    setState(prev => ({
-      ...prev,
-      calculatedBalance: balance,
-      currentStage: "dragDropSaving"
-    }));
-    
-    toast({
-      title: "収支の棚卸しが完了しました",
-      description: `毎月の収支：${balance >= 0 ? "黒字" : "赤字"} ${Math.abs(balance).toLocaleString()}円`,
-    });
-  };
-  
-  // ドラッグ&ドロップ節約ゲーム完了時の処理
-  const handleDragDropSavingComplete = (savedAmount: number) => {
-    setState(prev => ({
-      ...prev,
-      savedAmount: savedAmount,
-      currentStage: "loanComparison"
-    }));
-    
-    toast({
-      title: "節約プランが確定しました",
-      description: `月々${savedAmount.toLocaleString()}円の節約に成功しました！`,
-    });
-  };
-  
-  // ローン比較完了時の処理
-  const handleLoanComparisonComplete = () => {
-    setState(prev => ({
-      ...prev,
-      currentStage: "budgetPlanner"
-    }));
-  };
-  
-  // 予算立案ワーク完了時の処理
-  const handleBudgetPlannerComplete = (success: boolean) => {
-    setState(prev => ({
-      ...prev,
-      currentStage: "finalTest",
-      happiness: prev.happiness + (success ? 10 : -5),
-    }));
-    
-    if (success) {
-      toast({
-        title: "予算計画成功！",
-        description: "週間予算をうまく管理できました！",
-      });
-    } else {
-      toast({
-        title: "予算計画に課題あり",
-        description: "予算管理にもう少し工夫が必要かもしれません。",
-        variant: "destructive"
-      });
-    }
-  };
-  
-  // まとめテスト完了時の処理
-  const handleFinalTestComplete = (score: number) => {
-    const maxScore = 5;
-    const scoreRatio = score / maxScore;
-    
-    setState(prev => ({
-      ...prev,
-      currentStage: "simulation",
-      money: prev.money + Math.floor(10000 * scoreRatio), // テストの成績に応じてボーナス
-    }));
-    
-    toast({
-      title: "テスト完了",
-      description: `${Math.floor(10000 * scoreRatio).toLocaleString()}円のボーナスを獲得しました！`,
-    });
-    
-    // テスト結果に応じたバッジ
-    if (score === maxScore) {
-      setState(prev => ({
-        ...prev,
-        achievedBadges: [...prev.achievedBadges, "金融知識マスター"],
-      }));
-    } else if (score >= Math.floor(maxScore * 0.8)) {
-      setState(prev => ({
-        ...prev,
-        achievedBadges: [...prev.achievedBadges, "優秀な家計管理者"],
-      }));
-    }
-  };
-
-  // イントロ漫画の完了処理
-  const handleIntroMangaComplete = () => {
-    setState(prev => ({
-      ...prev,
-      currentStage: "expenseCalculator"
-    }));
-  };
-  
   // 画面の条件分岐レンダリング
   return (
     <>
-      {/* Fixed status bar outside the card */}
-      {state.currentStage === "simulation" && (
-        <BudgetSimulationHeader
-          money={state.money}
-          happiness={state.happiness}
-          day={state.day}
-          hasLoan={state.hasLoan}
-          loanAmount={state.loanAmount}
-          hasWildBoarLoan={state.hasWildBoarLoan}
-          wildBoarLoanAmount={state.wildBoarLoanAmount}
-          wildBoarInterestRate={state.wildBoarInterestRate}
-        />
-      )}
+      {/* Fixed status bar */}
+      <BudgetSimulationHeader
+        money={state.money}
+        happiness={state.happiness}
+        day={state.day}
+        hasLoan={state.hasLoan}
+        loanAmount={state.loanAmount}
+        hasWildBoarLoan={state.hasWildBoarLoan}
+        wildBoarLoanAmount={state.wildBoarLoanAmount}
+        wildBoarInterestRate={state.wildBoarInterestRate}
+      />
     
       <div 
         className="rounded-2xl bg-white p-6 shadow-sm h-[90vh] overflow-y-auto overflow-x-hidden"
@@ -638,130 +549,85 @@ const BudgetSimulation = () => {
           </div>
         ) : (
           <>
-            {/* 学習フェーズ - イントロ漫画 */}
-            {state.currentStage === "intro" && (
-              <IntroManga onComplete={handleIntroMangaComplete} />
-            )}
-            
-            {/* 学習フェーズ - 収支棚卸し */}
-            {state.currentStage === "expenseCalculator" && (
-              <ExpenseCalculator onComplete={handleExpenseCalculatorComplete} />
-            )}
-            
-            {/* 学習フェーズ - ドラッグ&ドロップ節約 */}
-            {state.currentStage === "dragDropSaving" && (
-              <DragDropSaving onComplete={handleDragDropSavingComplete} />
-            )}
-            
-            {/* 学習フェーズ - ローン比較 */}
-            {state.currentStage === "loanComparison" && (
-              <LoanComparison onComplete={handleLoanComparisonComplete} />
-            )}
-            
-            {/* 学習フェーズ - 予算立案 */}
-            {state.currentStage === "budgetPlanner" && (
-              <BudgetPlanner
-                initialBalance={state.money}
-                onComplete={handleBudgetPlannerComplete}
+            {showWildBoarLoanOffer && (
+              <WildBoarLoanOffer 
+                onDecision={handleWildBoarLoanDecision} 
+                amount={20000} 
+                interestRate={Math.round(state.wildBoarInterestRate * 100)}
               />
             )}
             
-            {/* 学習フェーズ - まとめテスト */}
-            {state.currentStage === "finalTest" && (
-              <FinalTest onComplete={handleFinalTestComplete} />
+            {showLoanOffer && !showWildBoarLoanOffer && (
+              <LoanOffer 
+                onDecision={handleLoanDecision} 
+                amount={30000} 
+                interestRate={state.interestRate * 100}
+              />
             )}
             
-            {/* シミュレーションステージ（カレンダー形式のサバイバルゲーム） */}
-            {state.currentStage === "simulation" && (
+            {showQuiz && !showLoanOffer && !showWildBoarLoanOffer && (
+              <BudgetQuiz onComplete={handleQuizComplete} />
+            )}
+            
+            {currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-lg border border-gray-200 p-5"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <DayExpressionIcon day={state.day} hasEvent={true} />
+                  <h3 className="text-lg font-bold break-words whitespace-normal leading-relaxed">{currentEvent.title}</h3>
+                </div>
+                <p className="mb-5 text-gray-700 break-words whitespace-normal leading-relaxed">{currentEvent.description}</p>
+                <div className="flex flex-col gap-3">
+                  {currentEvent.options.map((option: any, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => handleOption(option)}
+                      className="flex flex-col rounded-lg border border-gray-200 p-4 text-left hover:bg-gray-50"
+                    >
+                      <div className="flex items-center justify-between flex-wrap">
+                        <span className="font-medium break-words whitespace-normal leading-relaxed">{option.text}</span>
+                        <div className="flex items-center gap-1 ml-2 mt-1">
+                          {option.cost > 0 && (
+                            <span className="text-[#FF5555] whitespace-nowrap">
+                              -{option.cost.toLocaleString()}円
+                            </span>
+                          )}
+                          {option.reward > 0 && (
+                            <span className="text-[#25B589] whitespace-nowrap">
+                              +{option.reward.toLocaleString()}円
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {option.happiness !== 0 && (
+                        <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
+                          <span>満足度:</span>
+                          <span className={option.happiness > 0 ? "text-[#25B589]" : "text-[#FF5555]"}>
+                            {option.happiness > 0 ? `+${option.happiness}` : option.happiness}
+                          </span>
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+            
+            {showCalendarView && !currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
               <>
                 <div className="mb-6 text-sm text-gray-600">
                   <p>1ヶ月サバイバル:<span className="font-medium"> {state.day}日目</span></p>
                 </div>
                 
-                {showWildBoarLoanOffer && (
-                  <WildBoarLoanOffer 
-                    onDecision={handleWildBoarLoanDecision} 
-                    amount={20000} 
-                    interestRate={Math.round(state.wildBoarInterestRate * 100)}
-                  />
-                )}
-                
-                {showLoanOffer && !showWildBoarLoanOffer && (
-                  <LoanOffer 
-                    onDecision={handleLoanDecision} 
-                    amount={30000} 
-                    interestRate={state.interestRate * 100}
-                  />
-                )}
-                
-                {showQuiz && !showLoanOffer && !showWildBoarLoanOffer && (
-                  <BudgetQuiz onComplete={handleQuizComplete} />
-                )}
-                
-                {currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="rounded-lg border border-gray-200 p-5"
-                  >
-                    <div className="flex items-center gap-4 mb-4">
-                      <DayExpressionIcon day={state.day} hasEvent={true} />
-                      <h3 className="text-lg font-bold break-words whitespace-normal leading-relaxed">{currentEvent.title}</h3>
-                    </div>
-                    <p className="mb-5 text-gray-700 break-words whitespace-normal leading-relaxed">{currentEvent.description}</p>
-                    <div className="flex flex-col gap-3">
-                      {currentEvent.options.map((option: any, index: number) => (
-                        <button
-                          key={index}
-                          onClick={() => handleOption(option)}
-                          className="flex flex-col rounded-lg border border-gray-200 p-4 text-left hover:bg-gray-50"
-                        >
-                          <div className="flex items-center justify-between flex-wrap">
-                            <span className="font-medium break-words whitespace-normal leading-relaxed">{option.text}</span>
-                            <div className="flex items-center gap-1 ml-2 mt-1">
-                              {option.cost > 0 && (
-                                <span className="text-[#FF5555] whitespace-nowrap">
-                                  -{option.cost.toLocaleString()}円
-                                </span>
-                              )}
-                              {option.reward > 0 && (
-                                <span className="text-[#25B589] whitespace-nowrap">
-                                  +{option.reward.toLocaleString()}円
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          {option.happiness !== 0 && (
-                            <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
-                              <span>満足度:</span>
-                              <span className={option.happiness > 0 ? "text-[#25B589]" : "text-[#FF5555]"}>
-                                {option.happiness > 0 ? `+${option.happiness}` : option.happiness}
-                              </span>
-                            </div>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-                
-                {!currentEvent && !showLoanOffer && !showQuiz && !showWildBoarLoanOffer && (
-                  <div className="flex flex-col items-center p-8">
-                    <DayExpressionIcon day={state.day} hasEvent={false} />
-                    <p className="my-6 text-center leading-relaxed">
-                      {state.day}日目：今日は特別なイベントはありません。
-                    </p>
-                    
-                    <button 
-                      onClick={handleNextDay} 
-                      className="px-8 py-4 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white font-bold text-lg rounded-xl transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
-                    >
-                      次の日へ →
-                    </button>
-                    
-                    <SwipeHint />
-                  </div>
-                )}
+                <BudgetCalendarView
+                  onSelectDay={() => {}}
+                  currentDay={state.day}
+                  completedDays={state.completedEvents}
+                  onNextDay={handleNextDay}
+                />
                 
                 {/* 過去のイベントアコーディオン */}
                 <PastEventsAccordion 
@@ -785,9 +651,9 @@ const BudgetSimulation = () => {
       </div>
       
       {/* 固定フッター */}
-      {state.currentStage !== "intro" && !showResult && (
+      {!showResult && (
         <div className="mt-4 sticky bottom-0 bg-white border-t py-2 px-4 flex justify-between items-center">
-          {state.currentStage === "simulation" && canNavigateDay ? (
+          {canNavigateDay && showCalendarView ? (
             <button 
               onClick={handleNextDay}
               className="px-8 py-4 bg-[#F37B83] hover:bg-[#F37B83]/90 text-white font-bold text-lg rounded-xl transition-colors shadow-lg border-2 border-[#F37B83] hover:border-[#F37B83]/90"
