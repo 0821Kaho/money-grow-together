@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const PageHeader = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
-  const scrollToWaitlist = () => {
-    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const scrollToRegistration = () => {
+    document.getElementById("registration-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
@@ -19,13 +23,28 @@ const PageHeader = () => {
           </Link>
         </div>
         <div className="flex gap-4">
-          {!isAuthenticated && (
-            <Button 
-              variant="outline"
-              onClick={scrollToWaitlist}
-            >
-              事前登録する
-            </Button>
+          {!isAuthenticated ? (
+            <>
+              <Link to="/login">
+                <Button variant="outline">
+                  ログイン
+                </Button>
+              </Link>
+              <Button onClick={scrollToRegistration}>
+                新規登録
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/modules">
+                <Button variant="outline">
+                  学習モジュール
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={handleLogout}>
+                ログアウト
+              </Button>
+            </>
           )}
         </div>
       </div>

@@ -8,9 +8,11 @@ import HeroSection from "@/components/home/HeroSection";
 import ModulesSection from "@/components/home/ModulesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import AcademicSection from "@/components/home/AcademicSection";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
   const launchDate = "2025-05-23T20:00:00+09:00"; // Updated to May 23, 2025, 20:00 JST
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F5F5F5] to-white">
@@ -22,7 +24,7 @@ const Index = () => {
       
       <hr className="border-t border-dashed border-gray-200 my-12 max-w-4xl mx-auto" />
 
-      {/* Modules Section - Moved above KPI Banner */}
+      {/* Modules Section - Show preview for all users */}
       <ModulesSection />
 
       {/* KPI Banner - Now appears after Modules Section */}

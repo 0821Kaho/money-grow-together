@@ -5,7 +5,9 @@ import { ArrowDown } from "lucide-react";
 import { useRef, useEffect } from "react";
 import HeroVideoSection from "@/components/home/HeroVideoSection";
 import Countdown from "@/components/prelaunch/Countdown";
-import PreRegisterForm from "@/components/prelaunch/PreRegisterForm";
+import AccountRegistrationForm from "@/components/auth/AccountRegistrationForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 interface HeroSectionProps {
   launchDate: string;
@@ -13,10 +15,11 @@ interface HeroSectionProps {
 
 const HeroSection = ({ launchDate }: HeroSectionProps) => {
   const arrowRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated } = useAuth();
   
-  // Function to handle scrolling to the waitlist form
+  // Function to handle scrolling to the registration form
   const scrollToForm = () => {
-    document.getElementById("waitlist-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("registration-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   // Function to occasionally bounce the arrow
@@ -61,9 +64,9 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
           <HeroVideoSection className="w-full max-w-md" />
         </div>
         
-        {/* CTA Button */}
+        {/* CTA Button - different for authenticated vs non-authenticated users */}
         <motion.div
-          className="flex justify-center"
+          className="flex justify-center gap-4"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ 
@@ -73,23 +76,44 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
             delay: 0.5
           }}
         >
-          <Button 
-            onClick={scrollToForm} 
-            size="lg" 
-            className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
-          >
-            事前登録する
-          </Button>
+          {isAuthenticated ? (
+            <Link to="/modules">
+              <Button size="lg" className="rounded-full shadow-lg bg-primary hover:bg-primary/90">
+                学習を開始する
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Button 
+                onClick={scrollToForm} 
+                size="lg" 
+                className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
+              >
+                今すぐ始める
+              </Button>
+              <Link to="/login">
+                <Button 
+                  variant="outline"
+                  size="lg" 
+                  className="rounded-full shadow-lg"
+                >
+                  ログイン
+                </Button>
+              </Link>
+            </>
+          )}
         </motion.div>
         
-        {/* Scroll indicator */}
-        <motion.div 
-          ref={arrowRef}
-          className="text-muted-foreground mt-2 cursor-pointer"
-          onClick={scrollToForm}
-        >
-          <ArrowDown className="mx-auto h-6 w-6" />
-        </motion.div>
+        {/* Scroll indicator - only show for non-authenticated users */}
+        {!isAuthenticated && (
+          <motion.div 
+            ref={arrowRef}
+            className="text-muted-foreground mt-2 cursor-pointer"
+            onClick={scrollToForm}
+          >
+            <ArrowDown className="mx-auto h-6 w-6" />
+          </motion.div>
+        )}
         
         {/* Floating decorative elements - small yen coins */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.02] -z-10">
@@ -109,13 +133,12 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
           ))}
         </div>
         
-        {/* Countdown */}
-        <Countdown targetDate={launchDate} className="w-full mt-8" />
-        
-        {/* Pre-register form */}
-        <div id="waitlist-form" className="w-full max-w-md mx-auto pt-8">
-          <PreRegisterForm className="w-full" />
-        </div>
+        {/* Registration form - only show for non-authenticated users */}
+        {!isAuthenticated && (
+          <div id="registration-form" className="w-full max-w-md mx-auto pt-8">
+            <AccountRegistrationForm className="w-full" />
+          </div>
+        )}
       </motion.div>
     </section>
   );
