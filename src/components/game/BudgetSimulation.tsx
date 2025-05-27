@@ -72,9 +72,9 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
     if (skipLearningPhase) {
       return {
         ...initialState,
-        currentStage: "simulation",
-        money: 150000 + 10000, // 学習フェーズで得られる平均的なボーナスを追加
-        achievedBadges: ["学習マスター"],
+        currentStage: "simulation", // 学習フェーズをスキップして直接シミュレーションへ
+        money: 150000, // 初期金額のまま（学習ボーナスなし）
+        achievedBadges: [], // 学習関連のバッジもなし
       };
     }
     return initialState;
@@ -104,6 +104,13 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
       const savedProgress = localStorage.getItem(SIMULATION_PROGRESS_KEY);
       if (savedProgress) {
         const parsedState = JSON.parse(savedProgress);
+        
+        // 学習フェーズをスキップする場合は、保存されたステージが学習関連なら強制的にシミュレーションへ
+        if (skipLearningPhase && parsedState.currentStage !== "simulation") {
+          parsedState.currentStage = "simulation";
+          parsedState.money = 150000; // 初期金額に戻す
+        }
+        
         setState(parsedState);
         
         // 結果画面の表示状態も復元
@@ -119,12 +126,15 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
         // 保存された進捗がなく、学習フェーズをスキップする場合
         setProgressLoaded(true);
         toast({
-          title: "学習モジュール完了済み", 
-          description: "既に学習モジュールを完了しているため、シミュレーションから開始します",
+          title: "1ヶ月サバイバル開始", 
+          description: "カレンダー形式のサバイバルゲームを開始します！",
         });
+      } else {
+        setProgressLoaded(true);
       }
     } catch (error) {
       console.error("Error loading budget simulation progress:", error);
+      setProgressLoaded(true);
     }
   }, [skipLearningPhase]);
   
@@ -274,7 +284,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
   // シミュレーション進行状態のリセット
   const resetSimulation = () => {
     localStorage.removeItem(SIMULATION_PROGRESS_KEY);
-    setState(initialState);
+    setState(getInitialState()); // 初期状態に戻す
     setShowResult(false);
     setCurrentEvent(null);
     setShowLoanOffer(false);
@@ -658,34 +668,35 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
           </div>
         ) : (
           <>
-            {/* 各ステージのコンテンツをレンダリング */}
-            {state.currentStage === "intro" && (
+            {/* 学習フェーズをスキップしない場合のみ学習ステージを表示 */}
+            {!skipLearningPhase && state.currentStage === "intro" && (
               <IntroManga onComplete={handleIntroMangaComplete} />
             )}
             
-            {state.currentStage === "expenseCalculator" && (
+            {!skipLearningPhase && state.currentStage === "expenseCalculator" && (
               <ExpenseCalculator onComplete={handleExpenseCalculatorComplete} />
             )}
             
-            {state.currentStage === "dragDropSaving" && (
+            {!skipLearningPhase && state.currentStage === "dragDropSaving" && (
               <DragDropSaving onComplete={handleDragDropSavingComplete} />
             )}
             
-            {state.currentStage === "loanComparison" && (
+            {!skipLearningPhase && state.currentStage === "loanComparison" && (
               <LoanComparison onComplete={handleLoanComparisonComplete} />
             )}
             
-            {state.currentStage === "budgetPlanner" && (
+            {!skipLearningPhase && state.currentStage === "budgetPlanner" && (
               <BudgetPlanner
                 initialBalance={state.money}
                 onComplete={handleBudgetPlannerComplete}
               />
             )}
             
-            {state.currentStage === "finalTest" && (
+            {!skipLearningPhase && state.currentStage === "finalTest" && (
               <FinalTest onComplete={handleFinalTestComplete} />
             )}
             
+            {/* シミュレーションステージ（カレンダー形式のサバイバルゲーム） */}
             {state.currentStage === "simulation" && (
               <>
                 <div className="mb-6 text-sm text-gray-600">
