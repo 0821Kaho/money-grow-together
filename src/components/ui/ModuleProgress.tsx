@@ -6,8 +6,6 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
-import MascotCharacter from "../mascot/MascotCharacter";
-import { motion } from "framer-motion";
 
 interface ModuleProgressProps {
   currentModule: number;
@@ -25,9 +23,6 @@ const ModuleProgress = ({ currentModule }: ModuleProgressProps) => {
     "ライフプラン",
     "起業"
   ];
-
-  // Mascot position based on progress
-  const mascotPosition = `${Math.min(Math.max(progress - 5, 0), 95)}%`;
 
   return (
     <div className="bg-white p-5 rounded-lg">
@@ -58,23 +53,6 @@ const ModuleProgress = ({ currentModule }: ModuleProgressProps) => {
           className="bg-[#E0E0E0] h-4"
           indicatorClassName={progress === 100 ? "bg-[#FFD700]" : "bg-primary"}
         />
-        
-        {/* Mascot character moving along progress bar */}
-        <motion.div 
-          className="absolute top-0 transform -translate-y-1/2"
-          style={{ left: mascotPosition }}
-          initial={{ x: 0 }}
-          animate={{ x: 0, y: [0, -5, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <MascotCharacter 
-            size="small" 
-            className="h-8 w-8"
-            tooltip={progress >= 90 ? "もうすぐ完了ブー！" : 
-                    progress >= 50 ? "半分終わったブー！" : 
-                    "頑張ろうブー！"}
-          />
-        </motion.div>
       </div>
     </div>
   );
