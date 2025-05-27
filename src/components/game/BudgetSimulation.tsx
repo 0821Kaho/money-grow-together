@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -22,10 +23,6 @@ import PastEventsAccordion from "./budget/PastEventsAccordion";
 
 // dayEventsを定義
 const dayEvents = getBudgetEvents();
-
-interface BudgetSimulationProps {
-  skipLearningPhase?: boolean;
-}
 
 interface BudgetState {
   money: number;
@@ -66,21 +63,8 @@ const initialState: BudgetState = {
 // シミュレーションの進捗を保存するためのキー
 const SIMULATION_PROGRESS_KEY = "budget_simulation_progress";
 
-const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) => {
-  // 学習フェーズをスキップする場合は初期状態を調整
-  const getInitialState = (): BudgetState => {
-    if (skipLearningPhase) {
-      return {
-        ...initialState,
-        currentStage: "simulation", // 学習フェーズをスキップして直接シミュレーションへ
-        money: 150000, // 初期金額のまま（学習ボーナスなし）
-        achievedBadges: [], // 学習関連のバッジもなし
-      };
-    }
-    return initialState;
-  };
-
-  const [state, setState] = useState<BudgetState>(getInitialState());
+const BudgetSimulation = () => {
+  const [state, setState] = useState<BudgetState>(initialState);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
   const [showLoanOffer, setShowLoanOffer] = useState(false);
   const [showWildBoarLoanOffer, setShowWildBoarLoanOffer] = useState(false);
@@ -104,13 +88,6 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
       const savedProgress = localStorage.getItem(SIMULATION_PROGRESS_KEY);
       if (savedProgress) {
         const parsedState = JSON.parse(savedProgress);
-        
-        // 学習フェーズをスキップする場合は、保存されたステージが学習関連なら強制的にシミュレーションへ
-        if (skipLearningPhase && parsedState.currentStage !== "simulation") {
-          parsedState.currentStage = "simulation";
-          parsedState.money = 150000; // 初期金額に戻す
-        }
-        
         setState(parsedState);
         
         // 結果画面の表示状態も復元
@@ -122,13 +99,6 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
         setProgressLoaded(true);
         
         console.log("Budget simulation progress loaded:", parsedState);
-      } else if (skipLearningPhase) {
-        // 保存された進捗がなく、学習フェーズをスキップする場合
-        setProgressLoaded(true);
-        toast({
-          title: "1ヶ月サバイバル開始", 
-          description: "カレンダー形式のサバイバルゲームを開始します！",
-        });
       } else {
         setProgressLoaded(true);
       }
@@ -136,7 +106,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
       console.error("Error loading budget simulation progress:", error);
       setProgressLoaded(true);
     }
-  }, [skipLearningPhase]);
+  }, []);
   
   // ステートが変更されるたびに進捗を保存する
   useEffect(() => {
@@ -284,7 +254,7 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
   // シミュレーション進行状態のリセット
   const resetSimulation = () => {
     localStorage.removeItem(SIMULATION_PROGRESS_KEY);
-    setState(getInitialState()); // 初期状態に戻す
+    setState(initialState); // 初期状態に戻す
     setShowResult(false);
     setCurrentEvent(null);
     setShowLoanOffer(false);
@@ -668,31 +638,36 @@ const BudgetSimulation = ({ skipLearningPhase = false }: BudgetSimulationProps) 
           </div>
         ) : (
           <>
-            {/* 学習フェーズをスキップしない場合のみ学習ステージを表示 */}
-            {!skipLearningPhase && state.currentStage === "intro" && (
+            {/* 学習フェーズ - イントロ漫画 */}
+            {state.currentStage === "intro" && (
               <IntroManga onComplete={handleIntroMangaComplete} />
             )}
             
-            {!skipLearningPhase && state.currentStage === "expenseCalculator" && (
+            {/* 学習フェーズ - 収支棚卸し */}
+            {state.currentStage === "expenseCalculator" && (
               <ExpenseCalculator onComplete={handleExpenseCalculatorComplete} />
             )}
             
-            {!skipLearningPhase && state.currentStage === "dragDropSaving" && (
+            {/* 学習フェーズ - ドラッグ&ドロップ節約 */}
+            {state.currentStage === "dragDropSaving" && (
               <DragDropSaving onComplete={handleDragDropSavingComplete} />
             )}
             
-            {!skipLearningPhase && state.currentStage === "loanComparison" && (
+            {/* 学習フェーズ - ローン比較 */}
+            {state.currentStage === "loanComparison" && (
               <LoanComparison onComplete={handleLoanComparisonComplete} />
             )}
             
-            {!skipLearningPhase && state.currentStage === "budgetPlanner" && (
+            {/* 学習フェーズ - 予算立案 */}
+            {state.currentStage === "budgetPlanner" && (
               <BudgetPlanner
                 initialBalance={state.money}
                 onComplete={handleBudgetPlannerComplete}
               />
             )}
             
-            {!skipLearningPhase && state.currentStage === "finalTest" && (
+            {/* 学習フェーズ - まとめテスト */}
+            {state.currentStage === "finalTest" && (
               <FinalTest onComplete={handleFinalTestComplete} />
             )}
             

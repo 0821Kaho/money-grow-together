@@ -183,8 +183,8 @@ const BudgetSimulationPatched = () => {
           </TabsContent>
           
           <TabsContent value="simulation" className="mt-0 p-0">
-            {/* 学習モジュールの完了状態に関係なく、常に学習フェーズをスキップ */}
-            <BudgetSimulation skipLearningPhase={true} />
+            {/* 完全版のBudgetSimulationコンポーネント（学習フェーズ含む） */}
+            <BudgetSimulation />
           </TabsContent>
         </Tabs>
       </CardContent>
