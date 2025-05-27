@@ -24,13 +24,17 @@ const LoginPage = () => {
       // Clear the return path
       localStorage.removeItem('returnPath');
       
+      console.log("ユーザー情報:", { user: user.email, role: profile.role });
+      
       // Admin users go to admin dashboard, regular users go to modules
       if (profile.role === 'admin') {
-        console.log("管理者としてログインしました。管理者ページへ遷移します。");
-        navigate(returnPath && returnPath.startsWith('/admin') ? returnPath : "/admin");
+        console.log("管理者としてログインしました。管理者ダッシュボードへ遷移します。");
+        const targetPath = returnPath && returnPath.startsWith('/admin') ? returnPath : "/admin";
+        navigate(targetPath);
       } else {
-        console.log("一般ユーザーとしてログインしました。学習ページへ遷移します。");
-        navigate(returnPath && !returnPath.startsWith('/admin') ? returnPath : "/modules");
+        console.log("一般ユーザーとしてログインしました。学習モジュール一覧へ遷移します。");
+        const targetPath = returnPath && !returnPath.startsWith('/admin') ? returnPath : "/modules";
+        navigate(targetPath);
       }
     }
   }, [user, profile, navigate]);
@@ -40,6 +44,7 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
+      console.log("ログイン試行中:", email);
       await login(email, password);
       
       toast({
@@ -47,9 +52,9 @@ const LoginPage = () => {
         description: "Pigipeへようこそ！",
       });
       
-      // Navigation will be handled by the useEffect above
+      // Navigation will be handled by the useEffect above when user and profile are updated
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("ログインエラー:", error);
       toast({
         title: "ログイン失敗",
         description: "メールアドレスまたはパスワードが正しくありません",
