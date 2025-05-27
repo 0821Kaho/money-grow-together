@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 
 const modules = [
   { 
-    id: "budget", 
+    id: "1", // budgetから1に変更
     title: "家計管理マスター", 
     description: "お金の使い方を見直し、貯金体質になるための基礎を学びます", 
     color: "bg-primary/10",
@@ -24,7 +24,7 @@ const modules = [
     illustration: "/lovable-uploads/f16647ff-53c6-496c-b2f2-802971b6936e.png"
   },
   { 
-    id: "investment", 
+    id: "2", // investmentから2に変更
     title: "投資マスター", 
     description: "長期的な資産形成のための投資の基本を学びます", 
     color: "bg-secondary/10",
@@ -33,7 +33,7 @@ const modules = [
     illustration: "/lovable-uploads/d4d69757-fa8b-4792-b80c-3a101f92b01b.png"
   },
   { 
-    id: "risk", 
+    id: "3", // riskから3に変更
     title: "リスク管理マスター", 
     description: "お金のリスクを理解し、適切に対策する方法を学びます", 
     color: "bg-accent/10",
@@ -42,7 +42,7 @@ const modules = [
     illustration: "/lovable-uploads/9c9d440d-3eab-4a1e-913f-6152729a6ff8.png"
   },
   { 
-    id: "lifeplan", 
+    id: "4", // lifeplanから4に変更
     title: "ライフプランマスター", 
     description: "将来の人生設計と必要な資金計画について学びます", 
     color: "bg-primary/10",
@@ -51,7 +51,7 @@ const modules = [
     illustration: "/lovable-uploads/c02ccb40-c19f-48d7-a805-8c3e5ac584e6.png"
   },
   { 
-    id: "startup", 
+    id: "5", // startupから5に変更
     title: "副業・起業マスター", 
     description: "小さな一歩から始める副業や起業の考え方を学びます", 
     color: "bg-secondary/10",
