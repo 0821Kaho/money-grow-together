@@ -33,9 +33,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (userId: string, userEmail?: string) => {
     try {
-      console.log('Fetching profile for user:', userId);
+      console.log('Fetching profile for user:', userId, userEmail);
       
       const { data: profileData, error } = await supabase
         .from('profiles')
@@ -50,10 +50,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         // プロファイルが存在しない場合は作成を試行
         if (error.code === 'PGRST116') {
-          console.log('Profile not found, attempting to create...');
+          console.log('Profile not found, creating new profile...');
           
           // 管理者メールアドレスのチェック
-          const isAdmin = (await supabase.auth.getUser()).data.user?.email === 'kahosatoyoshi@gmail.com';
+          const isAdmin = userEmail === 'kahosatoyoshi@gmail.com';
           
           const { data: newProfile, error: createError } = await supabase
             .from('profiles')
@@ -103,38 +103,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
-        // プロファイル取得を遅延実行で処理
         if (session?.user) {
-          console.log('User logged in, scheduling profile fetch...');
-          setTimeout(() => {
-            fetchProfile(session.user.id).then(profileData => {
-              console.log('Setting profile data:', profileData);
-              setProfile(profileData);
-              setIsLoading(false);
-            });
-          }, 0);
+          console.log('User logged in, fetching profile...');
+          const profileData = await fetchProfile(session.user.id, session.user.email);
+          console.log('Setting profile data:', profileData);
+          setProfile(profileData);
         } else {
           console.log('No session, clearing profile');
           setProfile(null);
-          setIsLoading(false);
         }
+        
+        setIsLoading(false);
       }
     );
 
     // Check for existing session
     const getInitialSession = async () => {
+      console.log('Checking for initial session...');
       const { data: { session } } = await supabase.auth.getSession();
       console.log('Initial session check:', session?.user?.email);
       
       if (session) {
         setSession(session);
         setUser(session.user);
-        const profileData = await fetchProfile(session.user.id);
+        const profileData = await fetchProfile(session.user.id, session.user.email);
         setProfile(profileData);
       }
       

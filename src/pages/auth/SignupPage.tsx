@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,15 +16,22 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { signup, user } = useAuth();
+  const { signup, user, profile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   // Check if the user is already logged in
   useEffect(() => {
-    if (user) {
-      navigate('/modules');
+    console.log('SignupPage useEffect:', { authLoading, user: user?.email, profile });
+    
+    if (!authLoading && user && profile) {
+      // User is already authenticated, redirect based on role
+      if (profile.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/modules');
+      }
     }
-  }, [user, navigate]);
+  }, [user, profile, authLoading, navigate]);
 
   // Get pre-registered email from localStorage if available
   useEffect(() => {
@@ -51,6 +59,7 @@ const SignupPage = () => {
     setIsLoading(true);
 
     try {
+      console.log("新規登録試行中:", email);
       await signup(email, password, displayName);
       toast.success("登録成功", {
         description: "Pigipeへようこそ！",
@@ -66,6 +75,15 @@ const SignupPage = () => {
       setIsLoading(false);
     }
   };
+
+  // Show loading if auth is still loading
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">認証確認中...</div>
+      </div>
+    );
+  }
 
   return (
     <Card className="shadow-lg border-[#F5F5F5]">
