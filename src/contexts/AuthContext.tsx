@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -46,6 +47,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (error) {
         console.error('Error fetching profile:', error);
+        
+        // プロファイルが存在しない場合は作成を試行
+        if (error.code === 'PGRST116') {
+          console.log('Profile not found, attempting to create...');
+          
+          // 管理者メールアドレスのチェック
+          const isAdmin = (await supabase.auth.getUser()).data.user?.email === 'kahosatoyoshi@gmail.com';
+          
+          const { data: newProfile, error: createError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: userId,
+                role: isAdmin ? 'admin' : 'user',
+                name: isAdmin ? 'Kaho Satoyoshi' : null
+              }
+            ])
+            .select('id, name, role, created_at')
+            .single();
+          
+          if (createError) {
+            console.error('Error creating profile:', createError);
+            return null;
+          }
+          
+          console.log('Successfully created new profile:', newProfile);
+          return {
+            ...newProfile,
+            role: newProfile.role as 'user' | 'admin'
+          } as Profile;
+        }
+        
         return null;
       }
       
@@ -68,14 +101,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     console.log('Setting up auth state listener');
     
-    // Set up auth state listener - NEVER use async directly in callback
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Use setTimeout to defer profile fetching and avoid blocking
+        // プロファイル取得を遅延実行で処理
         if (session?.user) {
           console.log('User logged in, scheduling profile fetch...');
           setTimeout(() => {

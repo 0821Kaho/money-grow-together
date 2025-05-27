@@ -18,6 +18,16 @@ export function useAdminGuard(): AdminGuardReturn {
   const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
 
   useEffect(() => {
+    // タイムアウト処理：10秒後にプロファイル読み込みを諦める
+    const timeout = setTimeout(() => {
+      if (isLoading && !profile) {
+        console.log('Profile loading timeout, redirecting to login');
+        toast.error("プロファイルの読み込みに時間がかかっています。再度ログインしてください。");
+        navigate('/login');
+        setIsCheckingAdmin(false);
+      }
+    }, 10000);
+
     const checkAdminRole = () => {
       console.log('=== Admin Guard Check ===');
       console.log('User:', user?.email);
@@ -36,12 +46,12 @@ export function useAdminGuard(): AdminGuardReturn {
         toast.error("ログインが必要です");
         navigate('/login');
         setIsCheckingAdmin(false);
+        clearTimeout(timeout);
         return;
       }
 
       if (!profile) {
         console.log('Profile not loaded yet, waiting...');
-        // Don't set isCheckingAdmin to false here, keep waiting for profile
         return;
       }
 
@@ -54,14 +64,20 @@ export function useAdminGuard(): AdminGuardReturn {
         toast.error("管理者権限が必要です");
         navigate('/');
         setIsCheckingAdmin(false);
+        clearTimeout(timeout);
         return;
       }
 
       console.log('User confirmed as admin, allowing access');
       setIsCheckingAdmin(false);
+      clearTimeout(timeout);
     };
 
     checkAdminRole();
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [user, profile, isLoading, navigate]);
 
   const isAdmin = !!(profile?.role === 'admin' && user && !isLoading);
