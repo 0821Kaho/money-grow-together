@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -189,23 +190,6 @@ const ModulesList = () => {
                 background: `linear-gradient(to top right, ${module.color}05, ${module.color}20)`,
               }}
             />
-            
-            {/* Pigipe character on each card - replaced with static decoration */}
-            <motion.div 
-              className="absolute bottom-3 right-3 h-12 w-12 opacity-40 z-0"
-              animate={{ y: [0, -5, 0] }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: 3,
-                ease: "easeInOut",
-              }}
-            >
-              <img 
-                src="/lovable-uploads/3c41dd2d-2377-498b-bfd2-a107f7fa530d.png" 
-                alt="Pigipe" 
-                className="w-full h-full object-contain"
-              />
-            </motion.div>
           </motion.div>
         ))}
       </div>
