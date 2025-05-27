@@ -6,17 +6,22 @@ import { Sidebar, SidebarContent, SidebarProvider } from "@/components/ui/sideba
 const AdminLayout = () => {
   const { isAdmin, isLoading } = useAdminGuard();
 
+  console.log('AdminLayout render:', { isAdmin, isLoading });
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg">管理者権限を確認中...</div>
       </div>
     );
   }
 
   if (!isAdmin) {
+    console.log('AdminLayout: Not admin, useAdminGuard should handle redirect');
     return null; // useAdminGuard handles the redirect
   }
+
+  console.log('AdminLayout: Rendering admin interface');
 
   return (
     <SidebarProvider>

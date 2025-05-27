@@ -103,22 +103,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
           console.log('User logged in, fetching profile...');
-          const profileData = await fetchProfile(session.user.id, session.user.email);
-          console.log('Setting profile data:', profileData);
-          setProfile(profileData);
+          // プロファイル取得を非同期で実行し、取得完了後にローディングを終了
+          fetchProfile(session.user.id, session.user.email).then(profileData => {
+            console.log('Setting profile data:', profileData);
+            setProfile(profileData);
+            setIsLoading(false);
+          });
         } else {
           console.log('No session, clearing profile');
           setProfile(null);
+          setIsLoading(false);
         }
-        
-        setIsLoading(false);
       }
     );
 

@@ -18,15 +18,15 @@ export function useAdminGuard(): AdminGuardReturn {
   const [isCheckingAdmin, setIsCheckingAdmin] = useState(true);
 
   useEffect(() => {
-    // タイムアウト処理：5秒後にプロファイル読み込みを諦める
+    // 短いタイムアウト処理：3秒後にプロファイル読み込みを諦める
     const timeout = setTimeout(() => {
-      if (!profile && user) {
+      if (!profile && user && !isLoading) {
         console.log('Profile loading timeout, redirecting to login');
         toast.error("プロファイルの読み込みに時間がかかっています。再度ログインしてください。");
         navigate('/login');
         setIsCheckingAdmin(false);
       }
-    }, 5000);
+    }, 3000);
 
     const checkAdminRole = () => {
       console.log('=== Admin Guard Check ===');
