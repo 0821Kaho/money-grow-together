@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Trophy, ArrowRight } from "lucide-react";
 import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
-// Removed any MascotImage imports
 
 interface ModuleCardProps {
   id: number;
@@ -199,8 +198,6 @@ const ModuleCard = ({
           ))}
         </motion.div>
       )}
-      
-      {/* Ghost Pigipe has been completely removed */}
     </motion.div>
   );
 };
