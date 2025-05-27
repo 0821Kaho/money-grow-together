@@ -18,7 +18,12 @@ const LoginPage = () => {
   
   // Check if the user is already logged in and redirect based on role
   useEffect(() => {
-    console.log('LoginPage useEffect:', { authLoading, user: user?.email, profile });
+    console.log('LoginPage useEffect - Auth state:', { 
+      authLoading, 
+      user: user?.email, 
+      profile,
+      profileRole: profile?.role 
+    });
     
     // Wait for auth loading to complete and ensure we have both user and profile
     if (!authLoading && user && profile) {
