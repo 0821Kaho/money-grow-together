@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -30,8 +29,8 @@ const OnboardingCarousel = () => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
-      // Complete onboarding and redirect to home
-      navigate('/');
+      // Complete onboarding and redirect to modules instead of home
+      navigate('/modules');
     }
   };
   
