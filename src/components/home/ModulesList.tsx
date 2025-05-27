@@ -1,4 +1,5 @@
 
+
 import { motion } from "framer-motion";
 import ModuleCard from "../modules/ModuleCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -52,7 +53,7 @@ const modules = [
     id: 5,
     title: "副業・起業マスター",
     description: "小さなビジネスや副収入を得るためのスキルを身につけよう",
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>',
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>',
     color: "#4D96FF",
     progress: 0,
     isLocked: false,
@@ -157,39 +158,6 @@ const ModulesList = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Background decoration for each card */}
-            <motion.div 
-              className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl -z-0"
-              animate={{ 
-                scale: [1, 1.1, 1],
-                opacity: [0.2, 0.3, 0.2]
-              }}
-              transition={{ 
-                duration: 4,
-                repeat: Infinity,
-                repeatType: "reverse" 
-              }}
-              style={{ 
-                background: `linear-gradient(to bottom right, ${module.color}10, ${module.color}30)`,
-              }}
-            />
-            
-            <motion.div 
-              className="absolute bottom-0 left-0 w-24 h-24 rounded-full blur-xl -z-0"
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.1, 0.2, 0.1]
-              }}
-              transition={{ 
-                duration: 5,
-                repeat: Infinity,
-                repeatType: "reverse" 
-              }}
-              style={{ 
-                background: `linear-gradient(to top right, ${module.color}05, ${module.color}20)`,
-              }}
-            />
           </motion.div>
         ))}
       </div>
@@ -209,3 +177,4 @@ const ModulesList = () => {
 };
 
 export default ModulesList;
+
