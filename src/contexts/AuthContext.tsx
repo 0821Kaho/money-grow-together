@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (error) {
         console.error('Error fetching profile:', error);
         
-        // プロフィールが存在しない場合は作成を試みる
         if (error.code === 'PGRST116') {
           console.log('No profile found, creating one...');
           const { data: newProfile, error: createError } = await supabase
@@ -95,24 +94,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     console.log('Setting up auth state listener');
     
-    // Set up auth state listener
+    // Set up auth state listener - NEVER use async directly in callback
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
+        // Use setTimeout to defer profile fetching and avoid blocking
         if (session?.user) {
-          console.log('User logged in, fetching profile...');
-          const profileData = await fetchProfile(session.user.id);
-          console.log('Setting profile data:', profileData);
-          setProfile(profileData);
+          console.log('User logged in, scheduling profile fetch...');
+          setTimeout(() => {
+            fetchProfile(session.user.id).then(profileData => {
+              console.log('Setting profile data:', profileData);
+              setProfile(profileData);
+              setIsLoading(false);
+            });
+          }, 0);
         } else {
           console.log('No session, clearing profile');
           setProfile(null);
+          setIsLoading(false);
         }
-        
-        setIsLoading(false);
       }
     );
 
