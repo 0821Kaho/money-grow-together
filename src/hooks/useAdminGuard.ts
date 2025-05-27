@@ -39,7 +39,6 @@ export function useAdminGuard(): AdminGuardReturn {
         return;
       }
 
-      // Check if profile exists and role is admin
       if (!profile) {
         console.log('Profile not loaded yet...');
         return;
@@ -64,7 +63,7 @@ export function useAdminGuard(): AdminGuardReturn {
     checkAdminRole();
   }, [user, profile, isLoading, navigate]);
 
-  const isAdmin = profile?.role === 'admin' && user && !isLoading;
+  const isAdmin = !!(profile?.role === 'admin' && user && !isLoading);
   const totalLoading = isLoading || isCheckingAdmin;
   
   console.log('useAdminGuard return:', { 

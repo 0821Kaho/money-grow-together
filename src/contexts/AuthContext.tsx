@@ -93,38 +93,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    // Set up auth state listener FIRST
+    console.log('Setting up auth state listener');
+    
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
-        // Fetch profile when user logs in - use setTimeout to avoid blocking
         if (session?.user) {
-          setTimeout(async () => {
-            const profileData = await fetchProfile(session.user.id);
-            console.log('Setting profile data:', profileData);
-            setProfile(profileData);
-            setIsLoading(false);
-          }, 0);
+          console.log('User logged in, fetching profile...');
+          const profileData = await fetchProfile(session.user.id);
+          console.log('Setting profile data:', profileData);
+          setProfile(profileData);
         } else {
           console.log('No session, clearing profile');
           setProfile(null);
-          setIsLoading(false);
         }
+        
+        setIsLoading(false);
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Check for existing session
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       console.log('Initial session check:', session?.user?.email);
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (!session) {
-        setIsLoading(false);
+      
+      if (session) {
+        setSession(session);
+        setUser(session.user);
+        const profileData = await fetchProfile(session.user.id);
+        setProfile(profileData);
       }
-    });
+      
+      setIsLoading(false);
+    };
+
+    getInitialSession();
 
     return () => {
       subscription.unsubscribe();
@@ -151,7 +158,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signup = async (email: string, password: string, displayName?: string) => {
     try {
-      // If displayName is provided, include it in the user metadata
       const metadata = displayName ? { displayName } : undefined;
       
       const { data, error } = await supabase.auth.signUp({
@@ -166,7 +172,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error(error.message);
       }
 
-      // Note: User will need to verify email if that's enabled in Supabase
       if (!data.session) {
         toast({
           title: "確認メールを送信しました",
