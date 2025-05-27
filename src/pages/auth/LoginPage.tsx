@@ -12,32 +12,35 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login, user, profile } = useAuth();
+  const { login, user, profile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   
   // Check if the user is already logged in and redirect based on role
   useEffect(() => {
-    if (user && profile) {
+    // Wait for auth loading to complete and ensure we have both user and profile
+    if (!authLoading && user && profile) {
       // Get the return path from localStorage or default based on role
       const returnPath = localStorage.getItem('returnPath');
       // Clear the return path
       localStorage.removeItem('returnPath');
       
-      console.log("ユーザー情報:", { user: user.email, role: profile.role });
+      console.log("ユーザー情報:", { user: user.email, role: profile.role, profile });
       
       // Admin users go to admin dashboard, regular users go to modules
       if (profile.role === 'admin') {
         console.log("管理者としてログインしました。管理者ダッシュボードへ遷移します。");
         const targetPath = returnPath && returnPath.startsWith('/admin') ? returnPath : "/admin";
-        navigate(targetPath);
+        console.log("遷移先:", targetPath);
+        navigate(targetPath, { replace: true });
       } else {
         console.log("一般ユーザーとしてログインしました。学習モジュール一覧へ遷移します。");
         const targetPath = returnPath && !returnPath.startsWith('/admin') ? returnPath : "/modules";
-        navigate(targetPath);
+        console.log("遷移先:", targetPath);
+        navigate(targetPath, { replace: true });
       }
     }
-  }, [user, profile, navigate]);
+  }, [user, profile, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +67,15 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
+
+  // Show loading if auth is still loading
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">認証確認中...</div>
+      </div>
+    );
+  }
 
   return (
     <Card className="shadow-lg border-[#F5F5F5]">

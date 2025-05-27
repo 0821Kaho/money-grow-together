@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,7 +22,8 @@ export function useAdminGuard(): AdminGuardReturn {
         user: user?.email, 
         profile, 
         isLoading,
-        profileRole: profile?.role 
+        profileRole: profile?.role,
+        timestamp: new Date().toISOString()
       });
       
       if (isLoading) {
@@ -40,7 +40,8 @@ export function useAdminGuard(): AdminGuardReturn {
       }
 
       if (!profile) {
-        console.log('Profile not loaded yet...');
+        console.log('Profile not loaded yet, waiting...');
+        // Don't set isCheckingAdmin to false here, keep waiting for profile
         return;
       }
 
@@ -49,14 +50,14 @@ export function useAdminGuard(): AdminGuardReturn {
       console.log('Is admin?', profile.role === 'admin');
 
       if (profile.role !== 'admin') {
-        console.log('User is not admin:', profile);
+        console.log('User is not admin, redirecting to home:', profile);
         toast.error("管理者権限が必要です");
         navigate('/');
         setIsCheckingAdmin(false);
         return;
       }
 
-      console.log('User confirmed as admin');
+      console.log('User confirmed as admin, allowing access');
       setIsCheckingAdmin(false);
     };
 
@@ -69,7 +70,9 @@ export function useAdminGuard(): AdminGuardReturn {
   console.log('useAdminGuard return:', { 
     isAdmin, 
     isLoading: totalLoading, 
-    profileRole: profile?.role 
+    profileRole: profile?.role,
+    hasUser: !!user,
+    hasProfile: !!profile
   });
 
   return { 
