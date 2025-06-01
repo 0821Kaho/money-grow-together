@@ -63,9 +63,9 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
           <HeroVideoSection className="w-full max-w-md" />
         </div>
         
-        {/* CTA Button - navigate to modules */}
+        {/* Single CTA Button - navigate to modules */}
         <motion.div
-          className="flex justify-center gap-4"
+          className="flex justify-center"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ 
@@ -80,14 +80,6 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
               学習を開始する
             </Button>
           </Link>
-          <Button 
-            onClick={scrollToModules}
-            variant="outline"
-            size="lg" 
-            className="rounded-full shadow-lg"
-          >
-            モジュールを見る
-          </Button>
         </motion.div>
         
         {/* Scroll indicator */}
