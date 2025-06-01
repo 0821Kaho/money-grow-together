@@ -19,7 +19,7 @@ const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) =>
   const [dragDirection, setDragDirection] = useState<"left" | "right" | null>(null);
   
   const getMonsterEmoji = () => {
-    if (event.name.includes("コンビニ")) return "🍰";
+    if (event.name.includes("コンビニ")) return "/lovable-uploads/cfe23039-6987-4cf7-b49f-f5b45238ee66.png";
     if (event.name.includes("スマホ")) return "📱";
     if (event.name.includes("家賃")) return "🏠";
     if (event.name.includes("税金")) return "📋";
@@ -33,6 +33,7 @@ const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) =>
   };
   
   const isNeed = event.type === "need";
+  const monsterIcon = getMonsterEmoji();
   
   return (
     <div className="space-y-6">
@@ -81,11 +82,19 @@ const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) =>
         </div>
         
         <motion.div
-          className="text-6xl mb-3"
+          className="mb-3 flex justify-center"
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          {getMonsterEmoji()}
+          {monsterIcon.startsWith('/') ? (
+            <img 
+              src={monsterIcon} 
+              alt={event.name}
+              className="w-16 h-16"
+            />
+          ) : (
+            <span className="text-6xl">{monsterIcon}</span>
+          )}
         </motion.div>
         
         <h4 className="text-xl font-bold mb-2">{event.name}</h4>
