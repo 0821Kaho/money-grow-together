@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import TimelineProjectionChart from "./investment/TimelineProjectionChart";
 import InvestmentResults from "./investment/InvestmentResults";
 import { Badge } from "@/components/ui/badge";
+import { useInvestmentGameStore } from "@/stores/investmentGameStore";
 
 // Define asset classes
 const assetClasses = [
@@ -179,6 +179,9 @@ interface Allocation {
 }
 
 const InvestmentSimulation = () => {
+  // Zustand store for Week progress tracking
+  const { completedWeeks, totalMoney } = useInvestmentGameStore();
+  
   // State
   const [goal, setGoal] = useState(1000000); // Default to 1,000,000 yen (1 million)
   const [currentValue, setCurrentValue] = useState(300000); // Default to 300,000 yen
@@ -350,6 +353,30 @@ const InvestmentSimulation = () => {
               </button>
             </div>
           </div>
+
+          {/* Week Progress Bar */}
+          <Card className="mb-4">
+            <CardContent className="py-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium">学習進捗</span>
+                <span className="text-xs text-muted-foreground">
+                  {completedWeeks.length}/3 Week完了
+                </span>
+              </div>
+              <Progress value={(completedWeeks.length / 3) * 100} className="h-2 mb-3" />
+              <div className="flex gap-2 text-xs">
+                <span className={`px-2 py-1 rounded ${completedWeeks.includes(1) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  Week1: 基礎
+                </span>
+                <span className={`px-2 py-1 rounded ${completedWeeks.includes(2) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  Week2: 複利
+                </span>
+                <span className={`px-2 py-1 rounded ${completedWeeks.includes(3) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  Week3: 分散
+                </span>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Week1 Tutorial Link */}
           <Card className="mb-4 border-l-4 border-l-pigipe-primary">

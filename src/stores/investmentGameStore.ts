@@ -17,6 +17,9 @@ interface InvestmentGameState {
     timestamp: number;
   }>;
   
+  // 将来のWeek用スロット (Week2以降用)
+  weekData: Record<number, any>;
+  
   // アクション
   setTotalMoney: (amount: number) => void;
   setWeek1Money: (amount: number) => void;
@@ -24,6 +27,10 @@ interface InvestmentGameState {
   completeWeek1: () => void;
   resetWeek1: () => void;
   resetGame: () => void;
+  
+  // 汎用Week管理
+  completeWeek: (weekNumber: number, data?: any) => void;
+  setWeekData: (weekNumber: number, data: any) => void;
 }
 
 export const useInvestmentGameStore = create<InvestmentGameState>()(
@@ -36,6 +43,7 @@ export const useInvestmentGameStore = create<InvestmentGameState>()(
       week1Money: 1000,
       week1Completed: false,
       week1Choices: [],
+      weekData: {},
       
       // アクション
       setTotalMoney: (amount) => set({ totalMoney: amount }),
@@ -76,8 +84,25 @@ export const useInvestmentGameStore = create<InvestmentGameState>()(
         completedWeeks: [],
         week1Money: 1000,
         week1Completed: false,
-        week1Choices: []
-      })
+        week1Choices: [],
+        weekData: {}
+      }),
+      
+      // 汎用Week管理 (Week2以降で使用)
+      completeWeek: (weekNumber, data) => {
+        const state = get();
+        set({
+          completedWeeks: [...state.completedWeeks.filter(w => w !== weekNumber), weekNumber],
+          weekData: { ...state.weekData, [weekNumber]: data }
+        });
+      },
+      
+      setWeekData: (weekNumber, data) => {
+        const state = get();
+        set({
+          weekData: { ...state.weekData, [weekNumber]: data }
+        });
+      }
     }),
     {
       name: 'investment-game-storage',
