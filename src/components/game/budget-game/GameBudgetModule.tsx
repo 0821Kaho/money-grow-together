@@ -11,6 +11,12 @@ import EventCard from "./EventCard";
 import WeeklySummary from "./WeeklySummary";
 import FinalResult from "./FinalResult";
 
+interface GameEvent {
+  name: string;
+  amount: number;
+  type: "need" | "want";
+}
+
 interface GameState {
   currentWeek: number;
   money: number;
@@ -42,38 +48,38 @@ const initialState: GameState = {
 };
 
 // 週ごとのイベントデータ
-const weeklyEvents = [
+const weeklyEvents: GameEvent[][] = [
   // Week 1 - 比較的軽い支出
   [
-    { name: "コンビニスイーツ魔人", amount: 800, type: "want" },
-    { name: "スマホ料金ドラゴン", amount: 8000, type: "need" },
-    { name: "コーヒー誘惑デーモン", amount: 500, type: "want" },
-    { name: "昼食ガーディアン", amount: 3000, type: "need" },
-    { name: "友達の誘いスライム", amount: 2500, type: "want" }
+    { name: "コンビニスイーツ魔人", amount: 800, type: "want" as const },
+    { name: "スマホ料金ドラゴン", amount: 8000, type: "need" as const },
+    { name: "コーヒー誘惑デーモン", amount: 500, type: "want" as const },
+    { name: "昼食ガーディアン", amount: 3000, type: "need" as const },
+    { name: "友達の誘いスライム", amount: 2500, type: "want" as const }
   ],
   // Week 2 - 中程度の支出
   [
-    { name: "家賃ドラゴン", amount: 25000, type: "need" },
-    { name: "洋服欲望ビースト", amount: 8000, type: "want" },
-    { name: "食材調達ナイト", amount: 6000, type: "need" },
-    { name: "エンタメ誘惑魔王", amount: 1500, type: "want" },
-    { name: "交通費ゴブリン", amount: 4000, type: "need" }
+    { name: "家賃ドラゴン", amount: 25000, type: "need" as const },
+    { name: "洋服欲望ビースト", amount: 8000, type: "want" as const },
+    { name: "食材調達ナイト", amount: 6000, type: "need" as const },
+    { name: "エンタメ誘惑魔王", amount: 1500, type: "want" as const },
+    { name: "交通費ゴブリン", amount: 4000, type: "need" as const }
   ],
   // Week 3 - やや重い支出
   [
-    { name: "光熱費ドラゴン", amount: 12000, type: "need" },
-    { name: "ガジェット物欲モンスター", amount: 15000, type: "want" },
-    { name: "医療費緊急イベント", amount: 5000, type: "need" },
-    { name: "飲み会誘惑スピリット", amount: 4000, type: "want" },
-    { name: "日用品補給隊", amount: 3000, type: "need" }
+    { name: "光熱費ドラゴン", amount: 12000, type: "need" as const },
+    { name: "ガジェット物欲モンスター", amount: 15000, type: "want" as const },
+    { name: "医療費緊急イベント", amount: 5000, type: "need" as const },
+    { name: "飲み会誘惑スピリット", amount: 4000, type: "want" as const },
+    { name: "日用品補給隊", amount: 3000, type: "need" as const }
   ],
   // Week 4 - 最終週、重い支出
   [
-    { name: "税金徴収ドラゴン", amount: 20000, type: "need" },
-    { name: "旅行計画テンプテーション", amount: 30000, type: "want" },
-    { name: "家電故障緊急事態", amount: 18000, type: "need" },
-    { name: "美容院リフレッシュ", amount: 6000, type: "want" },
-    { name: "保険料オーガ", amount: 8000, type: "need" }
+    { name: "税金徴収ドラゴン", amount: 20000, type: "need" as const },
+    { name: "旅行計画テンプテーション", amount: 30000, type: "want" as const },
+    { name: "家電故障緊急事態", amount: 18000, type: "need" as const },
+    { name: "美容院リフレッシュ", amount: 6000, type: "want" as const },
+    { name: "保険料オーガ", amount: 8000, type: "need" as const }
   ]
 ];
 
