@@ -14,9 +14,13 @@ const IntroScreen = ({ onStart }: IntroScreenProps) => {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="text-6xl mb-4"
+        className="mb-4"
       >
-        🏦
+        <img 
+          src="/lovable-uploads/839f59f0-0d1c-4f3d-957f-cb64d784ea29.png" 
+          alt="家計サバイバルゲーム" 
+          className="w-32 h-32 mx-auto"
+        />
       </motion.div>
       
       <motion.h1
