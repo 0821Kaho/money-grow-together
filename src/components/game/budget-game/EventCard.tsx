@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -22,12 +21,12 @@ const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) =>
     if (event.name.includes("コンビニ")) return "/lovable-uploads/cfe23039-6987-4cf7-b49f-f5b45238ee66.png";
     if (event.name.includes("スマホ")) return "/lovable-uploads/e6bd89fa-cd9d-4b7a-bb86-362504513f5c.png";
     if (event.name.includes("昼食")) return "/lovable-uploads/35367509-4624-4ac2-b265-95cc64c7ee8e.png";
+    if (event.name.includes("コーヒー")) return "/lovable-uploads/89eede8c-2afa-494f-8990-0482bac34f13.png";
     if (event.name.includes("家賃")) return "🏠";
     if (event.name.includes("税金")) return "📋";
     if (event.name.includes("保険")) return "🛡️";
     if (event.name.includes("旅行")) return "✈️";
     if (event.name.includes("美容")) return "💄";
-    if (event.name.includes("コーヒー")) return "☕";
     if (event.name.includes("洋服")) return "👕";
     if (event.name.includes("ガジェット")) return "📱";
     return "👹";
