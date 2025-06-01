@@ -350,6 +350,31 @@ const InvestmentSimulation = () => {
               </button>
             </div>
           </div>
+
+          {/* Week1 Tutorial Link */}
+          <Card className="mb-4 border-l-4 border-l-pigipe-primary">
+            <CardContent className="py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="mr-3 bg-pigipe-secondary p-2 rounded-full">
+                    <span className="text-xl">🐷</span>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium">投資チュートリアル</h4>
+                    <p className="text-xs text-muted-foreground">貯金と投資の違いをピギペと一緒に学ぼう！</p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('/game/investment/week1', '_blank')}
+                  className="text-pigipe-primary border-pigipe-primary hover:bg-pigipe-secondary"
+                >
+                  Week1 スタート
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
           
           {/* Goal tracking */}
           <Card className="mb-4">

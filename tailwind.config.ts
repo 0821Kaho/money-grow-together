@@ -96,6 +96,16 @@ export default {
 				'brand': {
 					'pink': '#FF66A5',
 					'light': '#FFE8F1'
+				},
+				// Pigipe color tokens for investment game
+				'pigipe': {
+					'primary': '#FF66A5',
+					'secondary': '#FFE8F1', 
+					'success': '#2BA26B',
+					'warning': '#FFD66E',
+					'danger': '#F37B83',
+					'info': '#87CEEB',
+					'neutral': '#F5F5F5'
 				}
 			},
 			borderRadius: {
