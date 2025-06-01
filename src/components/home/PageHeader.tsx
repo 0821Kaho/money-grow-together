@@ -1,17 +1,13 @@
 
-import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const PageHeader = () => {
-  const { isAuthenticated, logout } = useAuth();
-
-  const scrollToRegistration = () => {
-    document.getElementById("registration-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const handleLogout = () => {
-    logout();
+  const scrollToModules = () => {
+    const modulesSection = document.querySelector('#modules-section');
+    if (modulesSection) {
+      modulesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -23,29 +19,14 @@ const PageHeader = () => {
           </Link>
         </div>
         <div className="flex gap-4">
-          {!isAuthenticated ? (
-            <>
-              <Link to="/login">
-                <Button variant="outline">
-                  ログイン
-                </Button>
-              </Link>
-              <Button onClick={scrollToRegistration}>
-                新規登録
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/modules">
-                <Button variant="outline">
-                  学習モジュール
-                </Button>
-              </Link>
-              <Button variant="outline" onClick={handleLogout}>
-                ログアウト
-              </Button>
-            </>
-          )}
+          <Link to="/modules">
+            <Button variant="outline">
+              学習モジュール
+            </Button>
+          </Link>
+          <Button onClick={scrollToModules}>
+            今すぐ始める
+          </Button>
         </div>
       </div>
     </header>

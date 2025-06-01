@@ -9,7 +9,7 @@ import LifePlanSimulation from "@/components/game/LifePlanSimulation";
 import StartupSideBusinessSimulation from "@/components/game/StartupSideBusinessSimulation";
 import MascotTooltip from "@/components/mascot/MascotTooltip";
 import MascotCharacter from "@/components/mascot/MascotCharacter";
-import { useAuth } from "@/contexts/AuthContext";
+import { useModules } from "@/hooks/useModules";
 
 const modules = [
   {
@@ -75,9 +75,6 @@ const ModulePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [module, setModule] = useState<any>(null);
-  const { user, isLoading } = useAuth();
-  // Add a flag to track if we've already tried to redirect
-  const [redirectAttempted, setRedirectAttempted] = useState(false);
   
   useEffect(() => {
     if (!id) return;
@@ -92,24 +89,15 @@ const ModulePage = () => {
     }
   }, [id, navigate]);
   
-  // Improved authentication check to prevent redirect loops
-  useEffect(() => {
-    // Only check auth status after loading is complete and we haven't already attempted redirect
-    if (!isLoading && !user && !redirectAttempted) {
-      console.log("User not authenticated, redirecting to login");
-      // Mark that we've attempted a redirect
-      setRedirectAttempted(true);
-      
-      // Store the current location to return after login
-      localStorage.setItem('returnPath', window.location.pathname);
-      
-      // Redirect unauthenticated users to login
-      navigate("/login");
-    }
-  }, [user, isLoading, navigate, redirectAttempted]);
-  
-  if (isLoading || !module) {
-    return null;
+  if (!module) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">モジュールを読み込み中...</p>
+        </div>
+      </div>
+    );
   }
   
   const ModuleComponent = module.component;
@@ -123,7 +111,7 @@ const ModulePage = () => {
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
           <button
-            onClick={() => navigate(user?.isAdmin ? "/admin" : "/")}
+            onClick={() => navigate("/")}
             className="flex items-center gap-1 text-sm font-body font-medium text-gray-500"
           >
             <svg
@@ -157,10 +145,10 @@ const ModulePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button
-              onClick={() => navigate(user?.isAdmin ? "/admin" : "/")}
+              onClick={() => navigate("/")}
               className="game-button font-number font-bold"
             >
-              {user?.isAdmin ? "管理画面" : "ホーム"}に戻る
+              ホームに戻る
             </button>
             <MascotCharacter size="small" />
           </div>

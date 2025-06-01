@@ -4,9 +4,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import { useRef, useEffect } from "react";
 import HeroVideoSection from "@/components/home/HeroVideoSection";
-import Countdown from "@/components/prelaunch/Countdown";
-import AccountRegistrationForm from "@/components/auth/AccountRegistrationForm";
-import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 interface HeroSectionProps {
@@ -15,11 +12,13 @@ interface HeroSectionProps {
 
 const HeroSection = ({ launchDate }: HeroSectionProps) => {
   const arrowRef = useRef<HTMLDivElement>(null);
-  const { isAuthenticated } = useAuth();
   
-  // Function to handle scrolling to the registration form
-  const scrollToForm = () => {
-    document.getElementById("registration-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Function to handle scrolling to modules section
+  const scrollToModules = () => {
+    const modulesSection = document.querySelector('#modules-section');
+    if (modulesSection) {
+      modulesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   // Function to occasionally bounce the arrow
@@ -64,7 +63,7 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
           <HeroVideoSection className="w-full max-w-md" />
         </div>
         
-        {/* CTA Button - different for authenticated vs non-authenticated users */}
+        {/* CTA Button - navigate to modules */}
         <motion.div
           className="flex justify-center gap-4"
           initial={{ scale: 0, opacity: 0 }}
@@ -76,44 +75,29 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
             delay: 0.5
           }}
         >
-          {isAuthenticated ? (
-            <Link to="/modules">
-              <Button size="lg" className="rounded-full shadow-lg bg-primary hover:bg-primary/90">
-                学習を開始する
-              </Button>
-            </Link>
-          ) : (
-            <>
-              <Button 
-                onClick={scrollToForm} 
-                size="lg" 
-                className="rounded-full shadow-lg bg-primary hover:bg-primary/90"
-              >
-                今すぐ始める
-              </Button>
-              <Link to="/login">
-                <Button 
-                  variant="outline"
-                  size="lg" 
-                  className="rounded-full shadow-lg"
-                >
-                  ログイン
-                </Button>
-              </Link>
-            </>
-          )}
+          <Link to="/modules">
+            <Button size="lg" className="rounded-full shadow-lg bg-primary hover:bg-primary/90">
+              学習を開始する
+            </Button>
+          </Link>
+          <Button 
+            onClick={scrollToModules}
+            variant="outline"
+            size="lg" 
+            className="rounded-full shadow-lg"
+          >
+            モジュールを見る
+          </Button>
         </motion.div>
         
-        {/* Scroll indicator - only show for non-authenticated users */}
-        {!isAuthenticated && (
-          <motion.div 
-            ref={arrowRef}
-            className="text-muted-foreground mt-2 cursor-pointer"
-            onClick={scrollToForm}
-          >
-            <ArrowDown className="mx-auto h-6 w-6" />
-          </motion.div>
-        )}
+        {/* Scroll indicator */}
+        <motion.div 
+          ref={arrowRef}
+          className="text-muted-foreground mt-2 cursor-pointer"
+          onClick={scrollToModules}
+        >
+          <ArrowDown className="mx-auto h-6 w-6" />
+        </motion.div>
         
         {/* Floating decorative elements - small yen coins */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.02] -z-10">
@@ -132,13 +116,6 @@ const HeroSection = ({ launchDate }: HeroSectionProps) => {
             </div>
           ))}
         </div>
-        
-        {/* Registration form - only show for non-authenticated users */}
-        {!isAuthenticated && (
-          <div id="registration-form" className="w-full max-w-md mx-auto pt-8">
-            <AccountRegistrationForm className="w-full" />
-          </div>
-        )}
       </motion.div>
     </section>
   );
