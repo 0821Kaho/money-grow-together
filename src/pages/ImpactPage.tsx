@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronLeft, FileText, TrendingUp, Shield, Mail } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { Badge } from "@/components/ui/badge";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -16,7 +15,6 @@ import {
 } from "@/components/ui/table";
 
 const ImpactPage = () => {
-  const { isAuthenticated } = useAuth();
   const isMobile = useIsMobile();
   
   const personalBenefits = [
@@ -258,9 +256,9 @@ const ImpactPage = () => {
 
           {/* CTA */}
           <div className="text-center mb-12">
-            <Link to={isAuthenticated ? "/modules" : "/signup"}>
+            <Link to="/modules">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8">
-                {isAuthenticated ? "学習を始める" : "今すぐ学習を始める"}
+                学習を始める
               </Button>
             </Link>
           </div>

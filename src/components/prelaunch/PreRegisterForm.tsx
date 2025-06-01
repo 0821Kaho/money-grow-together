@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -7,9 +7,7 @@ import { toast } from "sonner";
 import { Mail, Lock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import {
   Form,
   FormControl,
@@ -36,7 +34,6 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
   const navigate = useNavigate();
-  const { signup } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -50,11 +47,10 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
   async function onSubmit(values: FormValues) {
     setLoading(true);
     try {
-      // Register with email and password
-      await signup(values.email, values.password);
+      // Mock registration - in a real implementation this would save to a database
+      console.log('Registration attempt:', { email: values.email, age: values.age });
       
-      // In a real implementation, we would also store the age
-      // await api.post("/user/profile", { age: values.age });
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       
       toast.success("事前登録が完了しました！", {
         description: "アカウントが作成され、公開日にメールでお知らせします。",
@@ -65,11 +61,7 @@ const PreRegisterForm = ({ className = "", onSuccess, id = "waitlist-form" }: Pr
       if (onSuccess) onSuccess();
       
     } catch (error: any) {
-      if (error.response?.status === 409) {
-        toast.info("このメールアドレスはすでに登録されています。");
-      } else {
-        toast.error("登録に失敗しました。もう一度お試しください。");
-      }
+      toast.error("登録に失敗しました。もう一度お試しください。");
     } finally {
       setLoading(false);
     }

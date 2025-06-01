@@ -11,21 +11,18 @@ import {
   Clock,
   BookOpen
 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const AdminLayout = () => {
   const { pathname } = useLocation();
-  const { logout } = useAuth();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleLogout = async () => {
     try {
-      await logout();
       toast.success("ログアウトしました");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toast.error("ログアウトに失敗しました");
       console.error("Logout error:", error);

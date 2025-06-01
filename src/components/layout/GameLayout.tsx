@@ -6,7 +6,6 @@ import { Bell } from "lucide-react";
 import ModuleProgress from "../ui/ModuleProgress";
 import MascotCharacter from "../mascot/MascotCharacter";
 import { useToast } from "@/hooks/use-toast";
-import ProfileButton from "../ui/ProfileButton";
 
 interface GameLayoutProps {
   children: React.ReactNode;
@@ -75,9 +74,6 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
             >
               <Bell className="h-5 w-5 text-game-dark" />
             </button>
-            
-            {/* Profile button */}
-            <ProfileButton />
           </div>
         </div>
       </header>

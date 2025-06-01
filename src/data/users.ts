@@ -3,9 +3,8 @@
  * User data operations
  * 
  * This file contains functions for fetching and manipulating user data 
- * from the Supabase database.
+ * (mocked for static site)
  */
-import { supabase } from '@/integrations/supabase/client';
 
 export interface UserListParams {
   page?: number;
@@ -14,46 +13,36 @@ export interface UserListParams {
 }
 
 /**
- * List users with pagination and optional filtering
+ * List users with pagination and optional filtering (mocked)
  */
 export async function listUsers(page = 1, pageSize = 20, query = '') {
   try {
-    // Calculate offset for pagination
-    const offset = (page - 1) * pageSize;
-    
-    // Start base query - use profiles table which references auth.users
-    let userQuery = supabase.from('profiles')
-      .select('id, name, role, created_at', { count: 'exact' });
-    
+    // Mock data for static site
+    const mockUsers = Array.from({ length: 50 }, (_, i) => ({
+      id: `user-${i + 1}`,
+      email: `user${i + 1}@example.com`,
+      full_name: `ユーザー ${i + 1}`,
+      role: i < 3 ? 'admin' : 'user',
+      plan: 'free',
+      status: 'active',
+      created_at: new Date(Date.now() - Math.random() * 10000000000).toISOString()
+    }));
+
     // Apply search filter if provided
-    if (query) {
-      userQuery = userQuery.or(`name.ilike.%${query}%`);
-    }
-    
-    // Execute query with pagination
-    const { data: users, error, count } = await userQuery
-      .order('created_at', { ascending: false })
-      .range(offset, offset + pageSize - 1);
-    
-    if (error) {
-      console.error('Error fetching users:', error);
-      throw new Error('Failed to fetch users');
-    }
-    
-    // Transform the data to match the expected User type
-    const transformedUsers = users?.map(profile => ({
-      id: profile.id,
-      email: '', // We don't have access to email from profiles table
-      full_name: profile.name || '',
-      role: profile.role,
-      plan: 'free', // Default plan value
-      status: 'active', // Default status value
-      created_at: profile.created_at
-    })) || [];
+    const filteredUsers = query 
+      ? mockUsers.filter(user => 
+          user.full_name.toLowerCase().includes(query.toLowerCase()) ||
+          user.email.toLowerCase().includes(query.toLowerCase())
+        )
+      : mockUsers;
+
+    // Apply pagination
+    const offset = (page - 1) * pageSize;
+    const paginatedUsers = filteredUsers.slice(offset, offset + pageSize);
     
     return { 
-      users: transformedUsers, 
-      total: count || 0
+      users: paginatedUsers, 
+      total: filteredUsers.length
     };
   } catch (error) {
     console.error('Error in listUsers:', error);
@@ -62,34 +51,19 @@ export async function listUsers(page = 1, pageSize = 20, query = '') {
 }
 
 /**
- * Get a single user by ID
+ * Get a single user by ID (mocked)
  */
 export async function getUserById(userId: string) {
   try {
-    const { data: profile, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    
-    if (error) {
-      console.error('Error fetching user:', error);
-      throw new Error('Failed to fetch user');
-    }
-    
-    if (!profile) {
-      throw new Error('User not found');
-    }
-    
-    // Transform to match expected User type
+    // Mock data for static site
     const user = {
-      id: profile.id,
-      email: '', // We don't have access to email from profiles table
-      full_name: profile.name || '',
-      role: profile.role,
-      plan: 'free', // Default plan value
-      status: 'active', // Default status value
-      created_at: profile.created_at
+      id: userId,
+      email: `user@example.com`,
+      full_name: 'サンプルユーザー',
+      role: 'user',
+      plan: 'free',
+      status: 'active',
+      created_at: new Date().toISOString()
     };
     
     return user;
@@ -100,21 +74,13 @@ export async function getUserById(userId: string) {
 }
 
 /**
- * Update a user
+ * Update a user (mocked)
  */
 export async function updateUser(userId: string, userData: { [key: string]: any }) {
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .update(userData)
-      .eq('id', userId);
-    
-    if (error) {
-      console.error('Error updating user:', error);
-      throw new Error('Failed to update user');
-    }
-    
-    return data;
+    // Mock implementation for static site
+    console.log('Updating user:', userId, userData);
+    return { success: true };
   } catch (error) {
     console.error('Error in updateUser:', error);
     throw error;
