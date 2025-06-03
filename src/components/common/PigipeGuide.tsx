@@ -8,14 +8,9 @@ interface PigipeGuideProps {
 }
 
 const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideProps) => {
-  const getMoodEmoji = () => {
-    switch (mood) {
-      case "happy": return "😊";
-      case "warning": return "😰";
-      case "sad": return "😢";
-      case "excited": return "🤗";
-      default: return "🐷";
-    }
+  const getMoodImage = () => {
+    // すべてのムードで新しいピギペ画像を使用
+    return "/lovable-uploads/455347ad-764f-4882-96f7-988b2483b736.png";
   };
 
   const getMoodColor = () => {
@@ -29,9 +24,9 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
   };
 
   const sizeClasses = {
-    small: "text-lg",
-    medium: "text-2xl",
-    large: "text-4xl"
+    small: "w-8 h-8",
+    medium: "w-12 h-12",
+    large: "w-16 h-16"
   };
 
   return (
@@ -46,7 +41,11 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        {getMoodEmoji()}
+        <img 
+          src={getMoodImage()} 
+          alt="ピギペ" 
+          className="w-full h-full object-contain"
+        />
       </motion.div>
       
       <div className={`flex-1 p-4 rounded-xl border-2 shadow-lg ${getMoodColor()}`}>
