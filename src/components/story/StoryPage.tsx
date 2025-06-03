@@ -2,7 +2,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Scene } from '@/types/story';
 
@@ -29,13 +28,10 @@ const StoryPage: React.FC<StoryPageProps> = ({
         transition={{ duration: 0.5 }}
       >
         <div className="relative aspect-square rounded-xl overflow-hidden shadow-2xl">
-          <Image
+          <img
             src={imagePath}
             alt={`Scene ${scene.id}`}
-            fill
-            className="object-contain bg-gradient-to-br from-orange-50 to-pink-50"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            className="w-full h-full object-contain bg-gradient-to-br from-orange-50 to-pink-50"
           />
         </div>
       </motion.div>
