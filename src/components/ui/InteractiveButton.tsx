@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface InteractiveButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface InteractiveButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onAnimationStart' | 'onAnimationEnd'> {
   variant?: "primary" | "secondary" | "success" | "warning" | "danger" | "ghost";
   size?: "sm" | "md" | "lg" | "xl";
   animation?: "bounce" | "pulse" | "shake" | "glow" | "scale" | "rotate";
@@ -21,7 +21,7 @@ const InteractiveButton = ({
   className,
   children,
   disabled,
-  ...props
+  ...buttonProps
 }: InteractiveButtonProps) => {
   
   const baseClasses = "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -71,7 +71,7 @@ const InteractiveButton = ({
       whileTap={!disabled && !loading ? getTapAnimation() : undefined}
       transition={{ duration: 0.2 }}
       disabled={disabled || loading}
-      {...props}
+      {...buttonProps}
     >
       {/* Shimmer effect */}
       <motion.div
