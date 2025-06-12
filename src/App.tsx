@@ -20,6 +20,7 @@ import CompanyPage from "./pages/CompanyPage";
 import EnCompanyPage from "./pages/EnCompanyPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import InvestmentWeek1Page from "./pages/InvestmentWeek1Page";
+import StoryPigipeIntro from "./components/story/StoryPigipeIntro";
 import Footer from "./components/layout/Footer";
 
 const App = () => {
@@ -50,6 +51,9 @@ const App = () => {
                     <Route path="/about" element={<CompanyPage />} />
                     <Route path="/en/about" element={<EnCompanyPage />} />
                     <Route path="/company" element={<Navigate to="/about" replace />} />
+                    
+                    {/* Story route */}
+                    <Route path="/story" element={<StoryPigipeIntro onFinish={() => window.location.href = '/module/budget-survival'} />} />
                     
                     {/* Investment game routes */}
                     <Route path="/game/investment/week1" element={<InvestmentWeek1Page />} />
