@@ -51,6 +51,10 @@ export const KawaiiButton = ({
     onPointerDown,
     onPointerUp,
     onPointerMove,
+    onAnimationStart,
+    onAnimationEnd,
+    onAnimationIteration,
+    onTransitionEnd,
     ...safeProps
   } = props;
 
