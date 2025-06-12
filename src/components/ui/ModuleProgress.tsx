@@ -25,8 +25,8 @@ const ModuleProgress = ({ currentModule }: ModuleProgressProps) => {
   ];
 
   return (
-    <section className="px-4 py-section">
-      <div className="bg-white p-5 rounded-lg max-w-sm mx-auto">
+    <section className="px-4 py-2">
+      <div className="bg-white p-4 rounded-lg max-w-sm mx-auto">
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <span className="text-sm font-medium mr-2">{moduleNames[currentModule - 1] || "モジュール"}</span>
