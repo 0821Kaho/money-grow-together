@@ -33,25 +33,38 @@ export const KawaiiButton = ({
     lg: 'px-8 py-4 text-lg'
   };
 
-  const ButtonComponent = animate ? motion.button : 'button';
-  const animationProps = animate ? {
-    whileTap: { scale: 0.96 },
-    whileHover: { scale: 1.02 },
-    transition: { type: "spring", stiffness: 400, damping: 17 }
-  } : {};
+  const baseClasses = `
+    ${variantStyles[variant]}
+    ${sizeStyles[size]}
+    font-maru font-semibold rounded-full
+    transition-all duration-300 transform
+    flex items-center justify-center gap-2
+    border-0 focus:outline-none focus:ring-4 focus:ring-pigipePink/30
+    ${className}
+  `;
+
+  if (animate) {
+    return (
+      <motion.button
+        className={baseClasses}
+        whileTap={{ scale: 0.96 }}
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        {...props}
+      >
+        {icon && (
+          <span role="img" aria-hidden="true" className="text-current">
+            {icon}
+          </span>
+        )}
+        <span>{children}</span>
+      </motion.button>
+    );
+  }
 
   return (
-    <ButtonComponent
-      className={`
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        font-maru font-semibold rounded-full
-        transition-all duration-300 transform
-        flex items-center justify-center gap-2
-        border-0 focus:outline-none focus:ring-4 focus:ring-pigipePink/30
-        ${className}
-      `}
-      {...animationProps}
+    <button
+      className={baseClasses}
       {...props}
     >
       {icon && (
@@ -60,6 +73,6 @@ export const KawaiiButton = ({
         </span>
       )}
       <span>{children}</span>
-    </ButtonComponent>
+    </button>
   );
 };
