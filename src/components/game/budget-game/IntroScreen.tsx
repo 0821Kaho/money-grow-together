@@ -49,14 +49,14 @@ const IntroScreen = ({ onStart }: IntroScreenProps) => {
         transition={{ delay: 0.6 }}
         className="grid grid-cols-1 gap-4 px-6"
       >
-        <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-          <BookOpen className="h-5 w-5 text-blue-500" />
-          <span className="text-sm text-blue-700">給与計算から支出管理まで体験</span>
+        <div className="flex items-center gap-3 p-3 bg-pigipePinkLight/20 rounded-lg border border-pigipePinkLight/30">
+          <BookOpen className="h-5 w-5 text-pigipePink" />
+          <span className="text-sm text-pigipePink font-medium">給与計算から支出管理まで体験</span>
         </div>
         
-        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-          <Target className="h-5 w-5 text-green-500" />
-          <span className="text-sm text-green-700">借金せずに月末まで生き残ろう</span>
+        <div className="flex items-center gap-3 p-3 bg-pigipePinkLight/20 rounded-lg border border-pigipePinkLight/30">
+          <Target className="h-5 w-5 text-pigipePink" />
+          <span className="text-sm text-pigipePink font-medium">借金せずに月末まで生き残ろう</span>
         </div>
       </motion.div>
       
