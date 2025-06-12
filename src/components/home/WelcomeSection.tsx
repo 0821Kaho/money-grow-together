@@ -2,8 +2,6 @@
 import { motion } from "framer-motion";
 import MascotTooltip from "../mascot/MascotTooltip";
 import MascotImage from "../mascot/MascotImage";
-import MoneyVisual from "@/components/ui/MoneyVisual";
-import LeafVisual from "@/components/ui/LeafVisual";
 
 const WelcomeSection = () => {
   const welcomeMessages = [
@@ -19,32 +17,6 @@ const WelcomeSection = () => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
-      {/* Animated background with floating coins */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            initial={{ 
-              x: `${Math.random() * 100}%`, 
-              y: `${Math.random() * 100}%`,
-              opacity: 0.05 + (Math.random() * 0.1)
-            }}
-            animate={{ 
-              y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-              x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`]
-            }}
-            transition={{ 
-              duration: 15 + (Math.random() * 10),
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-          >
-            <MoneyVisual size={i < 3 ? "small" : i < 6 ? "medium" : "large"} />
-          </motion.div>
-        ))}
-      </div>
-
       <div className="flex items-center justify-between relative z-10">
         <div className="flex-1">
           <h1 className="mb-2 text-2xl font-heading font-bold">ようこそ、ユーザーさん！</h1>
