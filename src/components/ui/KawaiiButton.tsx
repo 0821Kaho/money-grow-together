@@ -43,6 +43,17 @@ export const KawaiiButton = ({
     ${className}
   `;
 
+  // Filter out potential conflicting props for motion.button
+  const {
+    onDrag,
+    onDragStart,
+    onDragEnd,
+    onPointerDown,
+    onPointerUp,
+    onPointerMove,
+    ...safeProps
+  } = props;
+
   if (animate) {
     return (
       <motion.button
@@ -50,7 +61,7 @@ export const KawaiiButton = ({
         whileTap={{ scale: 0.96 }}
         whileHover={{ scale: 1.02 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
-        {...props}
+        {...safeProps}
       >
         {icon && (
           <span role="img" aria-hidden="true" className="text-current">
