@@ -1,6 +1,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import GameLayout from "@/components/layout/GameLayout";
 import BudgetSimulationPatched from "@/components/game/BudgetSimulationPatched";
 import InvestmentSimulation from "@/components/game/InvestmentSimulation";
