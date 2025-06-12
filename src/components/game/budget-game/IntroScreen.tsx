@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Target } from "lucide-react";
+import { BookOpen, Target } from "lucide-react";
+import { StartButton } from "@/components/ui/StartButton";
 
 interface IntroScreenProps {
   onStart: () => void;
@@ -65,14 +65,7 @@ const IntroScreen = ({ onStart }: IntroScreenProps) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.8, type: "spring", stiffness: 300 }}
       >
-        <Button
-          onClick={onStart}
-          size="lg"
-          className="bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white px-8 py-3 rounded-full shadow-lg"
-        >
-          <Play className="h-5 w-5 mr-2" />
-          ゲームスタート
-        </Button>
+        <StartButton onClick={onStart} />
       </motion.div>
     </div>
   );
