@@ -20,7 +20,7 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
   };
 
   return (
-    <div className="w-full max-w-xs mx-auto mt-1 relative">
+    <div className="w-full max-w-xs mx-auto mt-1 mb-4 relative">
       <motion.div
         className="flex items-start gap-3"
         initial={{ y: 10, opacity: 0 }}
