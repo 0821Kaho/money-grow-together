@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { GraduationCap, X, Coins, Info, Shield, TrendingUp, ChartPie } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
+import { Tag } from "@/components/ui/Tag";
 
 interface LearningCardProps {
   title: string;
@@ -70,22 +71,22 @@ const LearningCard = ({
       case "compound":
         return {
           icon: icon || <TrendingUp className="h-5 w-5" />,
-          bgColor: "bg-purple-100",
-          textColor: "text-purple-700",
+          bgColor: "bg-pigipePinkLight/20",
+          textColor: "text-pigipePink",
           tooltipText: "利益が利益を生み、時間とともに加速度的に増えます"
         };
       case "diversification":
         return {
           icon: icon || <ChartPie className="h-5 w-5" />,
-          bgColor: "bg-amber-100",
-          textColor: "text-amber-700",
+          bgColor: "bg-pigipeGreen/20",
+          textColor: "text-pigipeGreenDark",
           tooltipText: "卵を複数のカゴに分けて、リスクを減らします"
         };
       case "fees":
         return {
           icon: icon || <Coins className="h-5 w-5" />,
-          bgColor: "bg-red-100",
-          textColor: "text-red-700",
+          bgColor: "bg-pigipePink/20",
+          textColor: "text-pigipePink",
           tooltipText: "小さな手数料の差も、長期では大きな金額になります"
         };
       default:
@@ -122,9 +123,9 @@ const LearningCard = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Badge variant="outline" className="text-xs px-2 py-0.5 border-pigipePink text-pigipePink">
+                    <Tag className="text-xs px-2 py-0.5">
                       {getBadgeLabel()}
-                    </Badge>
+                    </Tag>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="text-xs max-w-[200px]">{tipStyle.tooltipText}</p>

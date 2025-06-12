@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { Lock, Play, CheckCircle2 } from "lucide-react";
+import { Tag } from "@/components/ui/Tag";
 
 interface ModuleCardProps {
   module: {
@@ -65,12 +66,9 @@ const ModuleCard = ({ module }: ModuleCardProps) => {
             <section className="px-4 py-section">
               <div className="flex flex-col gap-2 items-center">
                 {module.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center justify-center bg-pigipePinkLight/40 text-pigipePink text-xs px-3 py-1.5 rounded-full max-w-xs"
-                  >
+                  <Tag key={index}>
                     {tag}
-                  </span>
+                  </Tag>
                 ))}
               </div>
             </section>

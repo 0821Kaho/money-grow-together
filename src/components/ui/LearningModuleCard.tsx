@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Play } from 'lucide-react';
+import { Tag } from '@/components/ui/Tag';
 
 interface LearningModuleCardProps {
   title: string;
@@ -48,12 +49,9 @@ const LearningModuleCard = ({
           <section className="px-4 py-section">
             <div className="flex flex-col gap-2 items-center">
               {tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center justify-center bg-pigipePinkLight/40 text-pigipePink text-xs px-3 py-1.5 rounded-full font-medium max-w-xs"
-                >
+                <Tag key={index}>
                   {tag}
-                </span>
+                </Tag>
               ))}
             </div>
           </section>
