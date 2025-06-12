@@ -111,8 +111,16 @@ export default {
 				'pigipeYellow': '#FFF4B8',
 				'pigipeYellowDark': '#FFE680',
 				'pigipeLavender': '#EFD5FF',
-				// Pigipe color tokens for investment game
+				// Enhanced Pigipe color system for the new design
 				'pigipe': {
+					'coral': '#FF708A',      // Main coral pink
+					'mint': '#7ADFA2',       // Mint green
+					'lemon': '#FFF4B8',      // Lemon yellow
+					'sky': '#CDEFFF',        // Sky blue
+					'lavender': '#EFD5FF',   // Lavender purple
+					'peach': '#FFB3BA',      // Soft peach
+					'sage': '#B8E6B8',       // Sage green
+					'cream': '#FFF8DC',      // Cream white
 					'primary': '#FF708A',
 					'secondary': '#7ADFA2', 
 					'success': '#7ADFA2',
@@ -186,6 +194,21 @@ export default {
 				'kawaii-glow': {
 					'0%, 100%': { boxShadow: '0 0 5px rgba(255, 112, 138, 0.3)' },
 					'50%': { boxShadow: '0 0 20px rgba(255, 112, 138, 0.6)' }
+				},
+				// New animations for the redesigned screen
+				'pigipe-bounce': {
+					'0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+					'25%': { transform: 'translateY(-10px) rotate(-5deg)' },
+					'75%': { transform: 'translateY(-5px) rotate(5deg)' }
+				},
+				'coin-toss': {
+					'0%': { transform: 'translateY(0) rotateY(0deg)' },
+					'50%': { transform: 'translateY(-100px) rotateY(180deg)' },
+					'100%': { transform: 'translateY(0) rotateY(360deg)' }
+				},
+				'card-reveal': {
+					'0%': { transform: 'scale(0.8) rotateX(90deg)', opacity: '0' },
+					'100%': { transform: 'scale(1) rotateX(0deg)', opacity: '1' }
 				}
 			},
 			animation: {
@@ -201,7 +224,11 @@ export default {
 				'xp-float': 'xp-float 1s ease-out forwards',
 				'bounce-once': 'bounce-once 0.3s ease-out',
 				'kawaii-wiggle': 'kawaii-wiggle 2s ease-in-out infinite',
-				'kawaii-glow': 'kawaii-glow 2s ease-in-out infinite'
+				'kawaii-glow': 'kawaii-glow 2s ease-in-out infinite',
+				// New animations
+				'pigipe-bounce': 'pigipe-bounce 2s ease-in-out infinite',
+				'coin-toss': 'coin-toss 1s ease-out',
+				'card-reveal': 'card-reveal 0.6s ease-out'
 			}
 		}
 	},
