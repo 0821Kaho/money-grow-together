@@ -1,7 +1,6 @@
 
 import { motion } from "framer-motion";
 import MascotTooltip from "../mascot/MascotTooltip";
-import MascotImage from "../mascot/MascotImage";
 
 const WelcomeSection = () => {
   const welcomeMessages = [
@@ -41,18 +40,6 @@ const WelcomeSection = () => {
             transition={{ duration: 0.5 }}
           >
             <MascotTooltip messages={welcomeMessages} characterSize="small" />
-          </motion.div>
-          
-          <motion.div 
-            className="hidden sm:flex items-end gap-2"
-            animate={{ y: [0, -10, 0] }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 3,
-              ease: "easeInOut" 
-            }}
-          >
-            <MascotImage variant="coin" size="small" alt="コインを持つピギペ" />
           </motion.div>
         </div>
       </div>
