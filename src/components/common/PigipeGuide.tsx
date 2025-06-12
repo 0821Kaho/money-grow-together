@@ -13,16 +13,6 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
     return "/lovable-uploads/455347ad-764f-4882-96f7-988b2483b736.png";
   };
 
-  const getMoodColor = () => {
-    switch (mood) {
-      case "happy": return "bg-pigipeGreen/20 border-pigipeGreen";
-      case "warning": return "bg-yellow-100 border-yellow-300";
-      case "sad": return "bg-red-100 border-red-300";
-      case "excited": return "bg-blue-100 border-blue-300";
-      default: return "bg-pigipePink/10 border-pigipePink";
-    }
-  };
-
   const sizeClasses = {
     small: "w-8 h-8",
     medium: "w-12 h-12",
@@ -48,7 +38,7 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
         />
       </motion.div>
       
-      <div className={`flex-1 p-4 rounded-xl border-2 shadow-lg ${getMoodColor()}`}>
+      <div className="flex-1 p-4 rounded-xl border bg-pigipePinkLight/30 border-pigipePinkLight shadow-lg">
         <div className="text-xs font-medium text-pigipePink mb-1">ピギペ</div>
         <p className="text-sm text-gray-800 leading-relaxed">{message}</p>
       </div>

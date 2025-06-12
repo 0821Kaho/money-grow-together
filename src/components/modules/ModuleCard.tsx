@@ -1,204 +1,113 @@
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { Badge } from "@/components/ui/badge"; 
-import { motion } from "framer-motion";
-import { Trophy, ArrowRight } from "lucide-react";
-import TontonGameSoundEffect from "../game/TontonGameSoundEffect";
+import { Lock, Play, CheckCircle2 } from "lucide-react";
 
 interface ModuleCardProps {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
-  progress: number;
-  isLocked?: boolean;
-  badge?: "bronze" | "silver" | "gold" | null;
-  illustration?: string;
+  module: {
+    id: number;
+    title: string;
+    description: string;
+    category: string;
+    difficulty: "初級" | "中級" | "上級";
+    estimatedTime: string;
+    isLocked: boolean;
+    completionRate: number;
+    tags?: string[];
+  };
 }
 
-const ModuleCard = ({
-  id,
-  title,
-  description,
-  icon,
-  color,
-  progress,
-  isLocked = false,
-  badge = null,
-  illustration,
-}: ModuleCardProps) => {
+const ModuleCard = ({ module }: ModuleCardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (!isLocked) {
-      // Play sound effect
-      TontonGameSoundEffect.playClick();
-      navigate(`/module/${id}`);
+    if (!module.isLocked) {
+      navigate(`/module/${module.id}`);
     }
   };
 
-  // Get badge variant text
-  const getBadgeLabel = (variant: "bronze" | "silver" | "gold") => {
-    switch (variant) {
-      case "bronze": return "ブロンズ";
-      case "silver": return "シルバー";
-      case "gold": return "ゴールド";
-      default: return "";
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "初級": return "bg-pigipeGreen text-white";
+      case "中級": return "bg-pigipePink text-white";
+      case "上級": return "bg-gray-800 text-white";
+      default: return "bg-pigipePink text-white";
     }
-  };
-
-  // Calculate background gradient based on color
-  const getBgGradient = () => {
-    if (color === "#4DAA57") return "from-[#E8F5EA] to-[#F5F9F6]"; // Green
-    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#F5FAFC]"; // Blue 
-    if (color === "#FFD166") return "from-[#FFF5E6] to-[#FFFBF5]"; // Yellow
-    if (color === "#FF6B6B") return "from-[#FFEBEB] to-[#FFF5F5]"; // Red
-    if (color === "#4D96FF") return "from-[#EBF5FF] to-[#F5F9FF]"; // Blue
-    return "from-[#F5F5F5] to-[#FFFFFF]"; // Default
   };
 
   return (
-    <motion.div
-      whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-      transition={{ duration: 0.2 }}
-      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300`}
-      onClick={handleClick}
-      layout
-    >
-      {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
-      
-      {/* Border */}
-      <div className="absolute inset-0 border-4 rounded-xl z-0" style={{ borderColor: `${color}85` }}></div>
-      
-      {/* Lock overlay */}
-      {isLocked && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl z-20">
-          <div className="rounded-full bg-white/90 p-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m0 0v2m0-2h2m-2 0h-2m8-12H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2z"
-              />
-            </svg>
-          </div>
+    <Card className={`h-full transition-all duration-300 hover:shadow-lg ${
+      module.isLocked ? 'opacity-60' : 'hover:border-pigipePink cursor-pointer'
+    }`}>
+      <CardHeader className="pb-3">
+        <div className="flex justify-between items-start mb-2">
+          <Badge className={getDifficultyColor(module.difficulty)}>
+            {module.difficulty}
+          </Badge>
+          {module.completionRate === 100 && (
+            <CheckCircle2 className="h-5 w-5 text-pigipeGreen" />
+          )}
         </div>
-      )}
-
-      <div className="p-5 relative z-10">
-        {/* Module illustration */}
-        {illustration && (
-          <div className="mb-4 flex justify-center">
-            <motion.img
-              src={illustration}
-              alt={`${title}イラスト`}
-              className="h-24 w-auto object-contain rounded-lg"
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            />
+        
+        <CardTitle className="text-lg leading-tight">{module.title}</CardTitle>
+        <CardDescription className="text-sm">{module.description}</CardDescription>
+      </CardHeader>
+      
+      <CardContent className="pt-0">
+        {/* Tags */}
+        {module.tags && module.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {module.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-pigipePinkLight/40 text-pigipePink text-xs px-2 py-1 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         )}
 
-        <div className="mb-3">
-          <div>
-            <h3 className="text-lg font-semibold" style={{ color: isLocked ? "#9CA3AF" : color }}>{title}</h3>
-            
-            {badge && (
-              <Badge 
-                variant={badge === "bronze" ? "default" : badge}
-                className="mt-1 flex items-center gap-1 text-xs"
-              >
-                <Trophy className="h-3 w-3" />
-                {getBadgeLabel(badge)}
-              </Badge>
-            )}
+        {/* Progress */}
+        <div className="mb-4">
+          <div className="flex justify-between text-xs text-gray-600 mb-1">
+            <span>完了率</span>
+            <span>{module.completionRate}%</span>
           </div>
+          <Progress value={module.completionRate} className="h-2" />
         </div>
 
-        <p className="mb-5 text-sm text-game-dark">{description}</p>
-
-        <div className="flex items-center">
-          {/* Further shortened progress bar */}
-          <div className="w-20 mr-2">
-            <div className="flex justify-between text-xs mb-1">
-              <span className="font-medium">進捗</span>
-              <span className="font-medium">{progress}%</span>
-            </div>
-            <div className="progress-bar bg-gray-100 rounded-full h-2 overflow-hidden">
-              {progress === 100 ? (
-                <div
-                  className="h-full bg-green-500"
-                  style={{ width: `${progress}%` }}
-                ></div>
-              ) : (
-                <div
-                  className="h-full"
-                  style={{ width: `${progress}%`, backgroundColor: color }}
-                ></div>
-              )}
-            </div>
-          </div>
-
-          {/* Fixed-width button with no text wrapping */}
-          <motion.button
-            className="px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleClick();
-            }}
+        {/* Footer */}
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-gray-500">{module.estimatedTime}</span>
+          
+          <Button
+            onClick={handleClick}
+            disabled={module.isLocked}
+            size="sm"
+            className={module.isLocked 
+              ? "bg-gray-400 text-white cursor-not-allowed" 
+              : "bg-pigipeGreen hover:bg-pigipeGreenDark text-white"
+            }
           >
-            <span className="text-sm font-semibold">始める</span>
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-          </motion.button>
+            {module.isLocked ? (
+              <>
+                <Lock className="h-4 w-4 mr-1" />
+                ロック中
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4 mr-1" />
+                開始
+              </>
+            )}
+          </Button>
         </div>
-      </div>
-      
-      {/* Confetti animation for 100% progress */}
-      {progress === 100 && (
-        <motion.div
-          className="absolute inset-0 pointer-events-none z-30"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
-        >
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 rounded-full"
-              style={{
-                backgroundColor: ['#FFD700', '#FF6347', '#4CAF50', '#2196F3'][Math.floor(Math.random() * 4)],
-                top: Math.random() * 100 + '%',
-                left: Math.random() * 100 + '%',
-              }}
-              initial={{ scale: 0 }}
-              animate={{
-                scale: [0, 1, 0],
-                y: [0, Math.random() * -20 - 10],
-                x: [0, (Math.random() - 0.5) * 40]
-              }}
-              transition={{
-                duration: 1,
-                delay: Math.random(),
-                repeat: Infinity,
-                repeatDelay: 5
-              }}
-            />
-          ))}
-        </motion.div>
-      )}
-    </motion.div>
+      </CardContent>
+    </Card>
   );
 };
 
