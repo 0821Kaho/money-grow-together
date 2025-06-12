@@ -9,8 +9,8 @@ export const useCelebration = () => {
     
     setIsPlaying(true);
     
-    // Create confetti particles
-    const confettiCount = 15;
+    // Create confetti particles with kawaii colors
+    const confettiCount = 120;
     for (let i = 0; i < confettiCount; i++) {
       createConfettiParticle(i);
     }
@@ -28,22 +28,36 @@ export const useCelebration = () => {
     
     setTimeout(() => {
       setIsPlaying(false);
-    }, 800);
+    }, 700);
   }, [isPlaying]);
 
   const createConfettiParticle = (index: number) => {
     const particle = document.createElement('div');
-    const colors = ['#FF708A', '#FFF2B0', '#B3E5FF', '#7ADFA2'];
-    const emojis = ['🎉', '💰', '⭐', '🎊'];
+    const kawaiiColors = ['#FF708A', '#7ADFA2', '#CDEFFF', '#FFF4B8', '#EFD5FF'];
+    const emojis = ['⭐', '🎉', '💖', '✨', '🌟'];
+    
+    // Random choice between color triangle and emoji
+    const useEmoji = Math.random() < 0.6;
+    
+    if (useEmoji) {
+      particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      particle.style.fontSize = Math.random() * 10 + 15 + 'px';
+    } else {
+      // Create triangle with kawaii colors
+      particle.style.width = '0';
+      particle.style.height = '0';
+      const size = Math.random() * 6 + 4;
+      particle.style.borderLeft = `${size}px solid transparent`;
+      particle.style.borderRight = `${size}px solid transparent`;
+      particle.style.borderBottom = `${size * 1.5}px solid ${kawaiiColors[Math.floor(Math.random() * kawaiiColors.length)]}`;
+    }
     
     particle.style.position = 'fixed';
     particle.style.left = Math.random() * 100 + '%';
     particle.style.top = '20%';
-    particle.style.fontSize = '20px';
     particle.style.zIndex = '9999';
     particle.style.pointerEvents = 'none';
     particle.style.userSelect = 'none';
-    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     
     document.body.appendChild(particle);
     
@@ -58,7 +72,7 @@ export const useCelebration = () => {
         opacity: 0 
       }
     ], {
-      duration: 800,
+      duration: 700,
       easing: 'ease-out'
     });
     

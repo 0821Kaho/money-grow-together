@@ -1,5 +1,6 @@
 
 import { motion } from "framer-motion";
+import { SpeechBubbleKawaii } from "@/components/ui/SpeechBubbleKawaii";
 
 interface PigipeGuideProps {
   message: string;
@@ -39,38 +40,10 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
           />
         </motion.div>
         
-        <div className="flex-1 relative">
-          <div className="p-4 rounded-xl bg-gradient-to-r from-pigipePinkLight/30 to-pigipeYellow/20 border border-pigipePinkLight shadow-lg relative overflow-hidden">
-            <div className="text-xs font-medium text-pigipePink mb-1">ピギペ</div>
-            <p className="text-sm text-gray-800 leading-relaxed">{message}</p>
-            
-            {/* Emoji rain effect */}
-            <div className="absolute inset-0 pointer-events-none">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute opacity-30"
-                  style={{
-                    left: `${20 + i * 20}%`,
-                    animation: `emoji-rain 6s linear infinite`,
-                    animationDelay: `${i * 1.5}s`
-                  }}
-                >
-                  {['💸', '🎉', '⭐', '💰'][i]}
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Speech bubble triangle */}
-          <div 
-            className="absolute top-4 -left-1 w-0 h-0"
-            style={{
-              borderTop: '6px solid transparent',
-              borderBottom: '6px solid transparent',
-              borderRight: `6px solid #FFA5B4`,
-            }}
-          />
+        <div className="flex-1">
+          <SpeechBubbleKawaii character="ピギペ">
+            {message}
+          </SpeechBubbleKawaii>
         </div>
       </motion.div>
     </div>
