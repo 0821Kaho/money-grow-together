@@ -48,33 +48,27 @@ const ModuleCard = ({
     }
   };
 
-  // Calculate background gradient based on color
-  const getBgGradient = () => {
-    if (color === "#4DAA57") return "from-[#E8F5EA] to-[#F5F9F6]"; // Green
-    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#F5FAFC]"; // Blue 
-    if (color === "#FFD166") return "from-[#FFF5E6] to-[#FFFBF5]"; // Yellow
-    if (color === "#FF6B6B") return "from-[#FFEBEB] to-[#FFF5F5]"; // Red
-    if (color === "#4D96FF") return "from-[#EBF5FF] to-[#F5F9FF]"; // Blue
-    return "from-[#F5F5F5] to-[#FFFFFF]"; // Default
-  };
+  // Check for reduced motion preference
+  const prefersReducedMotion = typeof window !== 'undefined' && 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <motion.div
       whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0,0,0,0.15)" }}
-      transition={{ duration: 0.2 }}
-      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300`}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
+      className={`module-card relative ${isLocked ? "locked" : ""} cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300`}
       onClick={handleClick}
       layout
     >
-      {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${getBgGradient()} z-0`}></div>
+      {/* Background with Pigipe gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-pigipePink/5 to-pigipeGreen/5 z-0"></div>
       
-      {/* Border */}
-      <div className="absolute inset-0 border-4 rounded-xl z-0" style={{ borderColor: `${color}85` }}></div>
+      {/* Border with Pigipe colors */}
+      <div className="absolute inset-0 border-2 border-pigipePinkLight hover:border-pigipePink rounded-2xl z-0 transition-colors duration-300"></div>
       
       {/* Lock overlay */}
       {isLocked && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-xl z-20">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-2xl z-20">
           <div className="rounded-full bg-white/90 p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -95,23 +89,27 @@ const ModuleCard = ({
       )}
 
       <div className="p-5 relative z-10">
-        {/* Module illustration */}
+        {/* Module illustration with Pigipe green ring */}
         {illustration && (
           <div className="mb-4 flex justify-center">
-            <motion.img
-              src={illustration}
-              alt={`${title}イラスト`}
-              className="h-24 w-auto object-contain rounded-lg"
+            <motion.div
+              className="ring-4 ring-pigipeGreen/20 rounded-full p-3 bg-white"
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-            />
+            >
+              <img
+                src={illustration}
+                alt={`${title}イラスト`}
+                className="h-20 w-auto object-contain"
+              />
+            </motion.div>
           </div>
         )}
 
         <div className="mb-3">
           <div>
-            <h3 className="text-lg font-semibold" style={{ color: isLocked ? "#9CA3AF" : color }}>{title}</h3>
+            <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
             
             {badge && (
               <Badge 
@@ -125,33 +123,31 @@ const ModuleCard = ({
           </div>
         </div>
 
-        <p className="mb-5 text-sm text-game-dark">{description}</p>
+        <p className="mb-5 text-sm text-gray-600">{description}</p>
 
         <div className="flex items-center">
-          {/* Further shortened progress bar */}
+          {/* Progress bar with Pigipe pink */}
           <div className="w-20 mr-2">
             <div className="flex justify-between text-xs mb-1">
-              <span className="font-medium">進捗</span>
-              <span className="font-medium">{progress}%</span>
+              <span className="font-medium text-gray-600">進捗</span>
+              <span className="font-medium text-gray-600">{progress}%</span>
             </div>
-            <div className="progress-bar bg-gray-100 rounded-full h-2 overflow-hidden">
-              {progress === 100 ? (
-                <div
-                  className="h-full bg-green-500"
-                  style={{ width: `${progress}%` }}
-                ></div>
-              ) : (
-                <div
-                  className="h-full"
-                  style={{ width: `${progress}%`, backgroundColor: color }}
-                ></div>
-              )}
+            <div className="progress-bar bg-gray-200 rounded-full h-2 overflow-hidden">
+              <motion.div
+                initial={{ width: prefersReducedMotion ? `${progress}%` : 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={prefersReducedMotion ? 
+                  { duration: 0 } : 
+                  { type: 'spring', stiffness: 200, damping: 30 }
+                }
+                className={`h-full rounded-full ${progress === 100 ? 'bg-pigipeGreen' : 'bg-pigipePink'}`}
+              />
             </div>
           </div>
 
-          {/* Fixed-width button with no text wrapping */}
+          {/* Button with Pigipe green */}
           <motion.button
-            className="px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap"
+            className="px-0 py-1.5 bg-pigipeGreen hover:bg-pigipeGreenDark text-white rounded-full text-xs font-medium flex items-center justify-center ml-auto w-[104px] h-9 whitespace-nowrap transition-colors duration-200"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
@@ -165,7 +161,7 @@ const ModuleCard = ({
         </div>
       </div>
       
-      {/* Confetti animation for 100% progress */}
+      {/* Confetti animation for 100% progress with Pigipe colors */}
       {progress === 100 && (
         <motion.div
           className="absolute inset-0 pointer-events-none z-30"
@@ -178,7 +174,7 @@ const ModuleCard = ({
               key={i}
               className="absolute w-2 h-2 rounded-full"
               style={{
-                backgroundColor: ['#FFD700', '#FF6347', '#4CAF50', '#2196F3'][Math.floor(Math.random() * 4)],
+                backgroundColor: ['#FF708A', '#7ADFA2', '#FFD66E', '#4CC985'][Math.floor(Math.random() * 4)],
                 top: Math.random() * 100 + '%',
                 left: Math.random() * 100 + '%',
               }}

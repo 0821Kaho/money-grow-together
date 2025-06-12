@@ -38,14 +38,10 @@ const ModulesSection = () => {
     navigate(`/module/${id}`);
   };
 
-  // Get background gradient based on color
+  // Get background gradient based on Pigipe colors
   const getBgGradient = (color: string) => {
-    if (color === "#4DAA57") return "from-[#E8F5EA] to-[#F5F9F6]"; // Green
-    if (color === "#60B8D4") return "from-[#E6F4F9] to-[#F5FAFC]"; // Blue 
-    if (color === "#FFD166") return "from-[#FFF5E6] to-[#FFFBF5]"; // Yellow
-    if (color === "#FF6B6B") return "from-[#FFEBEB] to-[#FFF5F5]"; // Red
-    if (color === "#4D96FF") return "from-[#EBF5FF] to-[#F5F9FF]"; // Blue
-    return "from-[#F5F5F5] to-[#FFFFFF]"; // Default
+    // Always use Pigipe brand colors for consistent branding
+    return "from-pigipePink/5 to-pigipeGreen/5";
   };
 
   return (
@@ -82,10 +78,9 @@ const ModulesSection = () => {
                   onClick={() => handleModuleClick(module.id)}
                   className="cursor-pointer h-full w-full"
                 >
-                  <Card className={`h-full border-4 shadow-sm hover:shadow transition-all bg-gradient-to-br ${getBgGradient(module.color)}`} 
-                        style={{ borderColor: `${module.color}85` }}>
+                  <Card className={`h-full border-2 border-pigipePinkLight hover:border-pigipePink shadow-sm hover:shadow transition-all bg-gradient-to-br ${getBgGradient(module.color)}`}>
                     <CardContent className="p-6 relative">
-                      {/* Module illustration */}
+                      {/* Module illustration with Pigipe green ring */}
                       {module.illustration && (
                         <motion.div 
                           className="flex justify-center mb-4"
@@ -94,21 +89,23 @@ const ModulesSection = () => {
                           viewport={{ once: true }}
                           transition={{ duration: 0.5 }}
                         >
-                          <img
-                            src={module.illustration}
-                            alt={`${module.title}イラスト`}
-                            className="h-20 w-auto object-contain"
-                          />
+                          <div className="ring-4 ring-pigipeGreen/20 rounded-full p-2 bg-white">
+                            <img
+                              src={module.illustration}
+                              alt={`${module.title}イラスト`}
+                              className="h-16 w-auto object-contain"
+                            />
+                          </div>
                         </motion.div>
                       )}
                       
-                      <h3 className="text-lg font-bold mb-2" style={{ color: module.color }}>{module.title}</h3>
+                      <h3 className="text-lg font-bold mb-2 text-gray-800">{module.title}</h3>
                       
-                      <p className="text-muted-foreground text-sm mb-4">{module.description}</p>
+                      <p className="text-gray-600 text-sm mb-4">{module.description}</p>
                       
-                      {/* Updated button with fixed width and arrow icon */}
+                      {/* Updated button with Pigipe green */}
                       <motion.button
-                        className="mt-2 w-[104px] px-0 py-1.5 bg-game-primary hover:bg-game-primary/90 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap"
+                        className="mt-2 w-[104px] px-0 py-1.5 bg-pigipeGreen hover:bg-pigipeGreenDark text-white rounded-full text-sm font-medium flex items-center justify-center gap-1 ml-auto whitespace-nowrap transition-colors duration-200"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -128,13 +125,13 @@ const ModulesSection = () => {
           </div>
         </Carousel>
 
-        {/* Mobile scroll indicator with active state */}
+        {/* Mobile scroll indicator with Pigipe pink active state */}
         <div className="flex justify-center mt-4 md:hidden">
           <div className="flex space-x-1">
             {modules.map((_, index) => (
               <div 
                 key={index} 
-                className={`h-1 rounded-full w-4 bg-gray-300 ${index === 0 ? "bg-primary" : ""}`}
+                className={`h-1 rounded-full w-4 bg-gray-300 ${index === 0 ? "bg-pigipePink" : ""}`}
               ></div>
             ))}
           </div>
