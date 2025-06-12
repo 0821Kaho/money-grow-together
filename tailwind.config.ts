@@ -106,12 +106,7 @@ export default {
 					'danger': '#F37B83',
 					'info': '#87CEEB',
 					'neutral': '#F5F5F5'
-				},
-				// New Pigipe brand colors
-				'pigipePink': '#FF708A',
-				'pigipePinkLight': '#FFA5B4',
-				'pigipeGreen': '#7ADFA2',
-				'pigipeGreenDark': '#4CC985',
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

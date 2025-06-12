@@ -93,7 +93,7 @@ const ModulePage = () => {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pigipePink mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">モジュールを読み込み中...</p>
         </div>
       </div>
@@ -104,16 +104,15 @@ const ModulePage = () => {
   
   return (
     <GameLayout currentModule={module.id}>
-      {/* Pigipe-styled header */}
-      <div className="bg-gradient-to-r from-pigipePink to-pigipePinkLight p-6 rounded-2xl mb-6">
+      <div className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-heading font-bold text-white">{module.title}</h1>
+            <h1 className="text-2xl font-heading font-bold">{module.title}</h1>
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-1 text-sm font-body font-medium text-white/80 hover:text-white transition-colors"
+            className="flex items-center gap-1 text-sm font-body font-medium text-gray-500"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -132,22 +131,7 @@ const ModulePage = () => {
             戻る
           </button>
         </div>
-        <p className="font-body text-white/80 mt-2">{module.description}</p>
-        
-        {/* Pigipe icon and start button */}
-        <div className="flex justify-center mt-4">
-          <div className="text-center">
-            <div className="w-24 h-24 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
-              <MascotCharacter size="small" />
-            </div>
-            <button 
-              onClick={() => {/* Could trigger game start */}}
-              className="bg-pigipeGreen hover:bg-pigipeGreenDark text-white font-semibold px-6 py-2 rounded-full transition-colors duration-200"
-            >
-              ゲームスタート
-            </button>
-          </div>
-        </div>
+        <p className="font-body text-gray-600">{module.description}</p>
       </div>
       
       {ModuleComponent ? (
@@ -162,7 +146,7 @@ const ModulePage = () => {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button
               onClick={() => navigate("/")}
-              className="bg-pigipeGreen hover:bg-pigipeGreenDark text-white font-semibold px-6 py-2 rounded-full transition-colors duration-200"
+              className="game-button font-number font-bold"
             >
               ホームに戻る
             </button>
