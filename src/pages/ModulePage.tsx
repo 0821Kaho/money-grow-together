@@ -107,7 +107,7 @@ const ModulePage = () => {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-heading font-bold">{module.title}</h1>
+            <h1 className="text-2xl font-heading font-bold -mt-2">{module.title}</h1>
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
           <button

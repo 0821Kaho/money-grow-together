@@ -10,7 +10,7 @@ export const StartButton = ({ children = "ゲームスタート", ...props }: St
   <button
     className="
       w-full max-w-xs mx-auto
-      bg-pigipeGreen hover:bg-pigipeGreenDark
+      bg-pigipePink hover:bg-pigipePinkLight
       text-white font-semibold rounded-full py-3
       flex items-center justify-center gap-2 shadow-lg
       transition-colors

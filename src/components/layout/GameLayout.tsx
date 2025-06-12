@@ -102,7 +102,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                 </svg>
               </div>
-              <span className="mt-1 text-xs font-medium text-[12px]">ホーム</span>
+              <span className="mt-1 text-[10px] leading-none whitespace-nowrap font-medium">ホーム</span>
             </button>
             <button
               onClick={() => navigate('/achievements')}
@@ -113,7 +113,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
                   <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                 </svg>
               </div>
-              <span className="mt-1 text-xs font-medium text-[12px]">実績</span>
+              <span className="mt-1 text-[10px] leading-none whitespace-nowrap font-medium">実績</span>
             </button>
             <button
               onClick={() => navigate('/modules')}
@@ -124,7 +124,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
                   <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                 </svg>
               </div>
-              <span className="mt-1 text-xs font-medium text-[12px]">学ぶ</span>
+              <span className="mt-1 text-[10px] leading-none whitespace-nowrap font-medium">学ぶ</span>
             </button>
             <button
               onClick={() => navigate('/profile')}
@@ -135,7 +135,7 @@ const GameLayout = ({ children, showNav = true, currentModule }: GameLayoutProps
                   <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                 </svg>
               </div>
-              <span className="mt-1 text-xs font-medium text-[12px]">プロフィール</span>
+              <span className="mt-1 text-[10px] leading-none whitespace-nowrap font-medium">プロフィール</span>
             </button>
           </div>
         </nav>
