@@ -33,6 +33,7 @@ export default {
 				'button': ['Inter', 'sans-serif'],
 				'head': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
 				'num': ['Inter', 'sans-serif'],
+				'maru': ['"Zen Maru Gothic"', '"Noto Sans JP"', 'Inter', 'sans-serif'],
 			},
 			fontWeight: {
 				heading: '700',   // Bold
@@ -105,10 +106,11 @@ export default {
 				'pigipePinkLight': '#FFA5B4',
 				'pigipeGreen': '#7ADFA2',
 				'pigipeGreenDark': '#4CC985',
-				'pigipeBlue': '#B3E5FF',
+				'pigipeBlue': '#CDEFFF',
 				'pigipeBlueDark': '#87CEEB',
-				'pigipeYellow': '#FFF2B0',
+				'pigipeYellow': '#FFF4B8',
 				'pigipeYellowDark': '#FFE680',
+				'pigipeLavender': '#EFD5FF',
 				// Pigipe color tokens for investment game
 				'pigipe': {
 					'primary': '#FF708A',
@@ -169,6 +171,21 @@ export default {
 				'xp-float': {
 					'0%': { transform: 'translateY(0) scale(1)', opacity: '1' },
 					'100%': { transform: 'translateY(-30px) scale(1.1)', opacity: '0' }
+				},
+				'bounce-once': {
+					'0%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(0.95)' },
+					'100%': { transform: 'scale(1)' }
+				},
+				'kawaii-wiggle': {
+					'0%, 100%': { transform: 'rotate(-3deg)' },
+					'25%': { transform: 'rotate(3deg)' },
+					'50%': { transform: 'rotate(-2deg)' },
+					'75%': { transform: 'rotate(2deg)' }
+				},
+				'kawaii-glow': {
+					'0%, 100%': { boxShadow: '0 0 5px rgba(255, 112, 138, 0.3)' },
+					'50%': { boxShadow: '0 0 20px rgba(255, 112, 138, 0.6)' }
 				}
 			},
 			animation: {
@@ -181,7 +198,10 @@ export default {
 				'wiggle': 'wiggle 0.3s ease-in-out',
 				'header-bounce': 'header-bounce 0.3s ease-out',
 				'emoji-rain': 'emoji-rain 6s linear infinite',
-				'xp-float': 'xp-float 1s ease-out forwards'
+				'xp-float': 'xp-float 1s ease-out forwards',
+				'bounce-once': 'bounce-once 0.3s ease-out',
+				'kawaii-wiggle': 'kawaii-wiggle 2s ease-in-out infinite',
+				'kawaii-glow': 'kawaii-glow 2s ease-in-out infinite'
 			}
 		}
 	},

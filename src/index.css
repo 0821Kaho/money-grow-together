@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -75,6 +76,27 @@
   }
   body {
     @apply bg-background text-foreground;
+    position: relative;
+  }
+  
+  /* Kawaii background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.07;
+    pointer-events: none;
+    z-index: -1;
+    background-image: 
+      radial-gradient(circle at 25% 25%, #FF708A 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, #7ADFA2 1.5px, transparent 1.5px),
+      radial-gradient(circle at 50% 10%, #CDEFFF 1px, transparent 1px),
+      radial-gradient(circle at 10% 90%, #FFF4B8 1.5px, transparent 1.5px);
+    background-size: 60px 60px, 80px 80px, 40px 40px, 70px 70px;
+    background-position: 0 0, 30px 30px, 10px 10px, 50px 50px;
   }
 }
 
@@ -156,6 +178,13 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  
+  /* Allow only fade animations */
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
 }
 
 /* Add subtle floating animation for the video container */
@@ -214,8 +243,15 @@ html {
   .animate-wiggle,
   .animate-header-bounce,
   .animate-emoji-rain,
-  .animate-xp-float {
+  .animate-xp-float,
+  .animate-kawaii-wiggle,
+  .animate-kawaii-glow {
     animation: none !important;
+  }
+  
+  /* Allow only fade animations for accessibility */
+  .fade-allowed {
+    transition: opacity 0.3s ease !important;
   }
 }
 
@@ -223,7 +259,21 @@ html {
 .animate-float,
 .animate-bounce-in,
 .animate-wiggle,
-.animate-header-bounce {
+.animate-header-bounce,
+.animate-kawaii-wiggle {
   will-change: transform;
   transform: translateZ(0);
+}
+
+/* Heart-shaped speech bubble tail */
+.heart-tail::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  width: 16px;
+  height: 14px;
+  background: #FFA5B4;
+  transform: translateY(-50%);
+  clip-path: path('M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5 C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3 C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z');
 }
