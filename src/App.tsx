@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { RedirectMiddleware } from "./middleware";
 import { ThemeProvider } from "next-themes";
+import { initStorage } from "./lib/storage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ModulePage from "./pages/ModulePage";
@@ -21,7 +22,11 @@ import EnCompanyPage from "./pages/EnCompanyPage";
 import OnboardingCarousel from "./components/onboarding/OnboardingCarousel";
 import InvestmentWeek1Page from "./pages/InvestmentWeek1Page";
 import StoryPigipeIntro from "./components/story/StoryPigipeIntro";
+import DebugPage from "./pages/DebugPage";
 import Footer from "./components/layout/Footer";
+
+// Initialize storage on app startup
+initStorage();
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -57,6 +62,9 @@ const App = () => {
                     
                     {/* Investment game routes */}
                     <Route path="/game/investment/week1" element={<InvestmentWeek1Page />} />
+                    
+                    {/* Debug route */}
+                    <Route path="/debug" element={<DebugPage />} />
                     
                     {/* 404 route */}
                     <Route path="*" element={<NotFound />} />
