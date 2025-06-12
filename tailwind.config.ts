@@ -43,15 +43,15 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: '#F37B83', // Updated to new primary pink
+					DEFAULT: '#FF708A', // Updated to Pigipe Pink
 					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: '#2BA26B', // Updated to new secondary green
+					DEFAULT: '#7ADFA2', // Updated to Pigipe Green
 					foreground: '#FFFFFF'
 				},
 				accent: {
-					DEFAULT: '#FFD66E', // Updated to new accent gold
+					DEFAULT: '#FFD66E', // Keep existing accent
 					foreground: '#333333'
 				},
 				destructive: {
@@ -63,14 +63,14 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				game: {
-					'primary': '#F37B83',    // Updated to new primary pink
-					'secondary': '#2BA26B',  // Updated to new secondary green
-					'accent': '#FFD66E',     // Updated to new accent gold
-					'danger': '#E0E0E0',     // Changed from red to gray
+					'primary': '#FF708A',    // Pigipe Pink
+					'secondary': '#7ADFA2',  // Pigipe Green
+					'accent': '#FFD66E',     // Keep existing accent
+					'danger': '#E0E0E0',     // Keep gray
 					'neutral': '#F5F5F5',    // Background
-					'success': '#2BA26B',    // Same as secondary
-					'info': '#E0E0E0',       // Changed from blue to gray
-					'warning': '#FFD66E',    // Same as accent
+					'success': '#7ADFA2',    // Pigipe Green
+					'info': '#E0E0E0',       // Keep gray
+					'warning': '#FFD66E',    // Keep accent
 					'dark': '#333333',       // Text primary
 					'light': '#F5F5F5'       // Background neutral
 				},
@@ -94,16 +94,21 @@ export default {
 				},
 				// Add Pigipe brand colors
 				'brand': {
-					'pink': '#FF66A5',
+					'pink': '#FF708A',
 					'light': '#FFE8F1'
 				},
+				// Pigipe color tokens
+				'pigipePink': '#FF708A',
+				'pigipePinkLight': '#FFA5B4',
+				'pigipeGreen': '#7ADFA2',
+				'pigipeGreenDark': '#4CC985',
 				// Pigipe color tokens for investment game
 				'pigipe': {
-					'primary': '#FF66A5',
-					'secondary': '#FFE8F1', 
-					'success': '#2BA26B',
+					'primary': '#FF708A',
+					'secondary': '#7ADFA2', 
+					'success': '#7ADFA2',
 					'warning': '#FFD66E',
-					'danger': '#F37B83',
+					'danger': '#FF708A',
 					'info': '#87CEEB',
 					'neutral': '#F5F5F5'
 				}

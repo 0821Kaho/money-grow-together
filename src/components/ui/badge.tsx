@@ -10,15 +10,15 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
+          "border-transparent bg-pigipePink text-white hover:bg-pigipePinkLight",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "border-transparent bg-pigipeGreen text-white hover:bg-pigipeGreenDark",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
-        silver: "bg-[#C0C0C0] text-[#212121] border-transparent", // Higher contrast for silver badge
-        gold: "bg-[#FFD700] text-[#212121] border-transparent", // Gold badge with better contrast
-        bronze: "bg-[#CD7F32] text-white border-transparent", // Bronze badge
+        silver: "bg-[#C0C0C0] text-[#212121] border-transparent",
+        gold: "bg-[#FFD700] text-[#212121] border-transparent",
+        bronze: "bg-[#CD7F32] text-white border-transparent",
       },
     },
     defaultVariants: {

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -27,12 +28,12 @@ const InteractiveButton = ({
   const baseClasses = "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variantClasses = {
-    primary: "bg-gradient-to-r from-game-primary to-pink-500 text-white shadow-lg hover:shadow-xl focus:ring-game-primary/50",
-    secondary: "bg-gradient-to-r from-game-secondary to-green-600 text-white shadow-lg hover:shadow-xl focus:ring-game-secondary/50",
-    success: "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl focus:ring-green-500/50",
+    primary: "bg-gradient-to-r from-pigipePink to-pigipePinkLight text-white shadow-lg hover:shadow-xl focus:ring-pigipePink/50",
+    secondary: "bg-gradient-to-r from-pigipeGreen to-pigipeGreenDark text-white shadow-lg hover:shadow-xl focus:ring-pigipeGreen/50",
+    success: "bg-gradient-to-r from-pigipeGreen to-pigipeGreenDark text-white shadow-lg hover:shadow-xl focus:ring-pigipeGreen/50",
     warning: "bg-gradient-to-r from-game-accent to-yellow-500 text-gray-800 shadow-lg hover:shadow-xl focus:ring-game-accent/50",
     danger: "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:shadow-xl focus:ring-red-500/50",
-    ghost: "bg-white/80 backdrop-blur border-2 border-gray-200 text-gray-700 hover:bg-white hover:border-gray-300 focus:ring-gray-300/50"
+    ghost: "bg-white/80 backdrop-blur border-2 border-pigipePink/30 text-pigipePink hover:bg-pigipePink/10 hover:border-pigipePink focus:ring-pigipePink/50"
   };
   
   const sizeClasses = {
@@ -51,7 +52,7 @@ const InteractiveButton = ({
       case "shake":
         return { x: [0, -2, 2, -2, 2, 0] };
       case "glow":
-        return { boxShadow: ["0 4px 15px rgba(0,0,0,0.1)", "0 8px 25px rgba(59, 130, 246, 0.5)", "0 4px 15px rgba(0,0,0,0.1)"] };
+        return { boxShadow: ["0 4px 15px rgba(0,0,0,0.1)", "0 8px 25px rgba(255, 112, 138, 0.5)", "0 4px 15px rgba(0,0,0,0.1)"] };
       case "rotate":
         return { rotate: [0, 5, -5, 0] };
       case "scale":

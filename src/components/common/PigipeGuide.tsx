@@ -15,11 +15,11 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
 
   const getMoodColor = () => {
     switch (mood) {
-      case "happy": return "bg-green-100 border-green-300";
+      case "happy": return "bg-pigipeGreen/20 border-pigipeGreen";
       case "warning": return "bg-yellow-100 border-yellow-300";
       case "sad": return "bg-red-100 border-red-300";
       case "excited": return "bg-blue-100 border-blue-300";
-      default: return "bg-brand-light border-brand-pink";
+      default: return "bg-pigipePink/10 border-pigipePink";
     }
   };
 
@@ -49,7 +49,7 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
       </motion.div>
       
       <div className={`flex-1 p-4 rounded-xl border-2 shadow-lg ${getMoodColor()}`}>
-        <div className="text-xs font-medium text-gray-600 mb-1">ピギペ</div>
+        <div className="text-xs font-medium text-pigipePink mb-1">ピギペ</div>
         <p className="text-sm text-gray-800 leading-relaxed">{message}</p>
       </div>
     </motion.div>

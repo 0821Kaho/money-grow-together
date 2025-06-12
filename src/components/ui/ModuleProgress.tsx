@@ -34,7 +34,7 @@ const ModuleProgress = ({ currentModule }: ModuleProgressProps) => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className="text-xs bg-game-accent/20 text-game-accent px-2 py-0.5 rounded-full cursor-help">
+                <span className="text-xs bg-pigipeGreen/20 text-pigipeGreenDark px-2 py-0.5 rounded-full cursor-help">
                   あと{remainingModules}モジュールで完了！
                 </span>
               </TooltipTrigger>
@@ -51,7 +51,7 @@ const ModuleProgress = ({ currentModule }: ModuleProgressProps) => {
         <Progress 
           value={progress} 
           className="bg-[#E0E0E0] h-4"
-          indicatorClassName={progress === 100 ? "bg-[#FFD700]" : "bg-primary"}
+          indicatorClassName={progress === 100 ? "bg-pigipeGreen" : "bg-pigipePink"}
         />
       </div>
     </div>

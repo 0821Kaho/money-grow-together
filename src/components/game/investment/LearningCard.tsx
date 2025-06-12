@@ -56,15 +56,15 @@ const LearningCard = ({
       case "nisa":
         return {
           icon: icon || <Shield className="h-5 w-5" />,
-          bgColor: "bg-blue-100",
-          textColor: "text-blue-700",
+          bgColor: "bg-pigipeGreen/20",
+          textColor: "text-pigipeGreenDark",
           tooltipText: "税金がかからず、長期的に大きな差になります"
         };
       case "tax":
         return {
           icon: icon || <Coins className="h-5 w-5" />,
-          bgColor: "bg-green-100",
-          textColor: "text-green-700",
+          bgColor: "bg-pigipePink/20",
+          textColor: "text-pigipePink",
           tooltipText: "支払う税金を減らして、手元に残るお金を増やします"
         };
       case "compound":
@@ -91,8 +91,8 @@ const LearningCard = ({
       default:
         return {
           icon: icon || <GraduationCap className="h-5 w-5" />,
-          bgColor: "bg-blue-100",
-          textColor: "text-blue-700",
+          bgColor: "bg-pigipeGreen/20",
+          textColor: "text-pigipeGreenDark",
           tooltipText: "投資の基本を学んで、賢い選択をしましょう"
         };
     }
@@ -101,9 +101,9 @@ const LearningCard = ({
   const tipStyle = getTipIcon();
 
   return (
-    <Card className="relative border-l-4 border-l-accent">
+    <Card className="relative border-l-4 border-l-pigipePink">
       <button 
-        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 focus:outline-none"
+        className="absolute top-2 right-2 text-gray-400 hover:text-pigipePink focus:outline-none"
         onClick={handleClose}
         aria-label="閉じる"
       >
@@ -122,7 +122,7 @@ const LearningCard = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Badge variant="outline" className="text-xs px-2 py-0.5">
+                    <Badge variant="outline" className="text-xs px-2 py-0.5 border-pigipePink text-pigipePink">
                       {getBadgeLabel()}
                     </Badge>
                   </TooltipTrigger>
@@ -138,7 +138,7 @@ const LearningCard = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="mt-2 text-xs"
+                className="mt-2 text-xs text-pigipePink hover:bg-pigipePink/10"
                 onClick={handleClose}
               >
                 <span>読んだよ！</span>
