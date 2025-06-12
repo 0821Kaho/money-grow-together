@@ -5,7 +5,6 @@ import ModulesList from "@/components/home/ModulesList";
 const ModulesListPage = () => {
   return (
     <GameLayout>
-      {/* Removed the duplicate heading */}
       <ModulesList />
     </GameLayout>
   );

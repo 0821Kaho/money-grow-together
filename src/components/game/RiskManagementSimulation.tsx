@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -283,7 +282,7 @@ const RiskManagementSimulation = () => {
       
       <Button 
         onClick={() => setShowWelcome(false)}
-        className="w-full"
+        className="w-full bg-pigipeGreen hover:bg-pigipeGreenDark text-white"
       >
         お守り集めを始める
       </Button>
@@ -346,7 +345,7 @@ const RiskManagementSimulation = () => {
                   onClick={() => handleStartQuest(topic.id)}
                   disabled={topic.isLocked}
                   size="sm" 
-                  className="w-full"
+                  className="w-full bg-pigipeGreen hover:bg-pigipeGreenDark text-white"
                 >
                   {topic.progressPercent > 0 ? '続ける' : '始める'}
                 </Button>
@@ -362,11 +361,11 @@ const RiskManagementSimulation = () => {
         <div className="space-y-3">
           {userChallenges.map((challenge) => (
             <Card key={challenge.id} className="overflow-hidden">
-              <div className="border-l-4 border-l-primary p-3 flex items-center justify-between">
+              <div className="border-l-4 border-l-pigipePink p-3 flex items-center justify-between">
                 <div>
                   <h4 className="font-medium text-sm">{challenge.title}</h4>
                   <p className="text-xs text-muted-foreground">{challenge.description}</p>
-                  <div className="text-xs text-primary mt-1 flex items-center">
+                  <div className="text-xs text-pigipePink mt-1 flex items-center">
                     <Award className="h-3 w-3 mr-1" /> {challenge.reward}
                   </div>
                 </div>
@@ -376,9 +375,10 @@ const RiskManagementSimulation = () => {
                   variant={challenge.isCompleted ? "outline" : "default"}
                   onClick={() => handleCompleteChallenge(challenge.id)}
                   disabled={challenge.isCompleted}
+                  className={challenge.isCompleted ? "" : "bg-pigipeGreen hover:bg-pigipeGreenDark text-white"}
                 >
                   {challenge.isCompleted ? (
-                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                    <CheckCircle2 className="h-4 w-4 text-pigipePink" />
                   ) : (
                     '完了'
                   )}
@@ -401,8 +401,8 @@ const RiskManagementSimulation = () => {
           <div className="mb-6 flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center">
-                <div className="bg-primary/10 rounded-full p-2">
-                  <Shield className="h-5 w-5 text-primary" />
+                <div className="bg-pigipePink/10 rounded-full p-2">
+                  <Shield className="h-5 w-5 text-pigipePink" />
                 </div>
                 <span className="text-xs font-medium mt-1">お守り守</span>
               </div>
@@ -423,7 +423,7 @@ const RiskManagementSimulation = () => {
                   <span className="text-xs text-muted-foreground">経験値：</span>
                   <div className="w-24 h-1.5 bg-muted rounded-full">
                     <div 
-                      className="h-full bg-primary rounded-full" 
+                      className="h-full bg-pigipePink rounded-full" 
                       style={{width: `${userExp}%`}}
                     ></div>
                   </div>

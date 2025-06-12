@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -90,7 +89,7 @@ const InvestmentWeek1Page = () => {
 
   return (
     <GameLayout showNav={false}>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
+      <div className="min-h-screen bg-gradient-to-b from-pigipePinkLight/20 to-white p-4">
         <Confetti show={showConfetti} onComplete={() => setShowConfetti(false)} />
         
         <div className="max-w-2xl mx-auto space-y-6">
@@ -134,7 +133,7 @@ const InvestmentWeek1Page = () => {
                     <Button 
                       onClick={handleSave}
                       size="lg"
-                      className="bg-green-500 hover:bg-green-600 text-white w-full sm:w-auto"
+                      className="bg-pigipeGreen hover:bg-pigipeGreenDark text-white w-full sm:w-auto"
                     >
                       💰 貯金する
                       <div className="text-xs opacity-80 block">安全・低リターン</div>
@@ -145,7 +144,7 @@ const InvestmentWeek1Page = () => {
                     <Button 
                       onClick={handleInvest}
                       size="lg"
-                      className="bg-blue-500 hover:bg-blue-600 text-white w-full sm:w-auto"
+                      className="bg-pigipePink hover:bg-pigipePinkLight text-white w-full sm:w-auto"
                     >
                       📈 投資する
                       <div className="text-xs opacity-80 block">リスク・高リターン</div>
@@ -158,7 +157,7 @@ const InvestmentWeek1Page = () => {
                   {/* 増減額の表示 */}
                   {delta !== 0 && (
                     <motion.div
-                      className={`text-3xl font-bold ${delta > 0 ? 'text-green-600' : 'text-red-600'}`}
+                      className={`text-3xl font-bold ${delta > 0 ? 'text-pigipeGreen' : 'text-red-600'}`}
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: "spring", stiffness: 300 }}
@@ -180,7 +179,7 @@ const InvestmentWeek1Page = () => {
                     
                     <Button
                       onClick={handleBackToInvestment}
-                      className="bg-primary hover:bg-primary/90"
+                      className="bg-pigipeGreen hover:bg-pigipeGreenDark text-white"
                     >
                       投資モジュールに戻る
                     </Button>
@@ -199,9 +198,9 @@ const InvestmentWeek1Page = () => {
               <CardContent>
                 <div className="space-y-2">
                   {week1Choices.slice(-3).map((choice, index) => (
-                    <div key={index} className="flex justify-between items-center text-sm p-2 bg-gray-50 rounded">
+                    <div key={index} className="flex justify-between items-center text-sm p-2 bg-pigipePinkLight/20 rounded">
                       <span>{choice.choice === 'save' ? '💰 貯金' : '📈 投資'}</span>
-                      <span className={choice.result > 0 ? 'text-green-600' : 'text-red-600'}>
+                      <span className={choice.result > 0 ? 'text-pigipeGreen' : 'text-red-600'}>
                         {choice.result > 0 ? '+' : ''}¥{choice.result}
                       </span>
                     </div>
