@@ -20,29 +20,43 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
   };
 
   return (
-    <motion.div
-      className="flex items-start gap-3"
-      initial={{ y: 10, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
+    <div className="w-full max-w-xs mx-auto mt-6">
       <motion.div
-        className={`${sizeClasses[size]} flex-shrink-0`}
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
+        className="flex items-start gap-3"
+        initial={{ y: 10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        <img 
-          src={getMoodImage()} 
-          alt="ピギペ" 
-          className="w-full h-full object-contain"
-        />
+        <motion.div
+          className={`${sizeClasses[size]} flex-shrink-0`}
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <img 
+            src={getMoodImage()} 
+            alt="ピギペ" 
+            className="w-full h-full object-contain"
+          />
+        </motion.div>
+        
+        <div className="flex-1 relative">
+          <div className="p-4 rounded-xl bg-pigipePinkLight/30 border border-pigipePinkLight shadow-lg">
+            <div className="text-xs font-medium text-pigipePink mb-1">ピギペ</div>
+            <p className="text-sm text-gray-800 leading-relaxed">{message}</p>
+          </div>
+          
+          {/* Speech bubble triangle */}
+          <div 
+            className="absolute top-4 -left-1 w-0 h-0"
+            style={{
+              borderTop: '6px solid transparent',
+              borderBottom: '6px solid transparent',
+              borderRight: `6px solid #FFA5B4`,
+            }}
+          />
+        </div>
       </motion.div>
-      
-      <div className="flex-1 p-4 rounded-xl border bg-pigipePinkLight/30 border-pigipePinkLight shadow-lg">
-        <div className="text-xs font-medium text-pigipePink mb-1">ピギペ</div>
-        <p className="text-sm text-gray-800 leading-relaxed">{message}</p>
-      </div>
-    </motion.div>
+    </div>
   );
 };
 

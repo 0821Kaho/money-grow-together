@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			spacing: {
+				'section': '1.25rem',   // 新しい縦マージン基準 (20px)
+			},
 			fontFamily: {
 				// Font families with unique keys
 				'heading': ['"Noto Sans JP"', 'Inter', 'sans-serif'],
