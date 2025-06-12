@@ -20,23 +20,23 @@ interface EventCardProps {
 const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) => {
   const [dragDirection, setDragDirection] = useState<"left" | "right" | null>(null);
   
-  const getMonsterEmoji = () => {
-    if (event.name.includes("コンビニ")) return "🍰";
-    if (event.name.includes("スマホ")) return "📱";
-    if (event.name.includes("昼食")) return "🍙";
-    if (event.name.includes("コーヒー")) return "☕";
-    if (event.name.includes("家賃")) return "🏠";
-    if (event.name.includes("税金")) return "📋";
-    if (event.name.includes("保険")) return "🛡️";
-    if (event.name.includes("旅行")) return "✈️";
-    if (event.name.includes("美容")) return "💄";
-    if (event.name.includes("洋服")) return "👕";
-    if (event.name.includes("ガジェット")) return "📱";
-    return "👹";
+  const getMonsterImage = () => {
+    // 出費の種類に応じて適切なモンスター画像を選択
+    if (event.name.includes("コンビニ") || event.name.includes("スイーツ") || event.name.includes("お菓子")) {
+      return "/lovable-uploads/db57275d-2542-4c22-87f0-cb00f70c9c18.png"; // ケーキモンスター
+    }
+    if (event.name.includes("ランチ") || event.name.includes("昼食") || event.name.includes("食事")) {
+      return "/lovable-uploads/5eedcbcd-67f1-4be9-8cf8-9566602714cc.png"; // ハンバーガーモンスター
+    }
+    if (event.name.includes("コーヒー") || event.name.includes("カフェ") || event.name.includes("飲み物")) {
+      return "/lovable-uploads/4ae136da-1ac1-4f3f-9fcb-1b4ce31a5902.png"; // 悪魔モンスター（誘惑）
+    }
+    // デフォルトは豚の貯金箱（一般的な出費）
+    return "/lovable-uploads/6a2cb83e-5914-499d-ac31-6289d8bfc962.png";
   };
   
   const isNeed = event.type === "need";
-  const monsterIcon = getMonsterEmoji();
+  const monsterImage = getMonsterImage();
   
   return (
     <div className="space-y-6">
@@ -88,12 +88,14 @@ const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) =>
           
           <motion.div
             className="mb-3 flex justify-center"
-            animate={{ scale: [1, 1.1, 1] }}
+            animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <span className="text-6xl" role="img" aria-label={event.name}>
-              {monsterIcon}
-            </span>
+            <img 
+              src={monsterImage} 
+              alt={`${event.name}モンスター`}
+              className="w-24 h-24 object-contain drop-shadow-lg"
+            />
           </motion.div>
           
           <h4 className="text-xl font-maru font-bold mb-2 text-gray-800">{event.name}</h4>
