@@ -20,7 +20,7 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
   };
 
   return (
-    <div className="w-full max-w-xs mx-auto mt-0">
+    <div className="w-full max-w-xs mx-auto mt-1 relative">
       <motion.div
         className="flex items-start gap-3"
         initial={{ y: 10, opacity: 0 }}
@@ -40,9 +40,26 @@ const PigipeGuide = ({ message, mood = "normal", size = "medium" }: PigipeGuideP
         </motion.div>
         
         <div className="flex-1 relative">
-          <div className="p-4 rounded-xl bg-pigipePinkLight/30 border border-pigipePinkLight shadow-lg">
+          <div className="p-4 rounded-xl bg-gradient-to-r from-pigipePinkLight/30 to-pigipeYellow/20 border border-pigipePinkLight shadow-lg relative overflow-hidden">
             <div className="text-xs font-medium text-pigipePink mb-1">ピギペ</div>
             <p className="text-sm text-gray-800 leading-relaxed">{message}</p>
+            
+            {/* Emoji rain effect */}
+            <div className="absolute inset-0 pointer-events-none">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute opacity-30"
+                  style={{
+                    left: `${20 + i * 20}%`,
+                    animation: `emoji-rain 6s linear infinite`,
+                    animationDelay: `${i * 1.5}s`
+                  }}
+                >
+                  {['💸', '🎉', '⭐', '💰'][i]}
+                </div>
+              ))}
+            </div>
           </div>
           
           {/* Speech bubble triangle */}

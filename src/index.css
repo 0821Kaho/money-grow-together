@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 
 @tailwind base;
@@ -148,6 +149,13 @@ html {
     background-size: cover;
     background-position: center;
   }
+  
+  /* Disable all animations when reduced motion is preferred */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Add subtle floating animation for the video container */
@@ -159,4 +167,63 @@ html {
 
 .hero-video-container {
   animation: float 3s ease-in-out infinite;
+}
+
+/* ゲームボタン共通スタイル */
+.game-button {
+  @apply rounded-lg bg-gradient-to-r from-pigipeGreen to-pigipeBlue px-4 py-2 text-white hover:brightness-105 transition-all;
+}
+
+/* Border width class - for thicker borders */
+.border-3 {
+  border-width: 3px;
+}
+
+/* Hero Video Styling - Updated for more pink look */
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  height: 260px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 15px rgba(246, 62, 124, 0.1);
+  background: linear-gradient(to bottom right, #ffd0e0, #fff5f8);
+  border: 2px solid #ffb0d0;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.01); /* Slight scale to avoid edge flickering */
+}
+
+/* Accessibility: Honor reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-float,
+  .animate-bounce-in,
+  .animate-wiggle,
+  .animate-header-bounce,
+  .animate-emoji-rain,
+  .animate-xp-float {
+    animation: none !important;
+  }
+}
+
+/* Performance optimizations for animations */
+.animate-float,
+.animate-bounce-in,
+.animate-wiggle,
+.animate-header-bounce {
+  will-change: transform;
+  transform: translateZ(0);
 }

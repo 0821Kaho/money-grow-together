@@ -11,8 +11,10 @@ export const Tag = ({ children, className = "" }: TagProps) => (
     className={`
       inline-flex items-center justify-center
       px-3 py-1 rounded-full text-[13px] font-medium
-      bg-pigipePinkLight/40 text-pigipePink
-      max-w-xs mx-auto
+      bg-gradient-to-r from-pigipePinkLight to-pigipeYellow/60
+      text-pigipePink shadow-inner
+      max-w-xs mx-auto transition-all duration-300
+      hover:shadow-lg hover:scale-105
       ${className}
     `}
   >

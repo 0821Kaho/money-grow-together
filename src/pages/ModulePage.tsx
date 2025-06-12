@@ -104,15 +104,28 @@ const ModulePage = () => {
   
   return (
     <GameLayout currentModule={module.id}>
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
+      <div className="mb-6 relative">
+        {/* Background ornaments */}
+        <div className="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-pigipeYellow/5 blur-xl" />
+        <div className="absolute -top-4 -right-4 w-8 h-8 bg-pigipeBlue/10 transform rotate-45 blur-sm" />
+        
+        <div className="flex items-center justify-between relative z-10">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-heading font-bold -mt-6">{module.title}</h1>
+            <motion.h1 
+              className="text-2xl font-heading font-bold -mt-4"
+              initial={{ scale: 0.9, y: -8, opacity: 0.8 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              {module.title}
+            </motion.h1>
             <MascotTooltip messages={module.mascotMessages} position="bottom" characterSize="small" />
           </div>
-          <button
+          <motion.button
             onClick={() => navigate("/")}
-            className="flex items-center gap-1 text-sm font-body font-medium text-gray-500"
+            className="flex items-center gap-1 text-sm font-body font-medium text-gray-500 hover:text-pigipePink transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +142,7 @@ const ModulePage = () => {
               />
             </svg>
             戻る
-          </button>
+          </motion.button>
         </div>
         <p className="font-body text-gray-600">{module.description}</p>
       </div>

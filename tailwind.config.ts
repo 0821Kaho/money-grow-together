@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -99,11 +100,15 @@ export default {
 					'pink': '#FF708A',
 					'light': '#FFE8F1'
 				},
-				// Pigipe color tokens
+				// Expanded Pigipe color tokens with new pastel colors
 				'pigipePink': '#FF708A',
 				'pigipePinkLight': '#FFA5B4',
 				'pigipeGreen': '#7ADFA2',
 				'pigipeGreenDark': '#4CC985',
+				'pigipeBlue': '#B3E5FF',
+				'pigipeBlueDark': '#87CEEB',
+				'pigipeYellow': '#FFF2B0',
+				'pigipeYellowDark': '#FFE680',
 				// Pigipe color tokens for investment game
 				'pigipe': {
 					'primary': '#FF708A',
@@ -146,6 +151,24 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' }
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-2deg)' },
+					'50%': { transform: 'rotate(2deg)' }
+				},
+				'header-bounce': {
+					'0%': { transform: 'scale(0.9) translateY(-8px)', opacity: '0.8' },
+					'100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+				},
+				'emoji-rain': {
+					'0%': { transform: 'translateY(-20px)', opacity: '0' },
+					'10%': { opacity: '1' },
+					'90%': { opacity: '1' },
+					'100%': { transform: 'translateY(100px)', opacity: '0' }
+				},
+				'xp-float': {
+					'0%': { transform: 'translateY(0) scale(1)', opacity: '1' },
+					'100%': { transform: 'translateY(-30px) scale(1.1)', opacity: '0' }
 				}
 			},
 			animation: {
@@ -154,7 +177,11 @@ export default {
 				'coin-spin': 'coin-spin 0.5s ease-in-out',
 				'pop': 'pop 0.3s ease-out',
 				'bounce-in': 'bounce-in 0.5s ease-out',
-				'float': 'float 3s ease-in-out infinite'
+				'float': 'float 3s ease-in-out infinite',
+				'wiggle': 'wiggle 0.3s ease-in-out',
+				'header-bounce': 'header-bounce 0.3s ease-out',
+				'emoji-rain': 'emoji-rain 6s linear infinite',
+				'xp-float': 'xp-float 1s ease-out forwards'
 			}
 		}
 	},
