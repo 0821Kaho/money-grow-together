@@ -22,17 +22,20 @@ const EventCard = ({ event, skillUses, canAfford, onAction }: EventCardProps) =>
   
   const getMonsterImage = () => {
     // 出費の種類に応じて適切なモンスター画像を選択
-    if (event.name.includes("コンビニ") || event.name.includes("スイーツ") || event.name.includes("お菓子")) {
-      return "/lovable-uploads/db57275d-2542-4c22-87f0-cb00f70c9c18.png"; // ケーキモンスター
+    if (event.name.includes("スマホ") || event.name.includes("携帯") || event.name.includes("通信費")) {
+      return "/lovable-uploads/375e1aef-b5d9-4035-814c-21ae0bab4e2b.png"; // スマホ料金ピギペ
     }
-    if (event.name.includes("ランチ") || event.name.includes("昼食") || event.name.includes("食事")) {
-      return "/lovable-uploads/5eedcbcd-67f1-4be9-8cf8-9566602714cc.png"; // ハンバーガーモンスター
+    if (event.name.includes("ショッピング") || event.name.includes("洋服") || event.name.includes("買い物")) {
+      return "/lovable-uploads/fb39243d-dab5-4c90-b599-67f5fbb71ea7.png"; // ショッピングピギペ
     }
-    if (event.name.includes("コーヒー") || event.name.includes("カフェ") || event.name.includes("飲み物")) {
-      return "/lovable-uploads/4ae136da-1ac1-4f3f-9fcb-1b4ce31a5902.png"; // 悪魔モンスター（誘惑）
+    if (event.name.includes("投資") || event.name.includes("貯金") || event.name.includes("資産")) {
+      return "/lovable-uploads/084be22b-ff4a-432e-8200-bbe18c0eb9ae.png"; // 投資・貯金ピギペ
     }
-    // デフォルトは豚の貯金箱（一般的な出費）
-    return "/lovable-uploads/6a2cb83e-5914-499d-ac31-6289d8bfc962.png";
+    if (event.name.includes("友達") || event.name.includes("紹介") || event.name.includes("お友達")) {
+      return "/lovable-uploads/5ef7c612-1a72-4656-bf5e-2b22734670ee.png"; // 友達紹介ピギペ
+    }
+    // デフォルトは騎士ピギペ（戦うイメージ）
+    return "/lovable-uploads/dafd5345-9681-472f-b911-52f3d36505c2.png";
   };
   
   const isNeed = event.type === "need";
